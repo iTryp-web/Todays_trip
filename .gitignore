@@ -1,5 +1,7 @@
 /.metadata/
 
+# 환경키제외
+.env
 
 # Created by https://www.toptal.com/developers/gitignore/api/eclipse,java,gradle,yarn,react,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,java,gradle,yarn,react,visualstudiocode
