@@ -6,3 +6,12 @@ spring:
     view:
       prefix: /WEB-INF/views
       suffix: .jsp
+      
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521/orcl11
+    username: itryp
+    password: itryp0509
+
+mybatis:
+  mapper-locations: mapper/*.xml
