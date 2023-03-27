@@ -1,5 +1,12 @@
 server:
   port: 8000
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
 
 spring:
   mvc:
@@ -8,10 +15,22 @@ spring:
       suffix: .jsp
       
   datasource:
-    driver-class-name: oracle.jdbc.driver.OracleDriver
     url: jdbc:oracle:thin:@localhost:1521/orcl11
     username: itryp
     password: itryp0509
-
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      connection-timeout: 20000
+      validation-timeout: 3000
+      minimum-idle: 5
+      maximum-pool-size: 12
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      auto-commit: true
+      pool-name: oraPool
+  servlet:
+    multipart:
+      enabled: true
+      
 mybatis:
   mapper-locations: mapper/*.xml
