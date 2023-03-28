@@ -10,7 +10,7 @@ function App() {
       <Route path='/' exact={true} element={<HomePage />} />
       <Route path='/test' exact={true} element={<TestPage />} />
     </Routes>
-    </>
+    </> 
   );
 }
 
