@@ -29,14 +29,6 @@ public class RestTestController {
 		logger.info("testList 호출");
 		String temp = null;
 		temp = tl.test();
-//		List<Map<String, Object>> tList = new ArrayList<>();
-//		Map<String, Object> pMap = new HashMap<>();
-//		pMap.put("mem_id", "test");
-//		pMap.put("mem_pw", "123");
-//		pMap.put("mem_name","테스트");
-//		tList.add(pMap);
-//		Gson g = new Gson();
-//		temp = g.toJson(tList);
 		return temp;
 	}
 }
