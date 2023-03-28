@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.itryp">
+	<!-- 커뮤니티글 전체, 카테고리 조회 + 조건검색(작성자|제목|내용) -->
+	<select id="boardList" parameterType="map" resultType="map">
+		SELECT b.board_no,
+		       u.user_nickname,
+		       b.board_category,
+		       b.board_title,
+		       b.board_content,
+		       b.board_date,
+		       b.board_hit
+		  FROM TB_BOARD b, TB_USER u
+  	  WHERE b.user_id = u.user_id
+    <where>
+			<if test='board_category!=null and !board_category.equals("전체")'>
+				AND b.board_category = #{board_category}
+			</if>
+			<if test='gubun!=null and gubun.equals("user_nickname")'>
+				AND u.user_nickname LIKE '%'||#{keyword}||'%'
+			</if>
+			<if test='gubun!=null and gubun.equals("board_title")'>
+				AND b.board_title LIKE '%'||#{keyword}||'%'
+			</if>
+			<if test='gubun!=null and gubun.equals("board_content")'>
+				AND b.board_content LIKE '%'||#{keyword}||'%'
+			</if>
+		</where>
+		ORDER BY b.board_no ASC
+	</select>
+</mapper>
