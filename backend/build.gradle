@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
 	id 'war'
-	id 'org.springframework.boot' version '2.7.10-SNAPSHOT'
+	id 'org.springframework.boot' version '2.7.10'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -17,23 +17,25 @@ configurations {
 
 repositories {
 	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
-	maven { url 'https://repo.spring.io/snapshot' }
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.7.9'
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+	implementation 'javax.servlet:jstl'
+	// https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+	// https://mvnrepository.com/artifact/com.google.code.gson/gson
+	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
+	implementation group:'com.zaxxer', name:'HikariCP', version:'3.4.5'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
 	annotationProcessor 'org.projectlombok:lombok'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	// https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	// https://mvnrepository.com/artifact/com.google.code.gson/gson
-	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
-	// https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.4'
 	
 }
 

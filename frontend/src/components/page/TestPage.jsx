@@ -4,7 +4,7 @@ import Bottom from "../include/Bottom";
 import Header from "../include/Header";
 
 const TestPage = () => {
-  const [test, setTest] = useState([{}])
+  const [test, setTest] = useState('')
 
   useEffect(()=>{
     const testList = async() => {
@@ -19,9 +19,7 @@ const TestPage = () => {
     <>
       <Header />
       <h1>연동 테스트 페이지입니다.</h1>
-      <div>{test[0].mem_id}</div>
-      <div>{test[0].mem_pw}</div>
-      <div>{test[0].mem_name}</div>
+      <div>{test}</div>
       <Bottom />
     </>
   )
