@@ -10,8 +10,10 @@ function App() {
       <Route path='/' exact={true} element={<HomePage />} />
       <Route path='/test' exact={true} element={<TestPage />} />
     </Routes>
-    </>
+    </> 
   );
 }
 
 export default App;
+//te st
+//te s s t
