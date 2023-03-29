@@ -25,7 +25,7 @@ public class BoardController {
 	private BoardLogic boardLogic = null;
 	
 	/**
-	 * 커뮤니티글 전체, 카테고리 조회 + 조건검색(작성자|제목|내용)
+	 * 커뮤니티글 전체, 카테고리 조회 + 조건검색sort(작성자|제목|내용)
 	 * 
 	 * @param pMap
 	 * @return
@@ -242,5 +242,38 @@ public class BoardController {
 		result = boardLogic.likeOff(pMap);
 		logger.info(result);
 		return String.valueOf(result);
+	}
+	
+	/**
+	 * Quill 첨부한 이미지 서버에 업로드
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("imageUpload")
+	public String imageUpload(@RequestBody Map<String, Object> pMap) {
+		logger.info("imageUpload 호출");
+		logger.info(pMap);
+		int result = 0;
+		//result = boardLogic.imageUpload(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+	
+	/**
+	 *  서버에 저장해둔 이미지 url 가져오기
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("imageGet")
+	public String imageGet(@RequestBody Map<String, Object> pMap) {
+		logger.info("imageGet 호출");
+		logger.info(pMap);
+		String temp = null;
+		List<Map<String, Object>> bList = null;
+		//bList = boardLogic.imageGet(pMap);
+		logger.info(bList);
+		Gson g = new Gson();
+		temp = g.toJson(bList);		
+		return temp;
 	}
 }
