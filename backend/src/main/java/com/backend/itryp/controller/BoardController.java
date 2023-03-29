@@ -249,12 +249,12 @@ public class BoardController {
 	 * @param pMap
 	 * @return
 	 */
-	@PostMapping("imageUpload")
-	public String imageUpload(@RequestBody Map<String, Object> pMap) {
-		logger.info("imageUpload 호출");
+	@PostMapping("uploadImage")
+	public String uploadImage(@RequestBody Map<String, Object> pMap) {
+		logger.info("uploadImage 호출");
 		logger.info(pMap);
 		int result = 0;
-		//result = boardLogic.imageUpload(pMap);
+		result = boardLogic.uploadImage(pMap);
 		logger.info(result);
 		return String.valueOf(result);
 	}
@@ -264,13 +264,13 @@ public class BoardController {
 	 * @param pMap
 	 * @return
 	 */
-	@PostMapping("imageGet")
-	public String imageGet(@RequestBody Map<String, Object> pMap) {
-		logger.info("imageGet 호출");
+	@GetMapping("getImage")
+	public String getImage(@RequestParam Map<String, Object> pMap) {
+		logger.info("getImage 호출");
 		logger.info(pMap);
 		String temp = null;
 		List<Map<String, Object>> bList = null;
-		//bList = boardLogic.imageGet(pMap);
+		bList = boardLogic.getImage(pMap);
 		logger.info(bList);
 		Gson g = new Gson();
 		temp = g.toJson(bList);		
