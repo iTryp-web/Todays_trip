@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
-	<!-- 커뮤니티글 전체, 카테고리 조회 + 조건검색(작성자|제목|내용) -->
+	<!-- 커뮤니티글 전체, 카테고리 조회 + 조건검색sort(작성자|제목|내용) -->
 	<select id="boardList" parameterType="map" resultType="map">
 		SELECT b.board_no,
 		       u.user_nickname,
@@ -16,13 +16,13 @@
 			<if test='board_category!=null and !board_category.equals("전체")'>
 				AND b.board_category = #{board_category}
 			</if>
-			<if test='gubun!=null and gubun.equals("user_nickname")'>
+			<if test='sort != null and sort.equals("작성자")'>
 				AND u.user_nickname LIKE '%'||#{keyword}||'%'
 			</if>
-			<if test='gubun!=null and gubun.equals("board_title")'>
+			<if test='sort != null and sort.equals("제목")'>
 				AND b.board_title LIKE '%'||#{keyword}||'%'
 			</if>
-			<if test='gubun!=null and gubun.equals("board_content")'>
+			<if test='sort != null and sort.equals("내용")'>
 				AND b.board_content LIKE '%'||#{keyword}||'%'
 			</if>
 		</where>
