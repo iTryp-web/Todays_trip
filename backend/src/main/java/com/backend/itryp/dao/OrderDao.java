@@ -111,4 +111,18 @@ public class OrderDao {
 		return list;
 	}
 
+
+	/**
+	 * cancelOrder
+	 * 
+	 * @param pmap
+	 * @return
+	 */
+	public List<Map<String, Object>> cancelOrder(Map<String, Object> pmap) {
+		log.info("cancelOrder 호출");
+		List<Map<String,Object>> list = null;
+		list = sst.selectList("cancelOrder", pmap);
+		return list;
+	}
+
 }
