@@ -9,7 +9,7 @@ function App() {
     <>
     <Routes>
       <Route path='/' exact={true} element={<HomePage />} />
-      <Route path='/community' exact={true} element={<BoardPage />} />
+      <Route path='/board' exact={true} element={<BoardPage />} />
       <Route path='/test' exact={true} element={<TestPage />} />
       <Route path='/order' exact={true} element={<OrderPage />} />
     </Routes>
