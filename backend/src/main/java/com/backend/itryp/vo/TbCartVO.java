@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TbCartVO {
 
+	private int cart_no;
 	private String user_id;
 	private int market_no;
 	private int market_count;
