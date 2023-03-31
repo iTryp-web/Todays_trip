@@ -1,10 +1,12 @@
 package com.backend.itryp.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.itryp.logic.MarketLogic;
 import com.backend.itryp.logic.OrderLogic;
+import com.google.gson.Gson;
 
 @RestController
 @RequestMapping("/market/*")
@@ -22,9 +25,8 @@ public class MarketController {
 	@Autowired
 	MarketLogic marketLogic = null;
 	
-	
 	/**
-	 * 마켓구매
+	 * 마켓홈 구매
 	 * 
 	 * @param pmap 상품 정보
 	 * @return 마켓상품 정보
@@ -34,103 +36,39 @@ public class MarketController {
 		String temp = null;
 		return temp;
 	}
-	
-	
-//	/**
-//	 * 공동구매 핫딜
-//	 * 
-//	 * @param pmap 상품 정보
-//	 * @return temp cart 정보
-//	 */
-//	@PostMapping("cart")
-//	public String getCartPage(@RequestParam Map<String, Object> pmap) {
-//		logger.info("getCartPage called");
-//		String temp = null;
-//		return temp;
-//	}
-//	
-	
+
 	/**
 	 * 강조아이콘 상위노출
 	 * 
 	 * @param pmap 유저 및 상품 정보
 	 * @return temp 현재 cart 정보
 	 */
-	@PostMapping("deleteCart")
+	@PostMapping("HotCart")
 	public String deleteCart(@RequestParam Map<String, Object> pmap) {
 		logger.info("deleteCart called");
 		String temp = null;
 		return temp;
 	}
 	
-	
 	/**
-	 * 장바구니 수량 변경
+	 * 마켓글 전체, 카테고리 조회 + 조건검색sort(작성자|제목|내용)
 	 * 
-	 * @param pmap 유저 및 상품 정보
-	 * @return temp 현재 cart 정보
+	 * @param pMap
+	 * @return
 	 */
-	@PostMapping("UpdateCart")
-	public String UpdateCart(@RequestParam Map<String, Object> pmap) {
-		logger.info("UpdateCart called");
+	@GetMapping("MarketList")
+	public String MarketList(@RequestParam Map<String, Object> pMap) {
+		logger.info("boardList 호출");
+		logger.info(pMap);
 		String temp = null;
+		List<Map<String, Object>> bList = null;
+		bList = MarketLogic.MarketList(pMap);
+		logger.info(bList);
+		Gson g = new Gson();
+		temp = g.toJson(bList);		
 		return temp;
 	}
 	
 	
-	/**
-	 * 상품 주문 페이지로 이동
-	 * 
-	 * @param pmap 유저 및 상품 정보
-	 * @return temp 주문 정보
-	 */
-	@PostMapping("getOrderPage")
-	public String getOrderPage(@RequestParam Map<String, Object> pmap) {
-		logger.info("getOrderPage called");
-		String temp = null;
-		return temp;
-	}
-	
-	
-	/**
-	 * 결제 페이지로 이동
-	 * 
-	 * @param pmap 유저 및 상품 정보
-	 * @return temp 주문 및 결제 정보
-	 */
-	@PostMapping("getPayPage")
-	public String getPayPage(@RequestParam Map<String, Object> pmap) {
-		log.info("getPayPage called");
-		String temp = null;
-		return temp;
-	}
-	
-	
-	/**
-	 * 결제 성공 페이지
-	 * 
-	 * @param pmap 유저 및 상품 정보
-	 * @return temp 현재 cart 정보
-	 */
-	@PostMapping("paySuccess")
-	public String paySuccess(@RequestParam Map<String, Object> pmap) {
-		logger.info("paySuccess called");
-		String temp = null;
-		return temp;
-	}
-	
-	
-	/**
-	 * 결제 실패 페이지
-	 * 
-	 * @param pmap 유저 및 상품 정보
-	 * @return temp 현재 cart 정보
-	 */
-	@PostMapping("payFail")
-	public String payFail(@RequestParam Map<String, Object> pmap) {
-		logger.info("payFail called");
-		String temp = null;
-		return temp;
-	}
 
 }
