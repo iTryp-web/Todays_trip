@@ -16,7 +16,7 @@ import com.backend.itryp.logic.OrderLogic;
 import com.google.gson.Gson;
 
 @RestController
-@RequestMapping("/order/*")
+@RequestMapping("/shop/*")
 public class OrderController {
 	
 	Logger log = LogManager.getLogger(OrderController.class);
@@ -165,29 +165,19 @@ public class OrderController {
 	
 	
 	/**
-	 * 결제 성공 페이지
+	 * 주문 취소
 	 * 
-	 * @param pmap 유저 및 상품 정보
-	 * @return temp 현재 cart 정보
+	 * @param pmap 주문 및 결제 정보
+	 * @return 등록 성공 여부
 	 */
-	@PostMapping("paySuccess")
-	public String paySuccess(@RequestParam Map<String, Object> pmap) {
-		log.info("paySuccess 호출");
+	@PostMapping("cancelOrder")
+	public String cancelOrder(@RequestParam Map<String, Object> pmap) {
+		log.info("cancelOrder 호출");
 		String temp = null;
-		return temp;
-	}
-	
-	
-	/**
-	 * 결제 실패 페이지
-	 * 
-	 * @param pmap 유저 및 상품 정보
-	 * @return temp 현재 cart 정보
-	 */
-	@PostMapping("payFail")
-	public String payFail(@RequestParam Map<String, Object> pmap) {
-		log.info("payFail 호출");
-		String temp = null;
+		List<Map<String,Object>> list = null;
+		list = odrLogic.cancelOrder(pmap);
+		Gson g = new Gson();
+		temp = g.toJson(list);
 		return temp;
 	}
 

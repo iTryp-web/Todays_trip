@@ -14,5 +14,6 @@ public class TbLikeVO {
 	private String user_id;
 	private int like_type;
 	private int board_no;
+	private int board_step;
 
 }
