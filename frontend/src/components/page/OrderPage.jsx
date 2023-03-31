@@ -1,10 +1,14 @@
 import React from 'react'
+import Bottom from '../include/Bottom'
+import Header from '../include/Header'
 
 const OrderPage = () => {
   return (
-    <div>
-      
-    </div>
+    <>
+      <Header/>
+      order
+      <Bottom/>
+    </>
   )
 }
 
