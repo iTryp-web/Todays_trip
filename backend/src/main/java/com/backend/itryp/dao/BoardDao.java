@@ -107,18 +107,4 @@ public class BoardDao {
 		// result = sqlSessionTemplate.update("likeOff", pMap);
 		return result;
 	}
-
-	public int uploadImage(Map<String, Object> pMap) {
-		logger.info("uploadImage 호출");
-		int result = 0;
-		// result = sqlSessionTemplate.update("uploadImage", pMap);
-		return result;
-	}
-
-	public List<Map<String, Object>> getImage(Map<String, Object> pMap) {
-		logger.info("getImage 호출");
-		List<Map<String,Object>> bList = null;
-		// bList = sqlSessionTemplate.selectList("getImage", pMap);
-		return bList;
-	}
 }
