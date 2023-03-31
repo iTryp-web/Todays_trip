@@ -12,7 +12,6 @@
 		       b.board_hit
 		  FROM TB_BOARD b, TB_USER u
   	  WHERE b.user_id = u.user_id
-    <where>
 			<if test='board_category!=null and !board_category.equals("전체")'>
 				AND b.board_category = #{board_category}
 			</if>
@@ -25,7 +24,6 @@
 			<if test='sort != null and sort.equals("내용")'>
 				AND b.board_content LIKE '%'||#{keyword}||'%'
 			</if>
-		</where>
 		ORDER BY b.board_no ASC
 	</select>
 </mapper>

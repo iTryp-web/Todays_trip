@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 public class TbReportVO {
 
 	private int report_no;
-	private int report_type;
 	private String user_id;
+	private int report_type;
+	private int report_type_step;
 	private String report_user;
 	private String report_reason;
 	private String report_date;
