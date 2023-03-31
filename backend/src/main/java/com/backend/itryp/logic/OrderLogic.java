@@ -118,5 +118,19 @@ public class OrderLogic {
 		return list;
 	}
 	
+	
+	/**
+	 * cancelOrder
+	 * 
+	 * @param pmap
+	 * @return
+	 */
+	public List<Map<String, Object>> cancelOrder(Map<String, Object> pmap) {
+		log.info("cancelOrder 호출");
+		List<Map<String,Object>> list = new ArrayList<>();
+		list = odao.cancelOrder(pmap);
+		return list;
+	}
+	
 
 }
