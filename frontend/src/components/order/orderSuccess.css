@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+}
+
+.order {
+  background-color: #f5f5f5;
+  padding-top: 10%;
+}
+
+.img {
+  text-align: center;
+  margin: auto;
+  align-items: center;
+}
+
+.check_icon {
+  align-items: center;
+  size: 10rem;
+  display: flex;
+  justify-content: center;
+}
+
+.complete_sentence {
+  text-align: center;
+  font-size: x-large;
+  font-family: sans-serif;
+  margin-top: 5%;
+}
