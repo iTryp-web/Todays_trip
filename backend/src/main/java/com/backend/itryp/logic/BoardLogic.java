@@ -108,18 +108,4 @@ public class BoardLogic {
 		result = boardDao.likeOff(pMap);
 		return result;
 	}
-
-	public int uploadImage(Map<String, Object> pMap) {
-		logger.info("uploadImage 호출");
-		int result = 0;
-		result = boardDao.uploadImage(pMap);
-		return result;
-	}
-
-	public List<Map<String, Object>> getImage(Map<String, Object> pMap) {
-		logger.info("getImage 호출");
-		List<Map<String,Object>> bList = new ArrayList<>();
-		bList= boardDao.getImage(pMap);
-		return bList;
-	}
 }
