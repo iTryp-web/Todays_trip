@@ -1,6 +1,6 @@
 import React from 'react'
 
-const OrderPage = () => {
+const CartPage = () => {
   return (
     <>
       
@@ -8,4 +8,4 @@ const OrderPage = () => {
   )
 }
 
-export default OrderPage
+export default CartPage

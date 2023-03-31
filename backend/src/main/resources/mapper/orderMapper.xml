@@ -2,17 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
 	<select id="getItemShopPage" parameterType="map" resultType="map">
-		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
+		SELECT ITEM_NO, ITEM_NAME, ITEM_PRICE, ITEM_DATE, ITEM_TYPE FROM TB_HOT
 	</select>
 	<select id="getCartPage" parameterType="map" resultType="map">
-		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
+		SELECT CART_NO, USER_ID, MARKET_NO, MARKET_COUNT, CART_DATE FROM TB_CART
 	</select>
-	<select id="insertCart" parameterType="map" resultType="map">
-		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
-	</select>
-	<select id="UpdateCart" parameterType="map" resultType="map">
-		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
-	</select>
+	<insert id="insertCart" parameterType="map">
+		INSERT INTO TB_CART (CART_NO, USER_ID, MARKET_NO, MARKET_COUNT) VALUES (#{CART_NO}, #{USER_ID}, #{MARKET_NO}, #{MARKET_COUNT})
+	</insert>
+	<update id="UpdateCart" parameterType="map">
+		UPDATE TB_CART 
+	</update>
 	<select id="deleteCart" parameterType="map" resultType="map">
 		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
 	</select>
