@@ -35,7 +35,7 @@ public class BoardController {
 	private BoardLogic boardLogic = null;
 	
 	/**
-	 * 커뮤니티글 전체, 카테고리 조회 + 조건검색sort(작성자|제목|내용)
+	 * 커뮤니티글 전체, 카테고리 조회 + 조건검색serch(작성자|제목|내용)
 	 * 
 	 * @param pMap
 	 * @return
@@ -92,7 +92,7 @@ public class BoardController {
 	}
 	
 	/**
-	 * 커뮤니티 글쓰기
+	 * 커뮤니티 글쓰기 - Quill image
 	 * 
 	 * @param pMap
 	 * @return
@@ -140,7 +140,7 @@ public class BoardController {
 	}
 	
 	/**
-	 * 댓글 전체 조회 + 정렬(최신|추천)
+	 * 댓글 전체 조회
 	 * 
 	 * @param pMap
 	 * @return
@@ -159,7 +159,7 @@ public class BoardController {
 	}
 	
 	/**
-	 * 댓글쓰기(댓글, 대댓글)
+	 * 댓글, 대댓글 쓰기 - 댓글step: 0 / 대댓글step: 1
 	 * 
 	 * @param pMap
 	 * @return
@@ -175,7 +175,7 @@ public class BoardController {
 	}
 	
 	/**
-	 * 댓글 수정
+	 * 댓글, 대댓글 수정
 	 * 
 	 * @param pMap
 	 * @return
@@ -191,7 +191,7 @@ public class BoardController {
 	}
 	
 	/**
-	 * 댓글 삭제
+	 * 댓글, 대댓글 삭제
 	 * 
 	 * @param pMap
 	 * @return
@@ -223,7 +223,7 @@ public class BoardController {
 	}
 	
 	/**
-	 * 좋아요 - 글:0 / 댓글:1 / 리뷰:2
+	 * 좋아요 - 글:0 / 댓글:1(대댓step까지 가져올것) / 리뷰:2
 	 * 
 	 * @param pMap
 	 * @return
@@ -288,41 +288,6 @@ public class BoardController {
 				// 리턴값으로 선택한 이미지 파일명을 넘겨서 사용자 화면에 첨부된 파일명을 열거해주는데 사용
 				String temp = filename;
 				return temp;
-	}
-	
-	/**
-	 * 글에 첨부한 파일 서버에 업로드
-	 * @param mRequest
-	 * @param file_name
-	 * @return
-	 */
-	@PostMapping("uploadFile")
-	public String uploadFile(MultipartHttpServletRequest mRequest, @RequestParam(value="file_name", required=false) MultipartFile file_name) {
-		logger.info("uploadFile 호출");
-		// 사용자가 선택한 파일 이름 담기
-		String filename = null;
-		if(!file_name.isEmpty()) {
-			filename = file_name.getOriginalFilename();
-			String saveFolder = "..\\..\\..\\..\\..\\webapp\\pds";
-			String fullPath = saveFolder + "\\" + filename;
-			try {
-				// File객체는 파일명을 객체화해주는 클래스 - 생성되었다고해서 실제 파일까지 생성되는 것이 아님
-				File file = new File(fullPath);
-				byte[] bytes = file_name.getBytes();
-				// outputStream을 반드시 생성해서 파일 정보를 읽은 후 쓰기 처리해줌 -> 완전한 파일이 생성됨
-				// BufferedOutputStream은 필터 클래스이지 실제 파일을 쓸 수 없는 객체이고
-				// 실제 파일쓰기가 가능한 클래스는 FileOutputStream클래스이다 - 생성자 파라미터에 파일정보를 담는다
-				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-				bos.write(bytes);
-				// 파일쓰기와 관련된 위변조 방지위해서 사용 후 반드시 닫을 것!
-				bos.close();
-			} catch (Exception e) {
-				
-			}
-		}
-		// 리턴값으로 선택한 이미지 파일명을 넘겨서 사용자 화면에 첨부된 파일명을 열거해주는데 사용
-		String temp = filename;
-		return temp;
 	}
 	
 	/**

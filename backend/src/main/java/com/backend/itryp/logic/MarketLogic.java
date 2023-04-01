@@ -6,10 +6,12 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.backend.itryp.dao.BoardDao;
 import com.backend.itryp.dao.MarketDao;
 
+@Service
 public class MarketLogic {
 	Logger logger = LogManager.getLogger(MarketLogic.class);
 	
