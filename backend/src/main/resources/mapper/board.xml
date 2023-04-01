@@ -61,7 +61,7 @@
 	       , b.type_board
 	  FROM TB_BOARD b, TB_USER u
 		WHERE b.user_id = u.user_id
-		AND b.board_like >= 10
+		AND b.board_like >= 5
 	</select>
 
 	<!-- 커뮤니티 글쓰기 -->
@@ -194,7 +194,7 @@
 	<update id="replyUpdate" parameterType="map">
 		UPDATE TB_B_COMMENT
 		<trim prefix="SET" prefixOverrides=",">
-		<if test="comment_content != null and comment_content > 0">
+		<if test="comment_content != null and comment_content.length() != 0">
 			, comment_content = #{comment_content}
 		</if>
 		<if test="comment_status != null and comment_status > 0">
