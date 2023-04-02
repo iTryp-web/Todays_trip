@@ -14,5 +14,6 @@ public class TbFileVO {
 	private int board_no;
 	private String file_name;
 	private String file_url;
+	private int file_size;
 	
 }

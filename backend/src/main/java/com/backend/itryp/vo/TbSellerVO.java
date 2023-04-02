@@ -9,15 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TbUCouponVO {
+public class TbSellerVO {
 	
-	private String coupon_no;
 	private String user_id;
-	private int coupon_rate;
-	private int coupon_min;
-	private int coupon_max;
-	private String coupon_date;
-	private int coupon_valid;
-	private int coupon_exp;
-
+	private String seller_auth;
+	private String seller_category;
+	
 }
