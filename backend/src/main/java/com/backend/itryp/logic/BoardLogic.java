@@ -220,7 +220,7 @@ public class BoardLogic {
 	}
 
 	/**
-	 * 신고 - 글:0 / 댓글:1 / 마켓글:2 / 리뷰:3
+	 * 신고 - 글:0 / 댓글:1 / 마켓글:2 / 리뷰:3(마켓에서 처리)
 	 * 
 	 * @param pMap
 	 * @return
@@ -233,7 +233,7 @@ public class BoardLogic {
 	}
 
 	/**
-	 * 좋아요 - 글:0 / 댓글:1 / 리뷰:2
+	 * 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리)
 	 * 
 	 * @param pMap
 	 * @return
@@ -257,16 +257,12 @@ public class BoardLogic {
 				pMap.put("comment_step", pMap.get("like_step"));
 				int like = boardDao.replyUpdate(pMap);
 			}
-			// 좋아요타입 2: 리뷰
-			else if(type == 2) {
-				logger.info("니중에 추가할 것!");
-			}
 		}
 		return result;
 	}
 
 	/**
-	 * 좋아요 취소
+	 * 좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리)
 	 * 
 	 * @param pMap
 	 * @return
@@ -289,10 +285,6 @@ public class BoardLogic {
 				pMap.put("comment_no", pMap.get("like_group"));
 				pMap.put("comment_step", pMap.get("like_step"));
 				int like = boardDao.replyUpdate(pMap);
-			}
-			// 좋아요취소 타입 2: 리뷰
-			else if(type == 2) {
-				logger.info("니중에 추가할 것!");
 			}
 		}
 		return result;

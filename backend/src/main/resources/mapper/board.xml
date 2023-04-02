@@ -159,7 +159,7 @@
   	  WHERE c.user_id = u.user_id
   	  AND c.board_no = #{board_no}
   	  AND (c.comment_status = 0 OR c.comment_status = 1)
-			ORDER BY c.comment_date ASC
+			ORDER BY c.comment_no ASC, c.comment_step ASC
 	</select>
 	
 	<!-- 댓글, 대댓글 쓰기 -->
@@ -222,7 +222,7 @@
 			</if>
 	</delete>
 	
-	<!-- 신고 - 글:0 / 댓글:1 / 마켓글:2 / 리뷰:3 -->
+	<!-- 신고 - 글:0 / 댓글:1 / 마켓글:2 / 리뷰:3(마켓에서 처리) -->
 	<insert id="report" parameterType="map">
 		INSERT INTO TB_REPORT
 								(report_no
@@ -249,7 +249,7 @@
 							 )
 	</insert>
 	
-	<!-- 좋아요 - 글:0 / 댓글:1 / 리뷰:2 -->
+	<!-- 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
 	<insert id="likeOn" parameterType="map">
 		INSERT INTO TB_LIKE
 								(user_id
@@ -270,7 +270,7 @@
 							 )
 	</insert>
 	
-	<!-- 좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2 -->
+	<!-- 좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
 	<delete id="likeOff" parameterType="map">
 		DELETE FROM TB_LIKE
 					WHERE user_id = #{user_id}
