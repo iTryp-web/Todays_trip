@@ -172,7 +172,7 @@ public class BoardDao {
 	}
 
 	/**
-	 * 신고 - 글:0 / 댓글:1 / 마켓글:2 / 리뷰:3
+	 * 신고 - 글:0 / 댓글:1 / 마켓글:2 / 리뷰:3(마켓에서 처리)
 	 * 
 	 * @param pMap
 	 * @return
@@ -185,7 +185,7 @@ public class BoardDao {
 	}
 
 	/**
-	 * 좋아요 - 글:0 / 댓글:1 / 리뷰:2
+	 * 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리)
 	 * 
 	 * @param pMap
 	 * @return
@@ -198,7 +198,7 @@ public class BoardDao {
 	}
 
 	/**
-	 * 좋아요 취소
+	 * 좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리)
 	 * 
 	 * @param pMap
 	 * @return
