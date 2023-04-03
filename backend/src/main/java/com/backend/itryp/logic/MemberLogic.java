@@ -40,6 +40,9 @@ public class MemberLogic {
 		logger.info("memberUpdate 호출");
 		logger.info(pMap.toString());
 		int result = 0;
+		int pw_check = 0;
+		pw_check = memberDao.memb
+		
 		result = memberDao.memberUpdate(pMap);
 		return result;
 	}
@@ -51,5 +54,9 @@ public class MemberLogic {
 		result = memberDao.memberDelete(pMap);
 		return result;
 	}
+	
+	
+	
+	
 
 }

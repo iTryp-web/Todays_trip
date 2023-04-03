@@ -28,7 +28,7 @@ public class MemberController {
 	
 	
 	/******************
-	 * 회원 목록
+	 * 회원 정보 조회 
 	 * @param pMap
 	 * @return
 	 ******************/
