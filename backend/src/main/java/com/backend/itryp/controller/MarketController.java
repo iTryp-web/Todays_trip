@@ -27,9 +27,9 @@ public class MarketController {
 	MarketLogic marketLogic = null;
 	
 	/**
-	 * 마켓홈 구매 리스트
+	 * 마켓 리스트
 	 * 강조아이콘 정보 가져오기 포함(조인)
-	 * 마켓글 전체검색, 카테고리 조회 + 조건검색sort(작성자|제목|내용)
+	 * 마켓글 전체검색, 카테고리 조회 + 조건검색sort(숙소만|프로그램만|가격)
 	 * 
 	 * @param pmap 상품 정보
 	 * @return 마켓상품 정보
@@ -159,6 +159,85 @@ public class MarketController {
 		logger.info(pMap);
 		int result = 0;
 		result = marketLogic.reviewLike(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+	/**
+	 * 문의답글쓰기
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("qnaInsert")
+	public String qnaInsert(@RequestBody Map<String, Object> pMap) {
+		logger.info("qnaInsert 호출");
+		logger.info(pMap);
+		int result = 0;
+		result =marketLogic.qnaInsert(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+	
+	/**
+	 * 문의 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("qnaDelete")
+	public String qnaDelete(@RequestBody Map<String, Object> pMap) {
+		logger.info("qnaDelete 호출");
+		logger.info(pMap);
+		int result = 0;
+		result = marketLogic.qnaDelete(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+	/**
+	 * 문의글 보기
+	 * 
+	 * @param pMap 상품 정보
+	 * @return 마켓상품 정보
+	 */
+	@GetMapping
+	public String qnaList(@RequestParam Map<String, Object> pMap) {
+		logger.info("marketList 호출");
+		String temp = null;
+		List<Map<String, Object>> bList = null;
+		bList = marketLogic.marketList(pMap);
+		logger.info(bList);
+		Gson g = new Gson();
+		temp = g.toJson(bList);
+		return temp;
+	}
+	/**
+	 * 문의답글쓰기
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("qnaReplyInsert")
+	public String qnaReplyInsert(@RequestBody Map<String, Object> pMap) {
+		logger.info("qnaReplyInsert 호출");
+		logger.info(pMap);
+		int result = 0;
+		result =marketLogic.qnaReplyInsert(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+/////////////////////////////////////////////////////////////////////
+	/**
+	 * 마켓 새글쓰기-말머리, 재목, 가격옵션,내용,글등록,임시저장,강조아이템
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("marketInsert")
+	public String marketInsert(@RequestBody Map<String, Object> pMap) {
+		logger.info("marketInsert 호출");
+		logger.info(pMap);
+		int result = 0;
+		result =marketLogic.marketInsert(pMap);
 		logger.info(result);
 		return String.valueOf(result);
 	}
