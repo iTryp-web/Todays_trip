@@ -18,8 +18,43 @@ public class MarketLogic {
 	@Autowired
 	private MarketDao marketDao = null;
 
-	public static List<Map<String, Object>> MarketList(Map<String, Object> pMap) {
+	public static List<Map<String, Object>> marketList(Map<String, Object> pMap) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public List<Map<String, Object>> marketDetail(Map<String, Object> pMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int marketUpdate(Map<String, Object> pMap) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int marketDelete(Map<String, Object> pMap) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int reviewInsert(Map<String, Object> pMap) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int reviewUpdate(Map<String, Object> pMap) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int reviewDelete(Map<String, Object> pMap) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int reviewLike(Map<String, Object> pMap) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
