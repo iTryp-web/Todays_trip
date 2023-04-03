@@ -6,6 +6,7 @@ import OrderPage from './components/page/OrderPage';
 import CartPage from './components/page/CartPage';
 import OrderSuccess from './components/order/OrderSuccess';
 import OrderFail from './components/order/OrderFail';
+import MarketPage from './components/page/MarketPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path='/test' exact={true} element={<TestPage />} />
       <Route path='/cart' exact={true} element={<CartPage />} />
       <Route path='/order' exact={true} element={<OrderPage />} />
+      <Route path='/market' exact={true} element={<MarketPage />} />
       <Route path='/order/success' exact={true} element={<OrderSuccess />} />
       <Route path='/order/fail' exact={true} element={<OrderFail />} />
     </Routes>

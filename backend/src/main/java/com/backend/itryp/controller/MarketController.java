@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,7 @@ public class MarketController {
 	 * @param pmap 상품 정보
 	 * @return 마켓상품 정보
 	 */
+	@PostMapping
 	public String getMarketItem(@RequestParam Map<String, Object> pmap) {
 		logger.info("getMarketItem 호출");
 		String temp = null;
@@ -44,14 +46,14 @@ public class MarketController {
 	 * @return temp 현재 cart 정보
 	 */
 	@PostMapping("HotCart")
-	public String deleteCart(@RequestParam Map<String, Object> pmap) {
+	public String deleteCart(@RequestBody Map<String, Object> pmap) {
 		logger.info("deleteCart called");
 		String temp = null;
 		return temp;
 	}
 	
 	/**
-	 * 마켓글 전체, 카테고리 조회 + 조건검색sort(작성자|제목|내용)
+	 * 마켓글 전체검색, 카테고리 조회 + 조건검색sort(작성자|제목|내용)
 	 * 
 	 * @param pMap
 	 * @return
@@ -69,6 +71,7 @@ public class MarketController {
 		return temp;
 	}
 	
+//end of 마켓 홈
 	
 
 }
