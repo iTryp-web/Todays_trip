@@ -31,7 +31,7 @@ const Header = () => {
             커뮤니티
           </NavLinkStyle>
           <NavLinkStyle
-            to="/experts"
+            to="/support"
             className={({ isActive }) => isActive && "active"}
           >
             고객센터

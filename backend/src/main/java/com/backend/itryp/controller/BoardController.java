@@ -35,7 +35,7 @@ public class BoardController {
 	private BoardLogic boardLogic = null;
 	
 	/**
-	 * 커뮤니티글 전체, 카테고리 조회 + 조건검색serch(작성자|제목|내용)
+	 * 커뮤니티글 전체, 카테고리 조회 + 조건검색search(작성자|제목|내용)
 	 * 
 	 * @param pMap
 	 * @return
@@ -108,7 +108,7 @@ public class BoardController {
 	}
 	
 	/**
-	 * 커뮤니티 글 수정
+	 * 커뮤니티 글 수정(조회수 갱신 board_hit:1)
 	 * 
 	 * @param pMap
 	 * @return

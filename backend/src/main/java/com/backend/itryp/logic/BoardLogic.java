@@ -19,7 +19,7 @@ public class BoardLogic {
 	private BoardDao boardDao = null;
 
 	/**
-	 * 커뮤니티글 전체, 카테고리 조회 + 조건검색serch(작성자|제목|내용)
+	 * 커뮤니티글 전체, 카테고리 조회 + 조건검색search(작성자|제목|내용)
 	 * 
 	 * @param pMap
 	 * @return
@@ -79,7 +79,7 @@ public class BoardLogic {
 	}
 
 	/**
-	 * 커뮤니티 글 수정 - Quill image -> 추후 수정 필요!!(비교로직)
+	 * 커뮤니티 글 수정(조회수 갱신 board_hit:1) - Quill image -> 추후 수정 필요!!(비교로직)
 	 * 
 	 * @param pMap
 	 * @return
@@ -89,14 +89,14 @@ public class BoardLogic {
 		int result = 0;
 		result = boardDao.boardUpdate(pMap);
 		// 일단 delete한다음 insert -> 추후 수정하기!(이미지 업로드 개수, 넘어오는 방법 등)
-		int deleteImg = boardDao.imageDelete(pMap);
-		if(deleteImg > 0) {
-			logger.info("이미지 삭제 성공");
-		} else {				
-			logger.info("이미지 삭제 실패");
-		}
 		// Quill image가 있을 경우
 		if(pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
+			int deleteImg = boardDao.imageDelete(pMap);
+			if(deleteImg > 0) {
+				logger.info("이미지 삭제 성공");
+			} else {				
+				logger.info("이미지 삭제 실패");
+			}
 			int insertImg = boardDao.imageInsert(pMap);
 			if(insertImg > 0) {
 				logger.info("이미지 재업로드 성공");					
