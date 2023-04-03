@@ -96,28 +96,28 @@ public class MarketLogic {
 	public int qnaDelete(Map<String, Object> pMap) {
 		logger.info("qnaDelete호출");
 		int result = 0;
-		result = MarketDao.qnaDelete(pMap);
+		result = marketDao.qnaDelete(pMap);
 		return result;
 	}
 
 	public int qnaReplyInsert(Map<String, Object> pMap) {
 		logger.info("qnaReplyInsert 호출");
 		int result = 0;
-		result = MarketDao.qnaReplyInsert(pMap);
+		result = marketDao.qnaReplyInsert(pMap);
 		return result;
 	}
 
 	public int qnaInsert(Map<String, Object> pMap) {
 		logger.info("qnaInsert 호출");
 		int result = 0;
-		result = MarketDao.qnaInsert(pMap);
+		result = marketDao.qnaInsert(pMap);
 		return result;
 	}
 
 	public int marketInsert(Map<String, Object> pMap) {
 		logger.info("marketInsert 호출");
 		int result = 0;
-		result = MarketDao.marketInsert(pMap);
+		result = marketDao.marketInsert(pMap);
 		return result;
 	}
 }
