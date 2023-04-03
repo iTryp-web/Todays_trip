@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
-	<select id="getItemShopPage" parameterType="map" resultType="map">
-		SELECT ITEM_NO, ITEM_NAME, ITEM_PRICE, ITEM_DATE, ITEM_TYPE FROM TB_HOT
-	</select>
 	<select id="getCartPage" parameterType="map" resultType="map">
-		SELECT CART_NO, USER_ID, MARKET_NO, MARKET_COUNT, CART_DATE FROM TB_CART
-	</select>
-	<insert id="insertCart" parameterType="map">
-		INSERT INTO TB_CART (CART_NO, USER_ID, MARKET_NO, MARKET_COUNT) VALUES (#{CART_NO}, #{USER_ID}, #{MARKET_NO}, #{MARKET_COUNT})
-	</insert>
-	<update id="UpdateCart" parameterType="map">
-		UPDATE TB_CART 
-	</update>
-	<select id="deleteCart" parameterType="map" resultType="map">
-		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
+		SELECT market_no, market_category, market_title, market_content, market_price, market_date
+		FROM TB_MARKET
+		WHERE user_id =#{user_id}
 	</select>
 	<select id="getOrderPage" parameterType="map" resultType="map">
-		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
+		SELECT c.coupon_no, c.coupon_rate, c.coupon_min, c.coupon_max, c.coupon_date, c.coupon_valid
+			   u.user_phone, u.user_zipcode, u.user_address, u.user_address_detail
+		FROM TB_U_COUPON c, TB_USER u
+		WHERE c.user_id = u.user_id
 	</select>
-	<select id="orderUpdate" parameterType="map" resultType="map">
-		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
-	</select>
+	<insert id="InsertOrder" parameterType="map">
+		INSERT INTO TB_ORDER () VALUES ()
+	</insert>
+	<insert id="InsertPay" parameterType="map">
+		INSERT INTO TB_PAY () VALUES ()
+	</insert>
 	<select id="cancelOrder" parameterType="map" resultType="map">
 		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
 	</select>
