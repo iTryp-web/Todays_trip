@@ -44,25 +44,44 @@
 		</if>
 		)
 	</insert>
-	
+
 	<!-- 로그인 -->
-	<select id = "login" parameterType="map" resultType="string">
-	select user_nickname from TB_USER
-	WHERE status = 0
-		<if test = 'user_id!= null and user_id.length()>0'>
-			AND user_id = #{user_id}
-		</if>
-		<if test = 'user_pw!= null and user_pw.length()>0'>
-			AND user_pw = #{user_pw}
-		</if>
+	<select id="login" parameterType="map" resultType="string">
+		select user_nickname from TB_USER
+		WHERE status = 0 AND user_id = #{user_id} AND user_pw = #{user_pw}
+	</select>
+
+	<!-- 마이페이지 들어가기->비번입력-> 상세정보 출력 -->
+	<select id="memberList" parameterType="map" resultType="map">
+		select user_id, user_email, user_nickname, user_name
+		,user_phone, user_zipcode, user_address, user_address_detail from
+		TB_USER
+		WHERE user_id = #{user_id} AND user_pw = #{user_pw}
 	</select>
 	
-	<!-- 회원정보 조회 -->
-	<select id = "memberList" parameterType="map" resultType="map">
-	select user_id, user_pw, user_email, user_nickname, user_name
-		,user_phone, user_zipcode, user_address, user_address_detail
-	<where>
-	
-	</where>
-	</select>
-</mapper>
+	<!-- 회원정보 수정 : 수정가능한 정보 : 닉네임, 비밀번호, 핸드폰번호(재인증), 주소 -->
+	<update id="memberUpdate" parameterType="map">
+		update TB_USER 
+			SET
+			<trim prefix="SET" prefixOverrides=",">
+			<if test  ='user_nickname!=null and user_nickname.length>0'>
+			user_nickname = #{user_nickname}
+			</if> 
+			<if test = 'user_pw !=null and user_pw.length()>0'>
+			,user_pw = #{user_pw}
+			</if>
+			<if test = 'user_phone!=null and user_phone.length()>0'>
+			,user_phone = #{user_phone}
+			</if>
+			<if test = 'user_zipcode!=null and user_zipcode.length()>0'>
+			,user_zipcode = #{user_zipcode}
+			</if>
+			<if test = 'user_address!=null and user_address.length()>0'>
+			,user_address = #{user_address}
+			</if>
+			<if test = 'user_address_detail!=null and user_address_detail.length()>0'>
+			,user_address_detail = #{user_address_detail}
+			</if>
+			</trim>
+	</update>
+ </mapper>
