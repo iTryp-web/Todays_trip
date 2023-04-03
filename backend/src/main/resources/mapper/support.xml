@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
-	<!-- 고객문의 글 전체 / 카테고 -->
+	<!-- 고객문의 글 전체 / 카테고리 조회 -->
 	<select id="qnaList" parameterType="map" resultType="map">
 		SELECT
 		q.qna_no,
