@@ -19,13 +19,13 @@
 			<if test='board_category!=null and !board_category.equals("전체")'>
 				AND b.board_category = #{board_category}
 			</if>
-			<if test='serch != null and sort.equals("작성자")'>
+			<if test='search != null and search.equals("작성자")'>
 				AND u.user_nickname LIKE '%'||#{keyword}||'%'
 			</if>
-			<if test='serch != null and sort.equals("제목")'>
+			<if test='search != null and search.equals("제목")'>
 				AND b.board_title LIKE '%'||#{keyword}||'%'
 			</if>
-			<if test='serch != null and sort.equals("내용")'>
+			<if test='search != null and search.equals("내용")'>
 				AND b.board_content LIKE '%'||#{keyword}||'%'
 			</if>
 		ORDER BY b.board_no ASC
@@ -108,10 +108,13 @@
 							 )
 	</insert>
 	
-	<!-- 커뮤니티 글수정 - 첨부이미지 삭제 - Quill image를 수정 -> 삭제 후 재생성 -->
+	<!-- 커뮤니티 글수(조회수 갱신)정 - 첨부이미지 삭제 - Quill image를 수정 -> 삭제 후 재생성 -->
 	<update id="boardUpdate" parameterType="map">
 		UPDATE TB_BOARD
 		<trim prefix="SET" prefixOverrides=",">
+		<if test="board_hit != null and board_hit > 0">
+		    , board_hit = board_hit + 1
+		</if>
 		<if test="board_category != null and board_category.length() != 0">
 		    , board_category = #{board_category}
 		</if>
