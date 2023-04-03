@@ -37,63 +37,87 @@ public class MarketLogic {
 	 * @return
 	 */
 	public List<Map<String, Object>> marketDetail(Map<String, Object> pMap) {
-		logger.info("boardDetail 호출");
+		logger.info("marketDetail 호출");
 		List<Map<String,Object>> bList = new ArrayList<>();
 		bList= marketDao.marketDetail(pMap);
 		return bList;
 	}
 	/**
-	 * 마켓 - Quill image -> 추후 수정 필요(파일이름, url 처리방법)!!
+	 * 마켓 글 수정
 	 * @param pMap
 	 * @return
 	 */
 	public int marketUpdate(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
+		logger.info("marketUpdate 호출");
+		int result = 0;
+		result = marketDao.marketUpdate(pMap);
+		return result;
 	}
-
+	/**
+	 * 마켓 글 삭제-작성자 , 관리자만 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
 	public int marketDelete(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
+		logger.info("marketDelete 호출");
+		int result = 0;
+		result = marketDao.marketDelete(pMap);
+		return result;
 	}
 
 	public int reviewInsert(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
+		logger.info("reviewInsert 호출");
+		int result = 0;
+		result = marketDao.reviewInsert(pMap);
+		return result;
 	}
 
 	public int reviewUpdate(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
+		logger.info("reviewUpdate 호출");
+		int result = 0;
+		result = marketDao.reviewUpdate(pMap);
+		return result;
 	}
 
 	public int reviewDelete(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		result = marketDao.reviewDelete(pMap);
+		return result;
 	}
 
 	public int reviewLike(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
+		logger.info("reviewLike 호출");
+		int result = 0;
+		result = marketDao.reviewLike(pMap);
+		return result;
 	}
 
 	public int qnaDelete(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
+		logger.info("qnaDelete호출");
+		int result = 0;
+		result = MarketDao.qnaDelete(pMap);
+		return result;
 	}
 
 	public int qnaReplyInsert(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
+		logger.info("qnaReplyInsert 호출");
+		int result = 0;
+		result = MarketDao.qnaReplyInsert(pMap);
+		return result;
 	}
 
 	public int qnaInsert(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
+		logger.info("qnaInsert 호출");
+		int result = 0;
+		result = MarketDao.qnaInsert(pMap);
+		return result;
 	}
 
 	public int marketInsert(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
+		logger.info("marketInsert 호출");
+		int result = 0;
+		result = MarketDao.marketInsert(pMap);
+		return result;
 	}
 }
