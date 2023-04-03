@@ -86,7 +86,7 @@ public class MarketController {
 	}
 	
 	/**
-	 * 마켓 글 삭제
+	 * 마켓 글 삭제-작성자, 관리자만 삭제
 	 * 
 	 * @param pMap
 	 * @return
