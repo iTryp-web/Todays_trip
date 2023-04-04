@@ -69,7 +69,8 @@ public class BoardDao {
 	}
 	
 	/**
-	 * 커뮤니티 글쓰기 이미지 업로드 - Quill image가 있는 경우
+	 * Quill image 추가 - 이미지 선택할때마다 인서트
+	 * 
 	 * @param pMap
 	 * @return
 	 */
@@ -77,6 +78,21 @@ public class BoardDao {
 		logger.info("imageInsert 호출");
 		int result = 0;
 		result = sqlSessionTemplate.update("imageInsert", pMap);
+		return result;
+	}
+	
+
+	/**
+	 * Quill image 수정 - board_no 추가
+	 * 
+	 * @param pList
+	 * @return
+	 */
+	public int imageUpdate(List<Map<String, Object>> pList) {
+		logger.info("imageUpdate 호출");
+		logger.info(pList);
+		int result = 0;
+		result = sqlSessionTemplate.update("imageUpdate", pList);
 		return result;
 	}
 
@@ -92,19 +108,6 @@ public class BoardDao {
 		result = sqlSessionTemplate.update("boardUpdate", pMap);
 		return result;
 	}
-	
-	/**
-	 * 커뮤니티 글수정 첨부이미지 삭제 - Quill image를 수정 -> 삭제 후 재생성
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	public int imageDelete(Map<String, Object> pMap) {
-		logger.info("imageDelete 호출");
-		int result = 0;
-		result = sqlSessionTemplate.update("imageDelete", pMap);
-		return result;
-	}
 
 	/**
 	 * 커뮤니티 글 삭제
@@ -118,7 +121,20 @@ public class BoardDao {
 		result = sqlSessionTemplate.update("boardDelete", pMap);
 		return result;
 	}
-
+	
+	/**
+	 * Quill image 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int imageDelete(Map<String, Object> pMap) {
+		logger.info("imageDelete 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("imageDelete", pMap);
+		return result;
+	}
+	
 	/**
 	 * 댓글 전체 조회
 	 * 
