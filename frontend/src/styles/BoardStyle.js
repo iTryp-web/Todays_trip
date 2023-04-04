@@ -1,5 +1,5 @@
+import Slider from "react-slick";
 import styled, { css } from "styled-components";
-import Slider from 'react-slick';
 
 export const CommunityHeader = styled.header`
   display: flex;
