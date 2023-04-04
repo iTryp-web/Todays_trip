@@ -9,12 +9,17 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.backend.itryp.dao.BoardDao;
+import com.backend.itryp.dao.SupportDao;
+
 @Service
 public class SupportLogic {
 	Logger logger = LogManager.getLogger(BoardLogic.class);
 
 	@Autowired
 	private SupportDao supportDao = null;
+	@Autowired
+	private BoardDao boardDao = null;
 
 	/**
 	 * 공지사항 조회
@@ -36,9 +41,18 @@ public class SupportLogic {
 	 * @return
 	 */
 	public int announceInsert(Map<String, Object> pMap) {
-		logger.info("announceInsert 호출");
+		logger.info("boardInsert 호출");
 		int result = 0;
-		result = supportDao.announceInsert(pMap);
+		result = boardDao.boardInsert(pMap);
+		// Quill image가 있을 경우
+		if(result > 0 && pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
+			int insertImg = supportDao.imageInsert(pMap);
+			if(insertImg > 0) {
+				logger.info("이미지 업로드 성공");
+			} else {				
+				logger.info("이미지 업로드 실패");
+			}
+		}
 		return result;
 	}
 
@@ -80,5 +94,4 @@ public class SupportLogic {
 		result = supportDao.sellerDelInsert(pMap);
 		return result;
 	}
-
 }
