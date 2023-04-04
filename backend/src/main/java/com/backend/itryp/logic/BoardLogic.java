@@ -1,6 +1,12 @@
 package com.backend.itryp.logic;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.itryp.dao.BoardDao;
 
@@ -58,28 +65,48 @@ public class BoardLogic {
 	}
 
 	/**
-	 * 커뮤니티 글쓰기 - Quill image -> 추후 수정 필요(파일이름, url 처리방법)!!
+	 * 커뮤니티 글쓰기 - board_no 채번 후 이미지있으면 tb_b_file에 업데이트
+	 * 
 	 * @param pMap
 	 * @return
 	 */
 	public int boardInsert(Map<String, Object> pMap) {
 		logger.info("boardInsert 호출");
 		int result = 0;
-		result = boardDao.boardInsert(pMap);
+		result = boardDao.boardInsert(pMap); // board_no 넘어옴
+		pMap.put("board_no", result);
 		// Quill image가 있을 경우
-		if(result > 0 && pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
-			int insertImg = boardDao.imageInsert(pMap);
-			if(insertImg > 0) {
-				logger.info("이미지 업로드 성공");
-			} else {				
-				logger.info("이미지 업로드 실패");
-			}
+		if(pMap.get("imageNames") != null) {
+			// 작성자가 선택한 이미지의 개수가 n개까지 올 수 있다
+			// -> 이미지 개수만큼, 3개에대한 업데이트가 n번 일어나야한다
+			// -> xml에서 forEach list로 받기에 해당 부분 처리가 필요함
+			result = boardDao.imageUpdate(imageNames(pMap));
 		}
 		return result;
 	}
 
 	/**
-	 * 커뮤니티 글 수정(조회수 갱신 board_hit:1) - Quill image -> 추후 수정 필요!!(비교로직)
+	 * 이미지이름, 보더넘버 list형태로 바꾸기
+	 * @param pMap
+	 * @return
+	 */
+	private List<Map<String, Object>> imageNames(Map<String, Object> pMap) {
+		logger.info("imageNames");
+		List<Map<String, Object>> pList = new ArrayList<>();
+		// pMap.get("imageNames") 리턴형태는 배열 - ["man1.png", "man2.png"]
+		HashMap<String, Object> fMap = null;
+		String[] imageNames = pMap.get("imageNames").toString().substring(1, pMap.get("imageNames").toString().length()-1).split(",");
+		for(int i=0; i<imageNames.length; i++) {
+			fMap = new HashMap<>();
+			fMap.put("file_name", imageNames[i]);
+			fMap.put("board_no", pMap.get("board_no"));
+			pList.add(fMap);
+		}
+		return pList;
+	}
+
+	/**
+	 * 커뮤니티 글 수정(조회수 갱신 board_hit:1)
 	 * 
 	 * @param pMap
 	 * @return
@@ -88,21 +115,12 @@ public class BoardLogic {
 		logger.info("boardUpdate 호출");
 		int result = 0;
 		result = boardDao.boardUpdate(pMap);
-		// 일단 delete한다음 insert -> 추후 수정하기!(이미지 업로드 개수, 넘어오는 방법 등)
 		// Quill image가 있을 경우
-		if(pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
-			int deleteImg = boardDao.imageDelete(pMap);
-			if(deleteImg > 0) {
-				logger.info("이미지 삭제 성공");
-			} else {				
-				logger.info("이미지 삭제 실패");
-			}
-			int insertImg = boardDao.imageInsert(pMap);
-			if(insertImg > 0) {
-				logger.info("이미지 재업로드 성공");					
-			} else {
-				logger.info("이미지 재업로드 실패");										
-			}
+		if(pMap.get("imageNames") != null) {
+			// 작성자가 선택한 이미지의 개수가 n개까지 올 수 있다
+			// -> 이미지 개수만큼, 3개에대한 업데이트가 n번 일어나야한다
+			// -> xml에서 forEach list로 받기에 해당 부분 처리가 필요함
+			result = boardDao.imageUpdate(imageNames(pMap));
 		}
 		return result;
 	}
@@ -118,12 +136,12 @@ public class BoardLogic {
 		int result = 0;
 		result = boardDao.boardDelete(pMap);
 		// Quill image가 있을 경우
-		if(result > 0 && pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
-			int insertImg = boardDao.imageDelete(pMap);
-			if(insertImg > 0) {
+		if(result > 0) {
+			int imageDelete = boardDao.imageDelete(pMap);
+			if(imageDelete > 0) {
 				logger.info("이미지 삭제 성공");
 			} else {				
-				logger.info("이미지 삭제 실패");
+				logger.info("이미지 삭제 실패 혹은 삭제할 파일 없음");
 			}
 		}
 		return result;
@@ -288,5 +306,60 @@ public class BoardLogic {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Quill image 추가 - 이미지 선택할때마다 인서트
+	 * 
+	 * @param image
+	 * @return
+	 */
+	public String imageInsert(MultipartFile image) {
+		logger.info("imageInsert 호출");
+		// 이미지 업로드가 된 파일에대한 file_name, file_size, file_path 등을 결정해줌 - 서비스계층
+		Map<String, Object> pMap = new HashMap<>();
+		// 사용자가 선택한 파일 이름 담기
+		String filename = null;
+		String fullPath = null;
+		double d_size = 0.0;
+		if(!image.isEmpty()) {
+			// filename = image.getOriginalFilename();
+			// 같은 파일명으로 업로드되는 경우 덮어쓰기 되는 것을 방지하고자
+			// 오리지널 파일명 앞에 날짜와 시간 정보를 활용하여 절대 같은 이름이 발생하지 않도록 처리한다
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHMmmss");
+			Calendar time = Calendar.getInstance();
+			filename = sdf.format(time.getTime()) + "-" + image.getOriginalFilename().replaceAll(" ", "-");
+			String saveFolder = "..\\..\\..\\..\\..\\webapp\\pds";
+			fullPath = saveFolder + "\\" + filename;
+			try {
+				// File객체는 파일명을 객체화해주는 클래스 - 생성되었다고해서 실제 파일까지 생성되는 것이 아님
+				File file = new File(fullPath);
+				byte[] bytes = image.getBytes();
+				// outputStream을 반드시 생성해서 파일 정보를 읽은 후 쓰기 처리해줌 -> 완전한 파일이 생성됨
+				// BufferedOutputStream은 필터 클래스이지 실제 파일을 쓸 수 없는 객체이고
+				// 실제 파일쓰기가 가능한 클래스는 FileOutputStream클래스이다 - 생성자 파라미터에 파일정보를 담는다
+				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+				bos.write(bytes);
+				// 파일쓰기와 관련된 위변조 방지위해서 사용 후 반드시 닫을 것!
+				bos.close();
+				// 여기까지는 이미지 파일 쓰기 처리
+				// 아래부터는 mblog_file 테이블에 insert될 정보를 초기화해줌
+				d_size = Math.floor(file.length()/(1024.0)*10)/10;
+				pMap.put("file_name", filename);
+				pMap.put("file_size", d_size);
+				pMap.put("file_path", fullPath);
+				logger.info(d_size);
+				int result = boardDao.imageInsert(pMap);
+				logger.info(result);
+				logger.info(filename);
+				logger.info(fullPath);
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.info(e.toString());
+			}
+		}
+		// 리턴값으로 선택한 이미지 파일명을 넘겨서 사용자 화면에 첨부된 파일명을 열거해주는데 사용
+		String temp = filename;
+		return temp;
 	}
 }
