@@ -43,28 +43,60 @@ public class MarketDao {
 		result = sqlSessionTemplate.update("marketDelete", pMap);
 		return result;
 	}
-
+	/**
+	 * 리뷰 쓰기
+	 * 
+	 * @param pMap
+	 * @return
+	 */
 	public int reviewInsert(Map<String, Object> pMap) {
 		logger.info("reviewInsert 호출");
 		int result = 0;
 		result = sqlSessionTemplate.update("reviewInsert", pMap);
 		return result;
 	}
-
+	/**
+	 * 리뷰 수정
+	 * 
+	 * @param pMap
+	 * @return
+	 */
 	public int reviewUpdate(Map<String, Object> pMap) {
 		logger.info("reviewUpdate 호출");
 		int result = 0;
 		result = sqlSessionTemplate.update("reviewUpdate", pMap);
 		return result;
 	}
-
+	/**
+	 * 리뷰 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
 	public int reviewDelete(Map<String, Object> pMap) {
 		logger.info("reviewDelete 호출");
 		int result = 0;
 		result = sqlSessionTemplate.update("reviewDelete", pMap);
 		return result;
 	}
-
+	/**
+	 * 리뷰 전체 조회-조건정렬
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> reviewList(Map<String, Object> pMap) {
+		logger.info("reviewList 호출");
+		List<Map<String,Object>> mList = null;
+		mList = sqlSessionTemplate.selectList("reviewList", pMap);
+		return mList;
+	}
+	/**
+	 * 리뷰 좋아요
+	 * 
+	 * @param pMap
+	 * @return
+	 */
 	public int reviewLike(Map<String, Object> pMap) {
 		logger.info("reviewLike 호출");
 		int result = 0;
@@ -91,12 +123,29 @@ public class MarketDao {
 		result = sqlSessionTemplate.update("qnaInsert",pMap);
 		return result;
 	}
-
+	/**
+	 * 마켓 글쓰기 
+	 * @param pMap
+	 * @return
+	 */
 	public int marketInsert(Map<String, Object> pMap) {
 		logger.info("marketInsert 호출");
 		int result = 0;
 		result = sqlSessionTemplate.update("marketInsert",pMap);
 		return result;
 	}
+	/**
+	 * 마켓 글쓰기 이미지 업로드 - Quill image가 있는 경우
+	 * @param pMap
+	 * @return
+	 */
+	public int imageInsert(Map<String, Object> pMap) {
+		logger.info("imageInsert 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("imageInsert", pMap);
+		return result;
+	}
+
+	
 
 }
