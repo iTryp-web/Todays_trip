@@ -1,4 +1,4 @@
-package com.backend.itryp.logic;
+package com.backend.itryp.dao;
 
 import java.util.List;
 import java.util.Map;
@@ -78,6 +78,19 @@ public class SupportDao {
 		logger.info("sellerDelInsert 호출");
 		int result = 0;
 		result = sqlSessionTemplate.update("sellerDelInsert", pMap);
+		return result;
+	}
+
+	/**
+	 * 1대1문의 혹은 공지사항 글쓰기 이미지 업로드 - Quill image가 있는 경우
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int imageInsert(Map<String, Object> pMap) {
+		logger.info("imageInsert 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("imageInsert", pMap);
 		return result;
 	}
 
