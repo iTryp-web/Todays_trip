@@ -18,7 +18,7 @@ public class MemberLogic {
 	@Autowired
 	private MemberDao memberDao = null;
 	
-	
+	//회원정보 조회-상세보기 페이지
 	public List<Map<String, Object>> memberList(Map<String, Object> pMap) {
 		
 		logger.info("memberList 호출");
@@ -28,6 +28,7 @@ public class MemberLogic {
 		return mList;
 	}
 	
+	//회원가입
 	public int memberInsert(Map<String, Object> pMap) {
 		logger.info("memberInsert 호출");
 		logger.info(pMap.toString());
@@ -35,28 +36,15 @@ public class MemberLogic {
 		result = memberDao.memberInsert(pMap);
 		return result;
 	}
-
+	//회원정보 수정
 	public int memberUpdate(Map<String, Object> pMap) {
 		logger.info("memberUpdate 호출");
 		logger.info(pMap.toString());
 		int result = 0;
 		int pw_check = 0;
-		pw_check = memberDao.memb
 		
 		result = memberDao.memberUpdate(pMap);
 		return result;
 	}
-
-	public int memberDelete(Map<String, Object> pMap) {
-		logger.info("memberDelete 호출");
-		logger.info(pMap.toString());
-		int result = 0;
-		result = memberDao.memberDelete(pMap);
-		return result;
-	}
-	
-	
-	
-	
 
 }
