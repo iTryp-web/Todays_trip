@@ -80,13 +80,5 @@ public class MemberController {
 		return String.valueOf(result);
 	}
 	
-	@PostMapping("memberDelete")
-	public String memberDelete(@RequestBody Map<String,Object> pMap) {
-		logger.info("memberDelete 호출");
-		logger.info(pMap);
-		int result = 0;
-		result = memberLogic.memberDelete(pMap);
-		return String.valueOf(result);
-	}
 
 }
