@@ -30,10 +30,10 @@ import com.google.gson.Gson;
 @RequestMapping("/board/*")
 public class BoardController {
 	Logger logger = LogManager.getLogger(BoardController.class);
-	
+
 	@Autowired
 	private BoardLogic boardLogic = null;
-	
+
 	/**
 	 * 커뮤니티글 전체, 카테고리 조회 + 조건검색search(작성자|제목|내용)
 	 * 
@@ -49,10 +49,10 @@ public class BoardController {
 		bList = boardLogic.boardList(pMap);
 		logger.info(bList);
 		Gson g = new Gson();
-		temp = g.toJson(bList);		
+		temp = g.toJson(bList);
 		return temp;
 	}
-	
+
 	/**
 	 * 커뮤니티글 상세조회
 	 * 
@@ -68,10 +68,10 @@ public class BoardController {
 		bList = boardLogic.boardDetail(pMap);
 		logger.info(bList);
 		Gson g = new Gson();
-		temp = g.toJson(bList);	
+		temp = g.toJson(bList);
 		return temp;
 	}
-	
+
 	/**
 	 * 커뮤니티 인기글 모아보기
 	 * 
@@ -87,12 +87,12 @@ public class BoardController {
 		bList = boardLogic.boardHot(pMap);
 		logger.info(bList);
 		Gson g = new Gson();
-		temp = g.toJson(bList);	
+		temp = g.toJson(bList);
 		return temp;
 	}
-	
+
 	/**
-	 * 커뮤니티 글쓰기 - Quill image
+	 * 커뮤니티 글쓰기
 	 * 
 	 * @param pMap
 	 * @return
@@ -106,7 +106,7 @@ public class BoardController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
 	 * 커뮤니티 글 수정(조회수 갱신 board_hit:1)
 	 * 
@@ -122,7 +122,7 @@ public class BoardController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
 	 * 커뮤니티 글 삭제
 	 * 
@@ -138,7 +138,7 @@ public class BoardController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
 	 * 댓글 전체 조회
 	 * 
@@ -154,10 +154,10 @@ public class BoardController {
 		bList = boardLogic.replyList(pMap);
 		logger.info(bList);
 		Gson g = new Gson();
-		temp = g.toJson(bList);		
+		temp = g.toJson(bList);
 		return temp;
 	}
-	
+
 	/**
 	 * 댓글, 대댓글 쓰기 - 댓글step: 0 / 대댓글step: 1
 	 * 
@@ -173,7 +173,7 @@ public class BoardController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
 	 * 댓글, 대댓글 수정
 	 * 
@@ -189,7 +189,7 @@ public class BoardController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
 	 * 댓글, 대댓글 삭제
 	 * 
@@ -205,7 +205,7 @@ public class BoardController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
 	 * 신고 - 글:0 / 댓글:1 / 마켓글:2 / 리뷰:3(마켓에서 처리)
 	 * 
@@ -221,7 +221,7 @@ public class BoardController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
 	 * 좋아요 - 글:0 / 댓글:1(대댓step까지 가져올것) / 리뷰:2(마켓에서 처리)
 	 * 
@@ -237,7 +237,7 @@ public class BoardController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
 	 * 좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리)
 	 * 
@@ -253,45 +253,24 @@ public class BoardController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
-	 * Quill에 첨부한 이미지 서버에 업로드
+	 * Quill image 추가 - 이미지 선택할때마다 인서트
 	 * 
 	 * @param mRequest
 	 * @param image
 	 * @return
 	 */
 	@PostMapping("uploadImage")
-	public String uploadImage(MultipartHttpServletRequest mRequest, @RequestParam(value="image", required=false) MultipartFile image) {
-		logger.info("uploadImage 호출");
-		// 사용자가 선택한 파일 이름 담기
-				String filename = null;
-				if(!image.isEmpty()) {
-					filename = image.getOriginalFilename();
-					String saveFolder = "..\\..\\..\\..\\..\\webapp\\pds";
-					String fullPath = saveFolder + "\\" + filename;
-					try {
-						// File객체는 파일명을 객체화해주는 클래스 - 생성되었다고해서 실제 파일까지 생성되는 것이 아님
-						File file = new File(fullPath);
-						byte[] bytes = image.getBytes();
-						// outputStream을 반드시 생성해서 파일 정보를 읽은 후 쓰기 처리해줌 -> 완전한 파일이 생성됨
-						// BufferedOutputStream은 필터 클래스이지 실제 파일을 쓸 수 없는 객체이고
-						// 실제 파일쓰기가 가능한 클래스는 FileOutputStream클래스이다 - 생성자 파라미터에 파일정보를 담는다
-						BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-						bos.write(bytes);
-						// 파일쓰기와 관련된 위변조 방지위해서 사용 후 반드시 닫을 것!
-						bos.close();
-					} catch (Exception e) {
-						
-					}
-				}
-				// 리턴값으로 선택한 이미지 파일명을 넘겨서 사용자 화면에 첨부된 파일명을 열거해주는데 사용
-				String temp = filename;
-				return temp;
+	public String uploadImage(@RequestParam(value = "image", required = false) MultipartFile image) {
+		logger.info("imageUpload 호출");
+		String filename = boardLogic.imageInsert(image);
+		return filename;
 	}
-	
+
 	/**
-	 * 저장해둔 이미지 보내기
+	 * 저장해둔 이미지 불러오기
+	 * 
 	 * @param req
 	 * @param res
 	 * @return
@@ -313,7 +292,7 @@ public class BoardController {
 		logger.info(mimeType); // image, video, text
 		if (mimeType == null) { // 마임타입이 널이면 아래의 속성값으로 마임타입을 설정
 			// -> 브라우저는 해석이 가능한 마임타입은 페이지 로딩 처리,
-			// 		해석이 불가능한 마임타입은 다운로드함
+			// 해석이 불가능한 마임타입은 다운로드함
 			// 강제로 다운로드 처리를 위한 마임타입 변경
 			// -> 브라우저에서 해석가능한 마임타입의 경우 화면에 그대로 출력되니까 그걸 방지하기위해
 			res.setContentType("application/octet-stream");

@@ -4,7 +4,6 @@
 	<!-- 커뮤니티글 전체, 카테고리 조회 + 조건검색serch(작성자|제목|내용) -->
 	<select id="boardList" parameterType="map" resultType="map">
 		SELECT b.board_no
-		     , u.user_id
 		     , u.user_nickname
 	       , b.board_category
 	       , b.board_title
@@ -16,6 +15,7 @@
 		  FROM TB_BOARD b, TB_USER u
   	  WHERE b.user_id = u.user_id
   	  AND b.board_status = 0
+  	  AND b.board_category != '공지사항'
 			<if test='board_category!=null and !board_category.equals("전체")'>
 				AND b.board_category = #{board_category}
 			</if>
@@ -34,7 +34,6 @@
 	<!-- 커뮤니티글 상세조회 -->
 	<select id="boardDetail" parameterType="map" resultType="map">
 		SELECT b.board_no
-	       , u.user_id
 	       , u.user_nickname
 	       , b.board_category
 	       , b.board_title
@@ -65,7 +64,7 @@
 	</select>
 
 	<!-- 커뮤니티 글쓰기 -->
-	<insert id="boardInsert" parameterType="map">
+	<insert id="boardInsert" parameterType="map" useGeneratedKeys="true" keyColumn="board_no" keyProperty="board_no">
 		INSERT INTO TB_BOARD 
 		           (board_no
 	            , user_id
@@ -83,32 +82,33 @@
 		          )
 	</insert>
 
-	<!-- 커뮤니티 글쓰기 이미지 업로드 - Quill image가 있는 경우+글수정일경우에도 사용(삭제후 업로드) -->
+	<!-- Quill image 추가 - 이미지 선택할때마다 인서트 -->
 	<insert id="imageInsert" parameterType="map">
-		INSERT INTO TB_FILE
-								(board_no
+		INSERT INTO TB_B_FILE
+								(file_no
+							 , board_no
 							 , file_name
 		    			 , file_url
 		    			 , file_size
 		    			 )
-		    VALUES (
-			    		<!-- 글수정해서 글번호가 있는 경우 -->
-		    			<if test="board_no != null">
-				    		#{board_no}
-		    			</if>
-							<!-- 글쓰기 후 바로 이미지업로드해서 글번호가 없는 경우 -->
-		    			<if test="board_no == null">
-					    	(SELECT MAX(board_no)
-							 	 FROM TB_BOARD
-								 WHERE user_id = #{user_id})
-		    			</if>
+		    VALUES (TB_B_FILE_NO_SEQ.NEXTVAL
+				    	 , #{board_no}
 							 , #{file_name}
 							 , #{file_url}
 							 , #{file_size}
 							 )
 	</insert>
 	
-	<!-- 커뮤니티 글수(조회수 갱신)정 - 첨부이미지 삭제 - Quill image를 수정 -> 삭제 후 재생성 -->
+		<!-- Quill image 수정 - board_no 추가 -->
+	<update id="imageUpdate" parameterType="list">
+		<foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
+			UPDATE TB_B_FILE
+				SET board_no = #{item.board_no}
+			WHERE file_name = LTRIM(#{item.file_name})
+		</foreach>
+	</update>	
+	
+	<!-- 커뮤니티 글수정(조회수 갱신) -->
 	<update id="boardUpdate" parameterType="map">
 		UPDATE TB_BOARD
 		<trim prefix="SET" prefixOverrides=",">
@@ -134,9 +134,9 @@
 		WHERE board_no = #{board_no}
 	</update>
 	
-	<!-- 커뮤니티 첨부이미지 삭제 - Quill image를 수정 -> 삭제 후 재생성 -->
+	<!-- Quill image 삭제 -->
 	<delete id="imageDelete" parameterType="map">
-		DELETE FROM TB_FILE
+		DELETE FROM TB_B_FILE
 		WHERE board_no = #{board_no}
 	</delete>
 	
