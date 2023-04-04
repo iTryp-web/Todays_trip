@@ -147,8 +147,28 @@ public class MarketController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
+	
 	/**
-	 * 리뷰추천
+	 * 리뷰보기 - 정렬(높은 평점순, 낮은 평점순, 추천순, 최신순, 오래된 순)
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@GetMapping("reviewList")
+	public String reviewList(@RequestParam Map<String, Object> pMap) {
+		logger.info("reviewList 호출");
+		logger.info(pMap);
+		String temp = null;
+		List<Map<String, Object>> bList = null;
+		bList = marketLogic.reviewList(pMap);
+		logger.info(bList);
+		Gson g = new Gson();
+		temp = g.toJson(bList);		
+		return temp;
+	}
+	
+	/**
+	 * 리뷰 좋아요
 	 * 
 	 * @param pMap
 	 * @return
@@ -163,7 +183,7 @@ public class MarketController {
 		return String.valueOf(result);
 	}
 	/**
-	 * 문의답글쓰기
+	 * 문의글 쓰기 - 구매자문의 step: 0 / 판매자 답글 step: 1
 	 * 
 	 * @param pMap
 	 * @return
@@ -179,7 +199,7 @@ public class MarketController {
 	}
 	
 	/**
-	 * 문의 삭제
+	 * 문의 삭제- 구매자문의 step: 0 / 판매자 답글 step: 1
 	 * 
 	 * @param pMap
 	 * @return
@@ -210,21 +230,7 @@ public class MarketController {
 		temp = g.toJson(bList);
 		return temp;
 	}
-	/**
-	 * 문의답글쓰기
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	@PostMapping("qnaReplyInsert")
-	public String qnaReplyInsert(@RequestBody Map<String, Object> pMap) {
-		logger.info("qnaReplyInsert 호출");
-		logger.info(pMap);
-		int result = 0;
-		result =marketLogic.qnaReplyInsert(pMap);
-		logger.info(result);
-		return String.valueOf(result);
-	}
+	
 /////////////////////////////////////////////////////////////////////
 	/**
 	 * 마켓 새글쓰기-말머리, 재목, 가격옵션,내용,글등록,임시저장,강조아이템
