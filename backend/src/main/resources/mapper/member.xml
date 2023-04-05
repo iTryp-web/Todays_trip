@@ -90,19 +90,19 @@
 	
 	
 	<!-- 아이디 중복검사 -->
-	<select id="idCheck" parameterType="map" resultType="int">
+	<select id="idCheck" parameterType="map" resultType="map">
 		select user_id from TB_USER
 		where user_id = #{user_id}
 	</select>
 
 	<!-- 닉네임 중복검사, 추천인(닉네임)유무 확인 -->
-	<select id="nickCheck" parameterType="map" resultType="int">
+	<select id="nickCheck" parameterType="map" resultType="map">
 		select user_nickname from TB_USER
 		where user_nickname = #{user_nickname}
 	</select>
 
 	<!-- 이메일 중복검사 -->
-	<select id="emailCheck" parameterType="map" resultType="int">
+	<select id="emailCheck" parameterType="map" resultType="map">
 		select user_email from TB_USER
 		where user_email = #{user_email}
 	</select>
