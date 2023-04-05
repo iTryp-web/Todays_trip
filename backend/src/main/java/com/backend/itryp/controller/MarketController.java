@@ -34,7 +34,7 @@ public class MarketController {
 	 * @param pmap 상품 정보
 	 * @return 마켓상품 정보
 	 */
-	@GetMapping
+	@GetMapping("marketList")
 	public String marketList(@RequestParam Map<String, Object> pMap) {
 		logger.info("marketList 호출");
 		String temp = null;
@@ -219,9 +219,9 @@ public class MarketController {
 	 * @param pMap 상품 정보
 	 * @return 마켓상품 정보
 	 */
-	@GetMapping
+	@GetMapping("qnaList")
 	public String qnaList(@RequestParam Map<String, Object> pMap) {
-		logger.info("marketList 호출");
+		logger.info("qnaList 호출");
 		String temp = null;
 		List<Map<String, Object>> bList = null;
 		bList = marketLogic.marketList(pMap);
