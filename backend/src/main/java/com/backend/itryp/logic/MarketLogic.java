@@ -152,7 +152,6 @@ public class MarketLogic {
 		return result;
 	}
 
-
 	/**
 	 * 마켓 글쓰기 - Quill image 업로드
 	 * @param pMap
