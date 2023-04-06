@@ -24,7 +24,6 @@ public class MemberLogic {
 		logger.info("memberList 호출");
 		List<Map<String,Object>> mList = new ArrayList<>();
 		mList = memberDao.memberList(pMap);
-		
 		return mList;
 	}
 	
@@ -41,10 +40,11 @@ public class MemberLogic {
 		logger.info("memberUpdate 호출");
 		logger.info(pMap.toString());
 		int result = 0;
-		int pw_check = 0;
+		int pw_check = 0; //회원정보 수정시 비밀번호 입력해야 들어갈수 있는
 		
 		result = memberDao.memberUpdate(pMap);
 		return result;
 	}
+	
 
 }
