@@ -79,6 +79,5 @@ public class MemberController {
 		result = memberLogic.memberUpdate(pMap);
 		return String.valueOf(result);
 	}
-	
 
 }
