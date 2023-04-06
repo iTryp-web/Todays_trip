@@ -29,8 +29,8 @@ public class MarketController {
 	/**
 	 * 마켓 리스트
 	 * 강조아이콘 정보 가져오기 포함(조인)
-	 * 마켓글 전체검색, 카테고리 조회(한인택시(공항픽업), 투어프로그램, 숙소, 렌트카) 
-	 * + 조건검색sort(숙소만|프로그램만|가격)
+	 * 마켓글 전체검색, 카테고리 조회(한인택시(공항픽업), 투어프로그램, 숙소, 렌트카) + 조건검색sort(숙소만|프로그램만|가격)
+	 * 
 	 * @param pmap 상품 정보
 	 * @return 마켓상품 정보
 	 */
@@ -45,12 +45,6 @@ public class MarketController {
 		temp = g.toJson(bList);
 		return temp;
 	}
-
-	
-	
-
-////////////////////////////////////////////////////end of marketHome
-	
 	/**
 	 * 마켓글 상세조회
 	 * 
@@ -69,6 +63,28 @@ public class MarketController {
 		temp = g.toJson(bList);	
 		return temp;
 	}
+
+	
+	
+
+////////////////////////////////////////////////////
+	
+	/**
+	 * 마켓 새글쓰기-말머리, 재목, 가격옵션,내용,글등록,임시저장,강조아이템
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("marketInsert")
+	public String marketInsert(@RequestBody Map<String, Object> pMap) {
+		logger.info("marketInsert 호출");
+		logger.info(pMap);
+		int result = 0;
+		result =marketLogic.marketInsert(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+	
 	/**
 	 * 마켓 글 수정
 	 * 
@@ -91,9 +107,9 @@ public class MarketController {
 	 * @param pMap
 	 * @return
 	 */
-	@PostMapping("boardDelete")
-	public String boardDelete(@RequestBody Map<String, Object> pMap) {
-		logger.info("boardDelete 호출");
+	@PostMapping("marketDelete")
+	public String marketDelete(@RequestBody Map<String, Object> pMap) {
+		logger.info("marketDelete 호출");
 		logger.info(pMap);
 		int result = 0;
 		result = marketLogic.marketDelete(pMap);
@@ -231,24 +247,4 @@ public class MarketController {
 		return temp;
 	}
 	
-/////////////////////////////////////////////////////////////////////
-	/**
-	 * 마켓 새글쓰기-말머리, 재목, 가격옵션,내용,글등록,임시저장,강조아이템
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	@PostMapping("marketInsert")
-	public String marketInsert(@RequestBody Map<String, Object> pMap) {
-		logger.info("marketInsert 호출");
-		logger.info(pMap);
-		int result = 0;
-		result =marketLogic.marketInsert(pMap);
-		logger.info(result);
-		return String.valueOf(result);
-	}
-	
-
-	
-
 }//end of MarketController
