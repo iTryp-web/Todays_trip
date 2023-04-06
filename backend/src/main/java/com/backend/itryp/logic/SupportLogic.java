@@ -79,6 +79,12 @@ public class SupportLogic {
 		logger.info("inquiryInsert 호출");
 		int result = 0;
 		result = supportDao.inquiryInsert(pMap);
+		//로직 단계에서 1대1문의에 글 작성중인 사람이 유저인지 관리자인지 판별
+		if(pMap.get("reply").equals("답변하기")) {
+			pMap.put("qna_step", 1);
+		} else {
+			pMap.put("qna_step", 0);
+		}
 		return result;
 	}
 
@@ -92,6 +98,7 @@ public class SupportLogic {
 		logger.info("sellerDelInsert 호출");
 		int result = 0;
 		result = supportDao.sellerDelInsert(pMap);
+		//판매자 탈퇴 글을 작성하는 사람이 판매자인지 판별
 		return result;
 	}
 }

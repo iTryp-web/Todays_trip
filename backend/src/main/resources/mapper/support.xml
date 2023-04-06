@@ -15,7 +15,7 @@
 		VALUES (
 		TB_BOARD_NO_SEQ.NEXTVAL,
 		#{user_id},
-		#{board_category},
+		'공지사항',
 		#{board_title},
 		#{board_content},
 		TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
@@ -65,7 +65,7 @@
 		)
 		VALUES(
 		TB_BOARD_NO_SEQ.NEXTVAL,
-		0,
+		#{qna_step},
 		#{user_id},
 		#{qna_title},
 		#{qna_content},
@@ -78,7 +78,6 @@
 	<insert id="sellerDelInsert">
 		INSERT INTO TB_QNA(
 		qna_no,
-		qna_step,
 		user_id,
 		qna_title,
 		qna_content,
@@ -87,7 +86,6 @@
 		)
 		VALUES(
 		TB_BOARD_NO_SEQ.NEXTVAL,
-		0,
 		#{user_id},
 		#{qna_title},
 		#{qna_content},
