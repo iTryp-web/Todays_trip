@@ -1,1 +1,283 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.itryp">
+	<!-- 마켓글 전체,  카테고리 조회(한인택시(공항픽업), 투어프로그램, 숙소, 렌트카) + 조건검색search(콤보박스)(숙소만|프로그램만|가격) -->
+	<select id="marketList" parameterType="map" resultType="map">
+		SELECT MARKET_NO       
+  				 ,u.USER_NICKNAME         
+					 ,m.TYPE_MARKET    
+					 ,m.MARKET_CATEGORY  
+					 ,m.MARKET_TITLE     
+					 ,m.MARKET_CONTENT  
+					 ,m.MARKET_PRICE    
+					 ,m.MARKET_DATE 
+		  FROM TB_MARKET m, TB_USER u
+  	  WHERE m.user_id = u.user_id
+  	  AND m.MARKET_CATEGORY != '공지사항'
+			<if test='market_category!=null and !market_catetory.equals("전체")'>
+				AND m.market_category = #{market_category}
+			</if>
+			<if test='search != null and search.equals("작성자")'>
+				AND u.user_nickname LIKE '%'||#{keyword}||'%'
+			</if>
+			<if test='search != null and search.equals("제목")'>
+				AND m.market_title LIKE '%'||#{keyword}||'%'
+			</if>
+			<if test='search != null and search.equals("내용")'>
+				AND m.market_content LIKE '%'||#{keyword}||'%'
+			</if>
+		ORDER BY m.market_no ASC
+	</select>
+	
+	<!-- 마켓글 상세조회 -->
+	<select id="marketDetail" parameterType="map" resultType="map">
+		SELECT MARKET_NO       
+  				 ,u.USER_NICKNAME         
+					 ,m.TYPE_MARKET    
+					 ,m.MARKET_CATEGORY  
+					 ,m.MARKET_TITLE     
+					 ,m.MARKET_CONTENT  
+					 ,m.MARKET_PRICE    
+					 ,m.MARKET_DATE 
+		  FROM TB_MARKET m, TB_USER u
+  	  WHERE m.user_id = u.user_id
+  	  AND m.market_no = #{market_no}
+	</select>
+	
+	<!-- 마켓 인기글 모아보기 -->
+	<select id="boardHot" parameterType="map" resultType="map">
+		SELECT b.board_no
+	       , u.user_nickname
+	       , b.board_category
+	       , b.board_title
+	       , b.board_content
+	       , b.board_date
+	       , b.board_hit
+	       , b.board_like
+	       , b.type_board
+	  FROM TB_BOARD b, TB_USER u
+		WHERE b.user_id = u.user_id
+		AND b.board_like >= 5
+	</select>
+
+	<!-- 커뮤니티 글쓰기 -->
+	<insert id="boardInsert" parameterType="map" useGeneratedKeys="true" keyColumn="board_no" keyProperty="board_no">
+		INSERT INTO TB_BOARD 
+		           (board_no
+	            , user_id
+	            , board_category
+	            , board_title
+	            , board_content
+	            , board_date
+		            )
+		    VALUES (TB_BOARD_NO_SEQ.NEXTVAL
+	            , #{user_id}
+	            , #{board_category}
+	            , #{board_title}
+	            , #{board_content}
+	            , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+		          )
+	</insert>
+
+	<!-- Quill image 추가 - 이미지 선택할때마다 인서트 -->
+	<insert id="imageInsert" parameterType="map">
+		INSERT INTO TB_B_FILE
+								(file_no
+							 , board_no
+							 , file_name
+		    			 , file_url
+		    			 , file_size
+		    			 )
+		    VALUES (TB_B_FILE_NO_SEQ.NEXTVAL
+				    	 , #{board_no}
+							 , #{file_name}
+							 , #{file_url}
+							 , #{file_size}
+							 )
+	</insert>
+	
+		<!-- Quill image 수정 - board_no 추가 -->
+	<update id="imageUpdate" parameterType="list">
+		<foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
+			UPDATE TB_B_FILE
+				SET board_no = #{item.board_no}
+			WHERE file_name = LTRIM(#{item.file_name})
+		</foreach>
+	</update>	
+	
+	<!-- 커뮤니티 글수정(조회수 갱신) -->
+	<update id="boardUpdate" parameterType="map">
+		UPDATE TB_BOARD
+		<trim prefix="SET" prefixOverrides=",">
+		<if test="board_hit != null and board_hit > 0">
+		    , board_hit = board_hit + 1
+		</if>
+		<if test="board_category != null and board_category.length() != 0">
+		    , board_category = #{board_category}
+		</if>
+		<if test="board_title != null and board_title.length() != 0">
+		    , board_title = #{board_title}
+		</if>
+		<if test="board_content != null and board_content.length() != 0">
+		    , board_content = #{board_content}
+		</if>
+		<if test="plus_like != null and plus_like > 0">
+			, board_like = board_like + 1
+		</if>
+		<if test="minus_like != null and minus_like > 0">
+			, board_like = board_like - 1
+		</if>
+		</trim>
+		WHERE board_no = #{board_no}
+	</update>
+	
+	<!-- Quill image 삭제 -->
+	<delete id="imageDelete" parameterType="map">
+		DELETE FROM TB_B_FILE
+		WHERE board_no = #{board_no}
+	</delete>
+	
+	<!-- 커뮤니티 글 삭제 -->
+	<delete id="boardDelete" parameterType="map">
+		DELETE FROM TB_BOARD
+		WHERE board_no = #{board_no}
+	</delete>
+	
+	<!-- 댓글 전체 조회 -->
+	<select id="replyList" parameterType="map" resultType="map">
+		SELECT c.board_no
+		     , u.user_id
+		     , u.user_nickname
+	       , c.comment_no
+	       , c.comment_step
+	       , c.comment_content
+	       , c.comment_date
+	       , c.comment_like
+	       , c.type_comment
+	       , c.comment_status
+		  FROM TB_B_COMMENT c, TB_USER u
+  	  WHERE c.user_id = u.user_id
+  	  AND c.board_no = #{board_no}
+  	  AND (c.comment_status = 0 OR c.comment_status = 1)
+			ORDER BY c.comment_no ASC, c.comment_step ASC
+	</select>
+	
+	<!-- 댓글, 대댓글 쓰기 -->
+	<insert id="replyInsert" parameterType="map">
+		INSERT INTO TB_B_COMMENT 
+			           (board_no
+		            , user_id
+		            , comment_no
+		            <if test="comment_step > 0">
+		            , comment_step
+		            </if>
+		            , comment_content
+		            , comment_date
+			          )
+			    VALUES (#{board_no}
+		            , #{user_id}
+	            <if test="comment_no == null">
+				    		, TB_B_COMMENT_NO_SEQ.NEXTVAL
+							</if>
+	            <if test="comment_no != null">
+				    		, #{comment_no}
+							</if>
+							<if test="comment_step > 0">
+		            , TB_B_COMMENT_STEP_SEQ.NEXTVAL
+							</if>
+		            , #{comment_content}
+		            , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+			          )
+	</insert>
+	
+	<!-- 댓글, 대댓글 수정 -->
+	<update id="replyUpdate" parameterType="map">
+		UPDATE TB_B_COMMENT
+		<trim prefix="SET" prefixOverrides=",">
+		<if test="comment_content != null and comment_content.length() != 0">
+			, comment_content = #{comment_content}
+		</if>
+		<if test="comment_status != null and comment_status > 0">
+			, comment_status = #{comment_status}
+		</if>
+		<if test="plus_like != null and plus_like > 0">
+			, comment_like = comment_like + 1
+		</if>
+		<if test="minus_like != null and minus_like > 0">
+			, comment_like = comment_like - 1
+		</if>
+		</trim>
+		WHERE comment_no = #{comment_no}
+			AND comment_step = #{comment_step}
+	</update>
+	
+	<!-- 댓글, 대댓글 삭제 -->
+	<delete id="replyDelete" parameterType="map">
+		DELETE FROM TB_B_COMMENT
+		WHERE board_no = #{board_no}
+			AND comment_no = #{comment_no}
+			<!-- 0이면 특정글 , 1이면 해당번호 전부 삭제 -->
+			<if test="delete_all == 0">
+			AND comment_step = #{comment_step}
+			</if>
+	</delete>
+	
+	<!-- 신고 - 글:0 / 댓글:1 / 마켓글:2 / 리뷰:3(마켓에서 처리) -->
+	<insert id="report" parameterType="map">
+		INSERT INTO TB_REPORT
+								(report_no
+							 , user_id
+							 , report_type
+							 , report_group
+						 <if test="report_step != null and report_step > 0">
+						 	 , report_step
+						 </if>
+							 , report_user
+							 , report_reason
+							 , report_date
+							 )
+				VALUES (TB_REPORT_NO_SEQ.NEXTVAL
+							, #{user_id}
+							, #{report_type}
+							, #{report_group}
+						<if test="report_step != null and report_step > 0">
+							, #{report_step}
+					  </if>
+							, #{report_user}
+							, #{report_reason}
+							, TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+							 )
+	</insert>
+	
+	<!-- 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
+	<insert id="likeOn" parameterType="map">
+		INSERT INTO TB_LIKE
+								(user_id
+							 , like_type
+							 , like_group
+						 <if test="like_step != null and like_step > 0">
+						 	 , like_step
+						 </if>
+							 , like_date
+							 )
+				 VALUES (#{user_id}
+				 			 , #{like_type}
+				 			 , #{like_group}
+				  	 <if test="like_step != null and like_step > 0">
+				 			 , #{like_step}
+						 </if>
+				 			 , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+							 )
+	</insert>
+	
+	<!-- 좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
+	<delete id="likeOff" parameterType="map">
+		DELETE FROM TB_LIKE
+					WHERE user_id = #{user_id}
+						AND like_type = #{like_type}
+						AND like_group = #{like_group}
+						<if test="like_step != null">
+						AND like_step = #{like_step}
+						</if>
+	</delete>
+</mapper>
