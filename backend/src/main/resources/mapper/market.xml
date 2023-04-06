@@ -26,6 +26,9 @@
 			<if test='search != null and search.equals("내용")'>
 				AND m.market_content LIKE '%'||#{keyword}||'%'
 			</if>
+			<if test='market_price != null'>
+    		AND m.MARKET_PRICE BETWEEN #{min_price} AND #{max_price}
+			</if>
 		ORDER BY m.market_no ASC
 	</select>
 	
@@ -44,33 +47,18 @@
   	  AND m.market_no = #{market_no}
 	</select>
 	
-	<!-- 마켓 인기글 모아보기 -->
-	<select id="boardHot" parameterType="map" resultType="map">
-		SELECT b.board_no
-	       , u.user_nickname
-	       , b.board_category
-	       , b.board_title
-	       , b.board_content
-	       , b.board_date
-	       , b.board_hit
-	       , b.board_like
-	       , b.type_board
-	  FROM TB_BOARD b, TB_USER u
-		WHERE b.user_id = u.user_id
-		AND b.board_like >= 5
-	</select>
 
-	<!-- 커뮤니티 글쓰기 -->
-	<insert id="boardInsert" parameterType="map" useGeneratedKeys="true" keyColumn="board_no" keyProperty="board_no">
-		INSERT INTO TB_BOARD 
-		           (board_no
+	<!--마켓 글쓰기 -->
+	<insert id="marketInsert" parameterType="map" useGeneratedKeys="true" keyColumn="board_no" keyProperty="board_no">
+		INSERT INTO TB_MARKET
+		           (market_no
 	            , user_id
-	            , board_category
+	            , market_category
 	            , board_title
 	            , board_content
 	            , board_date
 		            )
-		    VALUES (TB_BOARD_NO_SEQ.NEXTVAL
+		    VALUES (TB_MARKET_NO_SEQ.NEXTVAL
 	            , #{user_id}
 	            , #{board_category}
 	            , #{board_title}
@@ -80,7 +68,7 @@
 	</insert>
 
 	<!-- Quill image 추가 - 이미지 선택할때마다 인서트 -->
-	<insert id="imageInsert" parameterType="map">
+	<insert id="mImageInsert" parameterType="map">
 		INSERT INTO TB_B_FILE
 								(file_no
 							 , board_no
@@ -105,7 +93,7 @@
 		</foreach>
 	</update>	
 	
-	<!-- 커뮤니티 글수정(조회수 갱신) -->
+	<!-- 마켓 글수정(조회수 갱신) -->
 	<update id="boardUpdate" parameterType="map">
 		UPDATE TB_BOARD
 		<trim prefix="SET" prefixOverrides=",">
@@ -143,7 +131,7 @@
 		WHERE board_no = #{board_no}
 	</delete>
 	
-	<!-- 댓글 전체 조회 -->
+	<!-- 리뷰 전체 조회 -->
 	<select id="replyList" parameterType="map" resultType="map">
 		SELECT c.board_no
 		     , u.user_id
@@ -162,8 +150,8 @@
 			ORDER BY c.comment_no ASC, c.comment_step ASC
 	</select>
 	
-	<!-- 댓글, 대댓글 쓰기 -->
-	<insert id="replyInsert" parameterType="map">
+	<!-- 리뷰 쓰기 -->
+	<insert id="reert" parameterType="map">
 		INSERT INTO TB_B_COMMENT 
 			           (board_no
 		            , user_id
@@ -190,8 +178,8 @@
 			          )
 	</insert>
 	
-	<!-- 댓글, 대댓글 수정 -->
-	<update id="replyUpdate" parameterType="map">
+	<!-- 리뷰 수정 -->
+	<update id="r12" parameterType="map">
 		UPDATE TB_B_COMMENT
 		<trim prefix="SET" prefixOverrides=",">
 		<if test="comment_content != null and comment_content.length() != 0">
@@ -211,8 +199,8 @@
 			AND comment_step = #{comment_step}
 	</update>
 	
-	<!-- 댓글, 대댓글 삭제 -->
-	<delete id="replyDelete" parameterType="map">
+	<!-- 리뷰 삭제 -->
+	<delete id="r124" parameterType="map">
 		DELETE FROM TB_B_COMMENT
 		WHERE board_no = #{board_no}
 			AND comment_no = #{comment_no}
@@ -223,7 +211,7 @@
 	</delete>
 	
 	<!-- 신고 - 글:0 / 댓글:1 / 마켓글:2 / 리뷰:3(마켓에서 처리) -->
-	<insert id="report" parameterType="map">
+	<insert id="r4567" parameterType="map">
 		INSERT INTO TB_REPORT
 								(report_no
 							 , user_id
@@ -249,8 +237,8 @@
 							 )
 	</insert>
 	
-	<!-- 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
-	<insert id="likeOn" parameterType="map">
+	<!--리뷰 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
+	<insert id="reviewLike" parameterType="map">
 		INSERT INTO TB_LIKE
 								(user_id
 							 , like_type
@@ -270,14 +258,13 @@
 							 )
 	</insert>
 	
-	<!-- 좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
-	<delete id="likeOff" parameterType="map">
-		DELETE FROM TB_LIKE
-					WHERE user_id = #{user_id}
-						AND like_type = #{like_type}
-						AND like_group = #{like_group}
-						<if test="like_step != null">
-						AND like_step = #{like_step}
-						</if>
-	</delete>
+	<!-- 리뷰좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
+	<update id="reviewDislike" parameterType="map">
+	<!-- 좋아요 갯수는 안세는건지??? -->
+    UPDATE TB_LIKE
+    SET like_count = like_count - 1
+    WHERE like_group = #{like_group}
+      AND user_id = #{user_id}
+      AND like_count >= 1;
+</update>
 </mapper>

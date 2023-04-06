@@ -29,7 +29,30 @@ public class MarketDao {
 		mList = sqlSessionTemplate.selectList("marketDetail",pMap);
 		return mList;
 	}
-
+	
+	/**
+	 * 마켓 글쓰기 
+	 * @param pMap
+	 * @return
+	 */
+	public int marketInsert(Map<String, Object> pMap) {
+		logger.info("marketInsert 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("marketInsert",pMap);
+		return result;
+	}
+	/**
+	 * 마켓 글쓰기 이미지 업로드 - Quill image가 있는 경우
+	 * @param pMap
+	 * @return
+	 */
+	public int mImageInsert(Map<String, Object> pMap) {
+		logger.info("mImageInsert 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("mImageInsert", pMap);
+		return result;
+	}
+	
 	public int marketUpdate(Map<String, Object> pMap) {
 		logger.info("marketUpdate 호출");
 		int result = 0;
@@ -43,6 +66,7 @@ public class MarketDao {
 		result = sqlSessionTemplate.update("marketDelete", pMap);
 		return result;
 	}
+////////////////////////////////////////////////////////////////
 	/**
 	 * 리뷰 쓰기
 	 * 
@@ -103,20 +127,30 @@ public class MarketDao {
 		result = sqlSessionTemplate.update("reviewLike", pMap);
 		return result;
 	}
-	public int qnaDelete(Map<String, Object> pMap) {
-		logger.info("qnaDelete 호출");
+	public int reviewDislike(Map<String, Object> pMap) {
+		logger.info("reviewDislike 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("qnaDelete",pMap);
-		return result;
+		result = sqlSessionTemplate.update("reviewDislike", pMap);
+	    return result;
+	}
+	public int reviewLikeCount(Map<String, Object> pMap) {
+		logger.info("reviewLikeCount 호출");
+		int result = 0;
+		result=sqlSessionTemplate.selectOne("reviewLikeCount", pMap);
+		return 0;
 	}
 
-	public int qnaReplyInsert(Map<String, Object> pMap) {
-		logger.info("qnaReplyInsert 호출");
-		int result = 0;
-		result = sqlSessionTemplate.update("qnaReplyInsert",pMap);
-		return result;
+	public boolean hasUserLikedReview(Map<String, Object> pMap) {
+		int count = sqlSessionTemplate.selectOne("hasUserLikedReview", pMap);
+	    return count > 0;
 	}
-
+	
+/////////////////////////////////////////////////
+	/**
+	 * qna작성
+	 * @param pMap
+	 * @return
+	 */
 	public int qnaInsert(Map<String, Object> pMap) {
 		logger.info("qnaInsert 호출");
 		int result = 0;
@@ -124,28 +158,26 @@ public class MarketDao {
 		return result;
 	}
 	/**
-	 * 마켓 글쓰기 
+	 * qna삭제
 	 * @param pMap
 	 * @return
 	 */
-	public int marketInsert(Map<String, Object> pMap) {
-		logger.info("marketInsert 호출");
+	public int qnaDelete(Map<String, Object> pMap) {
+		logger.info("qnaDelete 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("marketInsert",pMap);
+		result = sqlSessionTemplate.update("qnaDelete",pMap);
 		return result;
 	}
 	/**
-	 * 마켓 글쓰기 이미지 업로드 - Quill image가 있는 경우
+	 * qna답글작성
 	 * @param pMap
 	 * @return
 	 */
-	public int imageInsert(Map<String, Object> pMap) {
-		logger.info("imageInsert 호출");
+	public int qnaReplyInsert(Map<String, Object> pMap) {
+		logger.info("qnaReplyInsert 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("imageInsert", pMap);
+		result = sqlSessionTemplate.update("qnaReplyInsert",pMap);
 		return result;
 	}
-
-	
 
 }

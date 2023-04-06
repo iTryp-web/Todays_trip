@@ -133,6 +133,21 @@ public class MarketLogic {
 		return result;
 	}
 	/**
+	 * 리뷰 좋아요 취소
+	 * @param pMap
+	 * @return
+	 */
+	public int reviewDislike(Map<String, Object> pMap) {
+	    logger.info("reviewDislike 호출");
+	    int result = 0;
+	    int likeCount = marketDao.reviewLikeCount(pMap); // 해당 리뷰의 현재 좋아요 수 가져오기
+	    if (likeCount >= 1 && marketDao.hasUserLikedReview(pMap)) { // 해당 리뷰의 좋아요 수가 1 이상이고 사용자가 좋아요를 누른 경우
+	        result = marketDao.reviewDislike(pMap); // 리뷰의 좋아요 수 감소
+	    }
+	    return result;
+	}
+
+	/**
 	 * 문의글, 문의답글쓰기- 구매자문의 qna_step: 0 / 판매자 답글 : 1
 	 * 
 	 * @param pMap
@@ -163,7 +178,7 @@ public class MarketLogic {
 		result = marketDao.marketInsert(pMap);
 		// Quill image가 있을 경우
 				if(result > 0 && pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
-					int insertImg =marketDao.imageInsert(pMap);
+					int insertImg =marketDao.mImageInsert(pMap);
 					if(insertImg > 0) {
 						logger.info("이미지 업로드 성공");
 					} else {				
