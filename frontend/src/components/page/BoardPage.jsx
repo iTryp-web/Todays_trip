@@ -9,7 +9,7 @@ import { NavLink } from 'react-bootstrap'
 const BoardPage = () => {
   const navigate = useNavigate()
   const selected = 'ALL'
-  const categories = ["!", 2, 3]
+  const categories = ['1', '1', '1']
   return (
     <>
       <Header />
