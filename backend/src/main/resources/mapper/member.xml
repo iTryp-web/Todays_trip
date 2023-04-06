@@ -47,7 +47,7 @@
 
 
 	<!-- 로그인, 회원정보 조회용 쿼리문 -->
-	<select id="userInfo" parameterType="map" resultType="map">
+	<select id="memberList" parameterType="map" resultType="map">
 		SELECT
 			user_id
 			,user_email
@@ -69,10 +69,10 @@
 			user_id
 		</if>
 		<if test='user_nickname!= null'>
-			,user_nickname
+			user_nickname
 		</if>
 		<if test='user_email!= null'>
-			,user_email
+			user_email
 		</if>
 		FROM TB_USER
 		<where>
@@ -127,5 +127,4 @@
 		= 1
 		WHERE user_id = #{user_id}
 	</update>
-
 </mapper>

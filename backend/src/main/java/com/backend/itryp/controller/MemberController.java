@@ -28,7 +28,7 @@ public class MemberController {
 	
 	
 	/******************
-	 * 회원 정보 조회 
+	 * 회원 정보 조회, 로그인
 	 * @param pMap
 	 * @return
 	 ******************/
@@ -46,6 +46,29 @@ public class MemberController {
 			temp = g.toJson(mList);
 		}
 		else {
+			temp = "0";
+		}
+		return temp;
+	}
+	
+	/******************
+	 * 중복 검사, 이메일 찾기
+	 * @param pMap
+	 * @return
+	 ******************/
+	@GetMapping("checkInfo")
+	public String userInfo(@RequestParam Map<String, Object>pMap) {
+		logger.info("userInfo 호출");
+		logger.info("pMap");
+		String temp = null;
+		List<Map<String,Object>> mList = new ArrayList<>();
+		mList = memberLogic.checkInfo(pMap);
+		logger.info("mList");
+		
+		if(mList.size()>0) {
+			Gson g = new Gson();
+			temp = g.toJson(mList);
+		}else {
 			temp = "0";
 		}
 		return temp;
@@ -79,5 +102,18 @@ public class MemberController {
 		result = memberLogic.memberUpdate(pMap);
 		return String.valueOf(result);
 	}
-
+	
+	/********************
+	 * 회원 탈퇴 - status =1로 update(삭제 X)
+	 * @param pMap
+	 * @return
+	 *********************/
+	@PostMapping("memberDelete")
+	public String memberDelete(@RequestBody Map<String,Object> pMap) {
+		logger.info("memberDelete 호출");
+		logger.info(pMap);
+		int result = 0;
+		result = memberLogic.memberDelete(pMap);
+		return String.valueOf(result);
+	}
 }

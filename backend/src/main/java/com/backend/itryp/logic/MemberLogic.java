@@ -18,12 +18,18 @@ public class MemberLogic {
 	@Autowired
 	private MemberDao memberDao = null;
 	
-	//회원정보 조회-상세보기 페이지
+	//회원정보 조회-상세보기 페이지(회원정보 조회시 전부 조회), 로그인(로그인시 닉네임만 조회)
 	public List<Map<String, Object>> memberList(Map<String, Object> pMap) {
-		
 		logger.info("memberList 호출");
 		List<Map<String,Object>> mList = new ArrayList<>();
 		mList = memberDao.memberList(pMap);
+		return mList;
+	}
+	//아이디, 닉네임, 이메일 중복체크 + 이메일(아이디) 조회
+	public List<Map<String, Object>> checkInfo(Map<String, Object> pMap) {
+		logger.info("checkInfo 호출");
+		List<Map<String,Object>> mList = new ArrayList<>();
+		mList = memberDao.checkInfo(pMap);
 		return mList;
 	}
 	
@@ -39,12 +45,18 @@ public class MemberLogic {
 	public int memberUpdate(Map<String, Object> pMap) {
 		logger.info("memberUpdate 호출");
 		logger.info(pMap.toString());
-		int result = 0;
-		int pw_check = 0; //회원정보 수정시 비밀번호 입력해야 들어갈수 있는
-		
+		int result = 0;	
 		result = memberDao.memberUpdate(pMap);
 		return result;
 	}
-	
+
+	public int memberDelete(Map<String, Object> pMap) {
+		logger.info("memberDelete 호출");
+		logger.info(pMap.toString());
+		int result = 0;
+		result = memberDao.memberDelete(pMap);
+		return result;
+	}
+
 
 }
