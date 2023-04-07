@@ -85,7 +85,7 @@
 	</insert>
 	
 		<!-- Quill image 수정 - board_no 추가 -->
-	<update id="imageUpdate123" parameterType="list">
+	<update id="mimageUpdate" parameterType="list">
 		<foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
 			UPDATE TB_B_FILE
 				SET board_no = #{item.board_no}
@@ -94,7 +94,7 @@
 	</update>	
 	
 	<!-- 마켓 글수정(조회수 갱신) -->
-	<update id="boardUpdate123" parameterType="map">
+	<update id="marketUpdate" parameterType="map">
 		UPDATE TB_BOARD
 		<trim prefix="SET" prefixOverrides=",">
 		<if test="board_hit != null and board_hit > 0">
@@ -120,19 +120,19 @@
 	</update>
 	
 	<!-- Quill image 삭제 -->
-	<delete id="imageDelete123" parameterType="map">
+	<delete id="mimageDelete" parameterType="map">
 		DELETE FROM TB_B_FILE
 		WHERE board_no = #{board_no}
 	</delete>
 	
 	<!-- 커뮤니티 글 삭제 -->
-	<delete id="boardDelete123" parameterType="map">
+	<delete id="marketDelete" parameterType="map">
 		DELETE FROM TB_BOARD
 		WHERE board_no = #{board_no}
 	</delete>
 	
 	<!-- 리뷰 전체 조회 -->
-	<select id="replyList123" parameterType="map" resultType="map">
+	<select id="reviewList" parameterType="map" resultType="map">
 		SELECT c.board_no
 		     , u.user_id
 		     , u.user_nickname
@@ -151,7 +151,7 @@
 	</select>
 	
 	<!-- 리뷰 쓰기 -->
-	<insert id="reert" parameterType="map">
+	<insert id="reviewInsert" parameterType="map">
 		INSERT INTO TB_B_COMMENT 
 			           (board_no
 		            , user_id
@@ -179,7 +179,7 @@
 	</insert>
 	
 	<!-- 리뷰 수정 -->
-	<update id="r12" parameterType="map">
+	<update id="reviewUpdate" parameterType="map">
 		UPDATE TB_B_COMMENT
 		<trim prefix="SET" prefixOverrides=",">
 		<if test="comment_content != null and comment_content.length() != 0">
@@ -200,7 +200,7 @@
 	</update>
 	
 	<!-- 리뷰 삭제 -->
-	<delete id="r124" parameterType="map">
+	<delete id="reviewDelete" parameterType="map">
 		DELETE FROM TB_B_COMMENT
 		WHERE board_no = #{board_no}
 			AND comment_no = #{comment_no}
