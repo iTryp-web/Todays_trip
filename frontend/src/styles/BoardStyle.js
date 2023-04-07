@@ -58,18 +58,23 @@ export const LifeCategory = styled.nav`
   }
 `;
 
+export const CategoryUl = styled.ul`
+  
+`
+
 export const CategoryItem = styled.li`
+  list-style: none;
   margin: 2px 0;
   padding: 19px 20px;
   border-radius: 8px;
-  color: #a9a9a9;
+  color: black;
   font-size: 14px;
   cursor: pointer;
   ${({ active }) =>
     active &&
     css`
       background: #eafaf9;
-      color: #2d2d2d;
+      color: #4996F3;
       font-weight: 700;
     `};
   img {
