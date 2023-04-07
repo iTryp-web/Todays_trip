@@ -49,7 +49,7 @@
 	
 
 	<!--마켓 글쓰기 -->
-	<insert id="marketInsert" parameterType="map" useGeneratedKeys="true" keyColumn="board_no" keyProperty="board_no">
+	<insert id="marketInsert" parameterType="map" useGeneratedKeys="true" keyColumn="market_no" keyProperty="market_no">
 		INSERT INTO TB_MARKET
 		           (market_no
 	            , user_id
@@ -85,7 +85,7 @@
 	</insert>
 	
 		<!-- Quill image 수정 - board_no 추가 -->
-	<update id="imageUpdate" parameterType="list">
+	<update id="imageUpdate123" parameterType="list">
 		<foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
 			UPDATE TB_B_FILE
 				SET board_no = #{item.board_no}
@@ -94,7 +94,7 @@
 	</update>	
 	
 	<!-- 마켓 글수정(조회수 갱신) -->
-	<update id="boardUpdate" parameterType="map">
+	<update id="boardUpdate123" parameterType="map">
 		UPDATE TB_BOARD
 		<trim prefix="SET" prefixOverrides=",">
 		<if test="board_hit != null and board_hit > 0">
@@ -120,19 +120,19 @@
 	</update>
 	
 	<!-- Quill image 삭제 -->
-	<delete id="imageDelete" parameterType="map">
+	<delete id="imageDelete123" parameterType="map">
 		DELETE FROM TB_B_FILE
 		WHERE board_no = #{board_no}
 	</delete>
 	
 	<!-- 커뮤니티 글 삭제 -->
-	<delete id="boardDelete" parameterType="map">
+	<delete id="boardDelete123" parameterType="map">
 		DELETE FROM TB_BOARD
 		WHERE board_no = #{board_no}
 	</delete>
 	
 	<!-- 리뷰 전체 조회 -->
-	<select id="replyList" parameterType="map" resultType="map">
+	<select id="replyList123" parameterType="map" resultType="map">
 		SELECT c.board_no
 		     , u.user_id
 		     , u.user_nickname
