@@ -1,3 +1,4 @@
+import './App.css'
 import { Route, Routes } from 'react-router-dom';
 import TestPage from './components/page/TestPage';
 import HomePage from './components/page/HomePage';
