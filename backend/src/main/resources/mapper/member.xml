@@ -15,32 +15,32 @@
 		,user_address_detail
 		)
 		VALUES(
-		<if test='USER_ID!= null'>
-			,#{USER_ID}
+		<if test='user_id!= null'>
+			,#{user_id}
 		</if>
-		<if test='USER_PW!= null'>
-			,#{USER_PW}
+		<if test='user_pw!= null'>
+			,#{user_pw}
 		</if>
-		<if test='USER_EMAIL!= null'>
-			,#{USER_EMAIL}
+		<if test='user_email!= null'>
+			,#{user_email}
 		</if>
-		<if test='USER_NICKNAME!= null'>
-			,#{USER_NICKNAME}
+		<if test='user_nickname!= null'>
+			,#{user_nickname}
 		</if>
-		<if test='USER_NAME!= null'>
-			,#{USER_NAME}
+		<if test='user_name!= null'>
+			,#{user_name}
 		</if>
-		<if test='USER_PHONE!= null'>
-			,#{USER_PHONE}
+		<if test='user_phone!= null'>
+			,#{user_phone}
 		</if>
-		<if test='USER_ZIPCODE!= null'>
-			,#{USER_ZIPCODE}
+		<if test='user_zipcode!= null'>
+			,#{user_zipcode}
 		</if>
-		<if test='USER_ADDRESS!= null'>
-			,#{USER_ADDRESS}
+		<if test='user_address!= null'>
+			,#{user_address}
 		</if>
-		<if test='USER_ADDRESS_DETAIL!= null'>
-			,#{USER_ADDRESS_DETAIL}
+		<if test='user_address_detail!= null'>
+			,#{user_address_detail}
 		</if>
 		)
 	</insert>
