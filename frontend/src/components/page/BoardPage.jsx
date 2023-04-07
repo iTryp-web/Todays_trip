@@ -1,7 +1,7 @@
 import React from 'react'
 import Bottom from '../include/Bottom'
 import Header from '../include/Header'
-import {CommunityHeader, BtnPost, CommunityNav, LifeSection, LifeCategory, CategoryItem, LifeContentSection, SearchInput, Wrap, StyledSlider, SliderListF} from '../../styles/BoardStyle'
+import {CommunityHeader, BtnPost, CommunityNav, LifeSection, LifeCategory, CategoryItem, LifeContentSection, SearchInput, Wrap, StyledSlider, SliderListF, CategoryUl} from '../../styles/BoardStyle'
 import { BiSearch } from 'react-icons/bi';
 import { Outlet, useNavigate } from 'react-router-dom'
 import { NavLink } from 'react-bootstrap'
@@ -9,14 +9,19 @@ import { NavLink } from 'react-bootstrap'
 const BoardPage = () => {
   const navigate = useNavigate()
   const selected = 'ALL'
-  const categories = ['1', '1', '1']
+  const categories = [
+    {name: '전체'},
+    {name: '인기글'},
+    {name: '자유'},
+    {name: '동행'}
+]
   return (
     <>
       <Header />
       <LifeSection>
         <h2 hidden>오행생활</h2>
         <LifeCategory>
-          <ul>
+          <CategoryUl>
             <h3 hidden>카테고리 목록</h3>
             {categories &&
               categories.map((category) => {
@@ -24,15 +29,14 @@ const BoardPage = () => {
                   <CategoryItem
                     key={category.name}
                     tabIndex="0"
-                    active={category.name === selected}
-                    /* onClick={() => onClickCategory(category.name)} */
+                    /*active={category.name === selected}
+                     onClick={() => onClickCategory(category.name)} */
                   >
-                    <img src={category.img} alt="" />
-                    {category.text}
+                    {category.name}
                   </CategoryItem>
                 );
               })}
-          </ul>
+          </CategoryUl>
         </LifeCategory>
 
         <LifeContentSection>
