@@ -1,24 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
+
+	<!-- 카트 페이지로 이동할 때 필요한 정보 가져오기 -->
 	<select id="getCartPage" parameterType="map" resultType="map">
-		SELECT market_no, market_category, market_title, market_content, market_price, market_date
-		FROM TB_MARKET
-		WHERE user_id =#{user_id}
+		SELECT market_no, user_id, market_category, market_title, market_content, market_price, market_date
+		  FROM TB_MARKET
+		 WHERE market_no =#{market_no}
 	</select>
+	
+	<!-- 주문 페이지로 이동할 때 필요한 정보 가져오기 -->
 	<select id="getOrderPage" parameterType="map" resultType="map">
 		SELECT c.coupon_no, c.coupon_rate, c.coupon_min, c.coupon_max, c.coupon_date, c.coupon_valid
-			   u.user_phone, u.user_zipcode, u.user_address, u.user_address_detail
-		FROM TB_U_COUPON c, TB_USER u
-		WHERE c.user_id = u.user_id
+			   u.user_name, u.user_phone, u.user_zipcode, u.user_address, u.user_address_detail
+		  FROM TB_U_COUPON c, TB_USER u
+		 WHERE c.user_id = #{user_id}
+		   AND u.user_id = #{user_id}<!-- 맞습니까??? -->
 	</select>
+	
+	<!-- 주문 완료 후 주문 내역 DB에 저장 -->
 	<insert id="InsertOrder" parameterType="map">
-		INSERT INTO TB_ORDER () VALUES ()
+		INSERT INTO TB_ORDER (ORDER_NO, USER_ID, COUPON_NO, ORDER_TOTAL, ORDER_DISCOUNT, ORDER_PAYMENT)
+		VALUES (TB_ORDER_NO_SEQ.NEXTVAL, #{user_id}, #{coupon_no}, #{order_total}, #{order_discount}, #{order_payment})
 	</insert>
+	
+	<!-- 주문 내역 DB에 저장한 후 저장한 주문 번호 읽어오기 -->
+	<select id="getOrderNo" parameterType="map" resultType="map">
+		 SELECT TB_ORDER_NO_SEQ.CURRVAL FROM DUAL;
+	</select>
+	
+	<!-- 주문 상세 내역 DB에 저장 -->
+	<insert id="InsertOrderDetail" parameterType="map">
+		INSERT INTO TB_ORDER_DETAIL (DETAIL_NO, ORDER_NO, MARKET_NO, MARKET_COUNT, ORDER_AMOUNT)
+		VALUES (TB_ORDER_DETAIL_NO_SEQ.NEXTVAL, #{order_no}, #{market_no}, #{market_count}, #{order_amount})
+	</insert>
+	
+	<!-- 결제 완료 후 결제 내역 DB에 저장 -->
 	<insert id="InsertPay" parameterType="map">
 		INSERT INTO TB_PAY () VALUES ()
 	</insert>
-	<select id="cancelOrder" parameterType="map" resultType="map">
-		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
+	
+	<!-- 주문 내역 리스트 가져오기 -->
+	<select id="getOrderList" parameterType="map" resultType="map">
+		SELECT ORDER_NO, USER_ID, COUPON_NO, ORDER_TOTAL, ORDER_DISCOUNT, ORDER_PAYMENT
+		  FROM TB_ORDER
+		 WHERE ORDER_NO = #{order_no}
 	</select>
+	
+	<!-- 주문 상세 내역 가져오기 -->
+	<select id="getOrderDetail" parameterType="map" resultType="map">
+		SELECT c.coupon_no, c.coupon_rate, c.coupon_min, c.coupon_max, c.coupon_date, c.coupon_valid
+			   u.user_name, u.user_phone, u.user_zipcode, u.user_address, u.user_address_detail
+		  FROM TB_U_COUPON c, TB_USER u
+		 WHERE c.user_id = #{user_id}
+		   AND u.user_id = #{user_id}
+	</select>
+	
+	<!-- 주문 취소 건 주문 내역 DB에 반영 -->
+	<update id="cancelOrder" parameterType="map">
+		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
+	</update>
+	
+	<!-- 주문 취소 건 결제 내역 DB에 반영 -->
+	<update id="cancelPay" parameterType="map">
+		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
+	</update>
+	
 </mapper>

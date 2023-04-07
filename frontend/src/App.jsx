@@ -1,3 +1,4 @@
+import './App.css'
 import { Route, Routes } from 'react-router-dom';
 import TestPage from './components/page/TestPage';
 import HomePage from './components/page/HomePage';
@@ -7,6 +8,7 @@ import CartPage from './components/page/CartPage';
 import OrderSuccess from './components/order/OrderSuccess';
 import OrderFail from './components/order/OrderFail';
 import MarketPage from './components/page/MarketPage';
+import BoardWriteForm from './components/board/BoardWriteForm';
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
     <Routes>
       <Route path='/' exact={true} element={<HomePage />} />
       <Route path='/board' exact={true} element={<BoardPage />} />
+      <Route path='/board/write' exact={true} element={<BoardWriteForm />} />
       <Route path='/test' exact={true} element={<TestPage />} />
       <Route path='/cart' exact={true} element={<CartPage />} />
       <Route path='/order' exact={true} element={<OrderPage />} />

@@ -44,6 +44,9 @@ export const CommunityNav = styled.nav`
   }
 `;
 
+
+
+
 export const LifeSection = styled.section`
   display: flex;
 `;
@@ -58,25 +61,46 @@ export const LifeCategory = styled.nav`
   }
 `;
 
+export const CommunityH3 = styled.h3`
+  font-weight: bold;
+`
+
+export const CategoryUl = styled.ul`
+  color: black;
+  text-decoration-line: none;
+  margin-right: 1.3rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  &.active {
+    color: #4996F3;
+    font-weight: bold;
+  }
+  &:hover {
+    color: #4996F3;
+  }
+`
+
 export const CategoryItem = styled.li`
+  font-weight: 600;
+  list-style: none;
   margin: 2px 0;
   padding: 19px 20px;
   border-radius: 8px;
-  color: #a9a9a9;
-  font-size: 14px;
+  color: gray;
+  font-size: 0.9em;
   cursor: pointer;
   ${({ active }) =>
-    active &&
-    css`
-      background: #eafaf9;
-      color: #2d2d2d;
+  active &&
+  css`
+      background: #DBEAFD;
+      color: black;
       font-weight: 700;
-    `};
+    `}
   img {
     width: 24px;
     margin-right: 8px;
   }
-`;
+`
 
 export const LifeContentSection = styled.section`
   flex: 1;
