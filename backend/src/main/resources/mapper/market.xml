@@ -51,51 +51,61 @@
 	<!--마켓 글쓰기 -->
 	<insert id="marketInsert" parameterType="map" useGeneratedKeys="true" keyColumn="market_no" keyProperty="market_no">
 		INSERT INTO TB_MARKET
-		           (market_no
-	            , user_id
-	            , market_category
-	            , board_title
-	            , board_content
-	            , board_date
+		           (MARKET_NO
+	             ,USER_ID
+		           ,TYPE_MARKET    
+							 ,MARKET_CATEGORY  
+							 ,MARKET_TITLE     
+							 ,MARKET_CONTENT  
+							 ,MARKET_PRICE    
+							 ,MARKET_DATE 
 		            )
 		    VALUES (TB_MARKET_NO_SEQ.NEXTVAL
+		 					, #{market_no}
 	            , #{user_id}
-	            , #{board_category}
-	            , #{board_title}
-	            , #{board_content}
+	            , #{type_market}
+	            , #{market_category}
+	            , #market_title}
+	            , #{market_content}
+	            , #{market_price}
+	            , #{market_date}
 	            , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
 		          )
 	</insert>
-
+	<!-- 판매자가 가능 날짜 갯수 넣음 -->
+	<insert id="marketInsert" parameterType="map" useGeneratedKeys="true" keyColumn="market_no" keyProperty="market_no">
+		
+	
+	</insert>
 	<!-- Quill image 추가 - 이미지 선택할때마다 인서트 -->
 	<insert id="mImageInsert" parameterType="map">
-		INSERT INTO TB_B_FILE
+		INSERT INTO TB_M_FILE
 								(file_no
-							 , board_no
+							 , market_no
 							 , file_name
 		    			 , file_url
 		    			 , file_size
 		    			 )
-		    VALUES (TB_B_FILE_NO_SEQ.NEXTVAL
-				    	 , #{board_no}
+		    VALUES (TB_M_FILE_NO_SEQ.NEXTVAL
+				    	 , #{market_no}
 							 , #{file_name}
 							 , #{file_url}
 							 , #{file_size}
 							 )
 	</insert>
 	
-		<!-- Quill image 수정 - board_no 추가 -->
-	<update id="mimageUpdate" parameterType="list">
+		<!-- Quill image 수정 - market_no 추가 -->
+	<update id="mImageUpdate" parameterType="list">
 		<foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
-			UPDATE TB_B_FILE
-				SET board_no = #{item.board_no}
+			UPDATE TB_M_FILE
+				SET market_no = #{item.market_no}
 			WHERE file_name = LTRIM(#{item.file_name})
 		</foreach>
 	</update>	
 	
 	<!-- 마켓 글수정(조회수 갱신) -->
 	<update id="marketUpdate" parameterType="map">
-		UPDATE TB_BOARD
+		UPDATE TB_MARKET
 		<trim prefix="SET" prefixOverrides=",">
 		<if test="board_hit != null and board_hit > 0">
 		    , board_hit = board_hit + 1
