@@ -16,7 +16,7 @@
 		)
 		VALUES(
 		<if test='user_id!= null'>
-			,#{user_id}
+			#{user_id}
 		</if>
 		<if test='user_pw!= null'>
 			,#{user_pw}

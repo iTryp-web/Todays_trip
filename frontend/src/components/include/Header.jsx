@@ -46,10 +46,10 @@ const Header = () => {
             <BsCart className="cart-icon" />
           </Link>
           <div className="buttons">
-            <Link to="login" className="login button">
+            <Link to="/signin" className="signin button">
               로그인
             </Link>
-            <Link to="register" className="register button">
+            <Link to="/signup" className="signup button">
               회원가입
             </Link>
             <button className="seller-button">판매자 가입</button>
