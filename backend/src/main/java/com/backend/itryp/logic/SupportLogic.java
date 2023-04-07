@@ -43,7 +43,7 @@ public class SupportLogic {
 	public int announceInsert(Map<String, Object> pMap) {
 		logger.info("boardInsert 호출");
 		int result = 0;
-		result = boardDao.boardInsert(pMap);
+		result = supportDao.announceInsert(pMap);
 		// Quill image가 있을 경우
 		if(result > 0 && pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
 			int insertImg = supportDao.imageInsert(pMap);
