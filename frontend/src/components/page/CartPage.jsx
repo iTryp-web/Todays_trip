@@ -1,13 +1,13 @@
 import React from 'react'
 import Header from '../include/Header'
-import Bottom from '../include/Bottom'
+import Footer from '../include/Footer'
 
 const CartPage = () => {
   return (
     <>
       <Header/>
       cart
-      <Bottom/>
+      <Footer/>
     </>
   )
 }

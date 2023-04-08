@@ -12,6 +12,7 @@ import BoardWriteForm from './components/board/BoardWriteForm';
 import SignUp from './components/member/SignUp';
 import SignIn from './components/member/SignIn';
 import BoardLayout from './components/board/BoardLayout';
+import BoardDetail from './components/board/BoardDetail';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path='/' exact={true} element={<HomePage />} />
       <Route path='/board' exact={true} element={<BoardPage />} />
       <Route path='/board/all' exact={true} element={<BoardLayout />} />
+      <Route path='/board/detail/:bno' element={<BoardDetail />} />
       <Route path='/board/write' exact={true} element={<BoardWriteForm />} />
       <Route path='/test' exact={true} element={<TestPage />} />
       <Route path='/cart' exact={true} element={<CartPage />} />
@@ -29,7 +31,6 @@ function App() {
       <Route path='/order/fail' exact={true} element={<OrderFail />} />
       <Route path='/signup' exact={true} element={<SignUp />} />
       <Route path='/signin' exact={true} element={<SignIn />} />
-      
     </Routes>
     </> 
   );

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navbar } from 'react-bootstrap'
 
-const Bottom = () => {
+const Footer = () => {
   return (
     <>
       <Navbar fixed="bottom" className="navbar navbar-expand-sm bg-light justify-content-center" bg="light" variant="light">
@@ -11,4 +11,4 @@ const Bottom = () => {
   )
 }
 
-export default Bottom
+export default Footer
