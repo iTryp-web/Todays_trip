@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { NavLinkStyle, HeaderContentsBlock } from '../../styles/HeaderStyle';
+import { NavLinkStyle, HeaderBlock } from '../../styles/HeaderStyle';
 import { MdSearch } from "react-icons/md";
 import { BsCart } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
@@ -12,7 +12,7 @@ const Header = () => {
   
   return (
     <>
-      <HeaderContentsBlock>
+      <HeaderBlock>
       <AiOutlineMenu className="menu-icon" onClick={() => menuClick()} />
         <Link to="/" className="logo">
           오늘의 여행
@@ -55,7 +55,7 @@ const Header = () => {
             <button className="seller-button">판매자 가입</button>
           </div>
         </div>
-      </HeaderContentsBlock>
+      </HeaderBlock>
     </>
   )
 }
