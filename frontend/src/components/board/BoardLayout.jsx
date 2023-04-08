@@ -4,6 +4,8 @@ import { BiSearch } from 'react-icons/bi';
 import { Outlet, useNavigate } from 'react-router-dom'
 import BoardRow from './BoardRow';
 import BoardTopPost from './BoardTopPost';
+import { DropdownButton } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 
 const BoardLayout = () => {
   const navigate = useNavigate()

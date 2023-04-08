@@ -12,7 +12,6 @@ export const HeaderBlock = styled.div`
   justify-content: space-between;
   background: white;
   margin: 0 auto;
-  border-bottom: 1px solid lightgray;
 
   .menu-icon {
     display: none;
@@ -76,14 +75,14 @@ export const HeaderBlock = styled.div`
       justify-content: space-between;
       align-items: center;
       font-size: 0.8rem;
-      .login{
+      .signin{
         text-decoration: none;
         color: darkgray;
         margin-left: 1rem;
         margin-right: -0.7rem;
         padding-right: 0.3rem;
       }
-      .register {
+      .signup {
         margin-left: -0.7rem;
         text-decoration: none;
         color: darkgray;
@@ -121,11 +120,11 @@ export const HeaderBlock = styled.div`
         margin: 0 0.2rem 0 1rem;
       }
       .buttons {
-        .login{
+        .signin{
           padding-right: 0.5rem;
           margin-right: 0.4rem;
         }
-        .register {
+        .signup {
           padding-right: 0.5rem;
           margin-right: 0.4rem;
         }
@@ -146,11 +145,11 @@ export const HeaderBlock = styled.div`
         display: none;
       }
       .buttons {
-        .login{
+        .signin{
           padding-right: 0.3rem;
           margin-right: 0.3rem;
         }
-        .register {
+        .signup {
           padding-right: 0rem;
           margin-right: 0rem;
         }
