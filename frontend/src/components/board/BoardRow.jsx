@@ -1,6 +1,6 @@
 import React from 'react'
 
-const BoardRow = () => {
+const BoardRow = ({post}) => {
   return (
     <div>
       

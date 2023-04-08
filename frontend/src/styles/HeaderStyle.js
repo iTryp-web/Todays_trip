@@ -1,17 +1,18 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-export const HeaderContentsBlock = styled.div`
+export const HeaderBlock = styled.div`
   overflow: hidden;
   height: 80px;
   width: 100%;
   padding: 0 4rem;
-  max-width: 1256px;
+  max-width: 1344px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: white;
   margin: 0 auto;
+  border-bottom: 1px solid lightgray;
 
   .menu-icon {
     display: none;

@@ -27,6 +27,7 @@ export const LoginFormBlock = styled.form`
 `;
 
 export const LogoBlock = styled(Link)`
+  text-decoration-line: none;
   display: flex;
   align-items: center;
   justify-content: center;

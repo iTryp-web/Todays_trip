@@ -8,12 +8,10 @@ import CartPage from './components/page/CartPage';
 import OrderSuccess from './components/order/OrderSuccess';
 import OrderFail from './components/order/OrderFail';
 import MarketPage from './components/page/MarketPage';
-<<<<<<< Updated upstream
 import BoardWriteForm from './components/board/BoardWriteForm';
-=======
 import SignUp from './components/member/SignUp';
 import SignIn from './components/member/SignIn';
->>>>>>> Stashed changes
+import BoardLayout from './components/board/BoardLayout';
 
 function App() {
   return (
@@ -21,6 +19,7 @@ function App() {
     <Routes>
       <Route path='/' exact={true} element={<HomePage />} />
       <Route path='/board' exact={true} element={<BoardPage />} />
+      <Route path='/board/all' exact={true} element={<BoardLayout />} />
       <Route path='/board/write' exact={true} element={<BoardWriteForm />} />
       <Route path='/test' exact={true} element={<TestPage />} />
       <Route path='/cart' exact={true} element={<CartPage />} />

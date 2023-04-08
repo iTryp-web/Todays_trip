@@ -1,24 +1,26 @@
 import React, { useState } from 'react'
 import Bottom from '../include/Bottom'
 import Header from '../include/Header'
-import {CommunityHeader, BtnPost, CommunityNav, LifeSection, LifeCategory, CategoryItem, LifeContentSection, SearchInput, Wrap, StyledSlider, SliderListF, CommunityH3} from '../../styles/BoardStyle'
-import { BiSearch } from 'react-icons/bi';
+import {BoardHeader, BtnWrite, BoardH3} from '../../styles/BoardStyle'
+import { RiPencilFill } from 'react-icons/ri';
 import { Outlet, useNavigate } from 'react-router-dom'
-import { NavLink } from 'react-bootstrap'
+import BoardLayout from '../board/BoardLayout';
 
 const BoardPage = () => {
+  const navigate = useNavigate()
 
   return (
     <>
       <Header />
-     {/*  <CommunityHeader>
-        <h1>커뮤니티</h1>
-        <BtnPost onClick={() => navigate('/board/write')}>
+      <BoardHeader>
+        <BoardH3>커뮤니티</BoardH3>
+        <BtnWrite onClick={() => navigate('/board/write')}>
           글쓰기
           <RiPencilFill />
-        </BtnPost>
-      </CommunityHeader>
-      <CommunityNav></CommunityNav> */}
+        </BtnWrite>
+      </BoardHeader>
+        <BoardLayout />
+      <Outlet />
       <Bottom />
     </>
   )
