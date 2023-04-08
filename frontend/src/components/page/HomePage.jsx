@@ -1,13 +1,13 @@
 import React from 'react'
-import Bottom from '../include/Bottom'
 import Header from '../include/Header'
+import Footer from '../include/Footer'
 
 const HomePage = () => {
   return (
     <>
     <Header />
       <div>HomePage</div>
-    <Bottom />
+    <Footer />
     </>
   )
 }
