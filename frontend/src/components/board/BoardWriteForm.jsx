@@ -1,59 +1,85 @@
-import React from 'react'
-import { Row, RowPreview, RowTag } from '../../styles/BoardStyle';
-import { MdAddAPhoto } from 'react-icons/md';
+import React, { useCallback, useRef, useState } from 'react'
+import { BButton, Row, WriteSection } from '../../styles/BoardStyle';
+import Header from '../include/Header';
+import Footer from '../include/Footer';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import QuillEditor from './QuillEditor';
+
 
 const BoardWriteForm = () => {
+  const navigate = useNavigate()
+  const [category] = useState(['자유', '질문', '여행후기', '동행찾기'])
+  const [selected, setSelected] = useState('자유')
+  const[title, setTitle]= useState('');
+  const[content, setContent]= useState('');
+  const[files, setFiles]= useState([]);
+
+  const quillRef = useRef();
+
+  const handleCategory = useCallback((e) => {
+    setSelected(e);
+  },[]);
+
+  const handleTitle = useCallback((e) => {
+    console.log(e);
+    setTitle(e);
+  },[]);
+
+  const handleContent = useCallback((value) => {
+    console.log(value);
+    setContent(value);
+  },[]);
+
+  const handleFiles = useCallback((value) => {
+    console.log(value);
+      setFiles([...files, value]); // 깊은복사
+  },[files]);
+
+  const boardInsert = async() => {
+    console.log('boardInsert');
+    console.log(files)
+    const board = {
+      board_title: title,
+      board_content: content,
+      mem_no: sessionStorage.getItem('no'),
+      fileNames: files
+    }
+    /* const res = await qnaInsertDB(board)
+    console.log(res) */
+    navigate('/board')
+  }
+
   return (
     <>
-      <section>
-      <form onSubmit={'handleSubmit(onSubmitPost)'}>
+    <Header />
+      <WriteSection>
         <Row>
-          <select
-            name="subject"
-            id="subject"
-            defaultValue=""
-            /* {...register('subject', {
-              required: true,
-            })} */
-          >
-            <option disabled value="">
-              카테고리 선택
-            </option>
-            {/* {categories.slice(1).map((cat) => (
-              <option key={cat.name} value={cat.name}>
-                {cat.text}
-              </option>
-            ))} */}
-          </select>
-          <button disabled={'!isValid'}>등록</button>
+          <DropdownButton className='categoryDropdown' variant="" title={selected}>
+            {category.map((item, index)=>(
+                <Dropdown.Item as="button" key={index} onClick={()=>{
+                  handleCategory(item); 
+                }}>
+                  {item}
+                </Dropdown.Item>
+              )) 
+            }
+          </DropdownButton>
         </Row>
-
         <Row>
           <input
             type="text"
             id="input-title"
+            maxLength="60"
             placeholder="제목을 입력해주세요."
             autoComplete="off"
-            /* {...register('title', {
-              required: true,
-            })} */
+            onChange={(e)=>{handleTitle(e.target.value)}}
           />
+          <button className='btnInsert'>글쓰기</button>
         </Row>
-
-        <Row>
-          <textarea
-            wrap="hard"
-            spellCheck="false"
-            placeholder={`요청 서비스 정보를 공유하거나 숨고인과 고수님들에게 물어보세요.\n주제에 맞지 않는 글이나 커뮤니티 이용정책에 위배되어 일정 수 이상 신고를 받는 경우 글이 숨김 및 삭제될 수 있습니다.`}
-          /*  {...register('content', {
-              required: true,
-              minLength: 2,
-              maxLength: 5000,
-            })} */
-          />
-        </Row>
-      </form>
-    </section>
+        <QuillEditor value={content} handleContent={handleContent} quillRef={quillRef} files={files} handleFiles={handleFiles}/>
+    </WriteSection>
+    <Footer />
     </>
   )
 }
