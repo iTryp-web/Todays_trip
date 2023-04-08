@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import Bottom from '../include/Bottom'
 import Header from '../include/Header'
+import Footer from '../include/Footer';
 import {BoardHeader, BtnWrite, BoardH3} from '../../styles/BoardStyle'
 import { RiPencilFill } from 'react-icons/ri';
 import { Outlet, useNavigate } from 'react-router-dom'
@@ -19,9 +19,9 @@ const BoardPage = () => {
           <RiPencilFill />
         </BtnWrite>
       </BoardHeader>
-        <BoardLayout />
+      <BoardLayout />
       <Outlet />
-      <Bottom />
+      <Footer />
     </>
   )
 }

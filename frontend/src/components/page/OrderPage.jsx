@@ -1,7 +1,7 @@
 import React from 'react'
-import Bottom from '../include/Bottom'
 import Header from '../include/Header'
 import OrderRow from '../order/OrderRow'
+import Footer from '../include/Footer'
 
 const OrderPage = () => {
   return (
@@ -10,7 +10,7 @@ const OrderPage = () => {
       <div className='order-body'>
         <OrderRow/>
       </div>
-      <Bottom/>
+      <Footer/>
     </>
   )
 }
