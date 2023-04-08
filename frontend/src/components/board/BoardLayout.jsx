@@ -1,84 +1,92 @@
-import React, { useState } from 'react'
-import Bottom from '../include/Bottom'
-import Header from '../include/Header'
-import {CommunityHeader, BtnPost, CommunityNav, LifeSection, LifeCategory, CategoryItem, LifeContentSection, SearchInput, Wrap, StyledSlider, SliderListF, CommunityH3} from '../../styles/BoardStyle'
+import React, { useEffect, useState } from 'react'
+import {BoardSection, BoardCategory, CategoryLi, BContentSection, SearchInput, Wrap, StyledSlider, SliderListF, CommunityH3, CategoryUl, BtnSearch, SearchDiv, SearchSelect, SearchInputText, SliderDiv, SliderDivCategory, SliderDivTitle, SliderDivWriter} from '../../styles/BoardStyle'
 import { BiSearch } from 'react-icons/bi';
 import { Outlet, useNavigate } from 'react-router-dom'
-import { NavLink } from 'react-bootstrap'
+import BoardRow from './BoardRow';
 
 const BoardLayout = () => {
   const navigate = useNavigate()
   const [selected, setSelected] = useState('전체')
   const categories = [
-    {name: '전체'},
-    {name: '인기글'},
-    {name: '자유'},
-    {name: '동행'}
+    {
+    name: '전체',
+    img: '/images/icon-all.png'},
+    {
+    name: '인기글',
+    img: '/images/icon-hot.png'},
+    {
+    name: '자유',
+    img: '/images/icon-free.png'},
+    {
+    name: '질문',
+    img: '/images/icon-qna.png'},
+    {
+    name: '여행후기',
+    img: '/images/icon-review.png'},
+    {
+    name: '동행찾기',
+    img: '/images/icon-together2.png'},
 ]
+
 const onClickCategory = (name) => {
   setSelected(name)
 }
+
+const [posts, setPosts] = useState([{}])
+useEffect(() => {
+  setPosts([
+    {
+      board_no: 1,
+      board_category: '카테고리',
+      board_title: '제목',
+      board_content: '내용',
+      writer: '작성자',
+      date: '작성일',
+    }
+  ])
+}, [])
+
+
   return (
     <>
-      <Header />
-      <LifeSection>
-        <LifeCategory>
-          <ul>
-            <CommunityH3>커뮤니티</CommunityH3>
+      <BoardSection>
+        <BoardCategory>
+          <CategoryUl>
             {categories &&
               categories.map((category) => {
                 return (
-                  <CategoryItem
+                  <CategoryLi
                     key={category.name}
-                    tabIndex="0"
                     active={category.name === selected}
                     onClick={() => onClickCategory(category.name)}
                   >
+                    <img src={category.img} alt={category.name} />
                     {category.name}
-                  </CategoryItem>
+                  </CategoryLi>
                 );
               })}
-          </ul>
-        </LifeCategory>
+          </CategoryUl>
+        </BoardCategory>
 
-        <LifeContentSection>
-          {selected === 'ALL' && (
+        <BContentSection className='content'>
+          {selected === '전체' && (
             <>
-              <SearchInput>
-                <BiSearch />
-                <label htmlFor="search-community" hidden>
-                  커뮤니티 글 검색
-                </label>
-                <input
-                  id="search-community"
-                  type="text"
-                  /* onChange={onChangeInput} */
-                  placeholder="키워드로 제목, 내용, 태그를 검색할 수 있어요."
-                  /* onClick={() => setIsModalShown(true)} */
-                  autoComplete="off"
-                />
-            {/*    {isModalShown && (
-                  <SearchModal inputValue={typed} setShown={setIsModalShown} />
-                )} */}
-              </SearchInput>
               <h3>지금 가장 뜨거운 오행픽🔥</h3>
               <Wrap>
-                <StyledSlider /* {...settings} */>
+                <StyledSlider>
                   <div>
                     <SliderListF>
-                      {/* FIXME: inline-style 수정 필요 */}
-                      <div style={{ padding: '20px' }}>
-                        <div style={{ fontSize: '14px' }}>공지사항</div>
-                        <div style={{ fontWeight: '600', marginTop: '13px' }}>
-                          올바른 커뮤니티 사용법 오행생활 가이드✏️
-                        </div>
-                        <div
-                          div
-                          style={{ fontSize: '14px', marginTop: '30px' }}
-                        >
-                          Soomgo
-                        </div>
-                      </div>
+                      <SliderDiv >
+                        <SliderDivCategory>
+                          공지사항
+                        </SliderDivCategory>
+                        <SliderDivTitle>
+                          오행생활 가이드라인✏️
+                        </SliderDivTitle>
+                        <SliderDivWriter>
+                          iTryp
+                        </SliderDivWriter>
+                      </SliderDiv>
                     </SliderListF>
                   </div>
                   {/* {viewlist_query.data.postList.map((v, i) => {
@@ -157,19 +165,36 @@ const onClickCategory = (name) => {
           )}
 
           <ul>
-          {/*   {postList &&
-              postList.pages.map((page, index) => (
-                <React.Fragment key={index}>
-                  {page.data.map((post) => (
-                    <PostItem key={post.postId} post={post} />
-                  ))}
-                </React.Fragment>
-              ))} */}
+          {posts &&
+            posts.map((post) => (
+              <BoardRow key={post.board_no} post={post} />
+            ))}
           </ul>
-        </LifeContentSection>
-      </LifeSection>
-      {/* {isFetchingNextPage ? <Loading /> : <div ref={ref} />} */}
-      <Bottom />
+
+          <SearchDiv className='searchDiv'>
+            <SearchSelect
+              id="search"
+              aria-label="분류"
+            >
+              <option defaultValue>전체</option>
+              <option value="board_title">제목</option>
+              <option value="mem_id">작성자</option>
+              <option value="board_content">내용</option>
+            </SearchSelect>
+            <SearchInput
+              type="text"
+              id="keyword"
+              placeholder="검색어를 입력하세요"
+              onChange={''}
+            />
+            <BtnSearch className='btnSearch' onClick={'dataSearch'}>
+              검색
+            </BtnSearch>
+          </SearchDiv>
+        </BContentSection>
+      </BoardSection>
+      
+      {/* {isFetchingNextPage ? <Loading /> : <div ref={ref} />} */}      
     </>
   )
 }

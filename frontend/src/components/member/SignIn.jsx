@@ -25,9 +25,9 @@ const SignIn = () => {
         <SocialBlock>
           <span>SNS계정으로 간편 로그인/회원가입</span>
           <div className="socialButton">
-          <img src="../../images/google-icon.png" alt="구글" />
-          <img src="img/kakao-icon.png" alt="네이버" />
-          <img src="img/naver.png" alt="카카오" />
+          <img src="images/google-icon.png" alt="구글" />
+          <img src="images/kakao-icon.png" alt="네이버" />
+          <img src="images/naver-icon.png" alt="카카오" />
           </div>
         </SocialBlock>
         <p>로그인에 문제가 있으신가요?</p>

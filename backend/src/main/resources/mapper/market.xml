@@ -73,7 +73,7 @@
 		          )
 	</insert>
 	<!-- 판매자가 가능 날짜 갯수 넣음 -->
-	<insert id="marketInsert" parameterType="map" useGeneratedKeys="true" keyColumn="market_no" keyProperty="market_no">
+	<insert id="marketInsert도희야 같은아이디 안돼ㅜㅜ" parameterType="map" useGeneratedKeys="true" keyColumn="market_no" keyProperty="market_no">
 		
 	
 	</insert>
