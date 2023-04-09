@@ -1,9 +1,10 @@
 import React from "react";
 import {
+  EmailDiv,
+  EmailInput,
   LoginFormBlock,
   SignDiv,
   SocialBlock,
-  SocialJoinBlock,
 } from "../../styles/SignStyle";
 
 const SignUpPage = () => {
@@ -22,7 +23,16 @@ const SignUpPage = () => {
           </SocialBlock>
           <hr />
           <h5>이메일</h5>
-          <input classname="email" type="text" placeholder="이메일" />
+          <EmailDiv>
+            <EmailInput id="email" type="text" placeholder="이메일" />@
+            <select name="email">
+              <option value="">선택해주세요</option>
+              <option value="select">선택해주세요</option>
+              <option value="select">선택해주세요</option>
+              <option value="select">선택해주세요</option>
+              <option value="select">선택해주세요</option>
+            </select>
+          </EmailDiv>
         </LoginFormBlock>
       </SignDiv>
     </>
