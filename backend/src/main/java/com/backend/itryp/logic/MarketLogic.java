@@ -222,13 +222,22 @@ public class MarketLogic {
 		result = marketDao.qnaInsert(pMap);	
 		return result;
 	} 
-
+	/**
+	 * qna삭제
+	 * @param pMap
+	 * @return
+	 */
 	public int qnaDelete(Map<String, Object> pMap) {
 		logger.info("qnaDelete호출");
 		int result = 0;
 		result = marketDao.qnaDelete(pMap);
 		return result;
 	}
+	/**
+	 * qna 조회
+	 * @param pMap
+	 * @return
+	 */
 	public List<Map<String, Object>> qnaList(Map<String, Object> pMap) {
 		logger.info("qnaList 호출");
 		List<Map<String,Object>> bList = new ArrayList<>();
