@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+export const SignDiv = styled.div`
+  background-color: #fafafa;
+  
+`;
 
 export const LoginFormBlock = styled.form`
   width: 300px;
@@ -71,7 +75,7 @@ export const LoginBlock = styled.div`
   }
   button {
     margin-top: 1.3rem;
-    background-color: blue;
+    background-color: #4996f3;
     border: none;
     border-radius: 5px;
     color: white;
@@ -113,3 +117,4 @@ export const SocialBlock = styled.div`
     }
   }
 `;
+

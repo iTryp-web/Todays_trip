@@ -1,14 +1,18 @@
-import Header from "../include/Header";
-import { LoginBlock, LoginFormBlock, LogoBlock, SocialBlock } from "../../styles/SignStyle";
+import { LoginBlock, LoginFormBlock, LogoBlock, SignDiv, SocialBlock } from "../../styles/SignStyle";
 import { Logo } from "../../styles/FormStyle";
+import { createGlobalStyle } from "styled-components";
 
-
+const GlobalStyle = createGlobalStyle`
+  body{
+    background-color : #fafafa
+  }
+`
 
 
 const SignIn = () => {
   return (
     <>
-      <Header />
+    <GlobalStyle/ >
       <LoginFormBlock>
         <LogoBlock to="/">
           <Logo>오늘의 여행</Logo>
@@ -31,7 +35,6 @@ const SignIn = () => {
           </div>
         </SocialBlock>
         <p>로그인에 문제가 있으신가요?</p>
-        <p>비회원 주문 조회하기</p>
       </LoginFormBlock>
     </>
   );
