@@ -1,11 +1,16 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export const SignDiv = styled.div`
-  background-color: #fafafa;
-  
+export const SignDiv = styled.section`
+  max-width: 1344px;
+  padding: 10rem;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  margin-top: 15em;
+  margin-bottom: 6em;
+  position: relative;
 `;
-
 export const LoginFormBlock = styled.form`
   width: 300px;
   display: flex;
@@ -13,8 +18,12 @@ export const LoginFormBlock = styled.form`
   letter-spacing: -1px;
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
+  margin: auto;
+  @media screen and (max-width: 767px) {
+    top: 50%;
+  }
+
   p {
     text-align: center;
     width: 100%;
@@ -28,6 +37,7 @@ export const LoginFormBlock = styled.form`
       letter-spacing: 0;
     }
   }
+  overflow-x: hidden;
 `;
 
 export const LogoBlock = styled(Link)`
@@ -51,19 +61,22 @@ export const LoginBlock = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 2rem;
+
   input {
     height: 50px;
-    border: 1px solid gray;
+    border: 1px solid lightgray;
     padding: 0 1rem;
     font-size: 1rem;
     &::placeholder {
       color: gray;
     }
     &:focus {
-      outline: 1px solid blue;
+      outline: none;
+      border: 1px solid #4996f3;
     }
     &:hover {
-      background: light-gray;
+      background: #fafafa;
+      transition: 0.5s;
     }
   }
   .email {
@@ -117,4 +130,3 @@ export const SocialBlock = styled.div`
     }
   }
 `;
-

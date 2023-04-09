@@ -9,10 +9,12 @@ import OrderSuccess from './components/order/PaymentSuccess';
 import OrderFail from './components/order/PaymentFail';
 import MarketPage from './components/page/MarketPage';
 import BoardWriteForm from './components/board/BoardWriteForm';
-import SignUp from './components/member/SignUp';
-import SignIn from './components/member/SignIn';
 import BoardLayout from './components/board/BoardLayout';
 import BoardDetail from './components/board/BoardDetail';
+import SignUpPage from './components/page/SignUpPage';
+import SignInPage from './components/page/SignInPage';
+
+
 
 function App() {
   return (
@@ -29,8 +31,8 @@ function App() {
       <Route path='/market' exact={true} element={<MarketPage />} />
       <Route path='/order/success' exact={true} element={<OrderSuccess />} />
       <Route path='/order/fail' exact={true} element={<OrderFail />} />
-      <Route path='/signup' exact={true} element={<SignUp />} />
-      <Route path='/signin' exact={true} element={<SignIn />} />
+      <Route path='/signup' exact={true} element={<SignUpPage />} />
+      <Route path='/signin' exact={true} element={<SignInPage />} />
     </Routes>
     </> 
   );
