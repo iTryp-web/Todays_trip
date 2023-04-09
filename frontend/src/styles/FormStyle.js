@@ -7,7 +7,7 @@ export const Logo = styled.div`
   font-size: 1.6rem;
   letter-spacing: -1px;
   font-family: "Tenada";
-  margin-right: 1.5rem;
+  //margin-right: 1.5rem;
   padding-top: 0.4rem;
   min-width: 80px;
 `
