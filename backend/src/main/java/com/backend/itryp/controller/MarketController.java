@@ -116,7 +116,42 @@ public class MarketController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-
+	/**
+	 * 신고 - 글:0(Board에서 처리) / 댓글:1 / 마켓글:2 / 마켓리뷰:3
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("mReport")
+	public String mReport(@RequestBody Map<String, Object> pMap) {
+		logger.info("mReport 호출");
+		logger.info(pMap);
+		int result = 0;
+		result = marketLogic.mReport(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+	
+////////////////////////////////////////////////////
+	/**
+	 * 리뷰보기 - 정렬(높은 평점순, 낮은 평점순, 추천순, 최신순, 오래된 순)
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@GetMapping("reviewList")
+	public String reviewList(@RequestParam Map<String, Object> pMap) {
+		logger.info("reviewList 호출");
+		logger.info(pMap);
+		String temp = null;
+		List<Map<String, Object>> bList = null;
+		bList = marketLogic.reviewList(pMap);
+		logger.info(bList);
+		Gson g = new Gson();
+		temp = g.toJson(bList);		
+		return temp;
+	}
+	
 	/**
 	 *리뷰 쓰기 - 별점, 한줄리뷰
 	 * 
@@ -165,25 +200,6 @@ public class MarketController {
 	}
 	
 	/**
-	 * 리뷰보기 - 정렬(높은 평점순, 낮은 평점순, 추천순, 최신순, 오래된 순)
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	@GetMapping("reviewList")
-	public String reviewList(@RequestParam Map<String, Object> pMap) {
-		logger.info("reviewList 호출");
-		logger.info(pMap);
-		String temp = null;
-		List<Map<String, Object>> bList = null;
-		bList = marketLogic.reviewList(pMap);
-		logger.info(bList);
-		Gson g = new Gson();
-		temp = g.toJson(bList);		
-		return temp;
-	}
-	
-	/**
 	 * 리뷰 좋아요
 	 * 
 	 * @param pMap
@@ -198,6 +214,22 @@ public class MarketController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
+	/**
+	 * 리뷰좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리)
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("reviewDislike")
+	public String reviewDislike(@RequestBody Map<String, Object> pMap) {
+		logger.info("reviewDislike 호출");
+		logger.info(pMap);
+		int result = 0;
+		result = marketLogic.reviewDislike(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+//////////////////////////////////////////////////////////////
 	/**
 	 * 문의글 쓰기 - 구매자문의 step: 0 / 판매자 답글 step: 1
 	 * 
@@ -240,7 +272,7 @@ public class MarketController {
 		logger.info("qnaList 호출");
 		String temp = null;
 		List<Map<String, Object>> bList = null;
-		bList = marketLogic.marketList(pMap);
+		bList = marketLogic.qnaList(pMap);
 		logger.info(bList);
 		Gson g = new Gson();
 		temp = g.toJson(bList);

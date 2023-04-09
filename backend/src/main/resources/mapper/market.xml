@@ -73,7 +73,7 @@
 		          )
 	</insert>
 	<!-- 판매자가 가능 날짜 갯수 넣음 -->
-	<insert id="marketInsert도희야 같은아이디 안돼ㅜㅜ" parameterType="map" useGeneratedKeys="true" keyColumn="market_no" keyProperty="market_no">
+	<insert id="marketInsert" parameterType="map" useGeneratedKeys="true" keyColumn="market_no" keyProperty="market_no">
 		
 	
 	</insert>
@@ -103,34 +103,35 @@
 		</foreach>
 	</update>	
 	
-	<!-- 마켓 글수정(조회수 갱신) -->
+	<!-- 마켓 글수정 -->
 	<update id="marketUpdate" parameterType="map">
 		UPDATE TB_MARKET
 		<trim prefix="SET" prefixOverrides=",">
-		<if test="board_hit != null and board_hit > 0">
-		    , board_hit = board_hit + 1
+		<if test="market_category != null and market_category.length() != 0">
+		    , market_category = #{market_category}
 		</if>
-		<if test="board_category != null and board_category.length() != 0">
-		    , board_category = #{board_category}
+		<if test="market_title != null and market_title.length() != 0">
+		    , market_title = #{market_title}
 		</if>
-		<if test="board_title != null and board_title.length() != 0">
-		    , board_title = #{board_title}
+		<if test="market_content != null and market_content.length() != 0">
+		    , market_content = #{market_content}
 		</if>
-		<if test="board_content != null and board_content.length() != 0">
-		    , board_content = #{board_content}
+		<if test="market_price != null and market_price.length() != 0">
+		    , market_price = #{market_price}
 		</if>
 		<if test="plus_like != null and plus_like > 0">
-			, board_like = board_like + 1
+			, market_like = market_like + 1
 		</if>
 		<if test="minus_like != null and minus_like > 0">
-			, board_like = board_like - 1
+			, market_like = market_like - 1
 		</if>
 		</trim>
-		WHERE board_no = #{board_no}
+		WHERE market_no = #{market_no}
+		AND user_id=#{user_id}
 	</update>
 	
 	<!-- Quill image 삭제 -->
-	<delete id="mimageDelete" parameterType="map">
+	<delete id="mImageDelete" parameterType="map">
 		DELETE FROM TB_B_FILE
 		WHERE board_no = #{board_no}
 	</delete>
@@ -140,96 +141,13 @@
 		DELETE FROM TB_BOARD
 		WHERE board_no = #{board_no}
 	</delete>
-	
-	<!-- 리뷰 전체 조회 -->
-	<select id="reviewList" parameterType="map" resultType="map">
-		SELECT c.board_no
-		     , u.user_id
-		     , u.user_nickname
-	       , c.comment_no
-	       , c.comment_step
-	       , c.comment_content
-	       , c.comment_date
-	       , c.comment_like
-	       , c.type_comment
-	       , c.comment_status
-		  FROM TB_B_COMMENT c, TB_USER u
-  	  WHERE c.user_id = u.user_id
-  	  AND c.board_no = #{board_no}
-  	  AND (c.comment_status = 0 OR c.comment_status = 1)
-			ORDER BY c.comment_no ASC, c.comment_step ASC
-	</select>
-	
-	<!-- 리뷰 쓰기 -->
-	<insert id="reviewInsert" parameterType="map">
-		INSERT INTO TB_B_COMMENT 
-			           (board_no
-		            , user_id
-		            , comment_no
-		            <if test="comment_step > 0">
-		            , comment_step
-		            </if>
-		            , comment_content
-		            , comment_date
-			          )
-			    VALUES (#{board_no}
-		            , #{user_id}
-	            <if test="comment_no == null">
-				    		, TB_B_COMMENT_NO_SEQ.NEXTVAL
-							</if>
-	            <if test="comment_no != null">
-				    		, #{comment_no}
-							</if>
-							<if test="comment_step > 0">
-		            , TB_B_COMMENT_STEP_SEQ.NEXTVAL
-							</if>
-		            , #{comment_content}
-		            , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
-			          )
-	</insert>
-	
-	<!-- 리뷰 수정 -->
-	<update id="reviewUpdate" parameterType="map">
-		UPDATE TB_B_COMMENT
-		<trim prefix="SET" prefixOverrides=",">
-		<if test="comment_content != null and comment_content.length() != 0">
-			, comment_content = #{comment_content}
-		</if>
-		<if test="comment_status != null and comment_status > 0">
-			, comment_status = #{comment_status}
-		</if>
-		<if test="plus_like != null and plus_like > 0">
-			, comment_like = comment_like + 1
-		</if>
-		<if test="minus_like != null and minus_like > 0">
-			, comment_like = comment_like - 1
-		</if>
-		</trim>
-		WHERE comment_no = #{comment_no}
-			AND comment_step = #{comment_step}
-	</update>
-	
-	<!-- 리뷰 삭제 -->
-	<delete id="reviewDelete" parameterType="map">
-		DELETE FROM TB_B_COMMENT
-		WHERE board_no = #{board_no}
-			AND comment_no = #{comment_no}
-			<!-- 0이면 특정글 , 1이면 해당번호 전부 삭제 -->
-			<if test="delete_all == 0">
-			AND comment_step = #{comment_step}
-			</if>
-	</delete>
-	
-	<!-- 신고 - 글:0 / 댓글:1 / 마켓글:2 / 리뷰:3(마켓에서 처리) -->
-	<insert id="r4567" parameterType="map">
+	<!-- 신고 - report_type 글:0(보드에서 처리) / 댓글:1 / 마켓글:2 / 리뷰:3 -->
+	<insert id="mReport" parameterType="map">
 		INSERT INTO TB_REPORT
 								(report_no
 							 , user_id
 							 , report_type
 							 , report_group
-						 <if test="report_step != null and report_step > 0">
-						 	 , report_step
-						 </if>
 							 , report_user
 							 , report_reason
 							 , report_date
@@ -238,14 +156,81 @@
 							, #{user_id}
 							, #{report_type}
 							, #{report_group}
-						<if test="report_step != null and report_step > 0">
-							, #{report_step}
-					  </if>
 							, #{report_user}
 							, #{report_reason}
 							, TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
 							 )
 	</insert>
+	<!-- 리뷰 전체 조회 정렬- 프론트에서sort(높은평점순-high, 낮은-low, 좋아요많은순-like, new, old)-->
+	<select id="reviewList" parameterType="map" resultType="map">
+		SELECT u.user_id
+		     , u.user_nickname
+	       , m.review_no
+	       , m.market_no
+	       , m.type_review
+	       , m.review_star
+	       , m.review_like
+	       , m.review_content
+	       , m.review_date  
+		  FROM TB_M_REVIEW m, TB_USER u
+  	  WHERE m.user_id = u.user_id
+  	  AND m.review_no = #{review_no}
+  	  <if test='sort != null and sort.equals("high")'>
+  	  	ORDER BY m.review_star DESC
+  	  </if>
+  	  <if test='sort != null and sort.equals("low")'>
+  	  	ORDER BY m.review_star ASC
+  	  </if>
+  	  <if test='sort != null and sort.equals("like")'>
+  	  	ORDER BY m.review_like DESC
+  	  </if>
+  	  <if test='sort != null and sort.equals("new")'>
+  	  	ORDER BY m.review_date DESC
+  	  </if>
+  	  <if test='sort != null and sort.equals("old")'>
+  	  	ORDER BY m.review_date ASC
+  	  </if>
+	</select>
+	
+	<!-- 리뷰 쓰기 TB_M_REVIEW -->
+	<insert id="reviewInsert" parameterType="map">
+		INSERT INTO TB_M_REVIEW 
+			           (review_no
+			          , market_no
+		            , user_id
+		            , review_star
+		           	, review_content
+		            , review_date
+			          )
+			    VALUES (TB_M_REVIEW_SEQ.NEXTVAL
+			    			, #{market_no}
+		            , #{user_id}
+		            , #{review_star}
+		            , #{review_content}
+		            , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+			          )
+	</insert>
+	
+	<!-- 리뷰 수정 -->
+	<update id="reviewUpdate" parameterType="map">
+		UPDATE TB_M_REVIEW 
+		<trim prefix="SET" prefixOverrides=",">
+		<if test="review_content != null and review_content.length() != 0">
+			, review_content = #{review_content}
+		</if>
+		<if test="review_star != null and review_star > 0">
+			, review_star = #{review_star}
+		</if>
+		</trim>
+		WHERE review_no = #{review_no}
+	</update>
+	
+	<!-- 리뷰 삭제 -->
+	<delete id="reviewDelete" parameterType="map">
+		DELETE FROM TB_M_REVIEW 
+		WHERE review_no = #{review_no}
+			AND market_no = #{market_no}
+	</delete>
 	
 	<!--리뷰 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
 	<insert id="reviewLike" parameterType="map">
@@ -270,11 +255,66 @@
 	
 	<!-- 리뷰좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
 	<update id="reviewDislike" parameterType="map">
-	<!-- 좋아요 갯수는 안세는건지??? -->
     UPDATE TB_LIKE
     SET like_count = like_count - 1
     WHERE like_group = #{like_group}
       AND user_id = #{user_id}
       AND like_count >= 1;
-</update>
+	</update>
+	<!--리뷰 갯수세기  -->
+	<select id="reviewLikeCount" parameterType="map">
+		SELECT COUNT(user_id) FROM TB_LIKE 
+		WHERE like_group = #{like_group}
+	</select>
+	<!-- qna 쓰기 qna_step이 0:문의글 1:문의답글  -->
+	<insert id="reviewInsert" parameterType="map">
+		INSERT INTO TB_QNA
+			           (qna_no
+			          , qna_step
+			          , market_no
+		            , user_id
+		            , qna_content
+		           	, qna_date
+		            , qna_sort
+			          )
+			    VALUES(
+								TB_QNA_NO_SEQ.NEXTVAL,
+								#{qna_step},
+								#{market_no},
+								#{user_id},
+								#{qna_title},
+								#{qna_content},
+								TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS'),
+								0
+								)
+	</insert>
+	<!-- qna 문의 글 삭제-->
+	<delete id="qnaDelete" parameterType="map">
+		DELETE FROM TB_M_REVIEW 
+		WHERE qna_no = #{qna_no}
+			AND market_no = #{market_no}
+	</delete>
+	<!-- qna문의 글 조회 search조건검색 -->
+	<select id="qnaList" parameterType="map" resultType="map">
+		SELECT q.qna_no
+		, u.user_id
+		, u.user_nickname
+		, q.market_no
+		, q.qna_title
+		, q.qna_content
+		, q.qna_date
+		FROM TB_QNA q, TB_USER u
+		WHERE q.user_id = u.user_id
+		<if test='search != null and search.equals("작성자")'>
+			AND u.user_nickname LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test='search != null and search.equals("제목")'>
+			AND q.qna_title LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test='search != null and search.equals("내용")'>
+			AND q.qna_content LIKE '%'||#{keyword}||'%'
+		</if>
+		ORDER BY q.qna_no ASC
+	</select>
+	
 </mapper>
