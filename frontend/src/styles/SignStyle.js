@@ -130,3 +130,11 @@ export const SocialBlock = styled.div`
     }
   }
 `;
+
+export const EmailDiv = styled.div`
+  margin: 0 auto;
+`;
+
+export const EmailInput = styled.input`
+  width: 120px;
+`;
