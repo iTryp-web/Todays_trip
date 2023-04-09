@@ -20,7 +20,6 @@ function App() {
     <Routes>
       <Route path='/' exact={true} element={<HomePage />} />
       <Route path='/board' exact={true} element={<BoardPage />} />
-      <Route path='/board/all' exact={true} element={<BoardLayout />} />
       <Route path='/board/detail/:bno' element={<BoardDetail />} />
       <Route path='/board/write' exact={true} element={<BoardWriteForm />} />
       <Route path='/test' exact={true} element={<TestPage />} />
