@@ -3,8 +3,10 @@
 <mapper namespace="com.backend.itryp">
 
 	<!-- 공지사항 글 작성 / 카테고리 조회(배송, 결제, 회원 등) -->
-	<insert id="announceInsert">
-		INSERT INTO TB_BOARD(
+	<insert id="announceInsert" parameterType="map"
+		useGeneratedKeys="true" keyColumn="board_no" keyProperty="board_no">
+		INSERT INTO
+		TB_BOARD(
 		board_no,
 		user_id,
 		board_category,
@@ -18,7 +20,8 @@
 		'공지사항',
 		#{board_title},
 		#{board_content},
-		TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+		TO_CHAR(sysdate, 'YYYY-MM-DD
+		HH:MM:SS')
 		)
 	</insert>
 
@@ -28,10 +31,12 @@
 		, u.user_id
 		, u.user_nickname
 		, q.qna_title
-		, q.qna_content
+		,
+		q.qna_content
 		, q.qna_date
 		FROM TB_QNA q, TB_USER u
-		WHERE q.user_id = u.user_id
+		WHERE q.user_id =
+		u.user_id
 		<if test='search != null and search.equals("작성자")'>
 			AND u.user_nickname LIKE '%'||#{keyword}||'%'
 		</if>
@@ -56,7 +61,7 @@
 		qna_date
 		)
 		VALUES(
-		TB_BOARD_NO_SEQ.NEXTVAL,
+		TB_QNA_NO_SEQ.NEXTVAL,
 		#{qna_step},
 		#{user_id},
 		#{qna_title},
@@ -66,7 +71,13 @@
 		)
 	</insert>
 
-	<!-- 판매자 탈퇴 글 작성 -->
+	<!-- 1대1 문의 글 작성 -->
+	<delete id="inquiryDelete" parameterType="map">
+		DELETE FROM TB_QNA
+		WHERE qna_no = #{qna_no}
+	</delete>
+
+	<!-- 판매자 등록 글 작성 -->
 	<insert id="sellerDelInsert">
 		INSERT INTO TB_QNA(
 		qna_no,
@@ -77,12 +88,13 @@
 		qna_date
 		)
 		VALUES(
-		TB_BOARD_NO_SEQ.NEXTVAL,
+		TB_QNA_NO_SEQ.NEXTVAL,
 		#{user_id},
 		#{qna_title},
 		#{qna_content},
-		3,
-		TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+		4,
+		TO_CHAR(sysdate, 'YYYY-MM-DD
+		HH:MM:SS')
 		)
 	</insert>
 
