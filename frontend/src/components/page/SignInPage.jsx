@@ -13,6 +13,7 @@ const SignIn = () => {
   return (
     <>
     <GlobalStyle/ >
+      <SignDiv>
       <LoginFormBlock>
         <LogoBlock to="/">
           <Logo>오늘의 여행</Logo>
@@ -36,6 +37,7 @@ const SignIn = () => {
         </SocialBlock>
         <p>로그인에 문제가 있으신가요?</p>
       </LoginFormBlock>
+      </SignDiv>
     </>
   );
 };
