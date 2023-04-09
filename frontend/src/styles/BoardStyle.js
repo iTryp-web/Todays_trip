@@ -1,7 +1,7 @@
 import Slider from "react-slick";
 import styled, { css } from "styled-components";
 
-/* BoardPage 스타일 */
+/********** BoardPage 스타일 **********/
 /* 보드 헤더 전체 */
 export const BoardHeader = styled.header`
   width: 100%;
@@ -45,7 +45,7 @@ export const BtnWrite = styled.button`
   }
 `;
 
-/* BoardLayout 스타일 */
+/********** BoardLayout 스타일 **********/
 /* 보드 섹션 전체 */
 export const BoardSection = styled.section`
   max-width: 1344px;
@@ -72,6 +72,7 @@ export const BoardSection = styled.section`
     padding: 0 3rem;
     .content {
       width: 30em;
+      margin-left: 16em;
     }
     .searchDiv {
       width: 80%;
@@ -82,6 +83,7 @@ export const BoardSection = styled.section`
     padding: 0 3rem;
     .content {
       width: 25em;
+      margin-left: 15em;
     }
     .searchDiv {
       width: 100%;
@@ -91,6 +93,8 @@ export const BoardSection = styled.section`
 
 /* 카테고리 전체 */
 export const BoardCategory = styled.nav`
+  position: absolute;
+  top: 14em;
   display: flex;
   flex-direction: column;
   width: 200px;
@@ -105,7 +109,7 @@ export const BoardCategory = styled.nav`
 export const CategoryUl = styled.ul`
   color: black;
   text-decoration-line: none;
-  margin-right: 1.3rem;
+  margin-right: 1.2rem;
   font-size: 1rem;
   font-weight: 600;
   &.active {
@@ -141,8 +145,8 @@ export const CategoryLi = styled.li`
 /* 커뮤니티 글목록 부분 */
 export const BContentSection = styled.section`
   flex: 1;
-  max-width: 950px;
-  margin-left: 85px;
+  max-width: 960px;
+  margin-left: 17em;
   h3 {
     font-size: 18px;
     font-weight: 700;
@@ -151,13 +155,14 @@ export const BContentSection = styled.section`
 
 export const Wrap = styled.div`
   margin: 30px 0px;
+  margin-top: 20px;
+  overflow: hidden;
 `;
 
 /* 전체화면에 뜨는 슬라이더 */
 export const StyledSlider = styled(Slider)`
   height: 180px;
   width: 100%;
-  position: relative;
   margin-bottom: 40px;
   .slick-prev:before,
   .slick-next:before {
@@ -169,14 +174,31 @@ export const StyledSlider = styled(Slider)`
   }
 `;
 
-export const SliderListF = styled.div`
+/* 파란배경 메인 슬라이더 */
+export const SliderMain = styled.div`
+  float: left;
   height: 14em;
   width: 14em;
   border-radius: 20px;
   background-color: #4996f3;
   margin-right: 10px;
+  position: relative;
   div {
     color: white;
+  }
+`;
+
+/* 흰배경 서브 슬라이더 */
+export const SliderSub = styled.div`
+  float: left;
+  height: 14em;
+  width: 14em;
+  border-radius: 20px;
+  background-color: #f4f4f4;
+  margin-right: 10px;
+  position: relative;
+  div {
+    color: black;
   }
 `;
 
@@ -187,27 +209,13 @@ export const SliderDiv = styled.div`
 `;
 
 export const SliderDivCategory = styled.div`
-  fontsize: 14px;
+  font-weight: 600;
+  font-size: 14px;
 `;
+
 export const SliderDivTitle = styled.div`
-  fontweight: 600;
-  margintop: 13px;
-`;
-export const SliderDivWriter = styled.div`
-  fontsize: 14px;
-  margintop: 30px;
-  position: absolute;
-  bottom: 40px;
-`;
-
-export const SliderList = styled.div`
-  height: 180px;
-  border-radius: 20px;
-  background-color: #f4f4f4;
-  margin-right: 10px;
-`;
-
-export const SliderTitle = styled.div`
+  font-weight: 900;
+  margin-top: 13px;
   overflow: hidden;
   display: -webkit-box;
   text-overflow: ellipsis;
@@ -216,7 +224,15 @@ export const SliderTitle = styled.div`
   -webkit-box-orient: vertical;
 `;
 
-export const SearchDiv = styled.div`\
+export const SliderDivWriter = styled.div`
+  font-size: 13px;
+  margin-top: 30px;
+  position: absolute;
+  bottom: 25px;
+`;
+
+/* 검색 */
+export const SearchDiv = styled.div`
   width: 70%;
   height: 45px;
   padding: 0 4rem;
@@ -225,13 +241,20 @@ export const SearchDiv = styled.div`\
   text-align: center;
   left: 32%;
   margin: 0 auto;
-  margin-top: 6em;
+  margin-top: 5em;
+  font-size: 14px;
 `;
 
 export const SearchSelect = styled.select`
   width: 7em;
   max-width: 7em;
   margin: 1em;
+  border: 1px solid lightgray;
+  padding: 6px;
+  border-radius: 6px;
+  :focus {
+    outline: none;
+  }
 `;
 
 export const SearchInput = styled.input`
@@ -256,6 +279,181 @@ export const BtnSearch = styled.button`
   font-weight: 600;
   background-color: #4996f3;
   color: white;
-  font-size: 1em;
   border: none;
+`;
+
+/********** BoardRow 스타일 **********/
+export const PostLi = styled.li`
+  list-style: none;
+  padding: 16px 8px;
+  margin-right: 3em;
+  border-bottom: 1px solid #f4f4f4;
+  font-size: 14px;
+  .categoryP {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #dbeafd;
+    color: #4a71a4;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .postLink {
+    text-decoration-line: none;
+  }
+`;
+
+export const PostContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  .titleP {
+    color: black;
+    overflow: hidden;
+    display: -webkit-box;
+    padding-right: 5px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  #fileI {
+    margin: 0 5px;
+    width: 15px;
+    height: 15px;
+    color: #888;
+  }
+  .contentP {
+    overflow: hidden;
+    display: -webkit-box;
+    margin: 8px 0 5px 0;
+    padding-right: 16px;
+    color: #888;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+`;
+
+export const PostFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  ul.list-count {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    padding-left: 0;
+    svg {
+      width: 20px;
+      height: 17px;
+      margin-right: 2px;
+      padding-bottom: 3px;
+      fill: #c5c5c5;
+      &:last-child {
+        transform: rotateY(180deg);
+      }
+    }
+    li {
+      color: #c5c5c5;
+      font-size: 12px;
+    }
+  }
+  small {
+    font-size: 12px;
+    letter-spacing: -0.2px;
+    color: #c5c5c5;
+  }
+`;
+
+/********** BoardWriteForm 스타일 **********/
+/* 글쓰기 섹션 전체 */
+export const WriteSection = styled.section`
+  max-width: 1344px;
+  padding: 0 5rem;
+  margin: 0 auto;
+  margin-top: 2.5em;
+  margin-bottom: 6em;
+`;
+
+export const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #f4f4f4;
+  font-size: 14px;
+  &:last-child {
+    border: none;
+  }
+  .categoryDropdown {
+    margin-left: 0.8em;
+    border: 1px solid lightgray;
+    border-Radius:5px;
+    height:2.7em;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+  }
+  .btnInsert {
+    margin-right: 0.7em;
+    padding: 0 0.9rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    height:2.7em;
+    width: 6em;
+    background: #4996f3;
+    color: white;
+    }
+  }
+  #input-title {
+    width: 100%;
+    padding: 4px 14px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    &::placeholder {
+      color: #888;
+    }
+  }
+`;
+
+/********** QuillEditor 스타일 **********/
+export const QuillDiv = styled.div`
+  height: 560px;
+  display: flex;
+  justify-Content: center;
+  padding: 0px;
+  border-radius: 10px;  
+  .quill {
+    height: 560px;
+    width: 100%;
+  }
+  .ql-toolbar {
+    border: none;
+    border-bottom: 1px solid #f4f4f4;
+  }
+  .ql-container{
+    border: none;
+    padding-top: 0.5em;
+  }
+}
+`;
+
+/********** BoardDetail 스타일 **********/
+/* 상세보기 섹션 전체 */
+export const DetailSection = styled.section`
+  max-width: 1344px;
+  padding: 0 5rem;
+  margin: 0 auto;
+  margin-top: 2.5em;
+  margin-bottom: 6em;
 `;
