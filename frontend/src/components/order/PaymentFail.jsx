@@ -1,5 +1,5 @@
 import React from 'react'
-import Bottom from '../include/Bottom'
+import Bottom from '../include/Footer'
 import Header from '../include/Header'
 import './orderResult.css'
 import { Link } from 'react-router-dom'

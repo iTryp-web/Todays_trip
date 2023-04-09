@@ -1,10 +1,10 @@
 import React from 'react'
 import Header from '../include/Header'
-import Bottom from '../include/Bottom'
 import '../../styles/cartStyle'
 import { CartButtonDiv, CartCalcDiv, CartDiv, CartItemTitle, CartListDiv, CartTable, CartTitle, LineHr, ResultDiv } from '../../styles/cartStyle'
 import CartRow from '../cart/CartRow'
 import { Button } from 'react-bootstrap'
+import Footer from '../include/Footer'
 
 const CartPage = () => {
   //임시 데이터
@@ -45,7 +45,7 @@ const CartPage = () => {
         </CartListDiv>
       : <div>장바구니에 담긴 상품이 없습니다.</div>}
       </CartDiv>
-      <Bottom/>
+      <Footer/>
     </>
   )
 }
