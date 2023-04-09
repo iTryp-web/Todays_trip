@@ -69,13 +69,13 @@ const BoardWriteForm = () => {
         <Row>
           <input
             type="text"
-            id="input-title"
+            id="board_title"
             maxLength="60"
             placeholder="제목을 입력해주세요."
             autoComplete="off"
             onChange={(e)=>{handleTitle(e.target.value)}}
           />
-          <button className='btnInsert'>글쓰기</button>
+          <button className='btnInsert'>등록</button>
         </Row>
         <QuillEditor value={content} handleContent={handleContent} quillRef={quillRef} files={files} handleFiles={handleFiles}/>
     </WriteSection>

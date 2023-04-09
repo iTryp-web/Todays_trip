@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {BoardSection, BoardCategory, CategoryLi, BContentSection, SearchInput, Wrap, StyledSlider, SliderListF, CommunityH3, CategoryUl, BtnSearch, SearchDiv, SearchSelect, SearchInputText, SliderDiv, SliderDivCategory, SliderDivTitle, SliderDivWriter, SliderMain, SliderSub} from '../../styles/BoardStyle'
 import { BiSearch } from 'react-icons/bi';
 import { Outlet, useNavigate } from 'react-router-dom'
@@ -90,19 +90,25 @@ const [posts, setPosts] = useState([
 ])
 
 /* 검색 */
-const [search, setSearch] = useState('전체')
-const [searchVal, setSearchVal] = useState('')
+// 검색 조건 목록
+const [search] = useState(['전체', '작성자', '제목', '내용'])
+// 선택한 검색 조건
+const [searchVal, setSearchVal] = useState('전체')
+// 입력한 검색값
+const [keyword, setKeyword] = useState('')
 
-const handleSearch = (e) => {
-  console.log('handleSearch => ' + e.target.value);
-  setSearch(e.target.value)
-}
-const handleSearchVal = (e) => {
-  console.log('handleSearchVal => ' + e.target.value);
-  setSearchVal(e.target.value)
-}
+const handleSearch = useCallback((e) => {
+  console.log('handleSearch => ' + e);
+  setSearchVal(e)
+},[])
+
+const handleSearchKeyword = useCallback((e) => {
+  console.log('handleSearchKeyword => ' + e);
+  setKeyword(e);
+},[]);
+
 const btnSearch = () => {
-  console.log('btnSearch => ' + search + searchVal);
+  console.log('btnSearch => ' + searchVal + keyword);
 }
 
   return (
@@ -152,14 +158,18 @@ const btnSearch = () => {
 
           {/* 검색 */}
           <SearchDiv className='searchDiv'>
-            <SearchSelect id="search" aria-label="분류" onChange={handleSearch}>
-              <option defaultValue>전체</option>
-              <option value="작성자">작성자</option>
-              <option value="제목">제목</option>
-              <option value="내용">내용</option>
-            </SearchSelect>
-            <SearchInput type="text" id="keyword" placeholder="검색어를 입력하세요"
-              onChange={handleSearchVal}/>
+            <DropdownButton className='searchDropdown' variant="" title={searchVal}>
+              {search.map((item, index)=>(
+                  <Dropdown.Item as="button" key={index} onClick={()=>{
+                    handleSearch(item); 
+                  }}>
+                    {item}
+                  </Dropdown.Item>
+                )) 
+              }
+            </DropdownButton>
+            <SearchInput type="text" id="keyword" maxLength="60" placeholder="검색어를 입력하세요"
+              autoComplete="off" onChange={(e)=>{handleSearchKeyword(e.target.value)}}/>
             <BtnSearch className='btnSearch' onClick={btnSearch}>
               검색
             </BtnSearch>
