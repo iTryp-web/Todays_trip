@@ -1,6 +1,7 @@
 package com.backend.itryp.logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,46 @@ public class MarketLogic {
 		return bList;
 	}
 	/**
-	 * 마켓 글 수정
+	 * 마켓 글쓰기 - Quill image 업로드
+	 * @param pMap
+	 * @return
+	 */
+	public int marketInsert(Map<String, Object> pMap) {
+		logger.info("marketInsert 호출");
+		int result = 0;
+		result = marketDao.marketInsert(pMap);
+		// Quill image가 있을 경우
+				if(result > 0 && pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
+					int insertImg =marketDao.mImageInsert(pMap);
+					if(insertImg > 0) {
+						logger.info("이미지 업로드 성공");
+					} else {				
+						logger.info("이미지 업로드 실패");
+					}
+				}
+				return result;
+	}
+	/**
+	 * 이미지이름, 보더넘버 list형태로 바꾸기
+	 * @param pMap
+	 * @return
+	 */
+	private List<Map<String, Object>> mImageNames(Map<String, Object> pMap) {
+		logger.info("mImageNames");
+		List<Map<String, Object>> pList = new ArrayList<>();
+		// pMap.get("mImageNames") 리턴형태는 배열 - ["man1.png", "man2.png"]
+		HashMap<String, Object> fMap = null;
+		String[] imageNames = pMap.get("mImageNames").toString().substring(1, pMap.get("imageNames").toString().length()-1).split(",");
+		for(int i=0; i<imageNames.length; i++) {
+			fMap = new HashMap<>();
+			fMap.put("file_name", imageNames[i]);
+			fMap.put("board_no", pMap.get("board_no"));
+			pList.add(fMap);
+		}
+		return pList;
+	}
+	/**
+	 * 마켓 글 수정+이미지 수정
 	 * @param pMap
 	 * @return
 	 */
@@ -51,6 +91,14 @@ public class MarketLogic {
 		logger.info("marketUpdate 호출");
 		int result = 0;
 		result = marketDao.marketUpdate(pMap);
+		//이미지수정
+		// Quill image가 있을 경우
+				if(pMap.get("mImageNames") != null) {
+					// 작성자가 선택한 이미지의 개수가 n개까지 올 수 있다
+					// -> 이미지 개수만큼, 3개에대한 업데이트가 n번 일어나야한다
+					// -> xml에서 forEach list로 받기에 해당 부분 처리가 필요함
+					result = marketDao.mImageUpdate(mImageNames(pMap));
+				}
 		return result;
 	}
 	/**
@@ -65,16 +113,41 @@ public class MarketLogic {
 		int result = 0;
 		result = marketDao.marketDelete(pMap);
 		// Quill image가 있을 경우
-				if(result > 0 && pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
-					int deleteImg = marketDao.marketDelete(pMap);
-					if(deleteImg > 0) {
+				if(result > 0) {
+					int mImageDelete = marketDao.mImageDelete(pMap);
+					if(mImageDelete > 0) {
 						logger.info("이미지 삭제 성공");
 					} else {				
-						logger.info("이미지 삭제 실패");
+						logger.info("이미지 삭제 실패 혹은 삭제할 파일이 없음");
 					}
 				}
 				return result;
 	}
+	/**
+	 * 신고-1판매글, 2리뷰
+	 * @param pMap
+	 * @return
+	 */
+	public int mReport(Map<String, Object> pMap) {
+		logger.info("mReport 호출");
+		int result = 0;
+		result = marketDao.mReport(pMap);
+		return result;
+	}
+/////////////////////////////////////////////////////////
+	/**
+	 * 리뷰 조회-정렬(높은평점순, 낮은, 추천순, 최신순, 오래된순)
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> reviewList(Map<String, Object> pMap) {
+		logger.info("reviewList 호출");
+		List<Map<String,Object>> mList = new ArrayList<>();
+		mList= marketDao.reviewList(pMap);
+		return mList;
+	}
+	
 	/**
 	 * 리뷰 글쓰기-한줄리뷰
 	 * @param pMap
@@ -108,18 +181,7 @@ public class MarketLogic {
 		result = marketDao.reviewDelete(pMap);
 		return result;
 	}
-	/**
-	 * 리뷰 조회-정렬(높은평점순, 낮은, 추천순, 최신순, 오래된순)
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	public List<Map<String, Object>> reviewList(Map<String, Object> pMap) {
-		logger.info("reviewList 호출");
-		List<Map<String,Object>> mList = new ArrayList<>();
-		mList= marketDao.reviewList(pMap);
-		return mList;
-	}
+	
 	/**
 	 * 리뷰좋아요
 	 * 
@@ -141,11 +203,12 @@ public class MarketLogic {
 	    logger.info("reviewDislike 호출");
 	    int result = 0;
 	    int likeCount = marketDao.reviewLikeCount(pMap); // 해당 리뷰의 현재 좋아요 수 가져오기
-	    if (likeCount >= 1 && marketDao.hasUserLikedReview(pMap)) { // 해당 리뷰의 좋아요 수가 1 이상이고 사용자가 좋아요를 누른 경우
+	    if (likeCount >= 1) { // 해당 리뷰의 좋아요 수가 1 이상
 	        result = marketDao.reviewDislike(pMap); // 리뷰의 좋아요 수 감소
 	    }
 	    return result;
 	}
+///////////////////////////////////////////////////////////////
 
 	/**
 	 * 문의글, 문의답글쓰기- 구매자문의 qna_step: 0 / 판매자 답글 : 1
@@ -158,7 +221,7 @@ public class MarketLogic {
 		int result = 0;
 		result = marketDao.qnaInsert(pMap);	
 		return result;
-	}
+	} 
 
 	public int qnaDelete(Map<String, Object> pMap) {
 		logger.info("qnaDelete호출");
@@ -166,26 +229,14 @@ public class MarketLogic {
 		result = marketDao.qnaDelete(pMap);
 		return result;
 	}
-
-	/**
-	 * 마켓 글쓰기 - Quill image 업로드
-	 * @param pMap
-	 * @return
-	 */
-	public int marketInsert(Map<String, Object> pMap) {
-		logger.info("marketInsert 호출");
-		int result = 0;
-		result = marketDao.marketInsert(pMap);
-		// Quill image가 있을 경우
-				if(result > 0 && pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
-					int insertImg =marketDao.mImageInsert(pMap);
-					if(insertImg > 0) {
-						logger.info("이미지 업로드 성공");
-					} else {				
-						logger.info("이미지 업로드 실패");
-					}
-				}
-				return result;
+	public List<Map<String, Object>> qnaList(Map<String, Object> pMap) {
+		logger.info("qnaList 호출");
+		List<Map<String,Object>> bList = new ArrayList<>();
+		bList= marketDao.qnaList(pMap);
+		return bList;
 	}
+	
+
+	
 	
 }
