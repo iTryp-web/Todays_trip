@@ -5,17 +5,28 @@
 	<select id="boardList" parameterType="map" resultType="map">
 		SELECT b.board_no
 		     , u.user_nickname
-	       , b.board_category
-	       , b.board_title
-	       , b.board_content
-	       , b.board_date
-	       , b.board_hit
-	       , b.board_like
-	       , b.type_board
-		  FROM TB_BOARD b, TB_USER u
-  	  WHERE b.user_id = u.user_id
-  	  AND b.board_status = 0
-  	  AND b.board_category != '공지사항'
+			   , b.board_category
+			   , b.board_title
+			   , b.board_content
+			   , b.board_date
+			   , b.board_hit
+			   , b.type_board
+			   , l.like_count
+			   , c.comment_count
+		  FROM TB_BOARD b
+		  	 , TB_USER u
+				 , (SELECT COUNT(user_Id) like_count, like_group
+				    FROM TB_LIKE
+				    WHERE like_type = 0
+				    GROUP BY like_group) l
+				 , (SELECT COUNT(user_id) comment_count, board_no
+				    FROM TB_B_COMMENT
+				    GROUP BY board_no) c
+			WHERE b.user_id = u.user_id
+				AND b.board_no = l.like_group
+				AND b.board_no = c.board_no
+				AND b.board_status = 0
+				AND b.board_category != '공지사항'
 			<if test='board_category!=null and !board_category.equals("전체")'>
 				AND b.board_category = #{board_category}
 			</if>
@@ -34,33 +45,55 @@
 	<!-- 커뮤니티글 상세조회 -->
 	<select id="boardDetail" parameterType="map" resultType="map">
 		SELECT b.board_no
-	       , u.user_nickname
-	       , b.board_category
-	       , b.board_title
-	       , b.board_content
-	       , b.board_date
-	       , b.board_hit
-	       , b.board_like
-	       , b.type_board
-		  FROM TB_BOARD b, TB_USER u
-  	  WHERE b.user_id = u.user_id
-  	  AND b.board_no = #{board_no}
+         , u.user_nickname
+         , b.board_category
+         , b.board_title
+         , b.board_content
+         , b.board_date
+         , b.board_hit
+         , b.type_board
+         , l.like_count
+         , c.comment_count
+    FROM TB_BOARD b
+       , TB_USER u
+       , (SELECT COUNT(user_Id) like_count, like_group
+          FROM TB_LIKE
+          WHERE like_type = 0
+          GROUP BY like_group) l
+       , (SELECT COUNT(user_id) comment_count, board_no
+          FROM TB_B_COMMENT
+          GROUP BY board_no) c
+	  WHERE b.user_id = u.user_id
+	    AND b.board_no = l.like_group
+	    AND b.board_no = #{board_no};
 	</select>
-	
+		
 	<!-- 커뮤니티 인기글 모아보기 -->
 	<select id="boardHot" parameterType="map" resultType="map">
 		SELECT b.board_no
-	       , u.user_nickname
-	       , b.board_category
-	       , b.board_title
-	       , b.board_content
-	       , b.board_date
-	       , b.board_hit
-	       , b.board_like
-	       , b.type_board
-	  FROM TB_BOARD b, TB_USER u
-		WHERE b.user_id = u.user_id
-		AND b.board_like >= 5
+		     , u.user_nickname
+			   , b.board_category
+			   , b.board_title
+			   , b.board_content
+			   , b.board_date
+			   , b.board_hit
+			   , b.type_board
+			   , l.like_count
+			   , c.comment_count
+		  FROM TB_BOARD b
+		  	 , TB_USER u
+				 , (SELECT COUNT(user_Id) like_count, like_group
+				    FROM TB_LIKE
+				    WHERE like_type = 0
+				    GROUP BY like_group) l
+				 , (SELECT COUNT(user_id) comment_count, board_no
+				    FROM TB_B_COMMENT
+				    GROUP BY board_no) c
+			WHERE b.user_id = u.user_id
+				AND b.board_no = l.like_group
+				AND b.board_no = c.board_no
+				AND b.board_status = 0
+				AND b.board_like >= 5
 	</select>
 
 	<!-- 커뮤니티 글쓰기 -->
@@ -124,12 +157,6 @@
 		<if test="board_content != null and board_content.length() != 0">
 		    , board_content = #{board_content}
 		</if>
-		<if test="plus_like != null and plus_like > 0">
-			, board_like = board_like + 1
-		</if>
-		<if test="minus_like != null and minus_like > 0">
-			, board_like = board_like - 1
-		</if>
 		</trim>
 		WHERE board_no = #{board_no}
 	</update>
@@ -146,23 +173,31 @@
 		WHERE board_no = #{board_no}
 	</delete>
 	
-	<!-- 댓글 전체 조회 -->
+	<!-- 해당글 댓글 조회(커뮤니티 상세보기할떄) -->
 	<select id="replyList" parameterType="map" resultType="map">
-		SELECT c.board_no
-		     , u.user_id
-		     , u.user_nickname
-	       , c.comment_no
-	       , c.comment_step
-	       , c.comment_content
-	       , c.comment_date
-	       , c.comment_like
-	       , c.type_comment
-	       , c.comment_status
-		  FROM TB_B_COMMENT c, TB_USER u
-  	  WHERE c.user_id = u.user_id
-  	  AND c.board_no = #{board_no}
-  	  AND (c.comment_status = 0 OR c.comment_status = 1)
-			ORDER BY c.comment_no ASC, c.comment_step ASC
+		SELECT u.user_nickname
+         , c.comment_no
+         , c.comment_step
+         , c.comment_content
+         , c.comment_date
+         , c.type_comment
+         , c.comment_status
+         , l.like_count
+		FROM TB_B_COMMENT c
+	     , TB_USER u
+	     , (SELECT COUNT(user_Id) like_count, like_step, like_group
+		     FROM tb_like
+		     WHERE like_type = 1
+		     GROUP BY like_step, like_group) l
+	 WHERE c.user_id = u.user_id
+     AND c.comment_no = l.like_group(+)
+     AND c.comment_step = l.like_step(+)
+     AND c.board_no = #{board_no}
+     <if test="judge != null">
+     AND c.comment_no = #{judge}
+     </if>
+     AND (c.comment_status = 0 OR c.comment_status = 1)
+	ORDER BY c.comment_no ASC, c.comment_step ASC
 	</select>
 	
 	<!-- 댓글, 대댓글 쓰기 -->
@@ -203,12 +238,6 @@
 		<if test="comment_status != null and comment_status > 0">
 			, comment_status = #{comment_status}
 		</if>
-		<if test="plus_like != null and plus_like > 0">
-			, comment_like = comment_like + 1
-		</if>
-		<if test="minus_like != null and minus_like > 0">
-			, comment_like = comment_like - 1
-		</if>
 		</trim>
 		WHERE comment_no = #{comment_no}
 			AND comment_step = #{comment_step}
@@ -218,9 +247,13 @@
 	<delete id="replyDelete" parameterType="map">
 		DELETE FROM TB_B_COMMENT
 		WHERE board_no = #{board_no}
-			AND comment_no = #{comment_no}
+			<!-- 글삭제는 위에서 끝나고 댓글, 대댓글삭제일경우에만 조건에 들어가도록 -->
+			<!-- 0이면 댓글대댓글, 1이면 작성글 삭제할때 모든댓글 삭제-->
+			<if test="delete_board != null and delete_board == 0">
+				AND comment_no = #{comment_no}
+			</if>
 			<!-- 0이면 특정글 , 1이면 해당번호 전부 삭제 -->
-			<if test="delete_all == 0">
+			<if test="delete_all != null and delete_all == 0">
 			AND comment_step = #{comment_step}
 			</if>
 	</delete>

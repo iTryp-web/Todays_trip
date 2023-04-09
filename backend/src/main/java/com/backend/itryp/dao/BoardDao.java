@@ -38,7 +38,9 @@ public class BoardDao {
 	public List<Map<String, Object>> boardDetail(Map<String, Object> pMap) {
 		logger.info("boardDetail 호출");
 		List<Map<String,Object>> bList = null;
-		bList = sqlSessionTemplate.selectList("boardDetail", pMap);
+		// 전체조회 쿼리문실행 후 거기서 상세보기정보 출력하고 로직으로는 댓글만 가져와도 될듯? - 테스트할것
+		//bList = sqlSessionTemplate.selectList("boardDetail", pMap);
+		bList = sqlSessionTemplate.selectList("replyList", pMap);
 		return bList;
 	}
 
@@ -64,8 +66,17 @@ public class BoardDao {
 	public int boardInsert(Map<String, Object> pMap) {
 		logger.info("boardInsert 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("boardInsert", pMap);
-		return result;
+		int board_no = 0; // insert시에 시퀀스로 채번된 속성을 담을 변수 - board_no의 값
+		// insert는 반환값이 object
+		result = sqlSessionTemplate.insert("boardInsert", pMap);
+		if(result == 1) {
+			if(pMap.get("board_no") != null) {
+				board_no = Integer.parseInt(pMap.get("board_no").toString());
+			}
+		}
+		logger.info("result => " + result);
+		logger.info("userGeneratedKeys 프로퍼티 속성값 => " + board_no);
+		return board_no;
 	}
 	
 	/**

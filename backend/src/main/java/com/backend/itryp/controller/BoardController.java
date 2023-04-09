@@ -117,6 +117,11 @@ public class BoardController {
 	public String boardUpdate(@RequestBody Map<String, Object> pMap) {
 		logger.info("boardUpdate 호출");
 		logger.info(pMap);
+		if(pMap.get("board_no") != null) {
+			// NumberFormatException 방어코드(값에 null이 들어가지 않도록!)
+			int board_no = Integer.parseInt(pMap.get("board_no").toString());
+			pMap.put("board_no", board_no);
+		}
 		int result = 0;
 		result = boardLogic.boardUpdate(pMap);
 		logger.info(result);
@@ -133,6 +138,11 @@ public class BoardController {
 	public String boardDelete(@RequestBody Map<String, Object> pMap) {
 		logger.info("boardDelete 호출");
 		logger.info(pMap);
+		if(pMap.get("board_no") != null) {
+			// NumberFormatException 방어코드(값에 null이 들어가지 않도록!)
+			int board_no = Integer.parseInt(pMap.get("board_no").toString());
+			pMap.put("board_no", board_no);
+		}
 		int result = 0;
 		result = boardLogic.boardDelete(pMap);
 		logger.info(result);

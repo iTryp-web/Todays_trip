@@ -135,15 +135,11 @@ public class BoardLogic {
 		logger.info("boardDelete 호출");
 		int result = 0;
 		result = boardDao.boardDelete(pMap);
-		// Quill image가 있을 경우
-		if(result > 0) {
-			int imageDelete = boardDao.imageDelete(pMap);
-			if(imageDelete > 0) {
-				logger.info("이미지 삭제 성공");
-			} else {				
-				logger.info("이미지 삭제 실패 혹은 삭제할 파일 없음");
-			}
-		}
+		int imageDelete = boardDao.imageDelete(pMap);
+		logger.info("이미지삭제 => " + imageDelete);
+		pMap.put("delete_board", 1);
+		int commentDelete = boardDao.replyDelete(pMap);
+		logger.info("댓글삭제 => " + commentDelete);
 		return result;
 	}
 
@@ -195,28 +191,34 @@ public class BoardLogic {
 	public int replyDelete(Map<String, Object> pMap) {
 		logger.info("replyDelete 호출");
 		int result = 0;
-		String c_no = String.valueOf(pMap.get("comment_no"));
-		logger.info("삭제 c_no => " + c_no);
+		// 댓글, 대댓글삭제 표시 댓대댓:0 글:1
+		pMap.put("delete_board", 0);
+		// 삭제하려는 댓글번호
+		int comment_no = Integer.parseInt(pMap.get("comment_no").toString());
+		logger.info("삭제 comment_no => " + comment_no);
 		int c_step = 0; // 대댓글의 수
 		int c_status = 0; // 대댓글의 상태
-		List<Map<String, Object>> judge = boardDao.replyList(pMap);
-		// 대댓글 삭제 -> 삭제된 댓글입니다 표시
-		if(String.valueOf(pMap.get("comment_step")).equals("1")) {
-			pMap.put("comment_content", "삭제된 댓글입니다.");
-			pMap.put("comment_status", 1); // 댓글 - 디폴트:0 / 삭제:1 / 차단:2
-			result = boardDao.replyUpdate(pMap);
+		// 대댓글 삭제 -> 바로삭제(대댓글)
+		if(Integer.parseInt(pMap.get("comment_step").toString()) > 0) {
+			pMap.put("delete_all", 0); // 0이면 특정글 , 1이면 댓글,대댓글 전부 삭제
+			result = boardDao.replyDelete(pMap);
 		}
+		// 판단용 변수 추가
+		pMap.put("judge", comment_no);
+		List<Map<String, Object>> judge = boardDao.replyList(pMap);
 		// 삭제기준 판별위한 for문
 		for(int i=0; i<judge.size(); i++) {
-			if(String.valueOf(judge.get(i).get("COMMENT_NO")).equals(c_no)) {
-				if(!String.valueOf(judge.get(i).get("COMMENT_STEP")).equals("0")) {
+			if(Integer.parseInt(judge.get(i).get("COMMENT_NO").toString()) == comment_no) {
+				if(Integer.parseInt(judge.get(i).get("COMMENT_STEP").toString()) > 0) {
 					c_step++;
-					if(String.valueOf(judge.get(i).get("COMMENT_STATUS")).equals("1")) {
+					if(Integer.parseInt(judge.get(i).get("COMMENT_STATUS").toString()) == 1) {
 						c_status++;
 					}
 				}
 			}
 		}
+		// result값 저장
+		int fResult = result;
 		logger.info("c_step의 크기 => " + c_step);
 		logger.info("c_status의 크기 => " + c_status);
 		// 대댓글이 남아있는 댓글 삭제 -> 삭제된 댓글입니다 표시
@@ -224,15 +226,14 @@ public class BoardLogic {
 			pMap.put("comment_content", "삭제된 댓글입니다.");
 			pMap.put("comment_status", 1); // 댓글 - 디폴트:0 / 삭제:1 / 차단:2
 			result = boardDao.replyUpdate(pMap);
+			if(result == 0) {
+				result = fResult;
+			}
 		}
-		// 대댓글이 없는 댓글 삭제 -> 바로 삭제(댓글)
-		else if(c_step == 0) {
-			result = boardDao.replyDelete(pMap);						
-		}
-		// 대댓글이 모두 삭제된 댓글 삭제 -> 바로 삭제(댓글, 대댓글 모두)
-		else if(c_step == c_status) {
+		// 대댓글이 없거나 모두 삭제된 댓글 삭제 -> 바로 삭제(댓글, 대댓글 모두)
+		else if(c_step == 0 || c_step == c_status) {
 			pMap.put("delete_all", 1); // 0이면 특정글 , 1이면 댓글,대댓글 전부 삭제
-			result = boardDao.replyDelete(pMap);						
+			result = boardDao.replyDelete(pMap);			
 		}
 		return result;
 	}
@@ -260,22 +261,6 @@ public class BoardLogic {
 		logger.info("likeOn 호출");
 		int result = 0;
 		result = boardDao.likeOn(pMap);
-		int type = (int)pMap.get("like_type");
-		if(result > 0) {
-			// 좋아요타입 0: 글
-			if(type == 0) {
-				pMap.put("plus_like", 1);
-				pMap.put("board_no", pMap.get("like_group"));
-				int like = boardDao.boardUpdate(pMap);
-			}
-			// 좋아요타입 1: 댓글, 대댓글
-			else if(type == 1) {
-				pMap.put("plus_like", 1);
-				pMap.put("comment_no", pMap.get("like_group"));
-				pMap.put("comment_step", pMap.get("like_step"));
-				int like = boardDao.replyUpdate(pMap);
-			}
-		}
 		return result;
 	}
 
@@ -289,22 +274,6 @@ public class BoardLogic {
 		logger.info("likeOff 호출");
 		int result = 0;
 		result = boardDao.likeOff(pMap);
-		int type = (int)pMap.get("like_type");
-		if(result > 0) {
-			// 좋아요취소 타입 0: 글
-			if(type == 0) {
-				pMap.put("minus_like", 1);
-				pMap.put("board_no", pMap.get("like_group"));
-				int like = boardDao.boardUpdate(pMap);
-			}
-			// 좋아요취소 타입 1: 댓글, 대댓글
-			else if(type == 1) {
-				pMap.put("minus_like", 1);
-				pMap.put("comment_no", pMap.get("like_group"));
-				pMap.put("comment_step", pMap.get("like_step"));
-				int like = boardDao.replyUpdate(pMap);
-			}
-		}
 		return result;
 	}
 
