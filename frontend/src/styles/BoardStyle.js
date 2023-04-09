@@ -246,8 +246,8 @@ export const SearchDiv = styled.div`
   .searchDropdown {
     margin-left: 0.8em;
     border: 1px solid lightgray;
-    border-Radius:5px;
-    height:2.7em;
+    border-radius: 5px;
+    height: 2.7em;
     display: flex;
     align-items: center;
     text-align: center;
@@ -276,7 +276,7 @@ export const BtnSearch = styled.button`
   border: none;
   font-size: 0.93rem;
   font-weight: 600;
-  height:2.7em;
+  height: 2.7em;
   width: 5.7em;
   background: #4996f3;
   color: white;
@@ -454,10 +454,8 @@ export const DetailSection = styled.section`
   max-width: 1344px;
   padding: 0 5rem;
   margin: 0 auto;
-  margin-top: 2.5em;
+  margin-top: 2em;
   margin-bottom: 6em;
-
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -467,7 +465,7 @@ export const DetailSection = styled.section`
 export const DetialContainer = styled.section`
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 2em;
   padding: 10px;
   width: 70%;
 `;
@@ -476,12 +474,20 @@ export const TitleContainer = styled.div`
 `;
 
 export const CategoryDiv = styled.div`
-  color: gray;
-  font-size: 14px;
+  color: #979797;
+  font-size: 13px;
+  font-weight: 600;
+  .detailLink {
+    color: #979797;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
 `;
 
 export const DetailTitle = styled.h4`
-  margin: 20px 0;
+  margin: 1em 0 0.7em 0;
+  font-size: 25px;
   font-weight: 700;
 `;
 
@@ -509,34 +515,38 @@ export const UserImg = styled.div`
 export const UserWrap = styled.div`
   font-size: 12px;
   margin-top: 3px;
+  font-weight: 600;
 `;
 
 export const Username = styled.div`
   font-size: 14px;
-  font-weight: 500;
 `;
 
 export const User = styled.div`
   color: gray;
+  font-weight: 500;
 `;
 
 export const BtnDot = styled.button`
   position: absolute;
   right: 0px;
-  padding: 4px 14px;
+  padding: 2px;
+  font-size: 20px;
   border-radius: 50%;
   background: transparent;
-  &:hover,
-  &:focus {
-    background: #eee;
+  color: #464646;
+  border: none;
+  &:hover {
+    color: #4996f3;
+    outline: none;
   }
 `;
 
 export const ModalDiv = styled.div`
-  border: 1px solid #f4f4f4;
+  border: 1px solid #e9e9e9;
   background-color: white;
   border-radius: 5px;
-  width: 150px;
+  width: 120px;
   position: absolute;
   top: 40px;
   right: 0;
@@ -545,27 +555,33 @@ export const ModalDiv = styled.div`
 
 export const ModalUl = styled.ul`
   padding: 5px;
-  font-size: 15px;
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   width: 100%;
   text-align: center;
-
+  color: gray;
   &:hover {
-    background-color: #00c7ae;
+    background-color: #4996f3;
+    color: white;
   }
 `;
 
 export const HrLine = styled.hr`
   height: 1px;
+  color: lightgray;
   width: 100%;
 `;
 
 export const BodyContainer = styled.div`
+  margin-bottom: 5px;
 `;
 
 export const DetailContent = styled.div`
-  margin: 20px 0;
+  margin: 20px 0 40px 0;
   line-height: 30px;
+  font-size: 15px;
   img {
     display: block;
     margin: 0 auto;
@@ -575,29 +591,32 @@ export const DetailContent = styled.div`
 
 export const CountDiv = styled.div`
   display: flex;
-  font-size: 14px;
+  font-size: 13px;
 `;
 export const Like = styled.div`
   display: flex;
+  align-items: center;
   margin-right: 20px;
   cursor: pointer;
 `;
 
-export const Font = styled.div`
+export const ReactIcon = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 17px;
   color: gray;
-  font-weight: 500;
+  margin-top: 0;
   margin-right: 3px;
 `;
 
 export const FontContent = styled.div`
-  color: ${({ liked }) => (liked ? '#4996F3;' : 'gray')};
-  font-weight: 500;
+  color: ${({ liked }) => (liked ? "#4996F3;" : "gray")};
+  font-weight: 600;
 `;
 
 export const Comment = styled.div`
   display: flex;
-  color: gray;
-  font-weight: 500;
+  align-items: center;
 `;
 
 export const CommentContainer = styled.div`
@@ -609,6 +628,7 @@ export const InputDiv = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid #f4f4f4;
+  margin-bottom: 5px;
   padding: 8px;
   border-radius: 10px;
   svg {
@@ -621,23 +641,26 @@ export const InputDiv = styled.div`
 `;
 
 export const CommentInput = styled.textarea`
-  width: 90%;
+  width: 93%;
   height: 40px;
   padding: 10px;
-  font-size: 15px;
+  font-size: 14px;
   border: none;
   margin-left: 5px;
   overflow: hidden;
   resize: none;
-
   &:focus {
     outline: none;
   }
 `;
 
 export const BtnCommentInsert = styled.div`
-  color: #00c7ae;
+  color: #4996f3;
   font-size: 14px;
+  font-weight: 600;
+  width: 40px;
+  padding: 1px;
+  text-align: center;
   user-select: none;
   cursor: pointer;
 `;
@@ -665,52 +688,61 @@ export const CommentImg = styled.div`
 `;
 
 export const CommentUser = styled.div`
-  font-size: 15px;
+  margin-top: 5px;
+  font-size: 14px;
   font-weight: 600;
 `;
 
 export const CommentContent = styled.div`
-  font-size: 14px;
-  margin: 10px 0;
+  font-size: 13px;
+  margin: 5px 1px;
+  width: 480px;
+  word-break: break-all;
 `;
 
 export const CommentDate = styled.div`
   font-size: 12px;
   color: gray;
+  font-weight: 500;
 `;
-
 
 export const BtnDotComment = styled.button`
   position: absolute;
-  right: 0;
-  padding: 1px 11px;
+  right: 0px;
+  padding: 2px;
+  font-size: 20px;
   border-radius: 50%;
   background: transparent;
-  &:hover,
-  &:focus {
-    background: #eee;
+  color: #464646;
+  border: none;
+  &:hover {
+    color: #4996f3;
+    outline: none;
   }
 `;
 
 export const CommentModal = styled.div`
-  border: 1px solid #f4f4f4;
+  border: 1px solid #e9e9e9;
   background-color: white;
   border-radius: 5px;
-  width: 150px;
+  width: 120px;
   position: absolute;
   top: 40px;
-  right: 30px;
+  right: 0;
   z-index: 10;
 `;
 
 export const CommentModalUl = styled.ul`
   padding: 5px;
+  margin: 5px 0;
   font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   width: 100%;
   text-align: center;
-
+  color: gray;
   &:hover {
-    background-color: #00c7ae;
+    background-color: #4996f3;
+    color: white;
   }
 `;

@@ -20,7 +20,6 @@ const BoardPage = () => {
         </BtnWrite>
       </BoardHeader>
       <BoardLayout />
-      <Outlet />
       <Footer />
     </>
   )
