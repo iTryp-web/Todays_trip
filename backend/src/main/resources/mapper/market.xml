@@ -166,7 +166,12 @@
 	       , m.review_like
 	       , m.review_content
 	       , m.review_date  
-		  FROM TB_M_REVIEW m, TB_USER u
+		  FROM TB_M_REVIEW m
+		  		, TB_USER u
+		  		, (SELECT COUNT(user_id) like_count, like_group
+				    FROM TB_LIKE
+				    WHERE like_type = 2
+				    GROUP BY like_group) l
   	  WHERE m.user_id = u.user_id
   	  AND m.review_no = #{review_no}
   	  <if test='sort != null and sort.equals("high")'>
@@ -176,7 +181,7 @@
   	  	ORDER BY m.review_star ASC
   	  </if>
   	  <if test='sort != null and sort.equals("like")'>
-  	  	ORDER BY m.review_like DESC
+  	  	ORDER BY l.like_count DESC
   	  </if>
   	  <if test='sort != null and sort.equals("new")'>
   	  	ORDER BY m.review_date DESC
@@ -232,29 +237,22 @@
 								(user_id
 							 , like_type
 							 , like_group
-						 <if test="like_step != null and like_step > 0">
-						 	 , like_step
-						 </if>
 							 , like_date
 							 )
 				 VALUES (#{user_id}
-				 			 , #{like_type}
+				 			 , 2
 				 			 , #{like_group}
-				  	 <if test="like_step != null and like_step > 0">
-				 			 , #{like_step}
-						 </if>
 				 			 , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
 							 )
 	</insert>
 	
-	<!-- 리뷰좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
-	<update id="reviewDislike" parameterType="map">
-    UPDATE TB_LIKE
-    SET like_count = like_count - 1
-    WHERE like_group = #{like_group}
-      AND user_id = #{user_id}
-      AND like_count >= 1;
-	</update>
+	<!-- 리뷰좋아요 취소 - 글:0 / 댓글:1 / 리뷰:type-2(마켓에서 처리) -->
+	<delete id="reviewDislike" parameterType="map">
+		DELETE FROM TB_LIKE
+					WHERE user_id = #{user_id}
+						AND like_type = #{like_type}
+						AND like_group = #{like_group}
+	</delete>
 	<!--리뷰 갯수세기  -->
 	<select id="reviewLikeCount" parameterType="map">
 		SELECT COUNT(user_id) FROM TB_LIKE 
