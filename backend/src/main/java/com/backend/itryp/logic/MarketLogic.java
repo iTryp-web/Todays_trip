@@ -17,7 +17,7 @@ public class MarketLogic {
 	 Logger logger = LogManager.getLogger(MarketLogic.class);
 	
 	@Autowired
-	private static MarketDao marketDao = null;
+	private MarketDao marketDao = null;
 
 	/**
 	 * 마켓 리스트+조건검색(숙소만, 프로그램만, 가격검색)
