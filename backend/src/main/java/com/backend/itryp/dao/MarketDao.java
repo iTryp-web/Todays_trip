@@ -177,12 +177,22 @@ public class MarketDao {
 		result = sqlSessionTemplate.update("reviewLike", pMap);
 		return result;
 	}
+	/**
+	 * 리뷰 좋아요 취소
+	 * @param pMap
+	 * @return
+	 */
 	public int reviewDislike(Map<String, Object> pMap) {
 		logger.info("reviewDislike 호출");
 		int result = 0;
 		result = sqlSessionTemplate.update("reviewDislike", pMap);
 	    return result;
 	}
+	/**
+	 * 리뷰 갯수세기 안쓸수도...
+	 * @param pMap
+	 * @return
+	 */
 	public int reviewLikeCount(Map<String, Object> pMap) {
 		logger.info("reviewLikeCount 호출");
 		int result = 0;
