@@ -131,10 +131,65 @@ export const SocialBlock = styled.div`
   }
 `;
 
-export const EmailDiv = styled.div`
-  margin: 0 auto;
+export const SignUpBlock = styled.form`
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  letter-spacing: -1px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: auto;
+  @media screen and (max-width: 767px) {
+    top: 50%;
+  }
+
+  hr {
+    margin-top: 1rem;
+    color: gray;
+  }
+  h5 {
+    margin-top : 1rem;
+  }
+  overflow-x: hidden;
 `;
 
-export const EmailInput = styled.input`
-  width: 120px;
+export const EmailBlock = styled.div`
+  margin: 0 auto;
+  input {
+    width: 46%;
+    height: 35px;
+    font-size: 14px;
+    border: 1.5px solid lightgray;
+    border-radius: 5%;
+    &:focus {
+      outline: none;
+      border: 1px solid #4996f3;
+    }
+  }
+  span {
+    color : lightgray;
+  }
+  select {
+    width: 47%;
+    height: 35px;
+    font-size: 14px;
+    color: gray;
+    border: 1px solid lightgray;
+    border-radius: 5%;
+  }
+  button{
+  margin-top : 1rem;
+  border-radius: 5px;
+  height: 45px;
+  width : 100%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  }
 `;
+
+export const PasswordBlock = styled.div`
+
+
+`
