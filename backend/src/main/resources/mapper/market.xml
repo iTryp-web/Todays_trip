@@ -51,24 +51,20 @@
 	<!--마켓 글쓰기 -->
 	<insert id="marketInsert" parameterType="map" useGeneratedKeys="true" keyColumn="market_no" keyProperty="market_no">
 		INSERT INTO TB_MARKET
-		           (MARKET_NO
-	             ,USER_ID
-		           ,TYPE_MARKET    
-							 ,MARKET_CATEGORY  
-							 ,MARKET_TITLE     
-							 ,MARKET_CONTENT  
-							 ,MARKET_PRICE    
-							 ,MARKET_DATE 
+		           (market_no
+	             ,user_id
+							 ,market_category  
+							 ,market_title     
+							 ,market_content  
+							 ,market_price    
+							 ,market_date 
 		            )
 		    VALUES (TB_MARKET_NO_SEQ.NEXTVAL
-		 					, #{market_no}
 	            , #{user_id}
-	            , #{type_market}
 	            , #{market_category}
-	            , #market_title}
+	            , #{market_title}
 	            , #{market_content}
 	            , #{market_price}
-	            , #{market_date}
 	            , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
 		          )
 	</insert>
