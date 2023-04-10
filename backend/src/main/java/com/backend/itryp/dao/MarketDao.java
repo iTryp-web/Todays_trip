@@ -15,14 +15,22 @@ public class MarketDao {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate = null;
-
+	/**
+	 * 판매글 리스트
+	 * @param pMap
+	 * @return
+	 */
 	public List<Map<String, Object>> marketList(Map<String, Object> pMap) {
 		logger.info("marketList 호출");
 		List<Map<String,Object>> mList = null;
 		mList = sqlSessionTemplate.selectList("marketList",pMap);
 		return mList;
 	}
-
+	/**
+	 * 판매글 상세보기
+	 * @param pMap
+	 * @return
+	 */
 	public List<Map<String, Object>> marketDetail(Map<String, Object> pMap) {
 		logger.info("marketDetail 호출");
 		List<Map<String,Object>> mList = null;

@@ -3,14 +3,14 @@
 <mapper namespace="com.backend.itryp">
 	<!-- 마켓글 전체,  카테고리 조회(한인택시(공항픽업), 투어프로그램, 숙소, 렌트카) + 조건검색search(콤보박스)(숙소만|프로그램만|가격) -->
 	<select id="marketList" parameterType="map" resultType="map">
-		SELECT MARKET_NO       
-  				 ,u.USER_NICKNAME         
-					 ,m.TYPE_MARKET    
-					 ,m.MARKET_CATEGORY  
-					 ,m.MARKET_TITLE     
-					 ,m.MARKET_CONTENT  
-					 ,m.MARKET_PRICE    
-					 ,m.MARKET_DATE 
+		SELECT m.market_no
+					,u.user_nickname
+					,m.type_market
+					,m.market_category
+					,m.market_title
+					,m.market_content
+					,m.market_price
+					,m.market_date
 		  FROM TB_MARKET m, TB_USER u
   	  WHERE m.user_id = u.user_id
   	  AND m.MARKET_CATEGORY != '공지사항'
@@ -34,7 +34,7 @@
 	
 	<!-- 마켓글 상세조회 -->
 	<select id="marketDetail" parameterType="map" resultType="map">
-		SELECT MARKET_NO       
+		SELECT  m.market_no     
   				 ,u.USER_NICKNAME         
 					 ,m.TYPE_MARKET    
 					 ,m.MARKET_CATEGORY  
@@ -44,7 +44,7 @@
 					 ,m.MARKET_DATE 
 		  FROM TB_MARKET m, TB_USER u
   	  WHERE m.user_id = u.user_id
-  	  AND m.market_no = #{market_no}
+  	  	AND m.market_no = #{market_no}
 	</select>
 	
 
@@ -68,7 +68,8 @@
 	            , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
 		          )
 	</insert>
-	<!-- 판매자가 가능 날짜 갯수 넣음 -->
+	
+	<!-- 판매자가 가능 날짜 갯수 넣음-firebase 실시간 디비 쓸 예정...? -->
 	
 	
 	<!-- Quill image 추가 - 이미지 선택할때마다 인서트 -->
@@ -126,15 +127,16 @@
 	
 	<!-- Quill image 삭제 -->
 	<delete id="mImageDelete" parameterType="map">
-		DELETE FROM TB_B_FILE
-		WHERE board_no = #{board_no}
+		DELETE FROM TB_M_FILE
+		WHERE market_no = #{market_no}
 	</delete>
 	
-	<!-- 커뮤니티 글 삭제 -->
+	<!-- 마켓글 삭제 -->
 	<delete id="marketDelete" parameterType="map">
-		DELETE FROM TB_BOARD
-		WHERE board_no = #{board_no}
+		DELETE FROM TB_MARKET
+		WHERE market_no = #{market_no}
 	</delete>
+	
 	<!-- 신고 - report_type 글:0(보드에서 처리) / 댓글:1 / 마켓글:2 / 리뷰:3 -->
 	<insert id="mReport" parameterType="map">
 		INSERT INTO TB_REPORT
@@ -191,7 +193,7 @@
   	  </if>
 	</select>
 	
-	<!-- 리뷰 쓰기 TB_M_REVIEW -->
+	<!-- 리뷰 쓰기 -->
 	<insert id="reviewInsert" parameterType="map">
 		INSERT INTO TB_M_REVIEW 
 			           (review_no
@@ -201,7 +203,7 @@
 		           	, review_content
 		            , review_date
 			          )
-			    VALUES (TB_M_REVIEW_SEQ.NEXTVAL
+			    VALUES (TB_M_REVIEW_NO_SEQ.NEXTVAL
 			    			, #{market_no}
 		            , #{user_id}
 		            , #{review_star}
