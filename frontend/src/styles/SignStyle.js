@@ -145,11 +145,12 @@ export const SignUpBlock = styled.form`
   }
 
   hr {
-    margin-top: 1rem;
     color: gray;
   }
-  h5 {
-    margin-top : 1rem;
+  h6 {
+    font-weight: 700;
+    margin-top : 1.5rem;
+    margin-bottom : 0.8rem;
   }
   overflow-x: hidden;
 `;
@@ -177,9 +178,13 @@ export const EmailBlock = styled.div`
     color: gray;
     border: 1px solid lightgray;
     border-radius: 5%;
+    &:focus {
+      outline: none;
+      border: 1px solid #4996f3;
+    }
   }
   button{
-  margin-top : 1rem;
+  margin-top : 0.8rem;
   border-radius: 5px;
   height: 45px;
   width : 100%;
@@ -190,6 +195,13 @@ export const EmailBlock = styled.div`
 `;
 
 export const PasswordBlock = styled.div`
+p {
+  width: 100%;
+  font-size: 0.9rem;
+}
 
+input{
+  width : 100%;
 
+}
 `
