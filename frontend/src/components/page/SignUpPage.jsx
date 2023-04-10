@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  EmailDiv,
-  EmailInput,
-  LoginFormBlock,
+  EmailBlock,
+  PasswordBlock,
   SignDiv,
+  SignUpBlock,
   SocialBlock,
 } from "../../styles/SignStyle";
+import HeaderIcon from "../include/HeaderIcon";
 
 const SignUpPage = () => {
+  const [inputValue, setInputValue] = useState("");
+  const [isButtonActive, setIsButtonActive] = useState(false);
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+
+    if (e.target.value) {
+      setIsButtonActive(true);
+    } else {
+      setIsButtonActive(false);
+    }
+  };
+
+  const EmailButton = () => {
+    console.log("버튼클릭");
+  };
   return (
     <>
+      <HeaderIcon/>
       <SignDiv>
-        <LoginFormBlock>
+        <SignUpBlock>
           <h3>회원가입</h3>
           <SocialBlock>
             <span>SNS계정으로 간편하게 회원가입</span>
@@ -23,17 +41,42 @@ const SignUpPage = () => {
           </SocialBlock>
           <hr />
           <h5>이메일</h5>
-          <EmailDiv>
-            <EmailInput id="email" type="text" placeholder="이메일" />@
+          <EmailBlock>
+            <input
+              id="email"
+              value={inputValue}
+              onChange={handleInputChange}
+              type="text"
+              placeholder="&nbsp;이메일"
+            />
+            <span>&nbsp;@&nbsp;</span>
             <select name="email">
-              <option value="">선택해주세요</option>
+              <option value="">&nbsp;선택해주세요</option>
               <option value="select">선택해주세요</option>
               <option value="select">선택해주세요</option>
               <option value="select">선택해주세요</option>
               <option value="select">선택해주세요</option>
             </select>
-          </EmailDiv>
-        </LoginFormBlock>
+            <button
+              disabled={!isButtonActive}
+              onClick={EmailButton}
+              style={{
+                backgroundColor: inputValue ? "white" : "#f7f8fa",
+                border: inputValue
+                  ? "1px solid #4996f3"
+                  : "1px solid lightgray",
+                color: inputValue ? "#4996f3" : "lightgray",
+              }}
+            >
+              이메일 인증하기
+            </button>
+          </EmailBlock>
+          <h5>비밀번호</h5>
+          <PasswordBlock>
+
+
+          </PasswordBlock>
+        </SignUpBlock>
       </SignDiv>
     </>
   );
