@@ -8,7 +8,7 @@ export const CartDiv = styled.div`
 `;
 
 export const CartListDiv = styled.div`
-  width: 70%;
+  width: 80%;
   margin: 0px auto;
 `;
 
@@ -34,6 +34,10 @@ export const ResultDiv = styled.div`
   margin-right: 3rem;
 `;
 
+export const ImgDiv = styled.div`
+  border: 0.01em solid black;
+`;
+
 export const CartItemTitle = styled.th`
   width: 50%;
 `;
@@ -49,7 +53,7 @@ export const LineHr = styled.hr`
 `;
 
 export const CartTr = styled.tr`
-  padding-bottom: 5rem;
+  padding-bottom: 10rem;
 `;
 
 export const CartTable = styled.table`
@@ -57,8 +61,23 @@ export const CartTable = styled.table`
   text-align: center;
   margin-bottom: 2rem;
   margin-top: 2rem;
+  display: table;
 `;
 
 export const CartTd = styled.td`
   padding-bottom: 5rem;
+`;
+
+export const CartButton = styled.button`
+  border: none;
+  background-color: navy;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 5px;
+  margin: 5% 5%;
+  cursor: pointer;
+  &:hover {
+    // opacity: 0.8;
+    background-color: #4996f3;
+  }
 `;
