@@ -193,7 +193,7 @@ public class MarketDao {
 	public int reviewDislike(Map<String, Object> pMap) {
 		logger.info("reviewDislike 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("reviewDislike", pMap);
+		result = sqlSessionTemplate.delete("reviewDislike", pMap);
 	    return result;
 	}
 	/**
