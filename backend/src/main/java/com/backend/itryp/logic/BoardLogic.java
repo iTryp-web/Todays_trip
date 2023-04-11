@@ -46,21 +46,25 @@ public class BoardLogic {
 	 */
 	public List<Map<String, Object>> boardDetail(Map<String, Object> pMap) {
 		logger.info("boardDetail 호출");
+		// 조건절에 들어오는 number값 주의! -> int로 바꿔주기!!
+		int board_no = 0;
+		if(pMap.get("board_no") != null) {
+			board_no = Integer.parseInt(pMap.get("board_no").toString());
+			pMap.put("board_no", board_no);
+		}
+		
 		List<Map<String,Object>> bList = new ArrayList<>();
 		bList= boardDao.boardDetail(pMap);
-		return bList;
-	}
-
-	/**
-	 * 커뮤니티 인기글 모아보기
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	public List<Map<String, Object>> boardHot(Map<String, Object> pMap) {
-		logger.info("boardHot 호출");
-		List<Map<String,Object>> bList = new ArrayList<>();
-		bList= boardDao.boardHot(pMap);
+		// 조회 결과가 있을 경우 조회수 올리기
+		if(bList != null & bList.size() > 0) {
+			pMap.put("board_hit", 1);
+			boardDao.boardUpdate(pMap);
+			// 댓글 처리 추가
+			List<Map<String, Object>> commentList = boardDao.replyList(pMap);
+			if(commentList != null && commentList.size() > 0) {
+				bList.addAll(commentList);
+			}
+		}
 		return bList;
 	}
 
