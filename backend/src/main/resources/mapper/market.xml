@@ -165,17 +165,18 @@
 	       , m.market_no
 	       , m.type_review
 	       , m.review_star
-	       , m.review_like
 	       , m.review_content
 	       , m.review_date  
+	       , l.like_count
 		  FROM TB_M_REVIEW m
 		  		, TB_USER u
 		  		, (SELECT COUNT(user_id) like_count, like_group
 				    FROM TB_LIKE
 				    WHERE like_type = 2
 				    GROUP BY like_group) l
-  	  WHERE m.user_id = u.user_id
-  	  AND m.review_no = #{review_no}
+  	  WHERE m.user_id = u.user_id(+)
+  	  AND m.market_no = #{market_no}
+  	  AND m.review_no = l.like_group(+)
   	  <if test='sort != null and sort.equals("high")'>
   	  	ORDER BY m.review_star DESC
   	  </if>
@@ -217,7 +218,7 @@
 		UPDATE TB_M_REVIEW 
 		<trim prefix="SET" prefixOverrides=",">
 		<if test="review_content != null and review_content.length() != 0">
-			, review_content = #{review_content}
+			 review_content = #{review_content}
 		</if>
 		<if test="review_star != null and review_star > 0">
 			, review_star = #{review_star}
@@ -233,7 +234,7 @@
 			AND market_no = #{market_no}
 	</delete>
 	
-	<!--리뷰 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
+	<!--리뷰 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) like_group은 리뷰넘버-->
 	<insert id="reviewLike" parameterType="map">
 		INSERT INTO TB_LIKE
 								(user_id
@@ -252,14 +253,10 @@
 	<delete id="reviewDislike" parameterType="map">
 		DELETE FROM TB_LIKE
 					WHERE user_id = #{user_id}
-						AND like_type = #{like_type}
+						AND like_type = 2
 						AND like_group = #{like_group}
 	</delete>
-	<!--리뷰 갯수세기  -->
-	<select id="reviewLikeCount" parameterType="map">
-		SELECT COUNT(user_id) FROM TB_LIKE 
-		WHERE like_group = #{like_group}
-	</select>
+	
 	<!-- qna 쓰기 qna_step이 0:문의글 1:문의답글  -->
 	<insert id="qnaInsert" parameterType="map">
 		INSERT INTO TB_QNA
@@ -267,6 +264,7 @@
 			          , qna_step
 			          , market_no
 		            , user_id
+		            , qna_title
 		            , qna_content
 		           	, qna_date
 		            , qna_sort
@@ -279,12 +277,12 @@
 								#{qna_title},
 								#{qna_content},
 								TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS'),
-								0
+								#{qna_sort}
 								)
 	</insert>
 	<!-- qna 문의 글 삭제-->
 	<delete id="qnaDelete" parameterType="map">
-		DELETE FROM TB_M_REVIEW 
+		DELETE FROM TB_QNA
 		WHERE qna_no = #{qna_no}
 			AND market_no = #{market_no}
 	</delete>

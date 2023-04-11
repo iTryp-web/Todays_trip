@@ -3,9 +3,11 @@ import { PostContent, PostFooter, PostLi } from '../../styles/BoardStyle'
 import { Link } from 'react-router-dom'
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentDots } from 'react-icons/fa';
+import { BsFillEyeFill } from 'react-icons/bs';
 
 
 const BoardRow = ({post}) => {
+  console.log(post.like_count)
   return (
     <> 
       <PostLi>
@@ -13,7 +15,7 @@ const BoardRow = ({post}) => {
           <p className='categoryP'>{post.board_category}</p>
           <PostContent>
             <div>
-              <p className='titleP'>{post. board_title}
+              <p className='titleP'>{post.board_title}
                 {post.file_exist && (
                   <i className={"fas fa-file-lines"} id='fileI' />
                 )}
@@ -25,11 +27,15 @@ const BoardRow = ({post}) => {
             <ul className="list-count">
               <li>
                 <AiFillLike />
-                {post.board_like}
+                {post.like_count ? post.like_count : 0}
               </li>
               <li>
                 <FaCommentDots />
-                {post.board_comment}
+                {post.comment_count ? post.comment_count : 0}
+              </li>
+              <li>
+                <BsFillEyeFill />
+                {post.board_hit ? post.board_hit : 0}
               </li>
             </ul>
             <small>

@@ -42,7 +42,7 @@ const Header = () => {
             <MdSearch className="search-icon" />
             <input className="search-input" placeholder="검색" />
           </div>
-          <Link to="cart" className="cart">
+          <Link to="/cart" className="cart">
             <BsCart className="cart-icon" />
           </Link>
           <div className="buttons">

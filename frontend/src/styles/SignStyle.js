@@ -143,14 +143,16 @@ export const SignUpBlock = styled.form`
   @media screen and (max-width: 767px) {
     top: 50%;
   }
-
+  h4 {
+    font-weight: 700;
+  }
   hr {
     color: gray;
   }
   h6 {
     font-weight: 700;
-    margin-top : 1.5rem;
-    margin-bottom : 0.8rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
   }
   overflow-x: hidden;
 `;
@@ -162,14 +164,11 @@ export const EmailBlock = styled.div`
     height: 35px;
     font-size: 14px;
     border: 1.5px solid lightgray;
-    border-radius: 5%;
-    &:focus {
-      outline: none;
-      border: 1px solid #4996f3;
-    }
+    border-radius: 5px;
+    outline: none;
   }
   span {
-    color : lightgray;
+    color: lightgray;
   }
   select {
     width: 47%;
@@ -177,31 +176,37 @@ export const EmailBlock = styled.div`
     font-size: 14px;
     color: gray;
     border: 1px solid lightgray;
-    border-radius: 5%;
-    &:focus {
-      outline: none;
-      border: 1px solid #4996f3;
-    }
+    border-radius: 5px;
+    outline: none;
   }
-  button{
-  margin-top : 0.8rem;
-  border-radius: 5px;
-  height: 45px;
-  width : 100%;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
+  button {
+    margin-top: 0.8rem;
+    border-radius: 5px;
+    height: 45px;
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
   }
 `;
 
 export const PasswordBlock = styled.div`
-p {
-  width: 100%;
-  font-size: 0.9rem;
-}
+  p {
+    width: 100%;
+    font-size: 0.9rem;
+    color: gray;
+  }
 
-input{
-  width : 100%;
-
-}
-`
+  input {
+    width: 100%;
+    height: 35px;
+    font-size: 14px;
+    color: gray;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    &:focus {
+      outline: none;
+      border: 2px solid #4996f3;
+    }
+  }
+`;
