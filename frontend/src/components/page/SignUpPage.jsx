@@ -12,16 +12,23 @@ const SignUpPage = () => {
   const [idInput, setIdInput] = useState("");
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [pwInput, setPwInput] = useState("");
-  const [color, setColor] = useState("red");
+  const [boxColor, setBoxColor] = useState("black");
   const [text, setText] = useState("");
-  const handleInputChange = (e) => {
-    const regExp = new RegExp("^[a-zA-Z][0-9a-zA-Z]{3,7}$");
-    const isValidInput = regExp.test(e.target.value);
+  const handleIdInputChange = (e) => {
+    const regIdExp = new RegExp("^[a-zA-Z][0-9a-zA-Z]{3,7}$");
+    const idValidInput = regIdExp.test(e.target.value);
+    console.log(idValidInput)
     setIdInput(e.target.value);
-    setIsButtonActive(isValidInput && e.target.value !== "");
-    setColor(isValidInput !== false);
-    setText(isValidInput !== true);
+    setBoxColor(idValidInput!==false);
+    setText(idValidInput !== true);
+    setIsButtonActive(idValidInput && e.target.value !== "");
   };
+  const handlePwInputChange =(e)=>{
+    const regPwExp = new RegExp("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$")
+    
+
+
+  }
 
   const EmailButton = () => {
     console.log("버튼클릭");
@@ -41,29 +48,34 @@ const SignUpPage = () => {
             </div>
           </SocialBlock>
           <hr />
-          <h6 style={{ color: color ? "black" : "red" }}>이메일</h6>
+          <h6 style={{ color: boxColor ? "black" : "red" }}>이메일</h6>
           <EmailBlock>
             <input
               id="email"
               value={idInput}
-              onChange={handleInputChange}
+              onChange={handleIdInputChange}
               type="text"
               placeholder="&nbsp;&nbsp;이메일"
-              style={{ border: color ? "1px solid #4996f3" : "1px solid red" }}
+              style={{ border: boxColor ? "1px solid #4996f3" : "1px solid red" }}
             />
             <span>&nbsp;@&nbsp;</span>
             <select
               name="email"
-              style={{ border: color ? "1px solid #4996f3" : "1px solid red" }}
+              style={{ border: boxColor ? "1px solid #4996f3" : "1px solid red" }}
             >
               <option value="">&nbsp;&nbsp;선택해주세요</option>
-              <option value="select">&nbsp;&nbsp;선택해주세요</option>
-              <option value="select">&nbsp;&nbsp;선택해주세요</option>
-              <option value="select">&nbsp;&nbsp;선택해주세요</option>
-              <option value="select">&nbsp;&nbsp;선택해주세요</option>
+              <option value="select">&nbsp;&nbsp;naver.com</option>
+              <option value="select">&nbsp;&nbsp;hanmail.net</option>
+              <option value="select">&nbsp;&nbsp;daum.net</option>
+              <option value="select">&nbsp;&nbsp;gmail.com</option>
+              <option value="select">&nbsp;&nbsp;nate.com</option>
+              <option value="select">&nbsp;&nbsp;hotmail.com</option>
+              <option value="select">&nbsp;&nbsp;outlook.com</option>
+              <option value="select">&nbsp;&nbsp;icloud.com</option>
+              <option value="select">&nbsp;&nbsp;직접입력</option>
             </select>
             {text != "" && (
-              <span style={{ marginLeft: "10px", color: "red" }}>
+              <span style={{ marginLeft: "10px", color: "red", fontSize : "12px"}}>
                 이메일 형식이 올바르지 않습니다.
               </span>
             )}
@@ -84,12 +96,12 @@ const SignUpPage = () => {
           <h6>비밀번호</h6>
           <PasswordBlock>
             <p>영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요</p>
-            {/* <input
+            <input
               id="password"
               value={pwInput}
               type="text"
               placeholder="&nbsp;&nbsp;비밀번호"
-            ></input> */}
+            ></input>
           </PasswordBlock>
         </SignUpBlock>
       </SignDiv>
