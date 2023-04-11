@@ -38,22 +38,7 @@ public class BoardDao {
 	public List<Map<String, Object>> boardDetail(Map<String, Object> pMap) {
 		logger.info("boardDetail 호출");
 		List<Map<String,Object>> bList = null;
-		// 전체조회 쿼리문실행 후 거기서 상세보기정보 출력하고 로직으로는 댓글만 가져와도 될듯? - 테스트할것
-		//bList = sqlSessionTemplate.selectList("boardDetail", pMap);
-		bList = sqlSessionTemplate.selectList("replyList", pMap);
-		return bList;
-	}
-
-	/**
-	 * 커뮤니티 인기글 모아보기
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	public List<Map<String, Object>> boardHot(Map<String, Object> pMap) {
-		logger.info("boardHot 호출");
-		List<Map<String,Object>> bList = null;
-		bList = sqlSessionTemplate.selectList("boardHot", pMap);
+		bList = sqlSessionTemplate.selectList("boardDetail", pMap);
 		return bList;
 	}
 
