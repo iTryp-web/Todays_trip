@@ -14,8 +14,8 @@ const CartRow = (props) => {
         <td className='title'>
           아무거나 상품명
         </td>
-        <td className='price'>
-          7000
+        <td className='res_date'>
+          2023-05-30 3pm
         </td>
         <td className='count'>
           <span style={{marginRight:"0.5rem"}}><img src={plus_img} alt="plus"/></span>
@@ -23,7 +23,7 @@ const CartRow = (props) => {
           <span style={{marginLeft:"0.5rem"}}><img src={minus_img} alt="minus"/></span>
         </td>
         <td className='price'>
-          35000
+          7000
         </td>
       </CartTr>
     </>
