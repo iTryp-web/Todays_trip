@@ -33,7 +33,7 @@ export const PaymentButton = styled.button`
   border: none;
   background-color: #4996f3;
   color: white;
-  padding: 5px 12px;
+  padding: 7px 20px;
   border-radius: 5px;
   margin-top: 5%;
 `;
