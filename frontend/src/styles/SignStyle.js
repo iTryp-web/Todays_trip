@@ -143,9 +143,8 @@ export const SignUpBlock = styled.form`
   @media screen and (max-width: 767px) {
     top: 50%;
   }
-  h4{
-    font-weight : 700;
-
+  h4 {
+    font-weight: 700;
   }
   hr {
     color: gray;
@@ -166,11 +165,7 @@ export const EmailBlock = styled.div`
     font-size: 14px;
     border: 1.5px solid lightgray;
     border-radius: 5px;
-    &:focus {
-      outline: none;
-      //border: 1px solid #4996f3;
-      border: ${({boxColor}) => boxColor ? "1px solid #4996f3" : "1px solid red" }}
-    }
+    outline: none;
   }
   span {
     color: lightgray;
@@ -182,10 +177,7 @@ export const EmailBlock = styled.div`
     color: gray;
     border: 1px solid lightgray;
     border-radius: 5px;
-    &:focus {
-      outline: none;
-      border: 1px solid #4996f3;
-    }
+    outline: none;
   }
   button {
     margin-top: 0.8rem;
@@ -202,7 +194,7 @@ export const PasswordBlock = styled.div`
   p {
     width: 100%;
     font-size: 0.9rem;
-    color : gray;
+    color: gray;
   }
 
   input {
