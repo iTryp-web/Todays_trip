@@ -2,12 +2,13 @@ import React from 'react'
 import Header from '../include/Header'
 import OrderRow from '../order/OrderRow'
 import Footer from '../include/Footer'
+import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderInfoDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv } from '../../styles/OrderStyle'
 
 const OrderPage = () => {
 
   function onClickPayment() {
     const { IMP } = window;
-    IMP.init('[가맹점번호]');
+    IMP.init(process.env.REACT_APP_IMPORT_INIT_KEY);
     
     const data = {
       pg: 'html5_inicis',                               // PG사
@@ -42,11 +43,20 @@ const OrderPage = () => {
   return (
     <>
       <Header/>
-      orderPage
-      <div className='order-body'>
-        <OrderRow/>
-        <button onClick={onClickPayment}>결제하기</button>
-      </div>
+      <OrderDiv>
+        <OrderTitle>주문</OrderTitle>
+        <LineHr/>
+        <OrderListDiv>
+          주문 상품
+          <OrderRow/>
+        </OrderListDiv>
+        <OrderInfoDiv>주문자 정보</OrderInfoDiv>
+        <OrderAddressDiv>배송지 정보</OrderAddressDiv>
+        <OrderCouponDiv>쿠폰 정보</OrderCouponDiv>
+        <OrderButtonDiv>
+          <PaymentButton onClick={onClickPayment}>결제하기</PaymentButton>
+        </OrderButtonDiv>
+      </OrderDiv>
       <Footer/>
     </>
   )
