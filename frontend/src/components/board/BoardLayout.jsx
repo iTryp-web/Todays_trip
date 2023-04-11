@@ -6,110 +6,87 @@ import BoardRow from './BoardRow';
 import BoardTopPost from './BoardTopPost';
 import { DropdownButton } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
+import { categories, search } from './boardData';
+import { boardListDB } from "../../service/boardLogic";
+
 
 const BoardLayout = () => {
+  // 화면전환
   const navigate = useNavigate()
 
   /* 왼쪽 카테고리 */
+  // 선택한 카테고리 담기
   const [selected, setSelected] = useState('전체')
-  const categories = [
-    {
-    name: '전체',
-    img: '/images/icon-all.png'},
-    {
-    name: '인기글',
-    img: '/images/icon-hot.png'},
-    {
-    name: '자유',
-    img: '/images/icon-free.png'},
-    {
-    name: '질문',
-    img: '/images/icon-qna.png'},
-    {
-    name: '여행후기',
-    img: '/images/icon-review.png'},
-    {
-    name: '동행찾기',
-    img: '/images/icon-together2.png'},
-]
-const onClickCategory = (name) => {
-  setSelected(name)
-}
+  const handleCategory =  useCallback((name) => {
+    console.log('handleCategory => ' + name);
+    setSelected(name)
+  }, [])
 
-/* 글 목록 */
-const [posts, setPosts] = useState([
-  {
-    board_no: 1,
-    user_nickname: '닉네임1',
-    board_category: '자유',
-    board_title: '12321321 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ ㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱ 자유게시판에 자유롭게 쓰지 않을 자유도 있으면 자유롭게 못쓰게 되는데 자유게시판이 맞나요?',
-    board_content: '<img src=이러쿵 저러쿵 어쩌구 저쩌구 긴 내용이 들어갈수도? 어느정도 하다보면 축약할수도???',
-    board_date: '2023-04-08 14:10:02',
-    board_hit: 10,
-    board_like: 12,
-    type_board: 123,
-    board_comment: 12,
-    file_exist: '1',
-  },
-  {
-    board_no: 2,
-    user_nickname: '닉네임2',
-    board_category: '질문',
-    board_title: '질문합니다 어쩌구 저쩌구',
-    board_content: '도배합니다 ㅁㅁㅁㅁㅁㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ',
-    board_date: '2023-04-08 16:55:23',
-    board_hit: 20,
-    board_like: 44,
-    type_board: 345,
-    board_comment: 34,
-  },
-  {
-    board_no: 3,
-    user_nickname: '닉네임3',
-    board_category: '여행후기',
-    board_title: '여행후기 어쩌구 저쩌구',
-    board_content: 'ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ',
-    board_date: '2023-04-09 10:54:23',
-    board_hit: 2,
-    board_like: 2,
-    type_board: 345,
-    board_comment: 3,
-  },
-  {
-    board_no: 4,
-    user_nickname: '닉네임4',
-    board_category: '동행찾기',
-    board_title: '동행찾습니다',
-    board_content: 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ',
-    board_date: '2023-04-05 12:22:23',
-    board_hit: 1,
-    board_like: 2,
-    type_board: 345,
-    board_comment: 1,
-  },
-])
 
 /* 검색 */
-// 검색 조건 목록
-const [search] = useState(['전체', '작성자', '제목', '내용'])
 // 선택한 검색 조건
-const [searchVal, setSearchVal] = useState('전체')
+const [searchVal, setSearchVal] = useState('작성자')
 // 입력한 검색값
 const [keyword, setKeyword] = useState('')
-
+// 검색조건 입력
 const handleSearch = useCallback((e) => {
   console.log('handleSearch => ' + e);
   setSearchVal(e)
 },[])
-
+// 검색값 입력
 const handleSearchKeyword = useCallback((e) => {
   console.log('handleSearchKeyword => ' + e);
   setKeyword(e);
 },[]);
-
-const btnSearch = () => {
+// useEffect쓰기위해 useState선언
+const [searchStart, setSearchStart] = useState('')
+// 검색 버튼 클릭
+const btnSearch =  useCallback((e) => {
+  e.preventDefault()
   console.log('btnSearch => ' + searchVal + keyword);
-}
+  setSearchStart('start')
+}, [])
+
+/* 글 목록 */
+// 게시글 담을 객체배열
+const [posts, setPosts] = useState([{}])
+//선택한 카테고리에따라 글목록 출력
+useEffect(() => {
+  console.log(searchStart)
+  setSearchStart('') // 검색시작조건 초기화해줌
+  const boardList = async() => {
+    // DB로 보내는 조건
+    const board = {
+      board_category: selected,
+      search: searchVal,
+      keyword: keyword,
+    }
+    const res = await boardListDB(board)
+    console.log(res.data)
+    const list = []
+    const datas = res.data
+    datas.forEach((item) => {
+      console.log(item)
+      // DB에서 받은 데이터
+      const obj = {
+        board_no: item.BOARD_NO,
+        user_nickname: item.USER_NICKNAME,
+        board_category: item.BOARD_CATEGORY,
+        board_title: item.BOARD_TITLE,
+        board_content: item.BOARD_CONTENT,
+        board_date: item.BOARD_DATE,
+        board_hit: item.BOARD_HIT,
+        type_board: item.TYPE_BOARD,
+        like_count: item.LIKE_COUNT,
+        comment_count: item.COMMENT_COUNT,
+      }
+      list.push(obj)
+    })
+    setPosts(list)
+  }
+  boardList()
+}, [selected, searchStart])
+
 
   return (
     <>
@@ -123,7 +100,7 @@ const btnSearch = () => {
                   <CategoryLi
                     key={category.name}
                     active={category.name === selected}
-                    onClick={() => onClickCategory(category.name)}
+                    onClick={() => handleCategory(category.name)}
                   >
                     <img src={category.img} alt={category.name} />
                     {category.name}

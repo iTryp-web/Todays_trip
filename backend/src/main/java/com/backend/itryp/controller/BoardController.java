@@ -73,25 +73,6 @@ public class BoardController {
 	}
 
 	/**
-	 * 커뮤니티 인기글 모아보기
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	@GetMapping("boardHot")
-	public String boardHot(@RequestParam Map<String, Object> pMap) {
-		logger.info("boardHot 호출");
-		logger.info(pMap);
-		String temp = null;
-		List<Map<String, Object>> bList = null;
-		bList = boardLogic.boardHot(pMap);
-		logger.info(bList);
-		Gson g = new Gson();
-		temp = g.toJson(bList);
-		return temp;
-	}
-
-	/**
 	 * 커뮤니티 글쓰기
 	 * 
 	 * @param pMap
