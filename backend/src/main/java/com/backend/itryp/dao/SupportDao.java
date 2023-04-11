@@ -69,15 +69,15 @@ public class SupportDao {
 	}
 
 	/**
-	 * 판매자탈퇴 글 작성
+	 * 판매자 등록 글 작성
 	 * 
 	 * @param pMap
 	 * @return
 	 */
-	public int sellerDelInsert(Map<String, Object> pMap) {
-		logger.info("sellerDelInsert 호출");
+	public int sellerJoinInsert(Map<String, Object> pMap) {
+		logger.info("sellerJoinInsert 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("sellerDelInsert", pMap);
+		result = sqlSessionTemplate.update("sellerJoinInsert", pMap);
 		return result;
 	}
 
@@ -93,6 +93,25 @@ public class SupportDao {
 		result = sqlSessionTemplate.update("imageInsert", pMap);
 		return result;
 	}
+
+	public int inquiryDelete(Map<String, Object> pMap) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/**
+	 * 1대1문의 상세조회
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> inquiryDetail(Map<String, Object> pMap) {
+		logger.info("inquiryDetail 호출");
+		List<Map<String,Object>> sList = null;
+		sList = sqlSessionTemplate.selectList("inquiryDetail", pMap);
+		return sList;
+	}
+
 
 
 }

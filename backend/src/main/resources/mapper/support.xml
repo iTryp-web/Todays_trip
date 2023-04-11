@@ -2,13 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
 
-	<!-- 공지사항 글 작성 / 카테고리 조회(배송, 결제, 회원 등) -->
+	<!-- 공지사항 조회 -->
+	<select id="announceList" parameterType="map" resultType="map">
+		SELECT b.board_no
+		, u.user_nickname
+		, b.board_category
+		, b.board_title
+		, b.board_content
+		, b.board_date
+		, b.board_hit
+		, b.type_board
+		FROM TB_BOARD b
+		, TB_USER u
+		WHERE b.user_id = u.user_id
+		AND b.board_category = '공지사항'
+		ORDER BY b.board_no ASC
+	</select>
+
+
+	<!-- 공지사항 글 작성 / 카테고리 조회(배송, 결제, 회원 등) cert -->
 	<insert id="announceInsert" parameterType="map"
 		useGeneratedKeys="true" keyColumn="board_no" keyProperty="board_no">
 		INSERT INTO
 		TB_BOARD(
 		board_no,
-		user_id,
+		user_id, 
 		board_category,
 		board_title,
 		board_content,
@@ -25,7 +43,7 @@
 		)
 	</insert>
 
-	<!-- 1대1 문의 글 조회 -->
+	<!-- 1대1 문의 글 조회 cert -->
 	<select id="inquiryList" parameterType="map" resultType="map">
 		SELECT q.qna_no
 		, u.user_id
@@ -49,7 +67,7 @@
 		ORDER BY q.qna_no ASC
 	</select>
 
-	<!-- 1대1 문의 글 작성 -->
+	<!-- 1대1 문의 글 작성 step=0:문의글 step=1:문의답글cert -->
 	<insert id="inquiryInsert" parameterType="map">
 		INSERT INTO TB_QNA(
 		qna_no,
@@ -71,14 +89,46 @@
 		)
 	</insert>
 
-	<!-- 1대1 문의 글 작성 -->
+	<!-- 1대1 문의 글 상세조회 -->
+	<select id="inquiryDetail" parameterType="map" resultType="map">
+		SELECT
+		q.qna_no
+		, u.user_nickname
+		, b.board_category
+		, b.board_title
+		,
+		b.board_content
+		, b.board_date
+		, b.board_hit
+		, b.type_board
+		, l.like_count
+		, c.comment_count
+		FROM TB_BOARD b
+		, TB_USER u
+		, (SELECT COUNT(user_Id)
+		like_count, like_group
+		FROM TB_LIKE
+		WHERE like_type = 0
+		GROUP BY
+		like_group) l
+		, (SELECT COUNT(user_id) comment_count, board_no
+		FROM
+		TB_B_COMMENT
+		GROUP BY board_no) c
+		WHERE b.user_id = u.user_id
+		AND
+		b.board_no = l.like_group
+		AND b.board_no = #{board_no};
+	</select>
+
+	<!-- 1대1 문의 글 삭제 구현보류 -->
 	<delete id="inquiryDelete" parameterType="map">
 		DELETE FROM TB_QNA
 		WHERE qna_no = #{qna_no}
 	</delete>
 
-	<!-- 판매자 등록 글 작성 -->
-	<insert id="sellerDelInsert">
+	<!-- 판매자 등록 글 작성 cert -->
+	<insert id="sellerJoinInsert" parameterType="map">
 		INSERT INTO TB_QNA(
 		qna_no,
 		user_id,
