@@ -89,16 +89,34 @@ public class SupportLogic {
 	}
 
 	/**
-	 * 판매자탈퇴 글 작성
+	 * 판매자 등록 글 작성
 	 * 
 	 * @param pMap
 	 * @return
 	 */
-	public int sellerDelInsert(Map<String, Object> pMap) {
-		logger.info("sellerDelInsert 호출");
+	public int sellerJoinInsert(Map<String, Object> pMap) {
+		logger.info("sellerJoinInsert 호출");
 		int result = 0;
-		result = supportDao.sellerDelInsert(pMap);
+		result = supportDao.sellerJoinInsert(pMap);
 		//판매자 탈퇴 글을 작성하는 사람이 판매자인지 판별
 		return result;
 	}
+
+	public int inquiryDelete(Map<String, Object> pMap) {
+		logger.info("inquiryDelete 호출");
+		int result = 0;
+		result = supportDao.inquiryDelete(pMap);
+		pMap.put("delete_qna", 1);
+		int commentDelete = boardDao.replyDelete(pMap);
+		logger.info("댓글삭제 => " + commentDelete);
+		return result;
+	}
+
+	public List<Map<String, Object>> inquiryDetail(Map<String, Object> pMap) {
+		logger.info("inquiryDetail 호출");
+		List<Map<String,Object>> sList = new ArrayList<>();
+		sList= supportDao.inquiryDetail(pMap);
+		return sList;
+	}
+
 }

@@ -44,7 +44,7 @@ public class SupportController {
 	}
 	
 	/**
-	 * 공지사항 글 쓰기
+	 * 공지사항 글 작성
 	 * 
 	 * @param pMap
 	 * @return
@@ -77,6 +77,7 @@ public class SupportController {
 		temp = g.toJson(sList);	
 		return temp;
 	}
+
 	
 	/**
 	 * 1:1문의 글 작성
@@ -95,17 +96,57 @@ public class SupportController {
 	}
 	
 	/**
-	 * 판매자 탈퇴 글쓰기
+	 * 1대1문의 글 삭제
 	 * 
 	 * @param pMap
 	 * @return
 	 */
-	@PostMapping("sellerDelInsert")
-	public String sellerDelInsert(@RequestBody Map<String, Object> pMap) {
-		logger.info("sellerDelInsert 호출");
+	@GetMapping("inquiryDelete")
+	public String inquiryDelete(@RequestParam Map<String, Object> pMap) {
+		logger.info("inquiryDelete 호출");
+		logger.info(pMap);
+		if(pMap.get("qna_no") != null) {
+			// NumberFormatException 방어코드(값에 null이 들어가지 않도록!)
+			int qna_no = Integer.parseInt(pMap.get("qna_no").toString());
+			pMap.put("qna_no", qna_no);
+		}
+		int result = 0;
+		result = supportLogic.inquiryDelete(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+	
+	/**
+	 * 1대1문의 상세조회
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@GetMapping("inquiryDetail")
+	public String inquiryDetail(@RequestParam Map<String, Object> pMap) {
+		logger.info("inquiryDetail 호출");
+		logger.info(pMap);
+		String temp = null;
+		List<Map<String, Object>> bList = null;
+		bList = supportLogic.inquiryDetail(pMap);
+		logger.info(bList);
+		Gson g = new Gson();
+		temp = g.toJson(bList);
+		return temp;
+	}
+	
+	/**
+	 * 판매자 등록 글쓰기
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("sellerJoinInsert")
+	public String sellerJoinInsert(@RequestBody Map<String, Object> pMap) {
+		logger.info("sellerJoinInsert 호출");
 		logger.info(pMap);
 		int result = 0;
-		result = supportLogic.sellerDelInsert(pMap);
+		result = supportLogic.sellerJoinInsert(pMap);
 		logger.info(result);
 		return String.valueOf(result);
 	}
