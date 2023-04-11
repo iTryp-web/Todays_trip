@@ -202,10 +202,7 @@ public class MarketLogic {
 	public int reviewDislike(Map<String, Object> pMap) {
 	    logger.info("reviewDislike 호출");
 	    int result = 0;
-	    int likeCount = marketDao.reviewLikeCount(pMap); // 해당 리뷰의 현재 좋아요 수 가져오기
-	    if (likeCount >= 1) { // 해당 리뷰의 좋아요 수가 1 이상
-	        result = marketDao.reviewDislike(pMap); // 리뷰의 좋아요 수 감소
-	    }
+	    result = marketDao.reviewDislike(pMap);
 	    return result;
 	}
 ///////////////////////////////////////////////////////////////

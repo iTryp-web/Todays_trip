@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
-	<!-- 커뮤니티글 전체, 카테고리 조회 + 조건검색serch(작성자|제목|내용) -->
+	<!-- 커뮤니티글 전체, 카테고리 조회(인기글포함) + 조건검색serch(작성자|제목|내용) -->
 	<select id="boardList" parameterType="map" resultType="map">
 		SELECT b.board_no
 		     , u.user_nickname
@@ -11,8 +11,8 @@
 			   , b.board_date
 			   , b.board_hit
 			   , b.type_board
-			   , l.like_count
-			   , c.comment_count
+         , l.like_count
+         , c.comment_count
 		  FROM TB_BOARD b
 		  	 , TB_USER u
 				 , (SELECT COUNT(user_Id) like_count, like_group
@@ -23,11 +23,14 @@
 				    FROM TB_B_COMMENT
 				    GROUP BY board_no) c
 			WHERE b.user_id = u.user_id
-				AND b.board_no = l.like_group
-				AND b.board_no = c.board_no
+				AND b.board_no = l.like_group(+)
+				AND b.board_no = c.board_no(+)
 				AND b.board_status = 0
 				AND b.board_category != '공지사항'
-			<if test='board_category!=null and !board_category.equals("전체")'>
+			<if test='board_category!=null and board_category.equals("인기글")'>
+				AND l.like_count >= 5
+			</if>
+			<if test='board_category!=null and !board_category.equals("전체") and !board_category.equals("인기글")' >
 				AND b.board_category = #{board_category}
 			</if>
 			<if test='search != null and search.equals("작성자")'>
@@ -38,6 +41,10 @@
 			</if>
 			<if test='search != null and search.equals("내용")'>
 				AND b.board_content LIKE '%'||#{keyword}||'%'
+			</if>
+			<if test='search != null and search.equals("제목+내용")'>
+				AND (b.board_title LIKE '%'||#{keyword}||'%'
+             or b.board_content LIKE '%'||#{keyword}||'%')
 			</if>
 		ORDER BY b.board_no ASC
 	</select>
@@ -64,38 +71,11 @@
           FROM TB_B_COMMENT
           GROUP BY board_no) c
 	  WHERE b.user_id = u.user_id
-	    AND b.board_no = l.like_group
-	    AND b.board_no = #{board_no};
+	    AND b.board_no = l.like_group(+)
+	    AND b.board_no = c.board_no(+)
+	    AND b.board_no = #{board_no}
 	</select>
-		
-	<!-- 커뮤니티 인기글 모아보기 -->
-	<select id="boardHot" parameterType="map" resultType="map">
-		SELECT b.board_no
-		     , u.user_nickname
-			   , b.board_category
-			   , b.board_title
-			   , b.board_content
-			   , b.board_date
-			   , b.board_hit
-			   , b.type_board
-			   , l.like_count
-			   , c.comment_count
-		  FROM TB_BOARD b
-		  	 , TB_USER u
-				 , (SELECT COUNT(user_Id) like_count, like_group
-				    FROM TB_LIKE
-				    WHERE like_type = 0
-				    GROUP BY like_group) l
-				 , (SELECT COUNT(user_id) comment_count, board_no
-				    FROM TB_B_COMMENT
-				    GROUP BY board_no) c
-			WHERE b.user_id = u.user_id
-				AND b.board_no = l.like_group
-				AND b.board_no = c.board_no
-				AND b.board_status = 0
-				AND b.board_like >= 5
-	</select>
-
+	
 	<!-- 커뮤니티 글쓰기 -->
 	<insert id="boardInsert" parameterType="map" useGeneratedKeys="true" keyColumn="board_no" keyProperty="board_no">
 		INSERT INTO TB_BOARD 
