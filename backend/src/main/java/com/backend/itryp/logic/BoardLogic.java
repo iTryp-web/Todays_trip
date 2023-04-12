@@ -64,6 +64,11 @@ public class BoardLogic {
 			if(commentList != null && commentList.size() > 0) {
 				bList.addAll(commentList);
 			}
+			// 사용자가 좋아요 누른 글, 댓글 조회 - 판별용
+			List<Map<String, Object>> likeList = boardDao.likedList(pMap);
+			if(likeList != null && likeList.size() > 0) {
+				bList.addAll(likeList);
+			}
 		}
 		return bList;
 	}
