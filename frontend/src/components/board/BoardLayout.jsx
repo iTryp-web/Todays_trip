@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import {BoardSection, BoardCategory, CategoryLi, BContentSection, SearchInput, Wrap, StyledSlider, SliderListF, CommunityH3, CategoryUl, BtnSearch, SearchDiv, SearchSelect, SearchInputText, SliderDiv, SliderDivCategory, SliderDivTitle, SliderDivWriter, SliderMain, SliderSub} from '../../styles/BoardStyle'
 import { BiSearch } from 'react-icons/bi';
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import BoardRow from './BoardRow';
 import BoardTopPost from './BoardTopPost';
 import { DropdownButton } from 'react-bootstrap';
@@ -39,12 +39,12 @@ const handleSearchKeyword = useCallback((e) => {
   setKeyword(e);
 },[]);
 // useEffect쓰기위해 useState선언
-const [searchStart, setSearchStart] = useState('')
+  const [searchStart, setSearchStart] = useState('')
+
 // 검색 버튼 클릭
 const btnSearch =  useCallback((e) => {
   e.preventDefault()
-  console.log('btnSearch => ' + searchVal + keyword);
-  setSearchStart('start')
+  setSearchStart(new Date())
 }, [])
 
 /* 글 목록 */
@@ -53,10 +53,10 @@ const [posts, setPosts] = useState([{}])
 //선택한 카테고리에따라 글목록 출력
 useEffect(() => {
   console.log(searchStart)
-  setSearchStart('') // 검색시작조건 초기화해줌
   const boardList = async() => {
-    // DB로 보내는 조건
-    const board = {
+    let board = {}
+    // DB로 보내는 조건 - 검색버튼 눌렀을때만 조건추가
+    board = {
       board_category: selected,
       search: searchVal,
       keyword: keyword,
@@ -83,6 +83,9 @@ useEffect(() => {
       list.push(obj)
     })
     setPosts(list)
+    setKeyword('')
+    const keywordInput = document.getElementById('keyword')
+    keywordInput.value = '' // 키워드 input창 초기화
   }
   boardList()
 }, [selected, searchStart])
@@ -146,7 +149,7 @@ useEffect(() => {
               }
             </DropdownButton>
             <SearchInput type="text" id="keyword" maxLength="60" placeholder="검색어를 입력하세요"
-              autoComplete="off" onChange={(e)=>{handleSearchKeyword(e.target.value)}}/>
+              autoComplete="off" onChange={(e)=>{handleSearchKeyword(e.target.value)}} />
             <BtnSearch className='btnSearch' onClick={btnSearch}>
               검색
             </BtnSearch>
