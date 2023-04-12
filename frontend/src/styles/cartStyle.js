@@ -35,7 +35,14 @@ export const ResultDiv = styled.div`
 `;
 
 export const ImgDiv = styled.div`
-  border: 0.01em solid black;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(33, 37, 41, 0.15) 0px 0px 0px 1px inset;
+  border-radius: 4px;
+  margin-left: 10%;
 `;
 
 export const CartItemTitle = styled.th`
@@ -45,7 +52,7 @@ export const CartItemTitle = styled.th`
 export const CartTitle = styled.div`
   margin-top: 3%;
   font-size: 1.5rem;
-  font-style: bold;
+  font-weight: bold;
 `;
 
 export const LineHr = styled.hr`
