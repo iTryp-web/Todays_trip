@@ -47,3 +47,8 @@ export const PaymentButton = styled.button`
   border-radius: 5px;
   margin-top: 5%;
 `;
+
+export const SelectList = styled.select`
+  border-radius: 4px;
+  width: 200px;
+`;
