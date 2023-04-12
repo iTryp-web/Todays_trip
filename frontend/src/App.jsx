@@ -32,6 +32,7 @@ function App() {
       <Route path='/order/fail' exact={true} element={<OrderFail />} />
       <Route path='/signup' exact={true} element={<SignUpPage />} />
       <Route path='/signin' exact={true} element={<SignInPage />} />
+      <Route path='/market' exact={true} element={<MarketPage />} />
     </Routes>
     </> 
   );
