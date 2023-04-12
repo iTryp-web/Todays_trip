@@ -30,13 +30,13 @@ public class SupportController {
 	 * @param pMap
 	 * @return
 	 */
-	@GetMapping("announceList")
-	public String announceList(@RequestParam Map<String, Object> pMap) {
-		logger.info("announceList 호출");
+	@GetMapping("noticeList")
+	public String noticeList(@RequestParam Map<String, Object> pMap) {
+		logger.info("noticeList 호출");
 		logger.info(pMap);
 		String temp = null;
 		List<Map<String, Object>> sList = null;
-		sList = supportLogic.announceList(pMap);
+		sList = supportLogic.noticeList(pMap);
 		logger.info(sList);
 		Gson g = new Gson();
 		temp = g.toJson(sList);		
@@ -49,12 +49,12 @@ public class SupportController {
 	 * @param pMap
 	 * @return
 	 */
-	@PostMapping("announceInsert")
+	@PostMapping("noticeInsert")
 	public String boardInsert(@RequestBody Map<String, Object> pMap) {
-		logger.info("announceInsert 호출");
+		logger.info("noticeInsert 호출");
 		logger.info(pMap);
 		int result = 0;
-		result = supportLogic.announceInsert(pMap);
+		result = supportLogic.noticeInsert(pMap);
 		logger.info(result);
 		return String.valueOf(result);
 	}

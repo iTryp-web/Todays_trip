@@ -3,7 +3,7 @@
 <mapper namespace="com.backend.itryp">
 
 	<!-- 공지사항 조회 -->
-	<select id="announceList" parameterType="map" resultType="map">
+	<select id="noticeList" parameterType="map" resultType="map">
 		SELECT b.board_no
 		, u.user_nickname
 		, b.board_category
@@ -21,7 +21,7 @@
 
 
 	<!-- 공지사항 글 작성 / 카테고리 조회(배송, 결제, 회원 등) cert -->
-	<insert id="announceInsert" parameterType="map"
+	<insert id="noticeInsert" parameterType="map"
 		useGeneratedKeys="true" keyColumn="board_no" keyProperty="board_no">
 		INSERT INTO
 		TB_BOARD(
