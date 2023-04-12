@@ -7,7 +7,6 @@ import { BsFillEyeFill } from 'react-icons/bs';
 
 
 const BoardRow = ({post}) => {
-  console.log(post.like_count)
   return (
     <> 
       <PostLi>

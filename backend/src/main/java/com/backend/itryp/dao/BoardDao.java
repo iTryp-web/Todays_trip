@@ -139,6 +139,7 @@ public class BoardDao {
 	 */
 	public List<Map<String, Object>> replyList(Map<String, Object> pMap) {
 		logger.info("replyList 호출");
+		logger.info(pMap);
 		List<Map<String,Object>> bList = null;
 		bList = sqlSessionTemplate.selectList("replyList", pMap);
 		return bList;

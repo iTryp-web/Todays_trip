@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../include/Header';
 import Footer from '../include/Footer';
 import { BodyContainer, BtnCommentInsert, BtnDot, BtnDotComment, CategoryDiv, Comment, CommentBox, CommentContainer, CommentContent, CommentDate, CommentImg, CommentInput, CommentModal, CommentModalUl, CommentUser, CountDiv, DetailContent, DetailSection, DetailTitle, DetialContainer, FontContent, HrLine, InputDiv, Like, ModalDiv, ModalUl, Profile, ReactIcon, TitleContainer, User, UserImg, UserWrap, Username } from '../../styles/BoardStyle';
@@ -12,6 +12,7 @@ import { boardDetailDB } from '../../service/boardLogic';
 
 
 const BoardDetail = () => {
+  const navigate = useNavigate()
   const {bno} = useParams() // 해시값으로 가져오기
   console.log("bno => " + bno);
   
@@ -112,7 +113,6 @@ const BoardDetail = () => {
   const reportComment = async (bno, cno, cstep) => {
     console.log('reportComment' + bno, cno, cstep);
   };
-
 
   return (
     <>
