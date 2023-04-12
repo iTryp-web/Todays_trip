@@ -27,10 +27,10 @@ public class SupportLogic {
 	 * @param pMap
 	 * @return
 	 */
-	public List<Map<String, Object>> announceList(Map<String, Object> pMap) {
-		logger.info("announceList 호출");
+	public List<Map<String, Object>> noticeList(Map<String, Object> pMap) {
+		logger.info("noticeList 호출");
 		List<Map<String,Object>> sList = new ArrayList<>();
-		sList= supportDao.announceList(pMap);
+		sList= supportDao.noticeList(pMap);
 		return sList;
 	}
 
@@ -40,10 +40,10 @@ public class SupportLogic {
 	 * @param pMap
 	 * @return
 	 */
-	public int announceInsert(Map<String, Object> pMap) {
+	public int noticeInsert(Map<String, Object> pMap) {
 		logger.info("boardInsert 호출");
 		int result = 0;
-		result = supportDao.announceInsert(pMap);
+		result = supportDao.noticeInsert(pMap);
 		// Quill image가 있을 경우
 		if(result > 0 && pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
 			int insertImg = supportDao.imageInsert(pMap);

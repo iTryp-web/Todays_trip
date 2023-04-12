@@ -22,10 +22,10 @@ public class SupportDao {
 	 * @param pMap
 	 * @return
 	 */
-	public List<Map<String, Object>> announceList(Map<String, Object> pMap) {
-		logger.info("announceList 호출");
+	public List<Map<String, Object>> noticeList(Map<String, Object> pMap) {
+		logger.info("noticeList 호출");
 		List<Map<String,Object>> sList = null;
-		sList = sqlSessionTemplate.selectList("announceList", pMap);
+		sList = sqlSessionTemplate.selectList("noticeList", pMap);
 		return sList;
 	}
 
@@ -35,10 +35,10 @@ public class SupportDao {
 	 * @param pMap
 	 * @return
 	 */
-	public int announceInsert(Map<String, Object> pMap) {
-		logger.info("announceInsert 호출");
+	public int noticeInsert(Map<String, Object> pMap) {
+		logger.info("noticeInsert 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("announceInsert", pMap);
+		result = sqlSessionTemplate.update("noticeInsert", pMap);
 		return result;
 	}
 
