@@ -33,6 +33,7 @@ function App() {
       <Route path='/signup' exact={true} element={<SignUpPage />} />
       <Route path='/signin' exact={true} element={<SignInPage />} />
       <Route path='/market' exact={true} element={<MarketPage />} />
+      <Route path='/support' exact={true} element={<SupportPage />} />
     </Routes>
     </> 
   );
