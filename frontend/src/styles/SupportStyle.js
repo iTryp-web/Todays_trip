@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Nav_Support = styled.nav`
+export const NavSup = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
 `;
 
-const Button_Support = styled.button`
+export const BtnSup = styled.button`
   background-color: transparent;
   color: ${(props) => (props.active ? '#fff' : '#333')};
   border: none;

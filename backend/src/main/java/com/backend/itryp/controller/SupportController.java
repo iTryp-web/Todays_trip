@@ -20,10 +20,14 @@ import com.google.gson.Gson;
 @RequestMapping("/support/*")
 public class SupportController {
 	Logger logger = LogManager.getLogger(BoardController.class);
-	
+	//현 시점 해야할 것
+	//1. crud 단계에서 삭제로직 구현
+	//1-a. crud 단계에서 notice* 관련 부분들을 전부 TB_QNA에서 사용하는 로직으로 변경해주기
+	//2. 프론트 완성(디자인 신경쓰지않고 껍데기라도)
+	//3. 연결
 	@Autowired
 	private SupportLogic supportLogic = null;
-	
+
 	/**
 	 * 공지사항 글 조회
 	 * 
@@ -39,10 +43,10 @@ public class SupportController {
 		sList = supportLogic.noticeList(pMap);
 		logger.info(sList);
 		Gson g = new Gson();
-		temp = g.toJson(sList);		
+		temp = g.toJson(sList);
 		return temp;
 	}
-	
+
 	/**
 	 * 공지사항 글 작성
 	 * 
@@ -50,7 +54,7 @@ public class SupportController {
 	 * @return
 	 */
 	@PostMapping("noticeInsert")
-	public String boardInsert(@RequestBody Map<String, Object> pMap) {
+	public String noticeInsert(@RequestBody Map<String, Object> pMap) {
 		logger.info("noticeInsert 호출");
 		logger.info(pMap);
 		int result = 0;
@@ -58,7 +62,7 @@ public class SupportController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
 	 * 1:1문의 글 조회
 	 * 
@@ -74,11 +78,10 @@ public class SupportController {
 		sList = supportLogic.inquiryList(pMap);
 		logger.info(sList);
 		Gson g = new Gson();
-		temp = g.toJson(sList);	
+		temp = g.toJson(sList);
 		return temp;
 	}
 
-	
 	/**
 	 * 1:1문의 글 작성
 	 * 
@@ -94,7 +97,7 @@ public class SupportController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
 	 * 1대1문의 글 삭제
 	 * 
@@ -105,7 +108,7 @@ public class SupportController {
 	public String inquiryDelete(@RequestParam Map<String, Object> pMap) {
 		logger.info("inquiryDelete 호출");
 		logger.info(pMap);
-		if(pMap.get("qna_no") != null) {
+		if (pMap.get("qna_no") != null) {
 			// NumberFormatException 방어코드(값에 null이 들어가지 않도록!)
 			int qna_no = Integer.parseInt(pMap.get("qna_no").toString());
 			pMap.put("qna_no", qna_no);
@@ -115,7 +118,7 @@ public class SupportController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
 	/**
 	 * 1대1문의 상세조회
 	 * 
@@ -134,7 +137,7 @@ public class SupportController {
 		temp = g.toJson(bList);
 		return temp;
 	}
-	
+
 	/**
 	 * 판매자 등록 글쓰기
 	 * 
@@ -150,7 +153,26 @@ public class SupportController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
-	
+
+	/**
+	 * 판매자 등록 글 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@GetMapping("sellerJoinDelete")
+	public String sellerJoinDelete(@RequestParam Map<String, Object> pMap) {
+		logger.info("sellerJoinDelete 호출");
+		logger.info(pMap);
+		if (pMap.get("qna_no") != null) {
+			// NumberFormatException 방어코드(값에 null이 들어가지 않도록!)
+			int qna_no = Integer.parseInt(pMap.get("qna_no").toString());
+			pMap.put("qna_no", qna_no);
+		}
+		int result = 0;
+		result = supportLogic.sellerJoinDelete(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+
 }
-
-

@@ -13,6 +13,7 @@ import BoardLayout from './components/board/BoardLayout';
 import BoardDetail from './components/board/BoardDetail';
 import SignUpPage from './components/page/SignUpPage';
 import SignInPage from './components/page/SignInPage';
+import SupportPage from './components/page/SupportPage';
 
 
 
