@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   AuthButton,
   EmailBlock,
-  PasswordBlock,
+  PWnNickBlock,
   SignDiv,
   SignUpBlock,
   SocialBlock,
@@ -13,6 +13,8 @@ const SignUpPage = () => {
   const [idInput, setIdInput] = useState("");
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [pwInput, setPwInput] = useState("");
+  const [pwCheckInput, setPwCheckInput] = useState("");
+  const [nicknameInput, setNicknameInput] = useState("");
   const [textColor, setTextColor] = useState("black");
   const [text, setText] = useState("");
 
@@ -24,34 +26,36 @@ const SignUpPage = () => {
   const [emailSelectColor, setEmailSelectColor] = useState("lightgray");
   //이메일 select박스 shadow테두리 색깔
   const [emailSelectShadowColor, setEmailSelectShadowColor] = useState("none");
-  //Domainselect박스에서 값 가져오기
-  const [selectedValue, setSelectedValue] = useState("");
   //Domainselect박스에서 직접입력 선택할때 select박스를 input박스로 바꾸기
   const [inputVisible, setInputVisible] = useState(false);
+
 
   //Domainselect박스 handler
   const handleDomainSelect = (e) => {
     const value = e.target.value;
-
+    console.log(value);
+    //직접입력선택시 option에서 input박스로 바뀜
     if (value === "manual") {
       setInputVisible(true);
-      setSelectedValue("");
     } else {
       setInputVisible(false);
-      setSelectedValue(value);
     }
   };
   //직접입력 선택시 생기는 x버튼 클릭시 발생 이벤트
   const xButtonClick = () => {
-    console.log("버튼클릭")
-  }
+    setInputVisible(false);
+  };
+  //직접입력했을때 입력값 가져오기
+  const handleWriteEmail = (e) => {
+    console.log(e.target.value);
+  };
 
-  //이메일(아이디) 입력칸 handler
+  //이메일(아이디) input handler
   const handleIdInputChange = (e) => {
     //아이디 정규식
     const regIdExp = new RegExp("^[a-zA-Z][0-9a-zA-Z]{3,7}$");
-    const idValidInput = regIdExp.test(e.target.value);
     setIdInput(e.target.value);
+    const idValidInput = regIdExp.test(idInput);
     setIsButtonActive(idValidInput && e.target.value !== "");
 
     //정규식이 true일때
@@ -60,19 +64,41 @@ const SignUpPage = () => {
       setEmailInputColor("#4996f3");
       setEmailSelectColor("#4996f3");
       setTextColor("black");
-      setText(false);
+      setText("");
     }
     //정규식이 false일때
     if (!idValidInput) {
       setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
-      setEmailInputColor("red");
-      setEmailSelectColor("red");
-      setTextColor("red");
-      setText(true);
+      setEmailInputColor("#f77");
+      setEmailSelectColor("#f77");
+      setTextColor("#f77");
+      if(e.target.value===""){
+        setText("필수 입력 항목입니다.");
+      }else{
+        setText("이메일 형식이 올바르지 않습니다.")
+      }
     }
   };
-  const handlePwInputChange = (e) => {
+  const handlePwInput = (e) => {
     const regPwExp = new RegExp("^(?=.*[A-Za-z])(?=.*d)[A-Za-zd]{8,}$");
+    setPwInput(e.target.value);
+    const pwValidInput = regPwExp.test(pwInput)
+
+    if(pwValidInput){
+
+
+    }
+    if(!pwValidInput){
+
+
+    }
+  };
+
+  const handlePwCheckInput = (e) => {};
+
+  const handleNicknameInput = (e) => {
+
+
   };
 
   //email input focus handler
@@ -87,17 +113,17 @@ const SignUpPage = () => {
     setEmailSelectShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
   };
 
-  //email input박스 밖에 선택했을때 원래색으로 돌려놓기
+  //email input박스 밖에 선택했을때 원래색(lightgray)으로 돌려놓기
   const handleEmailBlur = () => {
-    if (emailInputColor !== "red") {
+    if (emailInputColor !== "#f77") {
       setEmailInputColor("lightgray");
       setEmailInputShadowColor("");
     }
   };
 
-  //email select박스 밖에 선택했을때 원래색으로 돌려놓기
+  //email select박스 밖에 선택했을때 원래색(lightgray)으로 돌려놓기
   const handleEmailSelectBlur = () => {
-    if (emailSelectColor !== "red") {
+    if (emailSelectColor !== "#f77") {
       setEmailSelectColor("lightgray");
       setEmailSelectShadowColor("");
     }
@@ -149,12 +175,12 @@ const SignUpPage = () => {
                       border: "1px solid " + emailSelectColor,
                       boxShadow: emailSelectShadowColor,
                     }}
+                    onChange={handleWriteEmail}
                     onFocus={handleEmailSelectFocus}
                     onBlur={handleEmailSelectBlur}
                   />
                 ) : (
                   <select
-                    value={selectedValue}
                     name="email"
                     style={{
                       border: "1px solid " + emailSelectColor,
@@ -164,9 +190,7 @@ const SignUpPage = () => {
                     onBlur={handleEmailSelectBlur}
                     onChange={handleDomainSelect}
                   >
-                    <option value disabled>
-                      &nbsp;&nbsp;선택해주세요
-                    </option>
+                    <option value="default">&nbsp;&nbsp;선택해주세요</option>
                     <option value="naver.com">&nbsp;&nbsp;naver.com</option>
                     <option value="hanmail.net">&nbsp;&nbsp;hanmail.net</option>
                     <option value="daum.net">&nbsp;&nbsp;daum.net</option>
@@ -180,14 +204,8 @@ const SignUpPage = () => {
                 )}
                 {inputVisible ? (
                   <button type="button" onClick={xButtonClick}>
-                    <svg
-                      className="icon"
-                      width="10"
-                      height="10"
-                    >
-                      <path
-                        d="M5 4L8.5.3l1 1.1L6.2 5l3.5 3.6-1 1L5 6.1 1.4 9.6l-1-1L3.9 5 .4 1.5l1.1-1L5 3.8z"
-                      ></path>
+                    <svg className="icon" width="10" height="10">
+                      <path d="M5 4L8.5.3l1 1.1L6.2 5l3.5 3.6-1 1L5 6.1 1.4 9.6l-1-1L3.9 5 .4 1.5l1.1-1L5 3.8z"></path>
                     </svg>
                   </button>
                 ) : (
@@ -195,16 +213,11 @@ const SignUpPage = () => {
                 )}
               </label>
             </span>
-            {/*  <div> */}
-
             {text != "" && (
-              <span
-                style={{ marginLeft: "10px", color: "red", fontSize: "12px" }}
-              >
-                이메일 형식이 올바르지 않습니다.
-              </span>
+              <p style={{ marginLeft: "10px",marginTop: "10px", marginBottom:"1px",color: "#f77", fontSize: "13px" }}
+              > {`${text}`}
+              </p>
             )}
-            {/* </div> */}
           </EmailBlock>
           <AuthButton
             disabled={!isButtonActive}
@@ -219,17 +232,38 @@ const SignUpPage = () => {
           >
             이메일 인증하기
           </AuthButton>
-          <h6>비밀번호</h6>
-          <PasswordBlock>
-            <p>영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요</p>
+          <PWnNickBlock>
+            <h6>비밀번호</h6>
+            <p>영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.</p>
             <input
               id="password"
               value={pwInput}
               type="text"
-              placeholder="&nbsp;&nbsp;비밀번호"
-              onChange={handlePwInputChange}
-            ></input>
-          </PasswordBlock>
+              placeholder="  비밀번호"
+              onChange={handlePwInput}
+            />
+            <h6>비밀번호 확인</h6>
+            <input
+              id="passwordCheck"
+              value={pwCheckInput}
+              type="text"
+              placeholder="  비밀번호 확인"
+              onChange={handlePwCheckInput}
+            />
+            <h6>닉네임</h6>
+            <p>다른 유저와 겹치지 않도록 입력해주세요.(2~15자)</p>
+            <input
+              id="nickname"
+              value={nicknameInput}
+              type="text"
+              placeholder="  별명(2~15자)"
+              onChange={handleNicknameInput}/>
+          </PWnNickBlock>
+          {text != "" && (
+              <p style={{ marginLeft: "10px",marginTop: "10px", marginBottom:"1px",color: "#f77", fontSize: "13px" }}
+              > {`${text}`}
+              </p>
+            )}
         </SignUpBlock>
       </SignDiv>
     </>
