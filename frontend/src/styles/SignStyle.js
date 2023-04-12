@@ -158,7 +158,6 @@ export const SignUpBlock = styled.form`
 `;
 
 export const EmailBlock = styled.div`
-  margin: 0 auto;
   input {
     width: 46%;
     height: 35px;
@@ -168,26 +167,51 @@ export const EmailBlock = styled.div`
     outline: none;
   }
   span {
+    margin : auto;
     color: lightgray;
   }
+
+  label {
+    width : 46%;
+    position: relative;
+
+    .inputDomain {
+      width: 100%;
+      height: 35px;
+      font-size: 14px;
+      border: 1.5px solid lightgray;
+      border-radius: 5px;
+      outline: none;
+
+    }
+    button{
+      position: absolute;
+      background-color : white;
+      right: 5px;
+      border : none;
+      top: 2.5px;
+    }
+  }
+
   select {
-    width: 47%;
     height: 35px;
+    width: 100%;
     font-size: 14px;
     color: gray;
     border: 1px solid lightgray;
     border-radius: 5px;
     outline: none;
   }
-  button {
-    margin-top: 0.8rem;
-    border-radius: 5px;
-    height: 45px;
-    width: 100%;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-  }
+`;
+
+export const AuthButton = styled.button`
+  margin-top: 0.8rem;
+  border-radius: 5px;
+  height: 45px;
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
 `;
 
 export const PasswordBlock = styled.div`
