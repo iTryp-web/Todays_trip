@@ -7,13 +7,17 @@ export const OrderDiv = styled.div`
   height: 100vh;
 `;
 
-export const OrderListDiv = styled.div``;
+export const OrderListDiv = styled.div`
+  margin-top: 3%;
+`;
 
 export const OrderInfoDiv = styled.div``;
 
 export const OrderCouponDiv = styled.div``;
 
 export const OrderAddressDiv = styled.div``;
+
+export const OrdererInfoDiv = styled.div``;
 
 export const OrderButtonDiv = styled.div`
   text-align: center;
@@ -22,11 +26,17 @@ export const OrderButtonDiv = styled.div`
 export const OrderTitle = styled.div`
   margin-top: 3%;
   font-size: 1.5rem;
-  font-style: bold;
+  font-weight: bold;
 `;
 
 export const LineHr = styled.hr`
   margin: 0.5rem 0;
+`;
+
+export const OrdertyTitle = styled.div`
+  margin-top: 1em;
+  font-size: 18px;
+  font-weight: bold;
 `;
 
 export const PaymentButton = styled.button`
