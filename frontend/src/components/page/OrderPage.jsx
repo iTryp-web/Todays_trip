@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../include/Header'
 import OrderRow from '../order/OrderRow'
 import Footer from '../include/Footer'
-import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderInfoDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle } from '../../styles/OrderStyle'
+import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderInfoDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList } from '../../styles/OrderStyle'
 
 const OrderPage = () => {
 
@@ -53,6 +53,12 @@ const OrderPage = () => {
         <OrderCouponDiv>
           <OrdertyTitle>할인 정보</OrdertyTitle>
           쿠폰 할인<br/>
+          <SelectList>
+            <option>쿠폰1</option>
+            <option>쿠폰2</option>
+            <option>쿠폰3</option>
+            <option>쿠폰4</option>
+          </SelectList><br/>
           포인트
         </OrderCouponDiv>
         <OrdererInfoDiv>
