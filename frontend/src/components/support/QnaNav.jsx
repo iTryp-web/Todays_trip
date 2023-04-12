@@ -1,4 +1,6 @@
 import React from "react";
+import { useState } from "react";
+import { NavSup, BtnSup } from "../../styles/SupportStyle";
 
 const QnaNav = () => {
   return function Navbar() {
@@ -11,17 +13,17 @@ const QnaNav = () => {
     const buttons = ["전체", "결제", "환불", "판매자등록", "환불", "서비스"];
 
     return (
-      <Nav_support>
+      <NavSup>
         {buttons.map((buttonName) => (
-          <Button_support
+          <BtnSup
             key={buttonName}
             active={buttonName === activeBtn}
             onClick={() => handleClick(buttonName)}
           >
             {buttonName}
-          </Button_support>
+          </BtnSup>
         ))}
-      </Nav_support>
+      </NavSup>
     );
   };
 };

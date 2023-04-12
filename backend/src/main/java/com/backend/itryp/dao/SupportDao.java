@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SupportDao {
 	Logger logger = LogManager.getLogger(SupportDao.class);
-	
+
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate = null;
 
@@ -24,7 +24,7 @@ public class SupportDao {
 	 */
 	public List<Map<String, Object>> noticeList(Map<String, Object> pMap) {
 		logger.info("noticeList 호출");
-		List<Map<String,Object>> sList = null;
+		List<Map<String, Object>> sList = null;
 		sList = sqlSessionTemplate.selectList("noticeList", pMap);
 		return sList;
 	}
@@ -50,7 +50,7 @@ public class SupportDao {
 	 */
 	public List<Map<String, Object>> inquiryList(Map<String, Object> pMap) {
 		logger.info("inquiryList 호출");
-		List<Map<String,Object>> sList = null;
+		List<Map<String, Object>> sList = null;
 		sList = sqlSessionTemplate.selectList("inquiryList", pMap);
 		return sList;
 	}
@@ -67,6 +67,23 @@ public class SupportDao {
 		result = sqlSessionTemplate.update("inquiryInsert", pMap);
 		return result;
 	}
+	public int inquiryDelete(Map<String, Object> pMap) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
+	 * 1대1문의 상세조회
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> inquiryDetail(Map<String, Object> pMap) {
+		logger.info("inquiryDetail 호출");
+		List<Map<String, Object>> sList = null;
+		sList = sqlSessionTemplate.selectList("inquiryDetail", pMap);
+		return sList;
+	}
 
 	/**
 	 * 판매자 등록 글 작성
@@ -78,6 +95,33 @@ public class SupportDao {
 		logger.info("sellerJoinInsert 호출");
 		int result = 0;
 		result = sqlSessionTemplate.update("sellerJoinInsert", pMap);
+		return result;
+	}
+
+	/**
+	 * 판매자 등록 글 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int sellerJoinDelete(Map<String, Object> pMap) {
+		logger.info("sellerJoinDelete 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("sellerJoinDelete", pMap);
+		return result;
+	}
+	
+
+	/**
+	 * Quill image 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int imageDelete(Map<String, Object> pMap) {
+		logger.info("imageDelete 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("imageDelete", pMap);
 		return result;
 	}
 
@@ -94,24 +138,17 @@ public class SupportDao {
 		return result;
 	}
 
-	public int inquiryDelete(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	/**
-	 * 1대1문의 상세조회
+	 * 댓글 삭제
 	 * 
 	 * @param pMap
 	 * @return
 	 */
-	public List<Map<String, Object>> inquiryDetail(Map<String, Object> pMap) {
-		logger.info("inquiryDetail 호출");
-		List<Map<String,Object>> sList = null;
-		sList = sqlSessionTemplate.selectList("inquiryDetail", pMap);
-		return sList;
+	public int replyDelete(Map<String, Object> pMap) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
-
 
 
 }
