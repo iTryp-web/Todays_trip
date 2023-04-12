@@ -4,6 +4,7 @@ import { CartTr, ImgDiv } from '../../styles/cartStyle'
 const CartRow = (props) => {
   const plus_img = "/images/add.png";
   const minus_img = "/images/minus.png";
+  const remove_img = "/images/remove.png";
 
   return (
     <>
@@ -29,6 +30,9 @@ const CartRow = (props) => {
         </td>
         <td className='price'>
           7000
+        </td>
+        <td>
+        <span style={{marginRight:"0.5rem", cursor:"pointer"}}><img src={remove_img} alt="remove"/></span>
         </td>
       </CartTr>
     </>
