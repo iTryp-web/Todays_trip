@@ -700,10 +700,23 @@ export const CommentContent = styled.div`
   word-break: break-all;
 `;
 
-export const CommentDate = styled.div`
+export const CommentDate = styled.span`
   font-size: 12px;
   color: gray;
   font-weight: 500;
+  `;
+  
+  export const CommentLike = styled.span`
+  margin-left: 15px;
+  font-size: 12px;
+  color: gray;
+  font-weight: 500;
+  .like-icon {
+    margin-bottom: 3px;
+  }
+  .like-count {
+    margin-left: 4px;
+  }
 `;
 
 export const BtnDotComment = styled.button`

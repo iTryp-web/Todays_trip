@@ -198,6 +198,20 @@ public class BoardDao {
 	}
 
 	/**
+	 * 사용자가 좋아요 누른 글, 댓글 조회 - 판별용
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> likedList(Map<String, Object> pMap) {
+		logger.info("likedList 호출");
+		logger.info(pMap);
+		List<Map<String,Object>> lList = null;
+		lList = sqlSessionTemplate.selectList("likedList", pMap);
+		return lList;
+	}
+	
+	/**
 	 * 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리)
 	 * 
 	 * @param pMap

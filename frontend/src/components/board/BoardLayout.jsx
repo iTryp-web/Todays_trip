@@ -132,7 +132,7 @@ useEffect(() => {
           {/* 글 목록 */}
           <ul>
             {posts && posts.map((post) => {
-              return <BoardRow key={post.board_no} post={post} />
+              return <BoardRow key={post.board_date} post={post} />
             })}
           </ul>
 
