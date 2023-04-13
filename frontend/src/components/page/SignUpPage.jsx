@@ -10,13 +10,17 @@ import {
 import HeaderIcon from "../include/HeaderIcon";
 
 const SignUpPage = () => {
-  const [idInput, setIdInput] = useState("");
+  const [idInput, setIdInput] = useState(null);
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [pwInput, setPwInput] = useState("");
   const [pwCheckInput, setPwCheckInput] = useState("");
   const [nicknameInput, setNicknameInput] = useState("");
-  const [textColor, setTextColor] = useState("black");
-  const [text, setText] = useState("");
+  const [textIdColor, setTextIdColor] = useState("black");
+  const [textPwColor, setTextPwColor] = useState("black");
+  const [textPwCheckColor, setTextPwCheckColor] = useState("black");
+  const [textNicknameColor, setTextNickNameColor] = useState("black");
+  const [idtext, setIdText] = useState("");
+  const [pwtext, setPwText] = useState("");
 
   //이메일 input박스 얇은 테두리색깔
   const [emailInputColor, setEmailInputColor] = useState("lightgray");
@@ -28,7 +32,10 @@ const SignUpPage = () => {
   const [emailSelectShadowColor, setEmailSelectShadowColor] = useState("none");
   //Domainselect박스에서 직접입력 선택할때 select박스를 input박스로 바꾸기
   const [inputVisible, setInputVisible] = useState(false);
-
+  //패스워드 input박스 얇은 테두리 색깔
+  const [pwInputColor, setPwInputColor] = useState("lightgray");
+  //패스워드 input박스 shadow 테두리 색깔
+  const [pwInputShadowColor, setPwInputShadowColor] = useState("none");
 
   //Domainselect박스 handler
   const handleDomainSelect = (e) => {
@@ -57,49 +64,67 @@ const SignUpPage = () => {
     setIdInput(e.target.value);
     const idValidInput = regIdExp.test(idInput);
     setIsButtonActive(idValidInput && e.target.value !== "");
+    console.log(idInput);
 
     //정규식이 true일때
     if (idValidInput) {
       setEmailInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
       setEmailInputColor("#4996f3");
       setEmailSelectColor("#4996f3");
-      setTextColor("black");
-      setText("");
+      setTextIdColor("black");
+      setIdText("");
     }
     //정규식이 false일때
     if (!idValidInput) {
       setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
       setEmailInputColor("#f77");
       setEmailSelectColor("#f77");
-      setTextColor("#f77");
-      if(e.target.value===""){
-        setText("필수 입력 항목입니다.");
-      }else{
-        setText("이메일 형식이 올바르지 않습니다.")
+      setTextIdColor("#f77");
+      if (e.target.value === "") {
+        setIdText("필수 입력 항목입니다.");
+      } else {
+        setIdText("이메일 형식이 올바르지 않습니다.");
       }
     }
   };
+
+  //비밀번호 유효성에 따라 style변경
   const handlePwInput = (e) => {
     const regPwExp = new RegExp("^(?=.*[A-Za-z])(?=.*d)[A-Za-zd]{8,}$");
     setPwInput(e.target.value);
-    const pwValidInput = regPwExp.test(pwInput)
+    const pwValidInput = regPwExp.test(pwInput);
 
-    if(pwValidInput){
-
-
+    //정규식이 true이면
+    if (pwValidInput) {
+      setPwInputColor("#4996f3");
+      setPwInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+      setTextPwColor("black");
+      setPwText("");
     }
-    if(!pwValidInput){
-
-
+    //정규식이 false이면
+    if (!pwValidInput) {
+      setPwInputColor("#f77");
+      setPwInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+      setTextPwColor("#f77");
+      if (e.target.value === "") {
+        setPwText("필수 입력 항목입니다.");
+      } else {
+        setPwText("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
+      }
     }
   };
 
-  const handlePwCheckInput = (e) => {};
+  const handlePwCheckInput = (e) => {
+    setPwCheckInput(e.target.value);
 
-  const handleNicknameInput = (e) => {
-
-
+    if (pwInput === pwCheckInput) {
+      console.log(true);
+    } else {
+      console.log(false);
+    }
   };
+
+  const handleNicknameInput = (e) => {};
 
   //email input focus handler
   const handleEmailFocus = () => {
@@ -129,9 +154,23 @@ const SignUpPage = () => {
     }
   };
 
+  const handlePwInputFocus = () => {
+    setPwInputColor("#4996f3");
+    setPwInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+  };
+
+  //비밀번호 input 외부 선택했을때 다시 돌려놓기
+  const handlePwInputBlur = () => {
+    if (pwInputColor !== "f77") {
+      setPwInputColor("lightgray");
+      setPwInputShadowColor("");
+    }
+  };
+
   const EmailButton = () => {
     console.log("버튼클릭");
   };
+
   return (
     <>
       <HeaderIcon />
@@ -147,17 +186,17 @@ const SignUpPage = () => {
             </div>
           </SocialBlock>
           <hr />
-          <h6 style={{ color: textColor }}>이메일</h6>
+          <h6 style={{ color: textIdColor }}>이메일</h6>
           <EmailBlock>
             <span>
               <input
                 id="email"
-                value={idInput}
+                value={idInput === null ? "" : idInput}
                 onChange={handleIdInputChange}
                 onFocus={handleEmailFocus}
                 onBlur={handleEmailBlur}
                 type="text"
-                placeholder="&nbsp;&nbsp;이메일"
+                placeholder="이메일"
                 style={{
                   border: "1px solid " + emailInputColor,
                   boxShadow: emailInputShadowColor,
@@ -170,7 +209,7 @@ const SignUpPage = () => {
                 {inputVisible ? (
                   <input
                     className="inputDomain"
-                    placeholder="  입력해주세요"
+                    placeholder="입력해주세요"
                     style={{
                       border: "1px solid " + emailSelectColor,
                       boxShadow: emailSelectShadowColor,
@@ -213,9 +252,17 @@ const SignUpPage = () => {
                 )}
               </label>
             </span>
-            {text != "" && (
-              <p style={{ marginLeft: "10px",marginTop: "10px", marginBottom:"1px",color: "#f77", fontSize: "13px" }}
-              > {`${text}`}
+            {idtext != "" && (
+              <p
+                style={{
+                  marginLeft: "10px",
+                  marginTop: "10px",
+                  marginBottom: "1px",
+                  color: "#f77",
+                  fontSize: "13px",
+                }}
+              >
+                {`${idtext}`}
               </p>
             )}
           </EmailBlock>
@@ -233,21 +280,40 @@ const SignUpPage = () => {
             이메일 인증하기
           </AuthButton>
           <PWnNickBlock>
-            <h6>비밀번호</h6>
+            <h6 style={{ color: textPwColor }}>비밀번호</h6>
             <p>영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.</p>
             <input
               id="password"
               value={pwInput}
               type="text"
-              placeholder="  비밀번호"
+              placeholder="비밀번호"
+              style={{
+                border: "1px solid" + pwInputColor,
+                boxShadow: pwInputShadowColor,
+              }}
               onChange={handlePwInput}
+              onFocus={handlePwInputFocus}
+              onBlur={handlePwInputBlur}
             />
+            {pwtext != "" && (
+              <p
+                style={{
+                  marginLeft: "10px",
+                  marginTop: "10px",
+                  marginBottom: "1px",
+                  color: "#f77",
+                  fontSize: "13px",
+                }}
+              >
+                {`${pwtext}`}
+              </p>
+            )}
             <h6>비밀번호 확인</h6>
             <input
               id="passwordCheck"
               value={pwCheckInput}
               type="text"
-              placeholder="  비밀번호 확인"
+              placeholder="비밀번호 확인"
               onChange={handlePwCheckInput}
             />
             <h6>닉네임</h6>
@@ -256,18 +322,13 @@ const SignUpPage = () => {
               id="nickname"
               value={nicknameInput}
               type="text"
-              placeholder="  별명(2~15자)"
-              onChange={handleNicknameInput}/>
+              placeholder="별명(2~15자)"
+              onChange={handleNicknameInput}
+            />
           </PWnNickBlock>
-          {text != "" && (
-              <p style={{ marginLeft: "10px",marginTop: "10px", marginBottom:"1px",color: "#f77", fontSize: "13px" }}
-              > {`${text}`}
-              </p>
-            )}
         </SignUpBlock>
       </SignDiv>
     </>
   );
 };
-
 export default SignUpPage;
