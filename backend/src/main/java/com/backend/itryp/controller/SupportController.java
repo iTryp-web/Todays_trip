@@ -105,14 +105,15 @@ public class SupportController {
 	}
 
 	/**
-	 * 1:1문의 글 조회
+	 * 1대1 문의/공지사항 조회
+	 * qna_sort가 2 => 1대1문의 | 4=> 판매자등록
 	 * 
 	 * @param pMap
 	 * @return
 	 */
 	@GetMapping("inquiryList")
 	public String inquiryList(@RequestParam Map<String, Object> pMap) {
-		logger.info("inquiryList 호출");
+		logger.info("qnaList 호출");
 		logger.info(pMap);
 		String temp = null;
 		List<Map<String, Object>> sList = null;

@@ -54,6 +54,19 @@ public class SupportDao {
 		result = sqlSessionTemplate.update("noticeDelete", pMap);
 		return result;
 	}
+	
+	/**
+	 * 공지사항 작성
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int faqInsert(Map<String, Object> pMap) {
+		logger.info("faqInsert 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("faqInsert", pMap);
+		return result;
+	}
 	/**
 	 * FAQ 글 삭제
 	 * 
@@ -68,7 +81,7 @@ public class SupportDao {
 	}
 	
 	/**
-	 * 1대1문의 목록조회
+	 * 1대1 문의/공지사항 조회
 	 * 
 	 * @param pMap
 	 * @return
