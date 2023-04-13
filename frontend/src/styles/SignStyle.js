@@ -165,6 +165,7 @@ export const EmailBlock = styled.div`
     border: 1.5px solid lightgray;
     border-radius: 5px;
     outline: none;
+    padding-left:15px;
 
     &::placeholder{
       font-weight : 550;
@@ -239,6 +240,7 @@ export const PWnNickBlock = styled.div`
     color: gray;
     border: 1px solid lightgray;
     border-radius: 5px;
+    padding-left:15px;
     &:focus {
       outline: none;
       border: 2px solid #4996f3;
