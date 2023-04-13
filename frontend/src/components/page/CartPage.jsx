@@ -1,13 +1,14 @@
 import React from 'react'
 import Header from '../include/Header'
 import '../../styles/cartStyle'
-import { CartButton, CartButtonDiv, CartCalcDiv, CartDiv, CartItemTitle, CartListDiv, CartTable, CartTitle, LineHr, ResultDiv } from '../../styles/cartStyle'
+import { CartButton, CartButtonDiv, CartCalcDiv, CartDiv, CartItemTitle, CartListDiv, CartTable, CartTitle, EmptySpan, LineHr, NoticeDiv, ResultDiv } from '../../styles/cartStyle'
 import CartRow from '../cart/CartRow'
 import Footer from '../include/Footer'
 
 const CartPage = () => {
+
   //임시 데이터
-  const cartList = 0;
+  const cartList = 1;
   const price = 30000;
   const count = 4;
 
@@ -47,7 +48,15 @@ const CartPage = () => {
             <CartButton>주문하기</CartButton>
           </CartButtonDiv>
         </CartListDiv>
-      : <div>장바구니에 담긴 상품이 없습니다.</div>}
+      :
+      <CartListDiv>
+        <CartTitle>장바구니</CartTitle>
+        <LineHr/>
+        <NoticeDiv>
+          <img src={"/images/empty-cart.png"} alt="empty-cart"/>
+          <EmptySpan>장바구니에 담긴 상품이 없습니다.</EmptySpan>
+        </NoticeDiv>
+      </CartListDiv>}
       </CartDiv>
       <Footer/>
     </>
