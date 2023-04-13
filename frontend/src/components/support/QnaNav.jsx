@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import { NavLink, Route } from 'react-router-dom';
+import { useState } from "react";
+import styled from "styled-components";
+import { NavLink, Route } from "react-router-dom";
+import { Button, Nav } from "react-bootstrap";
 
-const Nav = styled.nav`
+export const NavSup = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
 `;
 
-const Button = styled.button`
+export const BtnSup = styled.button`
   background-color: transparent;
   color: ${(props) => (props.active ? '#fff' : '#333')};
   border: none;
@@ -23,13 +24,13 @@ const Button = styled.button`
 `;
 
 function Navbar() {
-  const [activeBtn, setActiveBtn] = useState('전체');
+  const [activeBtn, setActiveBtn] = useState("전체");
 
   const handleClick = (btnName) => {
     setActiveBtn(btnName);
   };
 
-  const buttons = ['전체', '결제', '환불', '판매자등록', '환불', '서비스'];
+  const buttons = ["전체", "결제", "환불", "판매자등록", "서비스"];
 
   return (
     <>
@@ -45,19 +46,19 @@ function Navbar() {
           </NavLink>
         ))}
       </Nav>
-      <Route exact path="/allFaqs">
+      <Route exact path="/전체">
         전체 페이지입니다.
       </Route>
-      <Route exact path="/payment">
+      <Route exact path="/결제">
         결제 페이지입니다.
       </Route>
-      <Route exact path="/refund">
+      <Route exact path="/환불">
         환불 페이지입니다.
       </Route>
-      <Route exact path="/sellerJoin">
+      <Route exact path="/판매자등록">
         판매자등록 페이지입니다.
       </Route>
-      <Route exact path="/service">
+      <Route exact path="/서비스">
         서비스 페이지입니다.
       </Route>
     </>
