@@ -4,53 +4,88 @@
 
 	<!-- 공지사항 조회 -->
 	<select id="noticeList" parameterType="map" resultType="map">
-		SELECT b.board_no
-		, u.user_nickname
-		, b.board_category
-		, b.board_title
-		, b.board_content
-		, b.board_date
-		, b.board_hit
-		, b.type_board
-		FROM TB_BOARD b
-		, TB_USER u
-		WHERE b.user_id = u.user_id
-		AND b.board_category = '공지사항'
-		ORDER BY b.board_no ASC
+		SELECT
+		nf_no
+		, nf_title
+		, nf_content
+		, nf_date
+		, nf_type
+		, nf_category
+		FROM
+		TB_NOTICES_FAQ
+		WHERE nf_type = 0
+		AND nf_category IS NULL
+		<if test='search != null and search.equals("제목")'>
+			AND nf.nf_title LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test='search != null and search.equals("내용")'>
+			AND nf.nf_content LIKE '%'||#{keyword}||'%'
+		</if>
+		ORDER BY NF_NO ASC;
 	</select>
 
-
 	<!-- 공지사항 글 작성 / 카테고리 조회(배송, 결제, 회원 등) cert -->
-	<insert id="noticeInsert" parameterType="map"
-		useGeneratedKeys="true" keyColumn="board_no" keyProperty="board_no">
-		INSERT INTO
-		TB_BOARD(
-		board_no,
-		user_id, 
-		board_category,
-		board_title,
-		board_content,
-		board_date
+	<insert id="noticInserte">
+		INSERT INTO TB_NOTICES_FAQ(
+		nf_no
+		, nf_title
+		,
+		nf_content
+		, nf_date
+		, nf_type
+		, nf_category)
+		VALUES(
+		TB_NOTICES_FAQ_NO_SEQ.NEXTVAL
+		, #{title}
+		, #{content}
+		, TO_CHAR(sysdate,
+		'YYYY-MM-DD HH:MM:SS')
+		, 0
+		, #{category})
+	</insert>
+
+	<!-- 공지사항 글 삭제 -->
+	<delete id="noticeDelete">
+		DELETE FROM TB_NOTICES_FAQ
+		WHERE nf_no = #{nf_no}
+	</delete>
+
+	<!-- FAQ 글 작성 -->
+	<insert id="faqInsert" parameterType="map">
+		INSERT INTO TB_NOTICES_FAQ
+		(
+		nf_no,
+		nf_title,
+		nf_content,
+		nf_date,
+		nf_type,
+		nf_category
 		)
 		VALUES (
-		TB_BOARD_NO_SEQ.NEXTVAL,
-		#{user_id},
-		'공지사항',
-		#{board_title},
-		#{board_content},
-		TO_CHAR(sysdate, 'YYYY-MM-DD
-		HH:MM:SS')
+		SELECT
+		TB_NOTICES_FAQ_NO_SEQ.NEXTVAL,
+		#{title},
+		#{content},
+		sysdate,
+		1,
+		#{category}
 		)
 	</insert>
 
-	<!-- 1대1 문의 글 조회 cert -->
+	<!-- FAQ 글 삭제 -->
+	<delete id="faqDelete" parameterType="map">
+		DELETE FROM TB_NOTICES_FAQ
+		WHERE nf_no = #{nf_no}
+	</delete>
+
+	<!--=========================================== TB_QNA 영역 =========================================== -->
+	<!-- 1대1 문의/판매자 등록 조회 -->
 	<select id="inquiryList" parameterType="map" resultType="map">
 		SELECT q.qna_no
 		, u.user_id
 		, u.user_nickname
 		, q.qna_title
-		,
-		q.qna_content
+		, q.qna_content
 		, q.qna_date
 		FROM TB_QNA q, TB_USER u
 		WHERE q.user_id =
@@ -63,6 +98,14 @@
 		</if>
 		<if test='search != null and search.equals("내용")'>
 			AND q.qna_content LIKE '%'||#{keyword}||'%'
+		</if>
+		<!-- 1대1문의(2)만 채번 -->
+		<if test='qna_sort != null and qna_sort.equals("2")'>
+			AND q.qna_sort = 2
+		</if>
+		<!-- 판매자등록(4)만 채번 -->
+		<if test='qna_sort != null and qna_sort.equals("4")'>
+			AND q.qna_sort = 4
 		</if>
 		ORDER BY q.qna_no ASC
 	</select>
@@ -80,45 +123,48 @@
 		)
 		VALUES(
 		TB_QNA_NO_SEQ.NEXTVAL,
-		#{qna_step},
+		#{qna_step, jdbcType=INTEGER},
 		#{user_id},
 		#{qna_title},
 		#{qna_content},
 		2,
-		TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+		TO_CHAR(sysdate, 'YYYY-MM-DD
+		HH:MM:SS')
 		)
 	</insert>
 
 	<!-- 1대1 문의 글 상세조회 -->
 	<select id="inquiryDetail" parameterType="map" resultType="map">
 		SELECT
-		q.qna_no
-		, u.user_nickname
-		, b.board_category
-		, b.board_title
+		nf.nf_no
+		, nf.board_category
+		, nf.board_title
+		, b.board_content
 		,
-		b.board_content
-		, b.board_date
+		b.board_date
 		, b.board_hit
 		, b.type_board
-		, l.like_count
-		, c.comment_count
-		FROM TB_BOARD b
-		, TB_USER u
+		FROM TB_NOTICES_FAQ nf
+		, TB_USER
+		u
 		, (SELECT COUNT(user_Id)
 		like_count, like_group
 		FROM TB_LIKE
-		WHERE like_type = 0
+		WHERE
+		like_type = 0
 		GROUP BY
 		like_group) l
-		, (SELECT COUNT(user_id) comment_count, board_no
+		, (SELECT COUNT(user_id)
+		comment_count, board_no
 		FROM
 		TB_B_COMMENT
 		GROUP BY board_no) c
-		WHERE b.user_id = u.user_id
+		WHERE
+		b.user_id = u.user_id
 		AND
 		b.board_no = l.like_group
-		AND b.board_no = #{board_no};
+		AND b.board_no =
+		#{board_no};
 	</select>
 
 	<!-- 1대1 문의 글 삭제 -->
@@ -128,7 +174,7 @@
 	</delete>
 
 	<!-- 판매자 등록 글 작성 -->
-	<insert id="sellerJoinInsert" parameterType="map">
+	<insert id="sellerRegInsert" parameterType="map">
 		INSERT INTO TB_QNA(
 		qna_no,
 		user_id,
@@ -149,7 +195,7 @@
 	</insert>
 
 	<!-- 판매자 등록 글 삭제 -->
-	<delete id="sellerJoinDelete" parameterType="map">
+	<delete id="sellerRegDelete" parameterType="map">
 		DELETE FROM TB_QNA
 		WHERE qna_no = #{qna_no}
 	</delete>
