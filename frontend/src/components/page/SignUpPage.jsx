@@ -8,9 +8,10 @@ import {
   SocialBlock,
 } from "../../styles/SignStyle";
 import HeaderIcon from "../include/HeaderIcon";
+import { useEffect } from "react";
 
 const SignUpPage = () => {
-  const [idInput, setIdInput] = useState(null);
+  const [idInput, setIdInput] = useState("");
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [pwInput, setPwInput] = useState("");
   const [pwCheckInput, setPwCheckInput] = useState("");
@@ -21,6 +22,7 @@ const SignUpPage = () => {
   const [textNicknameColor, setTextNickNameColor] = useState("black");
   const [idtext, setIdText] = useState("");
   const [pwtext, setPwText] = useState("");
+  const [pwChecktext, setPwCheckText] = useState("");
 
   //이메일 input박스 얇은 테두리색깔
   const [emailInputColor, setEmailInputColor] = useState("lightgray");
@@ -36,6 +38,10 @@ const SignUpPage = () => {
   const [pwInputColor, setPwInputColor] = useState("lightgray");
   //패스워드 input박스 shadow 테두리 색깔
   const [pwInputShadowColor, setPwInputShadowColor] = useState("none");
+  //패스워드 체크 input박스 얇은 테두리 색깔
+  const [pwCheckInputColor, setPwCheckInputColor] = useState("lightgray");
+  //패스워드 체크 input박스 shadow 테두리 색깔
+  const [pwCheckShadowColor, setPwCheckShadowColor] = useState("none");
 
   //Domainselect박스 handler
   const handleDomainSelect = (e) => {
@@ -56,15 +62,14 @@ const SignUpPage = () => {
   const handleWriteEmail = (e) => {
     console.log(e.target.value);
   };
-
   //이메일(아이디) input handler
   const handleIdInputChange = (e) => {
     //아이디 정규식
     const regIdExp = new RegExp("^[a-zA-Z][0-9a-zA-Z]{3,7}$");
+    const idValue = e.target.value;
     setIdInput(e.target.value);
-    const idValidInput = regIdExp.test(idInput);
+    const idValidInput = regIdExp.test(idValue);
     setIsButtonActive(idValidInput && e.target.value !== "");
-    console.log(idInput);
 
     //정규식이 true일때
     if (idValidInput) {
@@ -87,24 +92,26 @@ const SignUpPage = () => {
       }
     }
   };
-
+  console.log(idInput);
   //비밀번호 유효성에 따라 style변경
-  const handlePwInput = (e) => {
-    const regPwExp = new RegExp("^(?=.*[A-Za-z])(?=.*d)[A-Za-zd]{8,}$");
+  const handlePwInputChange = (e) => {
+    const regPwExp = new RegExp("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
+    const pwValue = e.target.value;
     setPwInput(e.target.value);
-    const pwValidInput = regPwExp.test(pwInput);
+    const pwValidInput = regPwExp.test(pwValue);
 
+    console.log(pwInput);
     //정규식이 true이면
     if (pwValidInput) {
-      setPwInputColor("#4996f3");
       setPwInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+      setPwInputColor("#4996f3");
       setTextPwColor("black");
       setPwText("");
     }
     //정규식이 false이면
     if (!pwValidInput) {
-      setPwInputColor("#f77");
       setPwInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+      setPwInputColor("#f77");
       setTextPwColor("#f77");
       if (e.target.value === "") {
         setPwText("필수 입력 항목입니다.");
@@ -116,12 +123,6 @@ const SignUpPage = () => {
 
   const handlePwCheckInput = (e) => {
     setPwCheckInput(e.target.value);
-
-    if (pwInput === pwCheckInput) {
-      console.log(true);
-    } else {
-      console.log(false);
-    }
   };
 
   const handleNicknameInput = (e) => {};
@@ -153,7 +154,7 @@ const SignUpPage = () => {
       setEmailSelectShadowColor("");
     }
   };
-
+  //비밀번호 focus handler
   const handlePwInputFocus = () => {
     setPwInputColor("#4996f3");
     setPwInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
@@ -161,15 +162,45 @@ const SignUpPage = () => {
 
   //비밀번호 input 외부 선택했을때 다시 돌려놓기
   const handlePwInputBlur = () => {
-    if (pwInputColor !== "f77") {
+    if (pwInputColor !== "#f77") {
       setPwInputColor("lightgray");
       setPwInputShadowColor("");
+    }
+  };
+
+  const handlePwCheckFocus = () => {
+    setPwCheckInputColor("#4996f3");
+    setPwCheckShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+  };
+
+  const handlePwCheckBlur = () => {
+    if (pwCheckInputColor !== "#f77") {
+      setPwCheckInputColor("lightgray");
+      setPwCheckShadowColor("");
     }
   };
 
   const EmailButton = () => {
     console.log("버튼클릭");
   };
+
+  //비밀번호 같은값인지 체크
+  useEffect(() => {
+    if (pwCheckInput === "") {
+      setPwCheckInputColor("lightgray");
+      setPwCheckShadowColor("none");
+    } else if (pwCheckInput !== "" && pwInput === pwCheckInput) {
+      setPwCheckInputColor("lightgray");
+      setPwCheckShadowColor("");
+      setTextPwCheckColor("black");
+      setPwCheckText("");
+    } else {
+      setPwCheckInputColor("#f77");
+      setPwCheckShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+      setTextPwCheckColor("#f77");
+      setPwCheckText("비밀번호가 일치하지 않습니다.");
+    }
+  }, [pwInput, pwCheckInput]);
 
   return (
     <>
@@ -191,7 +222,7 @@ const SignUpPage = () => {
             <span>
               <input
                 id="email"
-                value={idInput === null ? "" : idInput}
+                value={idInput}
                 onChange={handleIdInputChange}
                 onFocus={handleEmailFocus}
                 onBlur={handleEmailBlur}
@@ -252,10 +283,10 @@ const SignUpPage = () => {
                 )}
               </label>
             </span>
-            {idtext != "" && (
+            {idtext !== "" && (
               <p
                 style={{
-                  marginLeft: "10px",
+                  marginLeft: "0.5%",
                   marginTop: "10px",
                   marginBottom: "1px",
                   color: "#f77",
@@ -285,20 +316,20 @@ const SignUpPage = () => {
             <input
               id="password"
               value={pwInput}
-              type="text"
+              type="password"
               placeholder="비밀번호"
               style={{
-                border: "1px solid" + pwInputColor,
+                border: "1px solid " + pwInputColor,
                 boxShadow: pwInputShadowColor,
               }}
-              onChange={handlePwInput}
+              onChange={handlePwInputChange}
               onFocus={handlePwInputFocus}
               onBlur={handlePwInputBlur}
             />
-            {pwtext != "" && (
+            {pwtext !== "" && (
               <p
                 style={{
-                  marginLeft: "10px",
+                  marginLeft: "0.5%",
                   marginTop: "10px",
                   marginBottom: "1px",
                   color: "#f77",
@@ -308,14 +339,33 @@ const SignUpPage = () => {
                 {`${pwtext}`}
               </p>
             )}
-            <h6>비밀번호 확인</h6>
+            <h6 style={{ color: textPwCheckColor }}>비밀번호 확인</h6>
             <input
               id="passwordCheck"
               value={pwCheckInput}
-              type="text"
+              type="password"
               placeholder="비밀번호 확인"
+              style={{
+                border: "1px solid " + pwCheckInputColor,
+                boxShadow: pwCheckShadowColor,
+              }}
               onChange={handlePwCheckInput}
+              onFocus={handlePwCheckFocus}
+              onBlur={handlePwCheckBlur}
             />
+            {pwChecktext !== "" && (
+              <p
+                style={{
+                  marginLeft: "0.5%",
+                  marginTop: "10px",
+                  marginBottom: "1px",
+                  color: "#f77",
+                  fontSize: "13px",
+                }}
+              >
+                {`${pwChecktext}`}
+              </p>
+            )}
             <h6>닉네임</h6>
             <p>다른 유저와 겹치지 않도록 입력해주세요.(2~15자)</p>
             <input
