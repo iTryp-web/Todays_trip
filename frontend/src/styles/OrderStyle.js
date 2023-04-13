@@ -77,6 +77,7 @@ export const OrdertysTitle = styled.div`
 `;
 
 export const OrdererTable = styled.table`
+  margin-left: 3%;
   width: 100%;
 `;
 

@@ -77,14 +77,25 @@ export const CartTd = styled.td`
 
 export const CartButton = styled.button`
   border: none;
-  background-color: navy;
+  background-color: #4996f3;
+  // background-color: navy;
   color: white;
   padding: 5px 12px;
   border-radius: 5px;
   margin: 5% 5%;
   cursor: pointer;
   &:hover {
-    // opacity: 0.8;
-    background-color: #4996f3;
+    opacity: 0.8;
+    // background-color: #4996f3;
   }
+`;
+
+export const NoticeDiv = styled.div`
+  margin-top: 15%;
+  text-align: center;
+`;
+
+export const EmptySpan = styled.span`
+  margin-top: 2%;
+  display: block;
 `;
