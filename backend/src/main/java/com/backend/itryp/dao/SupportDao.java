@@ -43,6 +43,31 @@ public class SupportDao {
 	}
 
 	/**
+	 * 공지사항 글 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int noticeDelete(Map<String, Object> pMap) {
+		logger.info("noticeDelete 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("noticeDelete", pMap);
+		return result;
+	}
+	/**
+	 * FAQ 글 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int faqDelete(Map<String, Object> pMap) {
+		logger.info("faqDelete 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("faqDelete", pMap);
+		return result;
+	}
+	
+	/**
 	 * 1대1문의 목록조회
 	 * 
 	 * @param pMap
@@ -91,10 +116,10 @@ public class SupportDao {
 	 * @param pMap
 	 * @return
 	 */
-	public int sellerJoinInsert(Map<String, Object> pMap) {
-		logger.info("sellerJoinInsert 호출");
+	public int sellerRegInsert(Map<String, Object> pMap) {
+		logger.info("sellerRegInsert 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("sellerJoinInsert", pMap);
+		result = sqlSessionTemplate.update("sellerRegInsert", pMap);
 		return result;
 	}
 
@@ -104,10 +129,10 @@ public class SupportDao {
 	 * @param pMap
 	 * @return
 	 */
-	public int sellerJoinDelete(Map<String, Object> pMap) {
-		logger.info("sellerJoinDelete 호출");
+	public int sellerRegDelete(Map<String, Object> pMap) {
+		logger.info("sellerRegDelete 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("sellerJoinDelete", pMap);
+		result = sqlSessionTemplate.update("sellerRegDelete", pMap);
 		return result;
 	}
 	

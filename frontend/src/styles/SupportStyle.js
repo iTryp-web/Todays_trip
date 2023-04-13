@@ -20,3 +20,7 @@ export const BtnSup = styled.button`
     color: ${(props) => (props.active ? '#fff' : '#333')};
   }
 `;
+
+export const Btn = styled.button`
+
+`
