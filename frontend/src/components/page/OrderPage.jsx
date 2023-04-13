@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../include/Header'
 import OrderRow from '../order/OrderRow'
 import Footer from '../include/Footer'
-import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList, OrdertysTitle, PointContent, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTd, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv } from '../../styles/OrderStyle'
+import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList, OrdertysTitle, PointContent, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTd, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv } from '../../styles/OrderStyle'
 
 const OrderPage = () => {
 
@@ -50,7 +50,26 @@ const OrderPage = () => {
         <OrderListDiv>
           <OrdertyTitle>주문 정보</OrdertyTitle>
           <LineHr/>
-          <OrderRow/>
+          <OrderTable>
+            <thead>
+              <tr>
+                <th></th>
+                <OrderItemTitle></OrderItemTitle>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <OrderRow/>
+              <OrderRow/>
+              <OrderRow/>
+              <OrderRow/>
+            </tbody>
+          </OrderTable>
+          <OrderTotalDiv>
+            <OrderTotalSpan>{28000} 원</OrderTotalSpan>
+          </OrderTotalDiv>
         </OrderListDiv>
         <OrderCouponDiv>
           <OrdertyTitle>할인 정보</OrdertyTitle>

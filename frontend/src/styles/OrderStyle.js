@@ -60,6 +60,17 @@ export const OrderTitle = styled.div`
   font-weight: bold;
 `;
 
+export const ImgDiv = styled.div`
+  width: 72px;
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(33, 37, 41, 0.15) 0px 0px 0px 1px inset;
+  border-radius: 4px;
+  margin-left: 10%;
+`;
+
 export const LineHr = styled.hr`
   margin: 0.5rem 0;
 `;
@@ -74,6 +85,32 @@ export const OrdertysTitle = styled.div`
   margin-top: 1em;
   font-size: 15px;
   font-weight: bold;
+`;
+
+export const OrderTable = styled.table`
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  display: table;
+`;
+
+export const OrderItemTitle = styled.th`
+  width: 50%;
+`;
+
+export const OrderTotalDiv = styled.div`
+  text-align: right;
+  @media screen and (min-width: 700px) {
+    margin-right: 2%;
+  }
+`;
+
+export const OrderTotalSpan = styled.span`
+  width: 100%;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  fon-size: 20px;
 `;
 
 export const OrdererTable = styled.table`
