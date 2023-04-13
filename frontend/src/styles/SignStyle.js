@@ -150,6 +150,7 @@ export const SignUpBlock = styled.form`
     color: gray;
   }
   h6 {
+    margin-left : 0.5%;
     font-weight: 700;
     margin-top: 1.5rem;
     margin-bottom: 0.8rem;
@@ -159,18 +160,19 @@ export const SignUpBlock = styled.form`
 
 export const EmailBlock = styled.div`
   input {
+    margin-left: 2px;
     width: 46%;
     height: 38px;
     font-size: 14px;
     border: 1.5px solid lightgray;
     border-radius: 5px;
     outline: none;
-    padding-left:15px;
+    padding-left: 15px;
 
-    &::placeholder{
-      font-weight : 550;
-      font-size : 15px;
-      color : lightgray;
+    &::placeholder {
+      font-weight: 550;
+      font-size: 15px;
+      color: lightgray;
     }
   }
   span {
@@ -212,9 +214,10 @@ export const EmailBlock = styled.div`
 
 export const AuthButton = styled.button`
   margin-top: 0.8rem;
+  margin-left : 0.5%;
   border-radius: 5px;
   height: 45px;
-  width: 100%;
+  width: 99%;
   font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
@@ -222,6 +225,7 @@ export const AuthButton = styled.button`
 
 export const PWnNickBlock = styled.div`
   p {
+    margin-left : 0.5%;
     width: 100%;
     font-size: 0.85rem;
     color: gray;
@@ -230,25 +234,27 @@ export const PWnNickBlock = styled.div`
   h6 {
     font-weight: 700;
     margin-top: 1.5rem;
+    margin-left : 0.5%;
     margin-bottom: 0.8rem;
   }
 
   input {
-    width: 100%;
+    margin-left : 1%;
+    margin-right : 1%;
+    width:98%;
     height: 38px;
     font-size: 14px;
     color: gray;
     border: 1px solid lightgray;
     border-radius: 5px;
-    padding-left:15px;
+    padding-left: 15px;
     &:focus {
       outline: none;
-      border: 2px solid #4996f3;
     }
-    &::placeholder{
-      font-weight : 550;
-      font-size : 15px;
-      color : lightgray;
+    &::placeholder {
+      font-weight: 550;
+      font-size: 15px;
+      color: lightgray;
     }
   }
 `;
