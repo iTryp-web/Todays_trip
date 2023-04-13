@@ -14,7 +14,7 @@ const CartRow = (props) => {
         </td>
         <td>
           <ImgDiv>
-            <img src="/images/naver-icon.png" width={'70px'} />
+            <img src="/images/naver-icon.png" width={'70px'} alt="product-img"/>
           </ImgDiv>
         </td>
         <td className='title'>
