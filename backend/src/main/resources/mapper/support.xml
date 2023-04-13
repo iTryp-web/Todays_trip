@@ -78,8 +78,8 @@
 		WHERE nf_no = #{nf_no}
 	</delete>
 
-
-	<!-- 1대1 문의 글 조회 cert -->
+	<!--=========================================== TB_QNA 영역 =========================================== -->
+	<!-- 1대1 문의/판매자 등록 조회 -->
 	<select id="inquiryList" parameterType="map" resultType="map">
 		SELECT q.qna_no
 		, u.user_id
@@ -99,6 +99,14 @@
 		<if test='search != null and search.equals("내용")'>
 			AND q.qna_content LIKE '%'||#{keyword}||'%'
 		</if>
+		<!-- 1대1문의(2)만 채번 -->
+		<if test='qna_sort != null and qna_sort.equals("2")'>
+			AND q.qna_sort = 2
+		</if>
+		<!-- 판매자등록(4)만 채번 -->
+		<if test='qna_sort != null and qna_sort.equals("4")'>
+			AND q.qna_sort = 4
+		</if>
 		ORDER BY q.qna_no ASC
 	</select>
 
@@ -115,12 +123,13 @@
 		)
 		VALUES(
 		TB_QNA_NO_SEQ.NEXTVAL,
-		#{qna_step},
+		#{qna_step, jdbcType=INTEGER},
 		#{user_id},
 		#{qna_title},
 		#{qna_content},
 		2,
-		TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+		TO_CHAR(sysdate, 'YYYY-MM-DD
+		HH:MM:SS')
 		)
 	</insert>
 

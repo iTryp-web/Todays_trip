@@ -22,7 +22,7 @@ public class SupportLogic {
 	private BoardDao boardDao = null;
 
 	/**
-	 * 공지사항 조회
+	 * 1대1 문의/공지사항
 	 * 
 	 * @param pMap
 	 * @return
@@ -82,13 +82,13 @@ public class SupportLogic {
 		return result;
 	}
 	/**
-	 * 1대1문의 목록조회
+	 * 1대1문의/판매자 등록 목록조회
 	 * 
 	 * @param pMap
 	 * @return
 	 */
 	public List<Map<String, Object>> inquiryList(Map<String, Object> pMap) {
-		logger.info("inquiryList 호출");
+		logger.info("qnaList 호출");
 		List<Map<String, Object>> sList = new ArrayList<>();
 		sList = supportDao.inquiryList(pMap);
 		return sList;
