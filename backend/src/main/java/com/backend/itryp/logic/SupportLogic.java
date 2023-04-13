@@ -57,6 +57,31 @@ public class SupportLogic {
 	}
 
 	/**
+	 * 공지사항 글 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int noticeDelete(Map<String, Object> pMap) {
+		logger.info("noticeDelete 호출");
+		int result = 0;
+		result = supportDao.noticeDelete(pMap);
+		return result;
+	}	
+	
+	/**
+	 * FAQ 글 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int faqDelete(Map<String, Object> pMap) {
+		logger.info("faqDelete 호출");
+		int result = 0;
+		result = supportDao.faqDelete(pMap);
+		return result;
+	}
+	/**
 	 * 1대1문의 목록조회
 	 * 
 	 * @param pMap
@@ -123,10 +148,10 @@ public class SupportLogic {
 	 * @param pMap
 	 * @return
 	 */
-	public int sellerJoinInsert(Map<String, Object> pMap) {
-		logger.info("sellerJoinInsert 호출");
+	public int sellerRegInsert(Map<String, Object> pMap) {
+		logger.info("sellerRegInsert 호출");
 		int result = 0;
-		result = supportDao.sellerJoinInsert(pMap);
+		result = supportDao.sellerRegInsert(pMap);
 		// 판매자 탈퇴 글을 작성하는 사람이 판매자인지 판별
 		return result;
 	}
@@ -137,10 +162,10 @@ public class SupportLogic {
 	 * @param pMap
 	 * @return
 	 */
-	public int sellerJoinDelete(Map<String, Object> pMap) {
-		logger.info("sellerJoinDelete 호출");
+	public int sellerRegDelete(Map<String, Object> pMap) {
+		logger.info("sellerRegDelete 호출");
 		int result = 0;
-		result = supportDao.sellerJoinDelete(pMap);
+		result = supportDao.sellerRegDelete(pMap);
 		return result;
 	}
 
