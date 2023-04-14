@@ -150,7 +150,7 @@ export const SignUpBlock = styled.form`
     color: gray;
   }
   h6 {
-    margin-left : 0.5%;
+    margin-left: 0.5%;
     font-weight: 700;
     margin-top: 1.5rem;
     margin-bottom: 0.8rem;
@@ -197,7 +197,7 @@ export const EmailBlock = styled.div`
       background-color: white;
       right: 5px;
       border: none;
-      top: 2.5px;
+      top: 4px;
     }
   }
 
@@ -213,8 +213,8 @@ export const EmailBlock = styled.div`
 `;
 
 export const AuthButton = styled.button`
-  margin-top: 0.8rem;
-  margin-left : 0.5%;
+  margin-top: 0.9rem;
+  margin-left: 0.5%;
   border-radius: 5px;
   height: 45px;
   width: 99%;
@@ -225,7 +225,7 @@ export const AuthButton = styled.button`
 
 export const PWnNickBlock = styled.div`
   p {
-    margin-left : 0.5%;
+    margin-left: 0.5%;
     width: 100%;
     font-size: 0.85rem;
     color: gray;
@@ -234,14 +234,14 @@ export const PWnNickBlock = styled.div`
   h6 {
     font-weight: 700;
     margin-top: 1.5rem;
-    margin-left : 0.5%;
+    margin-left: 0.5%;
     margin-bottom: 0.8rem;
   }
 
   input {
-    margin-left : 1%;
-    margin-right : 1%;
-    width:98%;
+    margin-left: 1%;
+    margin-right: 1%;
+    width: 98%;
     height: 38px;
     font-size: 14px;
     color: gray;
@@ -258,3 +258,49 @@ export const PWnNickBlock = styled.div`
     }
   }
 `;
+
+export const RefferBlock = styled.div`
+  label {
+    width: 98%;
+    position: relative;
+
+    input {
+      margin-left: 1%;
+      margin-right: 1%;
+      width: 98%;
+      height: 38px;
+      font-size: 14px;
+      color: gray;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      padding-left: 15px;
+      &:focus{
+        outline : none;
+      }
+    }
+    button {
+      position: absolute;
+      width : 10%;
+      top : 6px;
+      right: 13px;
+      font-size : 15px;
+      border-radius : 5px;
+      outline : none;
+      background-color : #4996f3;
+      border : 1px solid #4996f3;
+      color : white;
+      &:hover{
+        background-color : #537FE7;
+        border : 1px solid #537FE7;
+      }
+      .search-icon{
+        margin-bottom : 1px;
+        font-size :20px;
+      }
+    }
+  }
+`;
+
+export const TermsBlock = styled.div`
+
+`
