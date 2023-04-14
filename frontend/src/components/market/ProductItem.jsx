@@ -1,4 +1,7 @@
 import React from 'react'
+import { useEffect } from 'react';
+import { useState } from 'react';
+import styled from 'styled-components';
 
 const ContentsBlock = styled.div`
   width: 25%;
@@ -82,20 +85,42 @@ const ItemBlock = styled.div`
 `;
 
 const ProductItem = () => {
-  const {
-    image_url,
-    brand_name,
-    name,
-    original_price,
-    selling_price,
-    review_avg,
-    review_count,
-    is_special_price,
-  } = item;
+  const [items, setItems]=useState([
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-162303132447303472.jpeg/640/640",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166141476368385159.jpg/640/640",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560"
+  ]);
+  
+  const itemBody = (
+    <ItemBlock>
+      <div className="image">
+            {items.map((item,index)=>(
+              <img src={item} />
+            ))}
+      </div>
+      <div className="body">
+        <span className="brand">오행</span>
+        <span className="title">비침없는 도톰레이스</span>
+       
+        <div>
+          <span className="star">
+            <span>★</span> 
+          </span>
+          <span className="review_count">리뷰 123</span>
+        </div>
+      </div>
+    </ItemBlock>
+  );
+
   return (
-    <div>
-      <img src="https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-162303132447303472.jpeg/640/640" alt="아엠홈"></img>
-    </div>
+    <>
+      <ContentsBlock>
+      <ItemBlock>
+        {itemBody}
+      </ItemBlock>
+      </ContentsBlock>
+    </>
   )
 }
 

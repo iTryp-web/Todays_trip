@@ -4,14 +4,17 @@ import {
   EmailBlock,
   PWnNickBlock,
   RefferBlock,
-  SignDiv,
   SignUpBlock,
+  SignUpDiv,
   SocialBlock,
   TermsBlock,
 } from "../../styles/SignStyle";
 import HeaderIcon from "../include/HeaderIcon";
 import { useEffect } from "react";
 import { GoSearch } from "react-icons/go";
+import { IoIosArrowForward } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
+import Modal from "react-modal";
 
 const SignUpPage = () => {
   const [idInput, setIdInput] = useState("");
@@ -57,7 +60,8 @@ const SignUpPage = () => {
   const [referrerInputColor, setReferrerInputColor] = useState("lightgray");
   //
   const [referrerShadowColor, setReferrerShadowColor] = useState("none");
-
+  //
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   //Domainselect박스 handler
   const handleDomainSelect = (e) => {
     const value = e.target.value;
@@ -230,6 +234,14 @@ const SignUpPage = () => {
     console.log("버튼클릭");
   };
 
+  const handleModal = (e) => {
+    e.preventDefault();
+    setModalIsOpen(true);
+    if (modalIsOpen) {
+      setModalIsOpen(false);
+    }
+  };
+
   //비밀번호 같은값인지 체크
   useEffect(() => {
     if (pwCheckInput === "") {
@@ -251,7 +263,7 @@ const SignUpPage = () => {
   return (
     <>
       <HeaderIcon />
-      <SignDiv>
+      <SignUpDiv>
         <SignUpBlock>
           <h4>회원가입</h4>
           <SocialBlock>
@@ -476,11 +488,60 @@ const SignUpPage = () => {
               </p>
             )}
           </RefferBlock>
+          <h6>약관동의</h6>
           <TermsBlock>
-            
+            <label>
+              <input id="checkbox" type="checkbox"></input>
+              <span className="span1">전체동의</span>
+              <span className="span2">선택항목에 대한 동의 포함</span>
+            </label>
+            <hr />
+            <label>
+              <input id="checkbox" type="checkbox"></input>
+              <span className="span3">만 14세 이상입니다</span>
+            </label>
+            <label>
+              <input id="checkbox" type="checkbox"></input>
+              <span className="span3">이용약관</span>
+              <button className="mbutton1" onClick={handleModal}>
+                <IoIosArrowForward />
+              </button>
+              <Modal className ="mmodal" isOpen={modalIsOpen}>
+                This is Modal content
+                <button className="mbutton4" onClick={handleModal}>
+                  <IoClose/>
+                </button>
+              </Modal>
+            </label>
+            <label>
+              <input id="checkbox" type="checkbox"></input>
+              <span className="span3">개인정보수집 및 이용동의</span>
+              <button className="mbutton2" onClick={handleModal}>
+                <IoIosArrowForward />
+              </button>
+              <Modal isOpen={modalIsOpen}>
+                This is Modal content
+                <button className="mbutton4" onClick={handleModal}>
+                  <IoClose/>
+                </button>
+              </Modal>
+            </label>
+            <label>
+              <input id="checkbox" type="checkbox"></input>
+              <span className="span4">개인정보 마케팅 활용 동의</span>
+              <button className="mbutton3" onClick={handleModal}>
+                <IoIosArrowForward />
+              </button>
+              <Modal isOpen={modalIsOpen}>
+                This is Modal content
+                <button className="mbutton4" onClick={handleModal}>
+                  <IoClose/>
+                </button>
+              </Modal>
+            </label>
           </TermsBlock>
         </SignUpBlock>
-      </SignDiv>
+      </SignUpDiv>
     </>
   );
 };
