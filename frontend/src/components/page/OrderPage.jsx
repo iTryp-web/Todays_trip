@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../include/Header'
 import OrderRow from '../order/OrderRow'
 import Footer from '../include/Footer'
-import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList, OrdertysTitle, PointContent, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTd, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, PointUseDiv, PointInput, ConfirmSpan, OrderCouponTyDiv } from '../../styles/OrderStyle'
+import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList, OrdertysTitle, PointContent, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTd, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, PointUseDiv, PointInput, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP } from '../../styles/OrderStyle'
 
 const OrderPage = () => {
 
@@ -123,6 +123,21 @@ const OrderPage = () => {
           </OrderCalcTyDiv>
         </OrderCalcDiv>
         <OrdertyTitle>결제 동의</OrdertyTitle>
+        <OrderAgreeDiv>
+          <OrderAgreeTyDiv>
+
+          </OrderAgreeTyDiv>
+          <OrderCancelDiv>
+            <OrderCancelTitle>예약 취소 규정</OrderCancelTitle>
+            <CancelSpan>
+              <CancelP>- 여행자가 여행 개시일로부터 3일 이전 통보 시: 여행 요금 전액 환불</CancelP>
+              <CancelP>- 여행 개시일로부터 2일 이전 통보 시: 총 상품 금액에서 10% 공제 후 환불</CancelP>
+              <CancelP>- 여행 개시일로부터 1일 이전 통보 시: 총 상품 금액에서 20% 공제 후 환불</CancelP>
+              <CancelP>- 여행일 당일 ~ 투어 시작 전 통보 시: 총 상품 금액에서 30% 공제 후 환불</CancelP>
+              <CancelP>※ 취소 요청 날짜와 시간은 여행 상품이 진행되는 현지 시간을 따릅니다.</CancelP>
+            </CancelSpan>
+          </OrderCancelDiv>
+        </OrderAgreeDiv>
         <OrderButtonDiv>
           <PaymentButton onClick={onClickPayment}>결제하기</PaymentButton>
         </OrderButtonDiv>
