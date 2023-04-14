@@ -15,15 +15,15 @@
          , c.comment_count
 		  FROM TB_BOARD b
 		  	 , TB_USER u
-				 , (SELECT COUNT(user_Id) like_count, like_group
+				 , (SELECT COUNT(user_Id) like_count, like_no
 				    FROM TB_LIKE
 				    WHERE like_type = 0
-				    GROUP BY like_group) l
+				    GROUP BY like_no) l
 				 , (SELECT COUNT(user_id) comment_count, board_no
 				    FROM TB_B_COMMENT
 				    GROUP BY board_no) c
 			WHERE b.user_id = u.user_id
-				AND b.board_no = l.like_group(+)
+				AND b.board_no = l.like_no(+)
 				AND b.board_no = c.board_no(+)
 				AND b.board_status = 0
 				AND b.board_category != '공지사항'
@@ -63,15 +63,15 @@
          , c.comment_count
     FROM TB_BOARD b
        , TB_USER u
-       , (SELECT COUNT(user_Id) like_count, like_group
+       , (SELECT COUNT(user_Id) like_count, like_no
           FROM TB_LIKE
           WHERE like_type = 0
-          GROUP BY like_group) l
+          GROUP BY like_no) l
        , (SELECT COUNT(user_id) comment_count, board_no
           FROM TB_B_COMMENT
           GROUP BY board_no) c
 	  WHERE b.user_id = u.user_id
-	    AND b.board_no = l.like_group(+)
+	    AND b.board_no = l.like_no(+)
 	    AND b.board_no = c.board_no(+)
 	    AND b.board_no = #{board_no}
 	</select>

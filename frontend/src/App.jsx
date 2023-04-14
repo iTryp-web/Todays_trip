@@ -9,7 +9,6 @@ import OrderSuccess from './components/order/PaymentSuccess';
 import OrderFail from './components/order/PaymentFail';
 import MarketPage from './components/page/MarketPage';
 import BoardWriteForm from './components/board/BoardWriteForm';
-import BoardLayout from './components/board/BoardLayout';
 import BoardDetail from './components/board/BoardDetail';
 import SignUpPage from './components/page/SignUpPage';
 import SignInPage from './components/page/SignInPage';
