@@ -13,7 +13,7 @@ import BoardLayout from './components/board/BoardLayout';
 import BoardDetail from './components/board/BoardDetail';
 import SignUpPage from './components/page/SignUpPage';
 import SignInPage from './components/page/SignInPage';
-import SupportPage from './components/page/SupportPage';
+import FaqPage from './components/page/FaqPage';
 
 
 
@@ -34,7 +34,7 @@ function App() {
       <Route path='/signup' exact={true} element={<SignUpPage />} />
       <Route path='/signin' exact={true} element={<SignInPage />} />
       <Route path='/market' exact={true} element={<MarketPage />} />
-      <Route path='/support' exact={true} element={<SupportPage />} />
+      <Route path='/Support' exact={true} element={<FaqPage />} />
     </Routes>
     </> 
   );

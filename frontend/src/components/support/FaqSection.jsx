@@ -1,6 +1,6 @@
 import React from 'react'
 
-const QnAContent = () => {
+const FaqSection = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const QnAContent = () => {
   )
 }
 
-export default QnAContent
+export default FaqSection
