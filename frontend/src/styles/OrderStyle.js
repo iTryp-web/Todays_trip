@@ -40,10 +40,12 @@ export const OrderCalcDiv = styled.div`
 `;
 
 export const OrderCalcTyDiv = styled.div`
-  margin-top: 1.5%;
+  margin-top: 2%;
   margin-bottom: 3%;
-  background-color: rgb(247, 248, 250);
+  // background-color: rgb(247, 248, 250);
   padding: 2% 3%;
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
 `;
 
 export const OrderCalcListDiv = styled.div`
@@ -71,11 +73,20 @@ export const OrderCouponTyDiv = styled.div`
 
 export const OrderAgreeTyDiv = styled.div``;
 
+export const AgreeAllCheckDiv = styled.div`
+  padding-left: 0.5em;
+  margin-bottom: 2%;
+  font-size: 15px;
+`;
+
+export const InputAllCheck = styled.input`
+  margin-right: 0.5em;
+`;
+
 export const OrderCancelDiv = styled.div`
   border: solid 1px #bdbdbd;
   border-radius: 10px;
-  padding-left: 0.8em;
-  padding-bottom: 0.8em;
+  padding: 0.8em;
   background-color: #f2f2f2;
 `;
 
@@ -108,7 +119,6 @@ export const OrdertyTitle = styled.div`
 `;
 
 export const OrderCancelTitle = styled.div`
-  margin-top: 0.8em;
   margin-bottom: 0.2em;
   font-size: 15px;
   font-weight: bold;
@@ -171,6 +181,11 @@ export const OrdererTytd = styled.td`
   }
   width: 170px;
   font-size: 15px;
+  white-space: nowrap;
+  color: #848484;
+`;
+
+export const OrdererTyContentTd = styled.td`
   white-space: nowrap;
 `;
 

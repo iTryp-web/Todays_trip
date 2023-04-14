@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../include/Header'
 import OrderRow from '../order/OrderRow'
 import Footer from '../include/Footer'
-import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList, OrdertysTitle, PointContent, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTd, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, PointUseDiv, PointInput, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP } from '../../styles/OrderStyle'
+import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList, OrdertysTitle, PointContent, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTd, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, PointUseDiv, PointInput, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP, OrdererTyContentTd, AgreeAllCheckDiv, InputAllCheck } from '../../styles/OrderStyle'
 
 const OrderPage = () => {
 
@@ -96,16 +96,16 @@ const OrderPage = () => {
           <OrdererTable>
             <tr>
               <OrdererTytd>예약자 이름</OrdererTytd>
-              <td>{"둘리"}</td>
+              <OrdererTyContentTd>{"둘리"}</OrdererTyContentTd>
               <OrdererTd rowSpan={3}><ConfirmButton>정보 변경</ConfirmButton></OrdererTd>
             </tr>
             <tr>
               <OrdererTytd>예약자 연락처</OrdererTytd>
-              <td>{"요리보고-1111-2222"}</td> 
+              <OrdererTyContentTd>{"요리보고-1111-2222"}</OrdererTyContentTd> 
             </tr>
             <tr>
               <OrdererTytd>예약자 이메일</OrdererTytd>
-              <td>{"조리봐도@email.com"}</td> 
+              <OrdererTyContentTd>{"조리봐도@email.com"}</OrdererTyContentTd> 
             </tr>
           </OrdererTable>
           </OrdererInfoDiv>
@@ -125,7 +125,10 @@ const OrderPage = () => {
         <OrdertyTitle>결제 동의</OrdertyTitle>
         <OrderAgreeDiv>
           <OrderAgreeTyDiv>
-
+            <AgreeAllCheckDiv>
+              <InputAllCheck type={'checkbox'}/>
+              <span>전체 약관 동의</span>
+            </AgreeAllCheckDiv>
           </OrderAgreeTyDiv>
           <OrderCancelDiv>
             <OrderCancelTitle>예약 취소 규정</OrderCancelTitle>
