@@ -1,34 +1,86 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-/* 일반 제목 */
-export const CsH = styled.h2`
-  font-weight: bold;
-  font-size: 24px;
-`;
-/* 강조 텍스트 */
-export const CsEH = styled.h2``;
-/* 설명글 */
 export const CustomerService = styled.div`
-  .sectionStyle {
-    display: block;
+  position: relative;
+  #li {
+    display: list-item;
+    text-align: -webkit-match-parent;
   }
-  .innerStyle {
+  #ul {
+    list-style: none;
+  }
+  csSection {
+    max-width: 850px;
+    margin: 0px auto;
+  }
+  innerStyle {
+    display: flex;
     flex-direction: column;
     padding-bottom: 24px;
     padding-bottom: 32px;
-    display: flex;
     color: rgb(47, 52, 56);
     margin: 0;
     padding: 0;
+    flex: 1; /* 추가 */
   }
-  .csDivStyle {
-    flex: 0 0 375px;
-    margin-top: 32px;
-    border-radius: 8px;
-    background-color: rgb(247, 249, 250);
-    padding: 28px 24px;
+  
+  .helpDiv {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    margin-bottom: 30px;
   }
+  .csDiv {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    width: 100%;
+  }
+  
+  .helpTitle {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 700;
+    margin-top: 44px;
+    margin-bottom: 20px;
+  }
+  .helpUl {
+    display: block;
+    list-style-type: none;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+  }
+  .helpLi {
+    cursor: pointer;
+    min-height: 28px;
+    margin-bottom: 16px;
+    position: relative;
+    padding-left: 36px;
+    font-size: 16px;
+    line-height: 28px;
+  }
+  .qMark {
+    position: absolute;
+    left: 0px;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 16px;
+    line-height: 20px;
+    color: rgb(53, 197, 240);
+    border: 1px solid rgb(234, 237, 239);
+    box-shadow: rgba(63, 71, 77, 0.05) 0px 2px 6px;
+  }
+
   .csTitle {
     font-size: 20px;
     line-height: 28px;
@@ -52,7 +104,6 @@ export const CustomerService = styled.div`
     color: rgb(53, 197, 240);
     margin-bottom: 14px;
   }
-
   .btnContact {
     margin: 0px;
     border: none;
@@ -72,7 +123,7 @@ export const CustomerService = styled.div`
     justify-content: center;
     -webkit-box-align: center;
     align-items: center;
-    width: auto;
+    width: 100%;
     height: 40px;
     border-radius: 4px;
     padding: 0px 16px;
@@ -80,6 +131,21 @@ export const CustomerService = styled.div`
     box-sizing: border-box;
     text-align: center;
     color: rgb(255, 255, 255);
+  }
+
+  @media screen and (max-width: 1000px) {
+    .innerStyle {
+      display: block;
+    }
+  
+    .helpDiv {
+      width: 100%;
+      margin-bottom: 30px;
+    }
+  
+    .csDiv {
+      width: 100%;
+    }
   }
 `;
 
