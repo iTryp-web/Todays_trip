@@ -9,11 +9,11 @@ import OrderSuccess from './components/order/PaymentSuccess';
 import OrderFail from './components/order/PaymentFail';
 import MarketPage from './components/page/MarketPage';
 import BoardWriteForm from './components/board/BoardWriteForm';
-import BoardLayout from './components/board/BoardLayout';
 import BoardDetail from './components/board/BoardDetail';
 import SignUpPage from './components/page/SignUpPage';
 import SignInPage from './components/page/SignInPage';
 import FaqPage from './components/page/FaqPage';
+import MarketWrite from './components/market/MarketWrite';
 
 
 
@@ -28,12 +28,12 @@ function App() {
       <Route path='/test' exact={true} element={<TestPage />} />
       <Route path='/cart' exact={true} element={<CartPage />} />
       <Route path='/order' exact={true} element={<OrderPage />} />
-      <Route path='/market' exact={true} element={<MarketPage />} />
       <Route path='/order/success' exact={true} element={<OrderSuccess />} />
       <Route path='/order/fail' exact={true} element={<OrderFail />} />
       <Route path='/signup' exact={true} element={<SignUpPage />} />
       <Route path='/signin' exact={true} element={<SignInPage />} />
       <Route path='/market' exact={true} element={<MarketPage />} />
+      <Route path='/market/write' exact={true} element={<MarketWrite />} />
       <Route path='/Support' exact={true} element={<FaqPage />} />
     </Routes>
     </> 

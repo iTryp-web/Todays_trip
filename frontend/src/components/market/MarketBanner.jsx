@@ -1,14 +1,17 @@
 import styled, { css } from "styled-components";
 import { CgClose } from "react-icons/cg";
 import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Coupon=styled.h5`
   color: #ffffff;
   Font-weight:bold;
+  margin:0px;
 `
 const Image=styled.img`
   width:50px;
   height:50px;
+ 
 `
 
 const BannerBlock = styled.div`
@@ -42,14 +45,29 @@ const BannerBlock = styled.div`
   }
 `;
 
+const Button=styled.button`
+  background: #4996F3; 
+  border: none; 
+  font-size:25px;
+  color:white;
+`
+
 const MarketBanner = () => {
   const [close, setClose] = useState(false);
+  const auth=1;
+  const navigate=useNavigate();
 
   return (
     <BannerBlock close={close}>
+      {auth===0?
       <Coupon>
+        
         <Image src="/images/voucher.png"/>&nbsp;
-        첫구매 쿠폰받기!</Coupon>
+        오늘의 여행 첫구매 쿠폰받기!</Coupon>:
+        <Button onClick={() => navigate('/market/write')} >
+         판매자글쓰기
+        </Button> 
+}
       <CgClose onClick={() => setClose(true)} />
     </BannerBlock>
   );

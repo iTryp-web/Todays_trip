@@ -470,8 +470,7 @@ export const DetialContainer = styled.section`
   width: 70%;
 `;
 
-export const TitleContainer = styled.div`
-`;
+export const TitleContainer = styled.div``;
 
 export const CategoryDiv = styled.div`
   color: #979797;
@@ -509,6 +508,10 @@ export const UserImg = styled.div`
   svg {
     width: 36px;
     height: 36px;
+  }
+  .userImg {
+    width: 34px;
+    height: 34px;
   }
 `;
 
@@ -672,6 +675,13 @@ export const CommentBox = styled.div`
   position: relative;
 `;
 
+export const ReplyIcon = styled.div`
+display: flex;
+font-size: 17px;
+color: gray;
+margin: 10px;
+`
+
 export const CommentImg = styled.div`
   display: flex;
   justify-content: center;
@@ -685,7 +695,15 @@ export const CommentImg = styled.div`
     width: 34px;
     height: 34px;
   }
+  .commentImg {
+    width: 32px;
+    height: 32px;
+  }
 `;
+
+export const CommentDiv = styled.div`
+  width: 100%;
+`
 
 export const CommentUser = styled.div`
   margin-top: 5px;
@@ -696,7 +714,6 @@ export const CommentUser = styled.div`
 export const CommentContent = styled.div`
   font-size: 13px;
   margin: 5px 1px;
-  width: 480px;
   word-break: break-all;
 `;
 
@@ -704,9 +721,9 @@ export const CommentDate = styled.span`
   font-size: 12px;
   color: gray;
   font-weight: 500;
-  `;
-  
-  export const CommentLike = styled.span`
+`;
+
+export const CommentLike = styled.span`
   margin-left: 15px;
   font-size: 12px;
   color: gray;
@@ -716,6 +733,43 @@ export const CommentDate = styled.span`
   }
   .like-count {
     margin-left: 4px;
+  }
+`;
+
+export const CommentReply = styled.span`
+  margin-left: 15px;
+  font-size: 12px;
+  color: gray;
+  font-weight: 500;
+  cursor: pointer;
+`;
+
+export const InputComment = styled.div`
+  display: flex;
+  align-items: center;
+  border: none;
+  margin-bottom: 5px;
+  padding: 8px;
+  height: 50px;
+  svg {
+    width: 17px;
+    height: 17px;
+    margin-top: -1px;
+    fill: #2d2d2d;
+  }
+`;
+
+export const ReCommentInput = styled.textarea`
+  width: 93%;
+  height: 40px;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  margin-left: 5px;
+  overflow: hidden;
+  resize: none;
+  &:focus {
+    outline: none;
   }
 `;
 
