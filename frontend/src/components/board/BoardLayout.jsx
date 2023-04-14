@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import {BoardSection, BoardCategory, CategoryLi, BContentSection, SearchInput, Wrap, StyledSlider, SliderListF, CommunityH3, CategoryUl, BtnSearch, SearchDiv, SearchSelect, SearchInputText, SliderDiv, SliderDivCategory, SliderDivTitle, SliderDivWriter, SliderMain, SliderSub} from '../../styles/BoardStyle'
-import { BiSearch } from 'react-icons/bi';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import BoardRow from './BoardRow';
 import BoardTopPost from './BoardTopPost';
