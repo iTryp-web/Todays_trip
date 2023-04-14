@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const SignDiv = styled.section`
   max-width: 1344px;
+  height : 1000px;
   padding: 10rem;
   display: flex;
   justify-content: center;
@@ -10,6 +11,7 @@ export const SignDiv = styled.section`
   margin-top: 15em;
   margin-bottom: 6em;
   position: relative;
+  overflow-y : scroll;
 `;
 export const LoginFormBlock = styled.form`
   width: 300px;
@@ -38,6 +40,7 @@ export const LoginFormBlock = styled.form`
     }
   }
   overflow-x: hidden;
+  
 `;
 
 export const LogoBlock = styled(Link)`
@@ -129,6 +132,16 @@ export const SocialBlock = styled.div`
       cursor: pointer;
     }
   }
+`;
+export const SignUpDiv = styled.section`
+  max-width: 1344px;
+  height : 1200px;
+  margin-top : 10px;
+  padding: 10rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6em;
+  position: relative;
 `;
 
 export const SignUpBlock = styled.form`
@@ -274,33 +287,124 @@ export const RefferBlock = styled.div`
       border: 1px solid lightgray;
       border-radius: 5px;
       padding-left: 15px;
-      &:focus{
-        outline : none;
+      &:focus {
+        outline: none;
       }
     }
     button {
       position: absolute;
-      width : 10%;
-      top : 6px;
+      width: 10%;
+      top: 4.5px;
       right: 13px;
-      font-size : 15px;
-      border-radius : 5px;
-      outline : none;
-      background-color : #4996f3;
-      border : 1px solid #4996f3;
-      color : white;
-      &:hover{
-        background-color : #537FE7;
-        border : 1px solid #537FE7;
+      font-size: 15px;
+      border-radius: 5px;
+      outline: none;
+      background-color: #4996f3;
+      border: 1px solid #4996f3;
+      color: white;
+      &:hover {
+        background-color: #537fe7;
+        border: 1px solid #537fe7;
       }
-      .search-icon{
-        margin-bottom : 1px;
-        font-size :20px;
+      .search-icon {
+        margin-bottom: 1px;
+        font-size: 20px;
       }
     }
   }
 `;
 
 export const TermsBlock = styled.div`
+  border: 1px solid lightgray;
+  hr {
+    margin-top: 1px;
+    width: 90%;
+    margin-left: 15px;
+    margin-bottom: 0px;
+  }
+  label {
+    margin: 0.7rem;
+    width: 90%;
+    cursor : pointer;
+    input {
+      position: relative;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+    }
+    .span1 {
+      padding-left: 5px;
+      font-size: 15px;
+      font-weight: 550;
+    }
+    .span2 {
+      padding-left: 5px;
+      font-size: 11px;
+      color: gray;
+    }
+    .span3 {
+      padding-left: 5px;
+      font-size: 13px;
+      ::after {
+        padding-left: 3px;
+        font-size: 12px;
+        content: "(필수)";
+        color: #4996f3;
+      }
+    }
+    .span4 {
+      padding-left: 5px;
+      font-size: 13px;
+      ::after {
+        padding-left: 3px;
+        font-size: 12px;
+        content: "(선택)";
+        color: gray;
+      }
+    }
+    .mbutton1{
+      margin-left :57%;
+      width: 10%;
+      font-size: 15px;
+      border-radius: 5px;
+      outline: none;
+      background-color: white;
+      border: none;
+      color: black;
+    }
+    .mbutton2{
+      margin-left :28%;
+      width: 10%;
+      font-size: 15px;
+      border-radius: 5px;
+      outline: none;
+      background-color: white;
+      border: none;
+      color: black;
+    }
+    .mbutton3{
+      margin-left :27%;
+      width: 10%;
+      font-size: 15px;
+      border-radius: 5px;
+      outline: none;
+      background-color: white;
+      border: none;
+      color: black;
+    }
+    .mmodal{
+      background-color : black;
+    .mbutton4{
+      margin-left :27%;
+      width: 10%;
+      font-size: 15px;
+      border-radius: 5px;
+      outline: none;
+      background-color: white;
+      border: none;
+      color: black;
+    }
+    }
+  }
+  `;
 
-`
