@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../include/Header'
 import OrderRow from '../order/OrderRow'
 import Footer from '../include/Footer'
-import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList, OrdertysTitle, PointContent, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTd, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv } from '../../styles/OrderStyle'
+import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList, OrdertysTitle, PointContent, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTd, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, PointUseDiv, PointInput, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP, OrdererTyContentTd, AgreeAllCheckDiv, InputAllCheck } from '../../styles/OrderStyle'
 
 const OrderPage = () => {
 
@@ -68,23 +68,27 @@ const OrderPage = () => {
             </tbody>
           </OrderTable>
           <OrderTotalDiv>
-            <OrderTotalSpan>{28000} 원</OrderTotalSpan>
+            <OrderTotalSpan>{`합계　${28000} 원`}</OrderTotalSpan>
           </OrderTotalDiv>
         </OrderListDiv>
         <OrderCouponDiv>
           <OrdertyTitle>할인 정보</OrdertyTitle>
           <LineHr/>
-          <OrdertysTitle>쿠폰 할인</OrdertysTitle>
-          <SelectList>
-            {couponList ? 
-            <option>사용 가능한 쿠폰이 존재하지 않습니다.</option>
-            : 
-            <option>쿠폰1</option>
-            }
-          </SelectList><br/>
-          <OrdertysTitle>포인트</OrdertysTitle>
-          <PointContent>사용 가능 포인트 {0} 점</PointContent>
-          <span><input type="decimal" placeholder="" disabled="" pattern="[0-9]*" class="css-o9jzai" value="0"></input></span><span><ConfirmButton>모두 사용</ConfirmButton></span>
+          <OrderCouponTyDiv>
+            <OrdertysTitle>쿠폰 할인</OrdertysTitle>
+            <SelectList>
+              {couponList ? 
+                <option>사용 가능한 쿠폰이 존재하지 않습니다.</option>
+                : 
+                <option>쿠폰1</option>
+              }
+            </SelectList><br/>
+            <OrdertysTitle>포인트</OrdertysTitle>
+            <PointContent>{`사용 가능 포인트　${0} 점`}</PointContent>
+            <PointUseDiv>
+              <span><PointInput type="decimal" placeholder="" disabled="" pattern="[0-9]*" value="0"></PointInput></span><ConfirmSpan><ConfirmButton>모두 사용</ConfirmButton></ConfirmSpan>
+            </PointUseDiv>
+          </OrderCouponTyDiv>
         </OrderCouponDiv>
         <OrdererInfoDiv>
           <OrdertyTitle>예약자 정보</OrdertyTitle>
@@ -92,21 +96,16 @@ const OrderPage = () => {
           <OrdererTable>
             <tr>
               <OrdererTytd>예약자 이름</OrdererTytd>
-              <td>{"둘리"}</td>
-              <table>
-                <tr>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </table><OrdererTd rowSpan={3}><ConfirmButton>정보 변경</ConfirmButton></OrdererTd>
+              <OrdererTyContentTd>{"둘리"}</OrdererTyContentTd>
+              <OrdererTd rowSpan={3}><ConfirmButton>정보 변경</ConfirmButton></OrdererTd>
             </tr>
             <tr>
               <OrdererTytd>예약자 연락처</OrdererTytd>
-              <td>{"요리보고"}</td> 
+              <OrdererTyContentTd>{"요리보고-1111-2222"}</OrdererTyContentTd> 
             </tr>
             <tr>
               <OrdererTytd>예약자 이메일</OrdererTytd>
-              <td>{"조리봐도"}</td> 
+              <OrdererTyContentTd>{"조리봐도@email.com"}</OrdererTyContentTd> 
             </tr>
           </OrdererTable>
           </OrdererInfoDiv>
@@ -117,13 +116,31 @@ const OrderPage = () => {
         <OrderCalcDiv>
           <OrdertyTitle>결제 정보</OrdertyTitle>
           <OrderCalcTyDiv>
-            <OrderCalcListDiv>주문 금액 {1111} 원 - 할인 금액 {0} 원</OrderCalcListDiv>
+            <OrderCalcListDiv>{`주문 금액　${1111} 원　ㅡ　할인 금액　${0} 원`}</OrderCalcListDiv>
             <OrderCalcResultDiv>
-              <span>결제 금액</span><span style={{margin: "left: 50%"}}>{1111}</span>원
+              <span>{`결제 금액　${1111} 원`}</span>
             </OrderCalcResultDiv>
           </OrderCalcTyDiv>
         </OrderCalcDiv>
         <OrdertyTitle>결제 동의</OrdertyTitle>
+        <OrderAgreeDiv>
+          <OrderAgreeTyDiv>
+            <AgreeAllCheckDiv>
+              <InputAllCheck type={'checkbox'}/>
+              <span>전체 약관 동의</span>
+            </AgreeAllCheckDiv>
+          </OrderAgreeTyDiv>
+          <OrderCancelDiv>
+            <OrderCancelTitle>예약 취소 규정</OrderCancelTitle>
+            <CancelSpan>
+              <CancelP>- 여행자가 여행 개시일로부터 3일 이전 통보 시: 여행 요금 전액 환불</CancelP>
+              <CancelP>- 여행 개시일로부터 2일 이전 통보 시: 총 상품 금액에서 10% 공제 후 환불</CancelP>
+              <CancelP>- 여행 개시일로부터 1일 이전 통보 시: 총 상품 금액에서 20% 공제 후 환불</CancelP>
+              <CancelP>- 여행일 당일 ~ 투어 시작 전 통보 시: 총 상품 금액에서 30% 공제 후 환불</CancelP>
+              <CancelP>※ 취소 요청 날짜와 시간은 여행 상품이 진행되는 현지 시간을 따릅니다.</CancelP>
+            </CancelSpan>
+          </OrderCancelDiv>
+        </OrderAgreeDiv>
         <OrderButtonDiv>
           <PaymentButton onClick={onClickPayment}>결제하기</PaymentButton>
         </OrderButtonDiv>
