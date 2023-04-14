@@ -51,4 +51,4 @@ const MarketRow = ({post}) => {
   )
 }
 
-export default marketRow
+export default MarketRow

@@ -2,29 +2,36 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../include/Header';
 import Footer from '../include/Footer';
-import { BodyContainer, BtnCommentInsert, BtnDot, BtnDotComment, CategoryDiv, Comment, CommentBox, CommentContainer, CommentContent, CommentDate, CommentImg, CommentInput, CommentLike, CommentModal, CommentModalUl, CommentUser, CountDiv, DetailContent, DetailSection, DetailTitle, DetialContainer, FontContent, HrLine, InputDiv, Like, ModalDiv, ModalUl, Profile, ReactIcon, TitleContainer, User, UserImg, UserWrap, Username } from '../../styles/BoardStyle';
-import { RiUser3Line } from 'react-icons/ri';
-
+import { BodyContainer, BtnCommentInsert, BtnDot, BtnDotComment, CategoryDiv, Comment, CommentBox, CommentContainer, CommentContent, CommentDate, CommentDiv, CommentImg, CommentInput, CommentLike, CommentModal, CommentModalUl, CommentReply, CommentUser, CountDiv, DetailContent, DetailSection, DetailTitle, DetialContainer, FontContent, HrLine, InputComment, InputDiv, Like, ModalDiv, ModalUl, Profile, ReCommentInput, ReactIcon, ReplyIcon, TitleContainer, User, UserImg, UserWrap, Username } from '../../styles/BoardStyle';
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentDots } from 'react-icons/fa';
-import { BsThreeDotsVertical } from 'react-icons/bs';
+import { BsArrowReturnLeft, BsArrowReturnRight, BsThreeDotsVertical } from 'react-icons/bs';
 import { boardDetailDB } from '../../service/boardLogic';
-import { PostFooter } from '../../styles/BoardStyle';
+import { profileImg } from './boardData';
 
 
 const BoardDetail = () => {
   const navigate = useNavigate()
-  const {bno} = useParams() // 해시값으로 가져오기
+
+   // 해시값으로 글번호 가져오기
+  const {bno} = useParams()
   console.log("bno => " + bno);
+
   // 로그인할때 세션스토리지에 닉네임담고 여기서 꺼낼 것!
   sessionStorage.setItem('nickname', '테스트1') // 단위테스트용 닉네임
-  const userNickname = sessionStorage.getItem('nickname')
+  // 닉네임 담을 변수
+  const [userNickname, setUserNickname] = useState('')
+  useEffect(() => {
+    setUserNickname(sessionStorage.getItem('nickname'))
+  }, [bno])
+  console.log(userNickname)
 
   // 디테일포스트 정보 담을 변수 - file_exist(파일존재여부), liked(좋아요 누른 게시물인지 아닌지 판별) 고려하기!!
   const [detailPost, setDetailPost] = useState({})
   // 코멘트 정보 담을 변수
   const [comments, setComments] = useState([{}])
 
+  // 상세보기 정보 가져오기
   useEffect(() => {
     const boardDetail = async() => {
       const board = {
@@ -128,6 +135,17 @@ const BoardDetail = () => {
     console.log('reportComment' + bno, cno, cstep);
   };
 
+  // 어떤글에 댓글다는지 확인용
+  const [commentReply, setCommentReply] = useState({})
+  // 댓글 답글쓰기 전환 버튼
+  const BtncommentReply = (cno, cstep) => {
+    if(commentReply.cno === cno && commentReply.cstep === cstep) {
+      setCommentReply({})
+    } else {
+      setCommentReply({cno, cstep});
+    }
+  }
+
   return (
     <>
     <Header />
@@ -141,7 +159,7 @@ const BoardDetail = () => {
               <DetailTitle>{detailPost.board_title}</DetailTitle>
               <Profile>
                 <UserImg>
-                  <RiUser3Line />
+                  <img className='userImg' src={profileImg[detailPost.board_no]} alt="" />
                 </UserImg>
                 <UserWrap>
                   <Username>{detailPost.user_nickname}</Username>
@@ -233,10 +251,17 @@ const BoardDetail = () => {
                 if(item.comment_no >= 0) {
                 return (
                   <CommentBox key={item.comment_date}>
+                    {item.comment_step > 0 ? 
+                    (
+                      <ReplyIcon>
+                        <BsArrowReturnRight className='commentIcon'
+                        />
+                      </ReplyIcon>
+                      ) : null}
                     <CommentImg>
-                      <RiUser3Line />
+                      <img className='commentImg' src={profileImg[Math.round((item.comment_no + item.comment_step + new Date(item.comment_date).getHours())/9*10)]} alt="" />
                     </CommentImg>
-                    <div>
+                    <CommentDiv>
                       <CommentUser>{item.user_nickname}</CommentUser>
                       <CommentContent>{item.comment_content}</CommentContent>
                       <CommentDate>
@@ -246,7 +271,39 @@ const BoardDetail = () => {
                         <AiFillLike className='like-icon' />
                         <span className='like-count'>{item.like_count ? item.like_count : 0}</span>
                       </CommentLike>
-                    </div>
+                      <CommentReply onClick={()=> BtncommentReply(item.comment_no, item.comment_step)}>
+                        답글쓰기
+                      </CommentReply>
+
+                      {commentReply.cno === item.comment_no && commentReply.cstep === item.comment_step ? (
+                      <InputComment>
+                      <ReactIcon>
+                        <BsArrowReturnRight className='commentIcon'
+                        />
+                      </ReactIcon>
+                      <ReCommentInput
+                        placeholder="댓글을 남겨보세요"
+                        ref={comment_input}
+                        onChange={handleComment}
+                        maxLength={255}
+                      />
+                      {comment ? (
+                        <BtnCommentInsert
+                          onClick={() => {
+                            /* const data = {
+                              comment_content: comment,
+                            };
+                            mutate(data); */
+                          }}
+                        >
+                          등록
+                        </BtnCommentInsert>
+                      ) : null}
+                      </InputComment>
+                      ) : null}
+
+
+                    </CommentDiv>
                     {userNickname  && (
                       <BtnDotComment
                         onClick={() => {
