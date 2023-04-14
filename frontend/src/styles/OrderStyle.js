@@ -16,7 +16,7 @@ export const OrderInfoDiv = styled.div`
 `;
 
 export const OrderCouponDiv = styled.div`
-  margin-bottom: 3%;
+  margin-bottom: 5%;
 `;
 
 export const PointUseDiv = styled.div`
@@ -31,18 +31,18 @@ export const OrderAddressDiv = styled.div`
 `;
 
 export const OrdererInfoDiv = styled.div`
-  margin-bottom: 3%;
+  margin-bottom: 5%;
   width: 100%;
 `;
 
 export const OrderCalcDiv = styled.div`
-  margin-bottom: 3%;
+  margin-bottom: 5%;
 `;
 
 export const OrderCalcTyDiv = styled.div`
   margin-top: 1.5%;
   margin-bottom: 3%;
-  background-color: #f5f5f5;
+  background-color: rgb(247, 248, 250);
   padding: 2% 3%;
 `;
 
@@ -56,6 +56,10 @@ export const OrderCalcResultDiv = styled.div`
   text-align: right;
 `;
 
+export const OrderAgreeDiv = styled.div`
+  margin-top: 1em;
+`;
+
 export const OrderButtonDiv = styled.div`
   text-align: center;
 `;
@@ -63,6 +67,16 @@ export const OrderButtonDiv = styled.div`
 export const OrderCouponTyDiv = styled.div`
   margin-left: 3%;
   margin-top: 2%;
+`;
+
+export const OrderAgreeTyDiv = styled.div``;
+
+export const OrderCancelDiv = styled.div`
+  border: solid 1px #bdbdbd;
+  border-radius: 10px;
+  padding-left: 0.8em;
+  padding-bottom: 0.8em;
+  background-color: #f2f2f2;
 `;
 
 export const OrderTitle = styled.div`
@@ -93,6 +107,13 @@ export const OrdertyTitle = styled.div`
   font-weight: bold;
 `;
 
+export const OrderCancelTitle = styled.div`
+  margin-top: 0.8em;
+  margin-bottom: 0.2em;
+  font-size: 15px;
+  font-weight: bold;
+`;
+
 export const OrdertysTitle = styled.div`
   margin-top: 1em;
   margin-bottom: 0.5em;
@@ -106,6 +127,17 @@ export const OrderTable = styled.table`
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   display: table;
+`;
+
+export const CancelSpan = styled.span`
+  letter-spacing: -0.4px;
+  font-weight: 400;
+  font-size: 14px;
+`;
+
+export const CancelP = styled.p`
+  margin: 0px;
+  padding: 0px;
 `;
 
 export const OrderItemTitle = styled.th`
