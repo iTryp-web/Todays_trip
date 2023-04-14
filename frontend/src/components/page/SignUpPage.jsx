@@ -3,12 +3,15 @@ import {
   AuthButton,
   EmailBlock,
   PWnNickBlock,
+  RefferBlock,
   SignDiv,
   SignUpBlock,
   SocialBlock,
+  TermsBlock,
 } from "../../styles/SignStyle";
 import HeaderIcon from "../include/HeaderIcon";
 import { useEffect } from "react";
+import { GoSearch } from "react-icons/go";
 
 const SignUpPage = () => {
   const [idInput, setIdInput] = useState("");
@@ -16,13 +19,17 @@ const SignUpPage = () => {
   const [pwInput, setPwInput] = useState("");
   const [pwCheckInput, setPwCheckInput] = useState("");
   const [nicknameInput, setNicknameInput] = useState("");
+  const [referrerInput, setReferrerInput] = useState("");
   const [textIdColor, setTextIdColor] = useState("black");
   const [textPwColor, setTextPwColor] = useState("black");
   const [textPwCheckColor, setTextPwCheckColor] = useState("black");
   const [textNicknameColor, setTextNickNameColor] = useState("black");
+  const [textReferrerColor, setTextReferrerColor] = useState("black");
   const [idtext, setIdText] = useState("");
   const [pwtext, setPwText] = useState("");
   const [pwChecktext, setPwCheckText] = useState("");
+  const [nicknametext, setNicknameText] = useState("");
+  const [referrertext, setReferrerText] = useState("");
 
   //이메일 input박스 얇은 테두리색깔
   const [emailInputColor, setEmailInputColor] = useState("lightgray");
@@ -42,6 +49,14 @@ const SignUpPage = () => {
   const [pwCheckInputColor, setPwCheckInputColor] = useState("lightgray");
   //패스워드 체크 input박스 shadow 테두리 색깔
   const [pwCheckShadowColor, setPwCheckShadowColor] = useState("none");
+  //닉네임 input박스 얇은 테두리 색깔
+  const [nicknameInputColor, setNicknameInputColor] = useState("lightgray");
+  //닉네임 input박스 shadow 테두리 색깔
+  const [nicknameShadowColor, setNicknameShadowColor] = useState("none");
+  //
+  const [referrerInputColor, setReferrerInputColor] = useState("lightgray");
+  //
+  const [referrerShadowColor, setReferrerShadowColor] = useState("none");
 
   //Domainselect박스 handler
   const handleDomainSelect = (e) => {
@@ -92,7 +107,6 @@ const SignUpPage = () => {
       }
     }
   };
-  console.log(idInput);
   //비밀번호 유효성에 따라 style변경
   const handlePwInputChange = (e) => {
     const regPwExp = new RegExp("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
@@ -125,8 +139,15 @@ const SignUpPage = () => {
     setPwCheckInput(e.target.value);
   };
 
-  const handleNicknameInput = (e) => {};
+  const handleNicknameInput = (e) => {
+    setNicknameInput(e.target.value);
+  };
 
+  const handleReferrerInput = (e) => {
+    setReferrerInput(e.target.value);
+  };
+
+  //==================focus, blur handler 시작===================//
   //email input focus handler
   const handleEmailFocus = () => {
     setEmailInputColor("#4996f3");
@@ -179,6 +200,31 @@ const SignUpPage = () => {
       setPwCheckShadowColor("");
     }
   };
+
+  const handleNicknameFocus = () => {
+    setNicknameInputColor("#4996f3");
+    setNicknameShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+  };
+
+  const handleNicknameBlur = () => {
+    if (nicknameInputColor !== "#f77") {
+      setNicknameInputColor("lightgray");
+      setNicknameShadowColor("");
+    }
+  };
+
+  const handleReferrerFocus = () => {
+    setReferrerInputColor("#4996f3");
+    setReferrerShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+  };
+
+  const handleReferrerBlur = () => {
+    if (referrerInputColor !== "#f77") {
+      setReferrerInputColor("lightgray");
+      setReferrerShadowColor("");
+    }
+  };
+  //==================focus, blur handler 끝 ====================//
 
   const EmailButton = () => {
     console.log("버튼클릭");
@@ -260,7 +306,9 @@ const SignUpPage = () => {
                     onBlur={handleEmailSelectBlur}
                     onChange={handleDomainSelect}
                   >
-                    <option value="default">&nbsp;&nbsp;선택해주세요</option>
+                    <option value selected disabled>
+                      &nbsp;&nbsp;선택해주세요
+                    </option>
                     <option value="naver.com">&nbsp;&nbsp;naver.com</option>
                     <option value="hanmail.net">&nbsp;&nbsp;hanmail.net</option>
                     <option value="daum.net">&nbsp;&nbsp;daum.net</option>
@@ -366,16 +414,71 @@ const SignUpPage = () => {
                 {`${pwChecktext}`}
               </p>
             )}
-            <h6>닉네임</h6>
+            <h6 style={{ color: textNicknameColor }}>닉네임</h6>
             <p>다른 유저와 겹치지 않도록 입력해주세요.(2~15자)</p>
             <input
               id="nickname"
               value={nicknameInput}
               type="text"
               placeholder="별명(2~15자)"
+              style={{
+                border: "1px solid " + nicknameInputColor,
+                boxShadow: nicknameShadowColor,
+              }}
               onChange={handleNicknameInput}
+              onFocus={handleNicknameFocus}
+              onBlur={handleNicknameBlur}
             />
+            {nicknametext !== "" && (
+              <p
+                style={{
+                  marginLeft: "0.5%",
+                  marginTop: "10px",
+                  marginBottom: "1px",
+                  color: "#f77",
+                  fontSize: "13px",
+                }}
+              >
+                {`${nicknametext}`}
+              </p>
+            )}
           </PWnNickBlock>
+          <RefferBlock>
+            <h6 style={{ color: textReferrerColor }}>추천인</h6>
+            <label>
+              <input
+                id="referrer"
+                value={referrerInput}
+                type="text"
+                onChange={handleReferrerInput}
+                onFocus={handleReferrerFocus}
+                onBlur={handleReferrerBlur}
+                style={{
+                  border: "1px solid " + referrerInputColor,
+                  boxShadow: referrerShadowColor,
+                }}
+              />
+              <button>
+                <GoSearch className="search-icon" />
+              </button>
+            </label>
+            {referrertext !== "" && (
+              <p
+                style={{
+                  marginLeft: "0.5%",
+                  marginTop: "10px",
+                  marginBottom: "1px",
+                  color: "#f77",
+                  fontSize: "13px",
+                }}
+              >
+                {`${referrertext}`}
+              </p>
+            )}
+          </RefferBlock>
+          <TermsBlock>
+            
+          </TermsBlock>
         </SignUpBlock>
       </SignDiv>
     </>

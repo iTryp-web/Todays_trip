@@ -94,7 +94,7 @@ const ProductItem = () => {
   } = item;
   return (
     <div>
-      
+      <img src="https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-162303132447303472.jpeg/640/640" alt="아엠홈"></img>
     </div>
   )
 }
