@@ -763,7 +763,7 @@ export const ReCommentInput = styled.textarea`
   width: 93%;
   height: 40px;
   padding: 10px;
-  font-size: 14px;
+  font-size: 12px;
   border: none;
   margin-left: 5px;
   overflow: hidden;
