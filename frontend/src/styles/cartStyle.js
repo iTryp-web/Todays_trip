@@ -78,7 +78,6 @@ export const CartTd = styled.td`
 export const CartButton = styled.button`
   border: none;
   background-color: #4996f3;
-  // background-color: navy;
   color: white;
   padding: 5px 12px;
   border-radius: 5px;
@@ -86,7 +85,6 @@ export const CartButton = styled.button`
   cursor: pointer;
   &:hover {
     opacity: 0.8;
-    // background-color: #4996f3;
   }
 `;
 

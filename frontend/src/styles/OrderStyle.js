@@ -19,12 +19,20 @@ export const OrderCouponDiv = styled.div`
   margin-bottom: 3%;
 `;
 
+export const PointUseDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 3%;
+`;
+
 export const OrderAddressDiv = styled.div`
-  margin-bottom: 3%;
+  margin-bottom: 5%;
 `;
 
 export const OrdererInfoDiv = styled.div`
   margin-bottom: 3%;
+  width: 100%;
 `;
 
 export const OrderCalcDiv = styled.div`
@@ -35,22 +43,26 @@ export const OrderCalcTyDiv = styled.div`
   margin-top: 1.5%;
   margin-bottom: 3%;
   background-color: #f5f5f5;
-  padding: 1% 2%;
-  @media screen and (max-width: 768px) {
-    padding: 2% 3%;
-  }
+  padding: 2% 3%;
 `;
 
 export const OrderCalcListDiv = styled.div`
   font-size: small;
+  margin-bottom: 1%;
 `;
 
 export const OrderCalcResultDiv = styled.div`
   font-weight: bold;
+  text-align: right;
 `;
 
 export const OrderButtonDiv = styled.div`
   text-align: center;
+`;
+
+export const OrderCouponTyDiv = styled.div`
+  margin-left: 3%;
+  margin-top: 2%;
 `;
 
 export const OrderTitle = styled.div`
@@ -83,6 +95,7 @@ export const OrdertyTitle = styled.div`
 
 export const OrdertysTitle = styled.div`
   margin-top: 1em;
+  margin-bottom: 0.5em;
   font-size: 15px;
   font-weight: bold;
 `;
@@ -115,7 +128,9 @@ export const OrderTotalSpan = styled.span`
 
 export const OrdererTable = styled.table`
   margin-left: 3%;
-  width: 100%;
+  margin-top: 2%;
+  width: 94%;
+  table-layout: fixed;
 `;
 
 export const OrdererTytd = styled.td`
@@ -128,34 +143,13 @@ export const OrdererTytd = styled.td`
 `;
 
 export const OrdererTd = styled.td`
-  align-items: center;
-  text-align: center;
-`;
-
-export const PointButton = styled.button`
-  padding: 0 10px;
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  border: 0px;
-  border-radius: 4px;
-  font-weight: bold;
-  letter-spacing: -0.2px;
-  transition: all 0.3s ease 0s;
-  user-select: none;
-  outline-style: none;
-  cursor: pointer;
-  height: 40px;
-  font-size: 14px;
-  background-color: #e9ecef;
+  text-align: right;
+  align-items: right;
+  justify-content: space-between;
 `;
 
 export const ConfirmButton = styled.button`
   padding: 0 10px;
-  display: flex;
   flex: 0 0 auto;
   flex-direction: row;
   justify-content: center;
@@ -173,6 +167,7 @@ export const ConfirmButton = styled.button`
   font-size: 14px;
   background-color: #e9ecef;
   color: #495056;
+  white-space: nowrap;
 `;
 
 export const PaymentButton = styled.button`
@@ -183,10 +178,11 @@ export const PaymentButton = styled.button`
   border-radius: 5px;
   margin-top: 5%;
   margin-bottom: 10%;
-  &hover: {
-    cursor: pointer;
+  &:hover {
     opacity: 0.8;
+    cursor: pointer;
   }
+  white-space: nowrap;
 `;
 
 export const SelectList = styled.select`
@@ -197,3 +193,19 @@ export const SelectList = styled.select`
 `;
 
 export const PointContent = styled.div``;
+
+export const PointInput = styled.input`
+  border: 1px #6e6e6e solid;
+  border-radius: 4px;
+  margin: 1% 0;
+  width: 320px;
+  padding: 1%;
+  padding-right: 3%;
+  text-align: right;
+`;
+
+export const ConfirmSpan = styled.span`
+  text-align: right;
+  align-items: right;
+  margin-right: 0;
+`;
