@@ -46,7 +46,7 @@
 				AND (b.board_title LIKE '%'||#{keyword}||'%'
              or b.board_content LIKE '%'||#{keyword}||'%')
 			</if>
-		ORDER BY b.board_no ASC
+		ORDER BY b.board_no DESC
 	</select>
 	
 	<!-- 커뮤니티글 상세조회 -->
@@ -284,7 +284,7 @@
 								(user_id
 							 , like_type
 							 , like_no
-						 <if test="like_group != null and like_group > 0">
+						 <if test="like_group != null and like_group >= 0">
 							 , like_group
 						 </if>
 						 <if test="like_step != null and like_step > 0">
@@ -295,7 +295,7 @@
 				 VALUES (#{user_id}
 				 			 , #{like_type}
 				 			 , #{like_no}
-				 		 <if test="like_group != null and like_group > 0">
+				 		 <if test="like_group != null and like_group >= 0">
 				 			 , #{like_group}
 						 </if>
 				  	 <if test="like_step != null and like_step > 0">
@@ -308,9 +308,13 @@
 	<!-- 좋아요 취소 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) -->
 	<delete id="likeOff" parameterType="map">
 		DELETE FROM TB_LIKE
-					WHERE user_id = #{user_id}
+					WHERE like_no = #{like_no}
+						<if test="user_id != null">
+						AND user_id = #{user_id}
+						</if>
+						<if test="like_type != null">
 						AND like_type = #{like_type}
-						AND like_no = #{like_no}
+						</if>
 						<if test="like_group != null">
 						AND like_group = #{like_group}
 						</if>

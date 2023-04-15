@@ -144,11 +144,17 @@ public class BoardLogic {
 		logger.info("boardDelete 호출");
 		int result = 0;
 		result = boardDao.boardDelete(pMap);
+		// 이미지 삭제
 		int imageDelete = boardDao.imageDelete(pMap);
 		logger.info("이미지삭제 => " + imageDelete);
+		// 댓글 삭제
 		pMap.put("delete_board", 1);
 		int commentDelete = boardDao.replyDelete(pMap);
 		logger.info("댓글삭제 => " + commentDelete);
+		// 좋아요 삭제
+		pMap.put("like_no", pMap.get("board_no"));
+		int likeDelete = boardDao.likeOff(pMap);
+		logger.info("좋아요삭제 => " + likeDelete);
 		return result;
 	}
 
@@ -215,6 +221,8 @@ public class BoardLogic {
 		// 판단용 변수 추가
 		pMap.put("judge", comment_no);
 		List<Map<String, Object>> judge = boardDao.replyList(pMap);
+		// 삭제하려는 댓글 상태
+		int comment_status = 0;
 		// 삭제기준 판별위한 for문
 		for(int i=0; i<judge.size(); i++) {
 			if(Integer.parseInt(judge.get(i).get("COMMENT_NO").toString()) == comment_no) {
@@ -223,9 +231,14 @@ public class BoardLogic {
 					if(Integer.parseInt(judge.get(i).get("COMMENT_STATUS").toString()) == 1) {
 						c_status++;
 					}
+				} else if(Integer.parseInt(judge.get(i).get("COMMENT_STEP").toString()) == 0) {
+					if(Integer.parseInt(judge.get(i).get("COMMENT_STATUS").toString()) == 1) {
+						comment_status = 1;
+					}
 				}
 			}
 		}
+		logger.info("삭제 comment_status => " + comment_status);
 		// result값 저장
 		int fResult = result;
 		logger.info("c_step의 크기 => " + c_step);
@@ -240,7 +253,7 @@ public class BoardLogic {
 			}
 		}
 		// 대댓글이 없거나 모두 삭제된 댓글 삭제 -> 바로 삭제(댓글, 대댓글 모두)
-		else if(c_step == 0 || c_step == c_status) {
+		else if(comment_status == 1 && (c_step == 0 || c_step == c_status)) {
 			pMap.put("delete_all", 1); // 0이면 특정글 , 1이면 댓글,대댓글 전부 삭제
 			result = boardDao.replyDelete(pMap);			
 		}

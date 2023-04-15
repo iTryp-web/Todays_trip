@@ -5,9 +5,9 @@ import Footer from '../include/Footer';
 import { BodyContainer, BtnCommentInsert, BtnDot, BtnDotComment, CategoryDiv, Comment, CommentBox, CommentContainer, CommentContent, CommentDate, CommentDiv, CommentImg, CommentInput, CommentLike, CommentModal, CommentModalUl, CommentReply, CommentUser, CountDiv, DetailContent, DetailSection, DetailTitle, DetialContainer, FontContent, HrLine, InputComment, InputDiv, Like, ModalDiv, ModalUl, Profile, ReCommentInput, ReactIcon, ReplyIcon, TitleContainer, User, UserImg, UserWrap, Username } from '../../styles/BoardStyle';
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentDots } from 'react-icons/fa';
-import { BsArrowReturnLeft, BsArrowReturnRight, BsThreeDotsVertical } from 'react-icons/bs';
-import { boardDetailDB, likeOffDB, likeOnDB, replyInsertDB } from '../../service/boardLogic';
-import { profileImg } from './boardData';
+import { BsArrowReturnLeft, BsArrowReturnRight, BsBookmarkStar, BsBookmarkStarFill, BsThreeDotsVertical } from 'react-icons/bs';
+import { boardDeleteDB, boardDetailDB, likeOffDB, likeOnDB, replyDeleteDB, replyInsertDB } from '../../service/boardLogic';
+import { categories, profileImg } from './boardData';
 
 
 const BoardDetail = () => {
@@ -24,14 +24,18 @@ const BoardDetail = () => {
 
   // 상세보기 정보  변수 - file_exist(파일존재여부), liked(좋아요 누른 게시물인지 아닌지 판별) 고려하기!!
   const [detailPost, setDetailPost] = useState({})
-  // 댓긍 정보 변수
+  // 댓글 정보 변수
   const [comments, setComments] = useState([{}])
   // 유저 좋아요 변수
   const [liked, setLiked] = useState([{}])
   // 좋아요 판별 변수
   const [isLiked, setIsLiked] = useState(false)
+  // 유저 댓글 좋아요 변수
+  const [likedComment, setLikedComment] = useState([{}])
   // useEffect 실행용 변수
   const [start, setStart] = useState('')
+  // 해당글 카테고리 저장
+  const [category, setCategory] = useState('all')
 
   /* db에서 상세보기 정보 가져오기 */
   useEffect(() => {
@@ -76,6 +80,14 @@ const BoardDetail = () => {
         like_count: jsonDoc[0].LIKE_COUNT,
         comment_count: jsonDoc[0].COMMENT_COUNT,
       })
+      // 카테고리 담기
+      {categories.map((item) => {
+        if(item.name == jsonDoc[0].BOARD_CATEGORY) {
+          setCategory(item.category)
+          console.log('1!!!'+item.category);
+        }
+      })}
+      console.log(category);
       // 유저 좋아요확인 db 담기
       const list2 = []
       if(jsonDoc.length > jsonDoc[0].COMMENT_COUNT+1) {
@@ -87,7 +99,6 @@ const BoardDetail = () => {
             like_step: jsonDoc[i].LIKE_STEP,
             
           }
-          console.log(obj);
           list2.push(obj)
           if(obj.like_type == 0 && obj.like_no == bno && obj.like_group == -1) {
             setIsLiked(true)
@@ -106,7 +117,13 @@ const BoardDetail = () => {
   };
   // 글 삭제 버튼
   const deletePost = async () => {
-    console.log('deletePost');
+    console.log('deletePost' + bno);
+    const board = {
+      board_no: bno,
+    }
+    const res = await boardDeleteDB(board)
+    console.log('deletePost=> ' + res.data);
+    navigate('/board/all')
   }
   // 글 수정 버튼
   const editPost = () => {
@@ -128,8 +145,16 @@ const BoardDetail = () => {
     }
     const res = await likeOnDB(board)
     console.log('likeOn=> ' + res.data);
-    setIsLiked(true)
+    // 글 좋아요인 경우
+    if(type === 0) {
+      setIsLiked(true)
+    }
+    // 댓글 좋아요인 경우
+      else if (type === 1) {
+        setStart(new Date())
+    }
   }
+  // 좋아요 취소
   const likeOff = async(type, group, step) => {
     const board = {
       user_id: userId,
@@ -140,15 +165,54 @@ const BoardDetail = () => {
     }
     const res = await likeOffDB(board)
     console.log('likeOff=> ' + res.data);
-    setIsLiked(false)
+    // 글 좋아요인 경우
+    if(type === 0) {
+      setIsLiked(false)
+    }
+    // 댓글 좋아요인 경우
+      else if (type === 1) {
+        setStart(new Date())
+    }
   }
+  // 글 좋아요 설정
   useEffect (() => {
     {liked && liked.map((item) => (
       item.like_type === 0 && item.like_no === bno && item.like_group === -1 ?
       setIsLiked(true) : setIsLiked(false)
     ))}
   }, [setDetailPost, setComments, setLiked, bno])
-
+  // 댓글 좋아요 버튼
+  const btnCommentLike = (cno, cstep) => {
+    let judge = 0
+    {liked && liked.map((item) => {
+      if(item.like_type === 1 && item.like_group == cno && item.like_step == cstep) {
+        judge = judge+1
+      }
+    })}
+    // 댓글 좋아요 누른 기록이 있을 경우
+    if(judge > 0) {
+      likeOff(1, cno, cstep)
+      console.log('좋아요취소=> ' + judge);
+    }
+    // 댓글 좋아요 누른 기록 없는 경우
+    else {
+      likeOn(1, cno, cstep)
+      console.log('좋아요확인=> ' + judge);
+    }
+  }
+  // 댓글 좋아요 색 판별
+  const commentColor = (cno, cstep) => {
+    let judge = 0
+    {liked && liked.map((item) => {
+      if(item.like_type === 1 && item.like_group == cno && item.like_step == cstep) {
+        judge++
+      }
+    })}
+    // 댓글 좋아요 누른 기록이 있을 경우
+    if(judge > 0) {
+      return "#4996F3"
+    }
+  }
 
   /* 댓글 */
   // 댓글 내용 담기
@@ -182,15 +246,24 @@ const BoardDetail = () => {
     }
   };
   // Dot 모달 삭제
-  const deleteComment = async (bno, cno, cstep) => {
+  const deleteComment = async (cno, cstep) => {
     console.log('deleteComment' + bno, cno, cstep);
+    const board = {
+      board_no: bno,
+      comment_no: cno,
+      comment_step: cstep,
+    }
+    const res = await replyDeleteDB(board)
+    console.log('deleteComment=> ' + res.data);
+    setCommentDot({})
+    setStart(new Date())
   }
   // Dot 모달 수정
-  const editComment = async (bno, cno, cstep) => {
+  const editComment = async (cno, cstep) => {
     console.log('editComment' + bno, cno, cstep);
   };
   // Dot 모달 신고
-  const reportComment = async (bno, cno, cstep) => {
+  const reportComment = async (cno, cstep) => {
     console.log('reportComment' + bno, cno, cstep);
   };
 
@@ -235,8 +308,8 @@ const BoardDetail = () => {
           <DetialContainer>
             <TitleContainer>
               <CategoryDiv>
-                <Link className='detailLink' to="/board">커뮤니티</Link> &gt;{' '}
-                {detailPost.board_category}
+                <Link className='detailLink' to="/board/all">커뮤니티</Link> &gt;{' '}
+                <Link className='detailLink' to={`/board/${category}`}>{detailPost.board_category}</Link>
               </CategoryDiv>
               <DetailTitle>{detailPost.board_title}</DetailTitle>
               <Profile>
@@ -307,7 +380,7 @@ const BoardDetail = () => {
             <CommentContainer>
               <InputDiv>
                 <ReactIcon>
-                  <FaCommentDots className='commentIcon'
+                  <FaCommentDots
                   />
                 </ReactIcon>
                 <CommentInput
@@ -328,12 +401,11 @@ const BoardDetail = () => {
               {comments.map((item) => {
                 if(item.comment_no >= 0) {
                 return (
-                  <CommentBox key={item.comment_date}>
+                  <CommentBox key={item.comment_date}  liked={item.like_count} step={item.comment_step} status={item.comment_status} >
                     {item.comment_step > 0 ? 
                     (
                       <ReplyIcon>
-                        <BsArrowReturnRight className='commentIcon'
-                        />
+                        <BsArrowReturnRight/>
                       </ReplyIcon>
                       ) : null}
                     <CommentImg>
@@ -341,14 +413,19 @@ const BoardDetail = () => {
                     </CommentImg>
                     <CommentDiv>
                       <CommentUser>{item.user_nickname}</CommentUser>
-                      <CommentContent>{item.comment_content}</CommentContent>
+                      <CommentContent status={item.comment_status}>{item.comment_content}</CommentContent>
                       <CommentDate>
                         {new Date(item.comment_date).toLocaleString()}
                       </CommentDate>
-                      <CommentLike>
-                        <AiFillLike className='like-icon' />
-                        <span className='like-count'>{item.like_count ? item.like_count : 0}</span>
-                      </CommentLike>
+                      {item.comment_status === 0 ? (
+                        <CommentLike iconColor={commentColor(item.comment_no, item.comment_step)}
+                          onClick={() => {
+                            btnCommentLike(item.comment_no, item.comment_step
+                            )}}>
+                          <AiFillLike className='like-icon' />
+                          <span className='like-count'>{item.like_count ? item.like_count : 0}</span>
+                        </CommentLike>
+                      ) : null}
                       {item.comment_step === 0 ?
                       (
                       <CommentReply onClick={()=> BtncommentReply(item.comment_no, item.comment_step)}>
@@ -380,7 +457,7 @@ const BoardDetail = () => {
 
 
                     </CommentDiv>
-                    {userNickname  && (
+                    {userNickname  && item.comment_status === 0 ?(
                       <BtnDotComment
                         onClick={() => {
                           onClickCommentDot(item.comment_no, item.comment_step);
@@ -388,18 +465,28 @@ const BoardDetail = () => {
                       >
                         <BsThreeDotsVertical />
                       </BtnDotComment>
-                    )}
-                {commentDot.cno === item.comment_no && commentDot.cstep === item.comment_step ? (
-                  userNickname === item.user_nickname ? (
-                  <CommentModal>
-                      <CommentModalUl id='' onClick={() => {editComment(item.board_no, item.comment_no, item.comment_step)}}>수정하기</CommentModalUl>
-                      <CommentModalUl onClick={() => {deleteComment(item.board_no, item.comment_no, item.comment_step)}}>삭제하기</CommentModalUl>
-                  </CommentModal>
-                    ) : (
+                    ) : null}
+                  {commentDot.cno === item.comment_no && commentDot.cstep === item.comment_step ? (
+                    userNickname === item.user_nickname ? (
                     <CommentModal>
-                    <CommentModalUl onClick={() => {reportComment(item.board_no, item.comment_no, item.comment_step)}}>신고하기</CommentModalUl>
+                      <CommentModalUl id='' onClick={() => 
+                        {editComment(item.comment_no, item.comment_step)}}>
+                        수정하기
+                      </CommentModalUl>
+                      <CommentModalUl onClick={() => 
+                        {deleteComment(item.comment_no, item.comment_step)}}>
+                        삭제하기
+                      </CommentModalUl>
                     </CommentModal>
-                    )) : null}
+                      ) : (
+                      <CommentModal>
+                        <CommentModalUl onClick={() => 
+                          {reportComment(item.comment_no, item.comment_step)}}>
+                          신고하기
+                        </CommentModalUl>
+                      </CommentModal>
+                      )) : 
+                    null}
                   </CommentBox>
                 )}
               })}

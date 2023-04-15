@@ -5,6 +5,7 @@ import Footer from '../include/Footer';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import QuillEditor from './QuillEditor';
+import { boardInsertDB } from '../../service/boardLogic';
 
 
 const BoardWriteForm = () => {
@@ -14,6 +15,8 @@ const BoardWriteForm = () => {
   const[title, setTitle]= useState('');
   const[content, setContent]= useState('');
   const[files, setFiles]= useState([]);
+  // 테스트용 유저아이디
+  window.sessionStorage.setItem('user_id', 'test1')
 
   const quillRef = useRef();
 
@@ -40,14 +43,15 @@ const BoardWriteForm = () => {
     console.log('boardInsert');
     console.log(files)
     const board = {
+      user_id: sessionStorage.getItem('user_id'),
+      board_category: selected,
       board_title: title,
       board_content: content,
-      mem_no: sessionStorage.getItem('no'),
-      fileNames: files
+      imageNames: files
     }
-    /* const res = await qnaInsertDB(board)
-    console.log(res) */
-    navigate('/board')
+    const res = await boardInsertDB(board)
+    console.log(res)
+    navigate('/board/all')
   }
 
   return (
@@ -75,7 +79,7 @@ const BoardWriteForm = () => {
             autoComplete="off"
             onChange={(e)=>{handleTitle(e.target.value)}}
           />
-          <button className='btnInsert'>등록</button>
+          <button className='btnInsert' onClick={(e)=>{boardInsert()}}>등록</button>
         </Row>
         <QuillEditor value={content} handleContent={handleContent} quillRef={quillRef} files={files} handleFiles={handleFiles}/>
     </WriteSection>

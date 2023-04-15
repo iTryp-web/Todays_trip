@@ -1,20 +1,26 @@
 import React from 'react'
 import { PostContent, PostFooter, PostLi } from '../../styles/BoardStyle'
 import { Link } from 'react-router-dom'
-import { AiFillLike } from 'react-icons/ai';
-import { FaCommentDots } from 'react-icons/fa';
-import { BsFillEyeFill } from 'react-icons/bs';
+import { AiFillLike, AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import { FaCommentDots, FaHotjar } from 'react-icons/fa';
+import { BsBookmarkStar, BsBookmarkStarFill, BsFillEyeFill } from 'react-icons/bs';
 
 
 const BoardRow = ({post}) => {
   return (
     <> 
       <PostLi>
-        <Link className='postLink' to={`detail/${post.board_no}`}>
+        <Link className='postLink' to={`/board/detail/${post.board_no}`}>
           <p className='categoryP'>{post.board_category}</p>
-          <PostContent>
+          <PostContent liked={post.like_count}>
             <div>
-              <p className='titleP'>{post.board_title}
+              <p className='titleP'>
+              {post.like_count >= 5 ? (post.like_count >= 10 ? (
+                <BsBookmarkStarFill className='star-icon' color={'#4996F3'} />
+              ): (
+                <BsBookmarkStar className='star-icon' color={'#4996F3'} />
+              )) : null}
+                {post.board_title}
                 {post.file_exist && (
                   <i className={"fas fa-file-lines"} id='fileI' />
                 )}
