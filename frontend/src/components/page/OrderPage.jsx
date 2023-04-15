@@ -2,12 +2,16 @@ import React from 'react'
 import Header from '../include/Header'
 import OrderRow from '../order/OrderRow'
 import Footer from '../include/Footer'
-import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList, OrdertysTitle, PointContent, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTd, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, PointUseDiv, PointInput, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP, OrdererTyContentTd, AgreeAllCheckDiv, InputAllCheck } from '../../styles/OrderStyle'
+import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList, OrdertysTitle, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, PointUseDiv, PointInput, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP, OrdererTyContentTd, AgreeAllCheckDiv, InputAllCheck, AddressTable, AddressTitleTd, AddressButton, AddressInput, AgreeCheckDiv } from '../../styles/OrderStyle'
 
 const OrderPage = () => {
 
   const couponList = null;
 
+  const getPostCode = () => {
+  }
+
+  //결제 API 실행
   const onClickPayment = () => {
     const { IMP } = window;
     IMP.init(process.env.REACT_APP_IMPORT_INIT_KEY);
@@ -84,7 +88,7 @@ const OrderPage = () => {
               }
             </SelectList><br/>
             <OrdertysTitle>포인트</OrdertysTitle>
-            <PointContent>{`사용 가능 포인트　${0} 점`}</PointContent>
+            <div>{`사용 가능 포인트　${0} 점`}</div>
             <PointUseDiv>
               <span><PointInput type="decimal" placeholder="" disabled="" pattern="[0-9]*" value="0"></PointInput></span><ConfirmSpan><ConfirmButton>모두 사용</ConfirmButton></ConfirmSpan>
             </PointUseDiv>
@@ -96,22 +100,43 @@ const OrderPage = () => {
           <OrdererTable>
             <tr>
               <OrdererTytd>예약자 이름</OrdererTytd>
-              <OrdererTyContentTd>{"둘리"}</OrdererTyContentTd>
-              <OrdererTd rowSpan={3}><ConfirmButton>정보 변경</ConfirmButton></OrdererTd>
+              <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} value={"둘리"}/></OrdererTyContentTd>
             </tr>
             <tr>
               <OrdererTytd>예약자 연락처</OrdererTytd>
-              <OrdererTyContentTd>{"요리보고-1111-2222"}</OrdererTyContentTd> 
+              <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} value={"요리보고-1111-2222"}/></OrdererTyContentTd> 
             </tr>
             <tr>
               <OrdererTytd>예약자 이메일</OrdererTytd>
-              <OrdererTyContentTd>{"조리봐도@email.com"}</OrdererTyContentTd> 
+              <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} value={"조리봐도@email.com"}/></OrdererTyContentTd> 
             </tr>
           </OrdererTable>
           </OrdererInfoDiv>
         <OrderAddressDiv>
           <OrdertyTitle>배송지 정보</OrdertyTitle>
           <LineHr/>
+          <AddressTable>
+            <tr>
+              <AddressTitleTd>받는 사람</AddressTitleTd>
+              <td><AddressInput type='text' style={{width:"250px"}} value={"또치"}/></td>
+            </tr>
+            <tr>
+              <AddressTitleTd>연락처</AddressTitleTd>
+              <td><AddressInput type='text' style={{width:"250px"}} value={"010-8989-8989"}/></td>
+            </tr>
+            <tr>
+              <AddressTitleTd rowSpan={3}>주소</AddressTitleTd>
+              <td><AddressButton onClick={getPostCode}>주소찾기</AddressButton><AddressInput type="text" id='postCode' style={{width:"166px"}} disabled/></td>
+            </tr>
+            <tr>
+              <td><AddressInput type="text" style={{width:"400px"}}  disabled/></td>
+            </tr>
+            <tr>
+              <td width={'270px'}>
+                <AddressInput type="text" placeholder='상세주소 입력' style={{width:"400px"}} />
+              </td>
+            </tr>
+          </AddressTable>
         </OrderAddressDiv>
         <OrderCalcDiv>
           <OrdertyTitle>결제 정보</OrdertyTitle>
@@ -127,16 +152,23 @@ const OrderPage = () => {
           <OrderAgreeTyDiv>
             <AgreeAllCheckDiv>
               <InputAllCheck type={'checkbox'}/>
-              <span>전체 약관 동의</span>
+              <span>아래 내용에 모두 동의합니다. (필수)</span>
+              <LineHr/>
             </AgreeAllCheckDiv>
+            <AgreeCheckDiv>
+              <InputAllCheck type={'checkbox'}/>
+              <span>본인은 만 14세 이상이며, 주문 내용과 예약 취소 규정을 확인하였습니다.</span><br/>
+              <InputAllCheck type={'checkbox'}/>
+              <span>(주)오늘의 여행은 원활한 서비스 제공을 위해 최소한의 범위 내에서 개인정보를 수집, 이용 및 제공합니다.</span><br/>
+            </AgreeCheckDiv>
           </OrderAgreeTyDiv>
           <OrderCancelDiv>
             <OrderCancelTitle>예약 취소 규정</OrderCancelTitle>
             <CancelSpan>
-              <CancelP>- 여행자가 여행 개시일로부터 3일 이전 통보 시: 여행 요금 전액 환불</CancelP>
-              <CancelP>- 여행 개시일로부터 2일 이전 통보 시: 총 상품 금액에서 10% 공제 후 환불</CancelP>
-              <CancelP>- 여행 개시일로부터 1일 이전 통보 시: 총 상품 금액에서 20% 공제 후 환불</CancelP>
-              <CancelP>- 여행일 당일 ~ 투어 시작 전 통보 시: 총 상품 금액에서 30% 공제 후 환불</CancelP>
+              <CancelP>- 여행자가 여행 개시일로부터 5일 이전 통보 시: 여행 요금 전액 환불</CancelP>
+              <CancelP>- 여행 개시일로부터 3일 이전 통보 시: 총 상품 금액에서 20% 공제 후 환불</CancelP>
+              <CancelP>- 여행 개시일로부터 1일 이전 통보 시: 총 상품 금액에서 30% 공제 후 환불</CancelP>
+              <CancelP>- 여행일 당일 ~ 투어 시작 전 통보 시: 총 상품 금액에서 50% 공제 후 환불</CancelP>
               <CancelP>※ 취소 요청 날짜와 시간은 여행 상품이 진행되는 현지 시간을 따릅니다.</CancelP>
             </CancelSpan>
           </OrderCancelDiv>

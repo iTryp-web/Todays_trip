@@ -42,7 +42,6 @@ export const OrderCalcDiv = styled.div`
 export const OrderCalcTyDiv = styled.div`
   margin-top: 2%;
   margin-bottom: 3%;
-  // background-color: rgb(247, 248, 250);
   padding: 2% 3%;
   border: 1px solid #d8d8d8;
   border-radius: 5px;
@@ -79,6 +78,12 @@ export const AgreeAllCheckDiv = styled.div`
   font-size: 15px;
 `;
 
+export const AgreeCheckDiv = styled.div`
+  padding-left: 0.5em;
+  margin-bottom: 2%;
+  font-size: 15px;
+`;
+
 export const InputAllCheck = styled.input`
   margin-right: 0.5em;
 `;
@@ -88,6 +93,7 @@ export const OrderCancelDiv = styled.div`
   border-radius: 10px;
   padding: 0.8em;
   background-color: #f2f2f2;
+  color: #585858;
 `;
 
 export const OrderTitle = styled.div`
@@ -139,6 +145,45 @@ export const OrderTable = styled.table`
   display: table;
 `;
 
+export const AddressTable = styled.table`
+  margin-left: 3%;
+  margin-top: 2%;
+  width: 94%;
+  table-layout: fixed;
+`;
+
+export const AddressTitleTd = styled.td`
+  vertical-align: top;
+  width: 170px;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #848484;
+  padding: 0.3em 0;
+  @media screen and (max-width: 700px) {
+    width: 120px;
+  }
+`;
+
+export const AddressButton = styled.button`
+  border: solid 0.5px #4996f3;
+  border-radius: 3px;
+  background-color: #ffffff;
+  font-size: 14px;
+  color: #4996f3;
+  font-weight: bold;
+  padding: 0.5em 0.7em;
+  margin-right: 0.5em;
+  margin-bottom: 0.15em;
+`;
+
+export const AddressInput = styled.input`
+  border-radius: 3px;
+  border: 1px solid #dbdbdb;
+  padding: 0.3em;
+  margin 0.1em 0;
+  text-size: 15px;
+`;
+
 export const CancelSpan = styled.span`
   letter-spacing: -0.4px;
   font-weight: 400;
@@ -183,16 +228,11 @@ export const OrdererTytd = styled.td`
   font-size: 15px;
   white-space: nowrap;
   color: #848484;
+  padding: 0.2em 0;
 `;
 
 export const OrdererTyContentTd = styled.td`
   white-space: nowrap;
-`;
-
-export const OrdererTd = styled.td`
-  text-align: right;
-  align-items: right;
-  justify-content: space-between;
 `;
 
 export const ConfirmButton = styled.button`
@@ -238,8 +278,6 @@ export const SelectList = styled.select`
   width: 320px;
   padding: 1%;
 `;
-
-export const PointContent = styled.div``;
 
 export const PointInput = styled.input`
   border: 1px #6e6e6e solid;
