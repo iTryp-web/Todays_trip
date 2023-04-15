@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../include/Header';
 import Footer from '../include/Footer';
@@ -6,7 +6,7 @@ import { BodyContainer, BtnCommentInsert, BtnDot, BtnDotComment, CategoryDiv, Co
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentDots } from 'react-icons/fa';
 import { BsArrowReturnLeft, BsArrowReturnRight, BsThreeDotsVertical } from 'react-icons/bs';
-import { boardDetailDB } from '../../service/boardLogic';
+import { boardDetailDB, likeOffDB, likeOnDB, replyInsertDB } from '../../service/boardLogic';
 import { profileImg } from './boardData';
 
 
@@ -17,21 +17,23 @@ const BoardDetail = () => {
   const {bno} = useParams()
   console.log("bno => " + bno);
 
-  // 로그인할때 세션스토리지에 닉네임담고 여기서 꺼낼 것!
-  sessionStorage.setItem('nickname', '테스트1') // 단위테스트용 닉네임
-  // 닉네임 담을 변수
-  const [userNickname, setUserNickname] = useState('')
-  useEffect(() => {
-    setUserNickname(sessionStorage.getItem('nickname'))
-  }, [bno])
-  console.log(userNickname)
+  // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
+  // 아이디, 닉네임 담을 변수 - 단위테스트용!
+  const [userId, setUserId] = useState('test1')
+  const [userNickname, setUserNickname] = useState('테스트1')
 
-  // 디테일포스트 정보 담을 변수 - file_exist(파일존재여부), liked(좋아요 누른 게시물인지 아닌지 판별) 고려하기!!
+  // 상세보기 정보  변수 - file_exist(파일존재여부), liked(좋아요 누른 게시물인지 아닌지 판별) 고려하기!!
   const [detailPost, setDetailPost] = useState({})
-  // 코멘트 정보 담을 변수
+  // 댓긍 정보 변수
   const [comments, setComments] = useState([{}])
+  // 유저 좋아요 변수
+  const [liked, setLiked] = useState([{}])
+  // 좋아요 판별 변수
+  const [isLiked, setIsLiked] = useState(false)
+  // useEffect 실행용 변수
+  const [start, setStart] = useState('')
 
-  // 상세보기 정보 가져오기
+  /* db에서 상세보기 정보 가져오기 */
   useEffect(() => {
     const boardDetail = async() => {
       const board = {
@@ -42,10 +44,10 @@ const BoardDetail = () => {
       console.log(res.data)
       const temp = JSON.stringify(res.data)
       const jsonDoc = JSON.parse(temp)
-      // 댓글 담을 배열 선언
-      const list = []
+      // 댓글 db 담기
+      const list1 = []
       if(jsonDoc.length > 1) {
-        for(let i=1; i<jsonDoc.length; i++) {
+        for(let i=1; i<jsonDoc[0].COMMENT_COUNT+1; i++) {
           const obj = {
             user_nickname: jsonDoc[i].USER_NICKNAME,
             comment_no: jsonDoc[i].COMMENT_NO,
@@ -55,16 +57,13 @@ const BoardDetail = () => {
             type_comment: jsonDoc[i].TYPE_COMMENT,
             comment_status: jsonDoc[i].COMMENT_STATUS,
             like_count: jsonDoc[i].LIKE_COUNT,
-            like_type: jsonDoc[i].LIKE_TYPE,
-            like_no: jsonDoc[i].LIKE_NO,
-            like_group: jsonDoc[i].LIKE_GROUP,
-            like_step: jsonDoc[i].LIKE_STEP,
           }
           console.log(obj);
-          list.push(obj)
+          list1.push(obj)
         }
       }
-      setComments(list)
+      setComments(list1)
+      // 상세보기 db 담기
       setDetailPost({
         board_no: jsonDoc[0].BOARD_NO,
         user_nickname: jsonDoc[0].USER_NICKNAME,
@@ -77,12 +76,30 @@ const BoardDetail = () => {
         like_count: jsonDoc[0].LIKE_COUNT,
         comment_count: jsonDoc[0].COMMENT_COUNT,
       })
+      // 유저 좋아요확인 db 담기
+      const list2 = []
+      if(jsonDoc.length > jsonDoc[0].COMMENT_COUNT+1) {
+        for(let i=jsonDoc[0].COMMENT_COUNT+1; i<jsonDoc.length; i++) {
+          const obj = {
+            like_type: jsonDoc[i].LIKE_TYPE,
+            like_no: jsonDoc[i].LIKE_NO,
+            like_group: jsonDoc[i].LIKE_GROUP,
+            like_step: jsonDoc[i].LIKE_STEP,
+            
+          }
+          console.log(obj);
+          list2.push(obj)
+          if(obj.like_type == 0 && obj.like_no == bno && obj.like_group == -1) {
+            setIsLiked(true)
+          }
+        }
+      }
+      setLiked(list2)
     }
     boardDetail()
-  }, [setDetailPost, setComments, bno])
+  }, [isLiked, bno, start])
 
-  
-  // 게시글 Dot버튼 - 신고'수정'삭제뜨는 버튼
+  /* 게시글 Dot버튼 */
   const [is_ClickBtnDot, setClickBtnDot] = useState(false);
   const onClickBtnDot = () => {
     setClickBtnDot((is_ClickBtnDot) => !is_ClickBtnDot);
@@ -100,24 +117,63 @@ const BoardDetail = () => {
     console.log('reportPost');
   };
 
-  /* 좋아요 버튼 */
-  const likeOn = () => {
-    console.log('좋아요');
+  /* 좋아요 버튼 */  
+  const likeOn = async(type, group, step) => {
+    const board = {
+      user_id: userId,
+      like_type: type,
+      like_no: bno,
+      like_group: group,
+      like_step: step,
+    }
+    const res = await likeOnDB(board)
+    console.log('likeOn=> ' + res.data);
+    setIsLiked(true)
   }
-  const likeOff = () => {
-    console.log('좋아요 취소');
+  const likeOff = async(type, group, step) => {
+    const board = {
+      user_id: userId,
+      like_type: type,
+      like_no: bno,
+      like_group: group,
+      like_step: step,
+    }
+    const res = await likeOffDB(board)
+    console.log('likeOff=> ' + res.data);
+    setIsLiked(false)
   }
+  useEffect (() => {
+    {liked && liked.map((item) => (
+      item.like_type === 0 && item.like_no === bno && item.like_group === -1 ?
+      setIsLiked(true) : setIsLiked(false)
+    ))}
+  }, [setDetailPost, setComments, setLiked, bno])
+
 
   /* 댓글 */
-  const comment_input = React.useRef('');
-
-  const [comment, seComment] = useState('');
+  // 댓글 내용 담기
+  const [comment, setComment] = useState('');
   const handleComment = (e) => {
-    seComment(e);
+    console.log(e);
+    setComment(e);
   };
+  // 댓글달기 버튼
+  const btnComment = async() => {
+    const board = {
+      board_no: bno,
+      user_id: userId,
+      comment_content: comment
+    }
+    const res = await replyInsertDB(board)
+    console.log(res.data)
+    setComment('') // 코멘트 초기화
+    const commentInput = document.getElementById('commentInput')
+    commentInput.value = '' // 코멘트 input창 초기화
+    setStart(new Date()) // useEffect 부르는 용도
+  }
   // 댓글 Dot버튼 - 신고'수정'삭제뜨는 버튼
   const [commentDot, setCommentDot] = useState({});
-  // 댓글, 대댓글 번호 담기
+  // Dot 댓글, 대댓글 번호 담기
   const onClickCommentDot = (cno, cstep) => {
     if(commentDot.cno === cno && commentDot.cstep === cstep) {
       setCommentDot({})
@@ -125,12 +181,15 @@ const BoardDetail = () => {
       setCommentDot({cno, cstep});
     }
   };
+  // Dot 모달 삭제
   const deleteComment = async (bno, cno, cstep) => {
     console.log('deleteComment' + bno, cno, cstep);
   }
+  // Dot 모달 수정
   const editComment = async (bno, cno, cstep) => {
     console.log('editComment' + bno, cno, cstep);
   };
+  // Dot 모달 신고
   const reportComment = async (bno, cno, cstep) => {
     console.log('reportComment' + bno, cno, cstep);
   };
@@ -144,6 +203,29 @@ const BoardDetail = () => {
     } else {
       setCommentReply({cno, cstep});
     }
+  }
+  // 답글 내용 담기
+  const [reComment, setReComment] = useState('');
+  const handleReComment = (e) => {
+    console.log(e);
+    setReComment(e);
+  };
+  // 답글달기 버튼
+  const btnReComment = async(cno) => {
+    const board = {
+      board_no: bno,
+      user_id: userId,
+      comment_no: cno,
+      comment_step: 1,
+      comment_content: reComment
+    }
+    const res = await replyInsertDB(board)
+    console.log(res.data)
+    setReComment('') // 코멘트 초기화
+    const reCommentInput = document.getElementById('reCommentInput')
+    reCommentInput.value = '' // 코멘트 input창 초기화
+    setCommentReply({}) // 답글쓰기 창 초기화
+    setStart(new Date()) // useEffect 부르는 용도
   }
 
   return (
@@ -159,7 +241,7 @@ const BoardDetail = () => {
               <DetailTitle>{detailPost.board_title}</DetailTitle>
               <Profile>
                 <UserImg>
-                  <img className='userImg' src={profileImg[detailPost.board_no]} alt="" />
+                  <img className='userImg' src={profileImg[Math.floor(((new Date(detailPost.board_date).getSeconds())%10))]} alt="" />
                 </UserImg>
                 <UserWrap>
                   <Username>{detailPost.user_nickname}</Username>
@@ -200,15 +282,16 @@ const BoardDetail = () => {
                 <Like
                   onClick={() => {
                     {
-                      detailPost.liked ? likeOff() : likeOn();
+                      /* type, group, step */
+                      isLiked ? likeOff(0, -1, 0) : likeOn(0, -1, 0);
                     }
                   }}
                 >
                   <ReactIcon>
-                    <AiFillLike color={detailPost.liked ? '#4996F3' : 'gray'} />
+                    <AiFillLike color={isLiked ? '#4996F3' : 'gray'} />
                   </ReactIcon>
-                  <FontContent liked={!!detailPost.liked}>
-                    좋아요 {detailPost.like_count? detailPost.like_count : 0}
+                  <FontContent liked={isLiked}>
+                    좋아요 {detailPost.like_count ? detailPost.like_count : 0}
                   </FontContent>
                 </Like>
                 <Comment>
@@ -228,19 +311,14 @@ const BoardDetail = () => {
                   />
                 </ReactIcon>
                 <CommentInput
+                  id='commentInput'
                   placeholder="댓글을 남겨보세요"
-                  ref={comment_input}
-                  onChange={handleComment}
+                  onChange={(e)=>{handleComment(e.target.value)}}
                   maxLength={255}
                 />
                 {comment ? (
                   <BtnCommentInsert
-                    onClick={() => {
-                      /* const data = {
-                        comment_content: comment,
-                      };
-                      mutate(data); */
-                    }}
+                    onClick={() => btnComment()}
                   >
                     등록
                   </BtnCommentInsert>
@@ -259,7 +337,7 @@ const BoardDetail = () => {
                       </ReplyIcon>
                       ) : null}
                     <CommentImg>
-                      <img className='commentImg' src={profileImg[Math.round((item.comment_no + item.comment_step + new Date(item.comment_date).getHours())/9*10)]} alt="" />
+                      <img className='commentImg' src={profileImg[Math.floor(((new Date(item.comment_date).getSeconds())%10))]} alt="" />
                     </CommentImg>
                     <CommentDiv>
                       <CommentUser>{item.user_nickname}</CommentUser>
@@ -271,9 +349,12 @@ const BoardDetail = () => {
                         <AiFillLike className='like-icon' />
                         <span className='like-count'>{item.like_count ? item.like_count : 0}</span>
                       </CommentLike>
+                      {item.comment_step === 0 ?
+                      (
                       <CommentReply onClick={()=> BtncommentReply(item.comment_no, item.comment_step)}>
                         답글쓰기
                       </CommentReply>
+                      ) : null}
 
                       {commentReply.cno === item.comment_no && commentReply.cstep === item.comment_step ? (
                       <InputComment>
@@ -282,19 +363,14 @@ const BoardDetail = () => {
                         />
                       </ReactIcon>
                       <ReCommentInput
-                        placeholder="댓글을 남겨보세요"
-                        ref={comment_input}
-                        onChange={handleComment}
+                        id='reCommentInput'
+                        placeholder="답글을 남겨보세요"
+                        onChange={(e)=>{handleReComment(e.target.value)}}
                         maxLength={255}
                       />
-                      {comment ? (
+                      {reComment ? (
                         <BtnCommentInsert
-                          onClick={() => {
-                            /* const data = {
-                              comment_content: comment,
-                            };
-                            mutate(data); */
-                          }}
+                          onClick={() => btnReComment(item.comment_no)}
                         >
                           등록
                         </BtnCommentInsert>
