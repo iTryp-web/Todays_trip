@@ -82,7 +82,7 @@ useEffect(() => {
       list.push(obj)
     })
     setPosts(list)
-    setKeyword('')
+    setKeyword('') // 키워드 초기화
     const keywordInput = document.getElementById('keyword')
     keywordInput.value = '' // 키워드 input창 초기화
   }

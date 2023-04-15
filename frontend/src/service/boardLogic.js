@@ -1,5 +1,6 @@
 import axios from "axios";
 
+/* 커뮤니티 전체 목록 조회 */
 export const boardListDB = (board) => {
   console.log(board)
   return new Promise((resolve, reject) => {
@@ -17,6 +18,7 @@ export const boardListDB = (board) => {
   });
 };
 
+/* 커뮤니티 상세보기 */
 export const boardDetailDB = (board) => {
   console.log(board)
   return new Promise((resolve, reject) => {
@@ -34,3 +36,53 @@ export const boardDetailDB = (board) => {
   });
 };
 
+/* 좋아요 확인 */
+export const likeOnDB = (board) => {
+  console.log(board)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "board/likeOn",
+        data: board,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/* 좋아요 취소 */
+export const likeOffDB = (board) => {
+  console.log(board)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "board/likeOff",
+        data: board,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/* 댓글달기 */
+export const replyInsertDB = (board) => {
+  console.log(board)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "board/replyInsert",
+        data: board,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
