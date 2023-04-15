@@ -302,6 +302,12 @@ export const PostLi = styled.li`
   .postLink {
     text-decoration-line: none;
   }
+  .star-icon{
+    margin-bottom: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    font-size:15px;
+  }
 `;
 
 export const PostContent = styled.div`
@@ -613,7 +619,7 @@ export const ReactIcon = styled.div`
 `;
 
 export const FontContent = styled.div`
-  color: ${({ liked }) => (liked ? "#4996F3;" : "gray")};
+  color: ${({ liked }) => (liked ? "#4996F3" : "gray")};
   font-weight: 600;
 `;
 
@@ -638,7 +644,7 @@ export const InputDiv = styled.div`
     width: 17px;
     height: 17px;
     margin-top: -5px;
-    fill: #2d2d2d;
+    fill: #2E2E52;
     transform: rotateY(180deg);
   }
 `;
@@ -671,15 +677,22 @@ export const BtnCommentInsert = styled.div`
 export const CommentBox = styled.div`
   display: flex;
   padding: 5px;
-  margin-top: 20px;
+  margin-top: ${({ step }) => 
+  (step > 0 ? "10px" : "20px" )};
+  
   position: relative;
+  border-radius: 5px;
+  background-color: ${({ liked, status }) => 
+  (liked >= 5  && status === 0? 
+    (liked >= 10 ? "#DBEAFD" : "#EDF5FE") 
+  : "white")};
 `;
 
 export const ReplyIcon = styled.div`
-display: flex;
-font-size: 17px;
-color: gray;
-margin: 10px;
+  display: flex;
+  font-size: 17px;
+  margin: 10px;
+  color: #4996F3;
 `
 
 export const CommentImg = styled.div`
@@ -706,15 +719,17 @@ export const CommentDiv = styled.div`
 `
 
 export const CommentUser = styled.div`
-  margin-top: 5px;
-  font-size: 14px;
+  margin-top: 3px;
+  font-size: 13px;
   font-weight: 600;
 `;
 
 export const CommentContent = styled.div`
-  font-size: 13px;
+  font-size: 14px;
   margin: 5px 1px;
   word-break: break-all;
+  color:  ${({ status }) => (status > 0 ? "#9E9E9E" : "black")};
+  font-style: ${({ status }) => (status > 0 ? "italic" : "normal")};
 `;
 
 export const CommentDate = styled.span`
@@ -724,9 +739,11 @@ export const CommentDate = styled.span`
 `;
 
 export const CommentLike = styled.span`
+  cursor: pointer;
   margin-left: 15px;
   font-size: 12px;
-  color: gray;
+  color: ${({ iconColor }) => (iconColor ? "#4996F3" : "gray")};
+
   font-weight: 500;
   .like-icon {
     margin-bottom: 3px;

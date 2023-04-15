@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import {BoardSection, BoardCategory, CategoryLi, BContentSection, SearchInput, Wrap, StyledSlider, SliderListF, CommunityH3, CategoryUl, BtnSearch, SearchDiv, SearchSelect, SearchInputText, SliderDiv, SliderDivCategory, SliderDivTitle, SliderDivWriter, SliderMain, SliderSub} from '../../styles/BoardStyle'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import BoardRow from './BoardRow';
 import BoardTopPost from './BoardTopPost';
 import { DropdownButton } from 'react-bootstrap';
@@ -12,14 +12,32 @@ import { boardListDB } from "../../service/boardLogic";
 const BoardLayout = () => {
   // 화면전환
   const navigate = useNavigate()
+  // 파라미터의 카테고리값
+  let {category} = useParams()
+  console.log(category);
 
   /* 왼쪽 카테고리 */
   // 선택한 카테고리 담기
   const [selected, setSelected] = useState('전체')
   const handleCategory =  useCallback((name) => {
-    console.log('handleCategory => ' + name);
-    setSelected(name)
+    let category = ''
+    {categories.map((item) => {
+      if(item.name === name) {
+        category = item.category
+      }
+    })}
+    navigate('/board/'+category)
   }, [])
+  useEffect(() => {
+    let name = ''
+    {categories.map((item) => {
+      if(item.category === category) {
+        name = item.name
+      }
+    })}
+    console.log('effect=> ' + name);
+    setSelected(name)
+  }, [category])
 
 
 /* 검색 */
@@ -131,15 +149,15 @@ useEffect(() => {
           {/* 글 목록 */}
           <ul>
             {posts && posts.map((post) => {
-              return <BoardRow key={post.board_date} post={post} />
+              return <BoardRow key={post.board_no} post={post} />
             })}
           </ul>
 
           {/* 검색 */}
           <SearchDiv className='searchDiv'>
             <DropdownButton className='searchDropdown' variant="" title={searchVal}>
-              {search.map((item, index)=>(
-                  <Dropdown.Item as="button" key={index} onClick={()=>{
+              {search.map((item)=>(
+                  <Dropdown.Item as="button" key={item} onClick={()=>{
                     handleSearch(item); 
                   }}>
                     {item}
