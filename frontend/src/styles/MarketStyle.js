@@ -125,7 +125,7 @@ export const ProductListBlock = styled.div`
   }
 `;
 
-const SelectBlock = styled.select`
+export const SelectBlock = styled.select`
   border: none;
   outline: none;
   width: 100px;

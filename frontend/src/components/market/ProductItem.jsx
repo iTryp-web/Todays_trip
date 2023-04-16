@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ContentsBlock = styled.div`
@@ -85,6 +86,7 @@ const ItemBlock = styled.div`
 `;
 
 const ProductItem = () => {
+  const navigate=useNavigate()
   const [items, setItems]=useState([
     "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
     "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-162303132447303472.jpeg/640/640",
@@ -116,7 +118,7 @@ const ProductItem = () => {
   return (
     <>
       <ContentsBlock>
-      <ItemBlock>
+      <ItemBlock onClick={() => navigate('/market/marketDetail')}>
         {itemBody}
       </ItemBlock>
       </ContentsBlock>

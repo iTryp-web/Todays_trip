@@ -88,7 +88,7 @@ export const reviewListDB = (market) => {
 };
 
 /* 리뷰쓰기 */
-export const replyInsertDB = (market) => {
+export const reviewInsertDB = (market) => {
   console.log(market)
   return new Promise((resolve, reject) => {
     try {
@@ -112,6 +112,56 @@ export const reviewDeleteDB = (market) => {
       const response = axios({
         method: "post",
         url: process.env.REACT_APP_SPRING_IP + "market/reviewDelete",
+        data: market,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/* 리뷰좋아요*/
+export const likeDB = (market) => {
+  console.log(market)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "market/reviewLike",
+        data: market,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+/* 좋아요 취소 */
+export const dislikeDB = (market) => {
+  console.log(market)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "market/reviewDislike",
+        data: market,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/* 신고 */
+export const reportDB = (market) => {
+  console.log(market)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "market/mReport",
         data: market,
       });
       resolve(response);
@@ -156,7 +206,7 @@ export const qnaInsertDB = (market) => {
   });
 };
 
-/* 리뷰 삭제 */
+/* 문의글 삭제 */
 export const qnaDeleteDB = (market) => {
   console.log(market)
   return new Promise((resolve, reject) => {
