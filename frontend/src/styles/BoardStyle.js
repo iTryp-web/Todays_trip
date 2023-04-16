@@ -330,6 +330,8 @@ export const PostContent = styled.div`
     width: 15px;
     height: 15px;
     color: #888;
+    margin-bottom: 2px;
+    margin-left: 10px;
   }
   .contentP {
     overflow: hidden;

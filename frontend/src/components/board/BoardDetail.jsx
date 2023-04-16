@@ -128,6 +128,7 @@ const BoardDetail = () => {
   // 글 수정 버튼
   const editPost = () => {
     console.log('editPost');
+    navigate('/board/update/'+bno)
   };
   // 글 신고 버튼
   const reportPost = () => {
@@ -348,8 +349,7 @@ const BoardDetail = () => {
             </TitleContainer>
 
             <BodyContainer>
-              <DetailContent>
-                {detailPost.board_content}
+              <DetailContent dangerouslySetInnerHTML={{__html:detailPost.board_content}}>
               </DetailContent>
               <CountDiv>
                 <Like

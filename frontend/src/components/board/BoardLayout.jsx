@@ -96,7 +96,9 @@ useEffect(() => {
         type_board: item.TYPE_BOARD,
         like_count: item.LIKE_COUNT,
         comment_count: item.COMMENT_COUNT,
+        file_exist: item.FILE_EXIST,
       }
+      console.log(obj.file_exist);
       list.push(obj)
     })
     setPosts(list)

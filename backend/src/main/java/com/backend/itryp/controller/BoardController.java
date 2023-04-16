@@ -82,6 +82,11 @@ public class BoardController {
 	public String boardInsert(@RequestBody Map<String, Object> pMap) {
 		logger.info("boardInsert 호출");
 		logger.info(pMap);
+		if(pMap.get("board_no") != null) {
+			// NumberFormatException 방어코드(값에 null이 들어가지 않도록!)
+			int board_no = Integer.parseInt(pMap.get("board_no").toString());
+			pMap.put("board_no", board_no);
+		}
 		int result = 0;
 		result = boardLogic.boardInsert(pMap);
 		logger.info(result);
@@ -273,7 +278,7 @@ public class BoardController {
 		String b_file = req.getParameter("imageName"); // get방식으로 넘어옴
 		logger.info("imageGet 호출 성공===>" + b_file); // XXX.png
 		// 톰캣 서버의 물리적인 위지 정보
-		String filePath = "..\\..\\..\\..\\..\\webapp\\pds";
+		String filePath = "\\Todays_trip\\backend\\src\\main\\webapp\\pds";
 		String fname = b_file;
 		logger.info("b_file: 8->euc" + b_file);
 		// File은 내용까지 복제되는 것은 아니고 파일명만 객체화해주는 클래스이다
