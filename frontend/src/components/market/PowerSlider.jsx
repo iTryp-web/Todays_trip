@@ -16,7 +16,7 @@ const SliderBlock = styled(Slider)`
     }
   }
   .slick-dots li button:before {
-    color: var(--light-gray);
+    color: var(-gray);
   }
 `;
 
