@@ -2,12 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../include/Header';
 import Footer from '../include/Footer';
-import { BodyContainer, BtnCommentInsert, BtnDot, BtnDotComment, CategoryDiv, Comment, CommentBox, CommentContainer, CommentContent, CommentDate, CommentDiv, CommentImg, CommentInput, CommentLike, CommentModal, CommentModalUl, CommentReply, CommentUser, CountDiv, DetailContent, DetailSection, DetailTitle, DetialContainer, FontContent, HrLine, InputComment, InputDiv, Like, ModalDiv, ModalUl, Profile, ReCommentInput, ReactIcon, ReplyIcon, TitleContainer, User, UserImg, UserWrap, Username } from '../../styles/BoardStyle';
+import { BodyContainer, BtnCommentInsert, BtnDot, BtnDotComment, BtnReport, CategoryDiv, Comment, CommentBox, CommentContainer, CommentContent, CommentDate, CommentDiv, CommentImg, CommentInput, CommentLike, CommentModal, CommentModalUl, CommentReply, CommentUser, CountDiv, DetailContent, DetailSection, DetailTitle, DetialContainer, EditText, FontContent, HrLine, InputComment, InputDiv, InputReport, Like, ModalDiv, ModalReport, ModalUl, Profile, ReCommentInput, ReactIcon, ReplyIcon, ReportText, TitleContainer, User, UserImg, UserWrap, Username } from '../../styles/BoardStyle';
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentDots } from 'react-icons/fa';
 import { BsArrowReturnLeft, BsArrowReturnRight, BsBookmarkStar, BsBookmarkStarFill, BsThreeDotsVertical } from 'react-icons/bs';
-import { boardDeleteDB, boardDetailDB, likeOffDB, likeOnDB, replyDeleteDB, replyInsertDB } from '../../service/boardLogic';
+import { boardDeleteDB, boardDetailDB, likeOffDB, likeOnDB, replyDeleteDB, replyInsertDB, replyUpdateDB, reportDB } from '../../service/boardLogic';
 import { categories, profileImg } from './boardData';
+import { HiOutlineX } from 'react-icons/hi';
 
 
 const BoardDetail = () => {
@@ -18,9 +19,9 @@ const BoardDetail = () => {
   console.log("bno => " + bno);
 
   // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
-  // 아이디, 닉네임 담을 변수 - 단위테스트용!
-  const [userId, setUserId] = useState('test1')
-  const [userNickname, setUserNickname] = useState('테스트1')
+  // 아이디, 닉네임 담을 변수
+  const [userId] = useState(window.sessionStorage.getItem('user_id'))
+  const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
 
   // 상세보기 정보  변수 - file_exist(파일존재여부), liked(좋아요 누른 게시물인지 아닌지 판별) 고려하기!!
   const [detailPost, setDetailPost] = useState({})
@@ -132,8 +133,42 @@ const BoardDetail = () => {
   };
   // 글 신고 버튼
   const reportPost = () => {
-    console.log('reportPost');
+    console.log('reportPost=> ' + bno);
+    setIsReport(true)
+    setClickBtnDot(false)
   };
+  // 글 신고 취소 버튼
+  const reportCancel = () => {
+    console.log('reportCancel=> ' + bno);
+    setIsReport(false)
+    setIsCommentReport(false)
+    setCommentDot({})
+    setClickBtnDot(false)
+  }
+  // 신고창, 신고사유 변수
+  const [isReport, setIsReport] = useState(false)
+  const [isCommentReport, setIsCommentReport] = useState(false)
+  const[reportReason, setReportReason] = useState('')
+  const handleReportPost = useCallback((e) => {
+    console.log(e);
+    setReportReason(e);
+  },[]);
+  // db 신고하기
+  const report = async(type, no, step, rUser) => {
+    console.log('report=> ' + type + ", " + no + ", " + step + ", " + rUser + ", " + reportReason);
+    setIsReport(false)
+    setIsCommentReport(false)
+    const board = {
+      user_id: sessionStorage.getItem('user_id'),
+      report_type: type,
+      report_group: no,
+      report_step: step,
+      report_user: rUser,
+      report_reason: reportReason,
+    }
+    const res = await reportDB(board)
+    console.log(res.data)
+  }
 
   /* 좋아요 버튼 */  
   const likeOn = async(type, group, step) => {
@@ -260,13 +295,46 @@ const BoardDetail = () => {
     setStart(new Date())
   }
   // Dot 모달 수정
+  const [newComment, setNewComment] = useState('');
+  const handleNewComment = (e) => {
+    console.log(e);
+    setNewComment(e);
+  };
+  // 어떤글 수정하는지 확인용
+  const [commentEdit, setCommentEdit] = useState({})
+  // 수정 여부 확인
+  const [isCommentEdit, setIsCommentEdit] = useState(false)
   const editComment = async (cno, cstep) => {
-    console.log('editComment' + bno, cno, cstep);
+    console.log('editComment' + cno, cstep);
+    setCommentEdit({cno, cstep});
+    setIsCommentEdit(true)
+    setCommentDot({})
   };
+  // 댓글 수정 버튼
+  const btnCommentUpdate = async(cno, cstep) => {
+    const board = {
+      comment_no: cno,
+      comment_step: cstep,
+      comment_content: newComment,
+      comment_status: 3
+    }
+    const res = await replyUpdateDB(board)
+    console.log(res.data)
+    setIsCommentEdit(false)
+    setNewComment('') // 코멘트 초기화
+    const commentInput = document.getElementById('commentInput')
+    commentInput.value = '' // 코멘트 input창 초기화
+    setStart(new Date()) // useEffect 부르는 용도
+  }
   // Dot 모달 신고
-  const reportComment = async (cno, cstep) => {
-    console.log('reportComment' + bno, cno, cstep);
-  };
+  // 어떤글 신고하는지 확인용
+  const [commentReport, setCommentReport] = useState({})
+  const reportComment = (cno, cstep) => {
+    console.log('reportComment=> ' + bno);
+    setCommentReport({cno, cstep});
+    setIsCommentReport(true)
+    setCommentDot({})
+  }
 
   // 어떤글에 댓글다는지 확인용
   const [commentReply, setCommentReply] = useState({})
@@ -341,9 +409,23 @@ const BoardDetail = () => {
                   </ModalDiv>
                     ) : (
                     <ModalDiv>
-                    <ModalUl onClick={reportPost}>신고하기</ModalUl>
+                    <ModalUl onClick={() => reportPost()}>신고하기</ModalUl>
                     </ModalDiv>
                     )) : null}
+                    {isReport ? (
+                      <ModalReport>
+                        <HiOutlineX className='x-icon' onClick={() => reportCancel()} />
+                      <ReportText
+                        type="text"
+                        maxLength="100"
+                        placeholder="신고사유를 입력해주세요."
+                        autoComplete="off"
+                        onChange={(e)=>{handleReportPost(e.target.value)}}>
+                      </ReportText>
+                      {/* type, group, step, 신고대상 */}
+                      <BtnReport onClick={() => report(0, bno, 0, detailPost.user_nickname)}>신고하기</BtnReport>
+                    </ModalReport>
+                    ) : null}
               </Profile>
               <HrLine />
             </TitleContainer>
@@ -411,13 +493,30 @@ const BoardDetail = () => {
                     <CommentImg>
                       <img className='commentImg' src={profileImg[Math.floor(((new Date(item.comment_date).getSeconds())%10))]} alt="" />
                     </CommentImg>
+                    {isCommentEdit && commentEdit.cno === item.comment_no && commentEdit.cstep === item.comment_step ? (
+                      <InputDiv>
+                      <CommentInput
+                        id='commentInput'
+                        onChange={(e)=>{handleNewComment(e.target.value)}}
+                        maxLength={255}>
+                          {item.comment_content}
+                        </CommentInput>
+                      <BtnCommentInsert
+                        onClick={() => btnCommentUpdate(item.comment_no, item.comment_step)}
+                      >
+                        등록
+                      </BtnCommentInsert>
+                    </InputDiv>
+                    ) : (
                     <CommentDiv>
                       <CommentUser>{item.user_nickname}</CommentUser>
-                      <CommentContent status={item.comment_status}>{item.comment_content}</CommentContent>
+                      <CommentContent status={item.comment_status}>{item.comment_content}
+                      {item.comment_status === 3 ? <EditText>(수정됨)</EditText> : null}
+                      </CommentContent>
                       <CommentDate>
                         {new Date(item.comment_date).toLocaleString()}
                       </CommentDate>
-                      {item.comment_status === 0 ? (
+                      {item.comment_status === 0 || item.comment_status === 3 ? (
                         <CommentLike iconColor={commentColor(item.comment_no, item.comment_step)}
                           onClick={() => {
                             btnCommentLike(item.comment_no, item.comment_step
@@ -454,10 +553,10 @@ const BoardDetail = () => {
                       ) : null}
                       </InputComment>
                       ) : null}
-
-
                     </CommentDiv>
-                    {userNickname  && item.comment_status === 0 ?(
+
+                    )}
+                    {userNickname  && (item.comment_status === 0 || item.comment_status === 3) ?(
                       <BtnDotComment
                         onClick={() => {
                           onClickCommentDot(item.comment_no, item.comment_step);
@@ -469,7 +568,7 @@ const BoardDetail = () => {
                   {commentDot.cno === item.comment_no && commentDot.cstep === item.comment_step ? (
                     userNickname === item.user_nickname ? (
                     <CommentModal>
-                      <CommentModalUl id='' onClick={() => 
+                      <CommentModalUl onClick={() => 
                         {editComment(item.comment_no, item.comment_step)}}>
                         수정하기
                       </CommentModalUl>
@@ -481,12 +580,26 @@ const BoardDetail = () => {
                       ) : (
                       <CommentModal>
                         <CommentModalUl onClick={() => 
-                          {reportComment(item.comment_no, item.comment_step)}}>
+                          reportComment(item.comment_no, item.comment_step)}>
                           신고하기
                         </CommentModalUl>
                       </CommentModal>
                       )) : 
                     null}
+                    {isCommentReport && commentReport.cno === item.comment_no && commentReport.cstep === item.comment_step ? (
+                      <ModalReport>
+                        <HiOutlineX className='x-icon' onClick={() => reportCancel()} />
+                      <ReportText
+                        type="text"
+                        maxLength="100"
+                        placeholder="신고사유를 입력해주세요."
+                        autoComplete="off"
+                        onChange={(e)=>{handleReportPost(e.target.value)}}>
+                      </ReportText>
+                      {/* type, group, step, 신고대상 */}
+                      <BtnReport onClick={() => report(1, item.comment_no, item.comment_step, item.user_nickname)}>신고하기</BtnReport>
+                    </ModalReport>
+                    ) : null}
                   </CommentBox>
                 )}
               })}
