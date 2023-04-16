@@ -287,7 +287,7 @@ public class BoardLogic {
 			}
 		}
 		// 대댓글이 없거나 모두 삭제된 댓글 삭제 -> 바로 삭제(댓글, 대댓글 모두)
-		else if(comment_status == 1 && (c_step == 0 || c_step == c_status)) {
+		else if((comment_status == 0 || comment_status == 1) && (c_step == 0 || c_step == c_status)) {
 			pMap.put("delete_all", 1); // 0이면 특정글 , 1이면 댓글,대댓글 전부 삭제
 			result = boardDao.replyDelete(pMap);			
 		}
