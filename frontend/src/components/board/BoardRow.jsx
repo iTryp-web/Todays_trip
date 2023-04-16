@@ -3,7 +3,7 @@ import { PostContent, PostFooter, PostLi } from '../../styles/BoardStyle'
 import { Link } from 'react-router-dom'
 import { AiFillLike, AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { FaCommentDots, FaHotjar } from 'react-icons/fa';
-import { BsBookmarkStar, BsBookmarkStarFill, BsFillEyeFill } from 'react-icons/bs';
+import { BsBookmarkStar, BsBookmarkStarFill, BsFillEyeFill, BsFillImageFill } from 'react-icons/bs';
 
 
 const BoardRow = ({post}) => {
@@ -22,10 +22,10 @@ const BoardRow = ({post}) => {
               )) : null}
                 {post.board_title}
                 {post.file_exist && (
-                  <i className={"fas fa-file-lines"} id='fileI' />
+                  <BsFillImageFill  id='fileI' />
                 )}
               </p>
-              <p className='contentP'>{post.board_content}</p>
+              <p className='contentP' dangerouslySetInnerHTML={{__html:post.board_content}}></p>
             </div>
           </PostContent>
           <PostFooter>

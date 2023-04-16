@@ -76,6 +76,13 @@
 	    AND b.board_no = #{board_no}
 	</select>
 	
+	<!-- 이미지 목록 조회 -->
+	<select id="imageList" parameterType="map" resultType="map">
+		SELECT file_name
+		FROM TB_B_FILE
+		WHERE board_no = #{board_no}
+	</select>
+	
 	<!-- 커뮤니티 글쓰기 -->
 	<insert id="boardInsert" parameterType="map" useGeneratedKeys="true" keyColumn="board_no" keyProperty="board_no">
 		INSERT INTO TB_BOARD 
@@ -99,16 +106,22 @@
 	<insert id="imageInsert" parameterType="map">
 		INSERT INTO TB_B_FILE
 								(file_no
-							 , board_no
 							 , file_name
+							 <if test="file_url != null and file_url.length() != 0">
 		    			 , file_url
+		    			 </if>
+							 <if test="file_size != null and file_size > 0">
 		    			 , file_size
+		    			 </if>
 		    			 )
 		    VALUES (TB_B_FILE_NO_SEQ.NEXTVAL
-				    	 , #{board_no}
 							 , #{file_name}
+							 <if test="file_url != null and file_url.length() != 0">
 							 , #{file_url}
+							 </if>
+							 <if test="file_size != null and file_size > 0">
 							 , #{file_size}
+							 </if>
 							 )
 	</insert>
 	
@@ -273,7 +286,9 @@
 	       , l.like_step
 	   FROM TB_USER u, TB_LIKE l
 	  WHERE u.user_id = l.user_id
+	  <if test="user_nickname != null and user_nickname.length() != 0">
       AND u.user_nickname = #{user_nickname}
+	  </if>
 	    AND (l.like_type = 0 OR l.like_type = 1)
 	    AND l.like_no = #{board_no}
 	</select>

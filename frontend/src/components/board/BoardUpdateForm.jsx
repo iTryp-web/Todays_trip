@@ -1,23 +1,31 @@
-import React, { useCallback, useRef, useState } from 'react'
-import { BButton, Row, WriteSection } from '../../styles/BoardStyle';
-import Header from '../include/Header';
-import Footer from '../include/Footer';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import QuillEditor from './QuillEditor';
-import { boardInsertDB } from '../../service/boardLogic';
+import { async } from 'q'
+import React from 'react'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
+import { boardDetailDB, boardUpdateDB } from '../../service/boardLogic'
+import { useRef } from 'react'
+import { useCallback } from 'react'
+import Header from '../include/Header'
+import { Row, WriteSection } from '../../styles/BoardStyle'
+import { Dropdown, DropdownButton } from 'react-bootstrap'
+import QuillEditor from './QuillEditor'
+import Footer from '../include/Footer'
 
-
-const BoardWriteForm = () => {
+const BoardUpdateForm = () => {
   const navigate = useNavigate()
+  // 해시값으로 수정하는 bno 가져오기
+  const {bno} = useParams()
+  console.log(bno);
   const [category] = useState(['자유', '질문', '여행후기', '동행찾기'])
-  const [selected, setSelected] = useState('자유')
+  const [selected, setSelected] = useState('')
   const[title, setTitle]= useState('');
   const[content, setContent]= useState('');
   const[files, setFiles]= useState([]);
   const quillRef = useRef();
-  // 테스트용 유저아이디
+  // 테스트용 유저아이디, 닉네임
   window.sessionStorage.setItem('user_id', 'test1')
+  window.sessionStorage.setItem('user_nickname', '테스트1')
 
   const handleCategory = useCallback((e) => {
     console.log(e);
@@ -39,18 +47,36 @@ const BoardWriteForm = () => {
     setFiles([...files, value]); // 깊은복사
   },[files]);
 
-  const boardInsert = async() => {
-    console.log('boardInsert');
-    console.log(files)
+  useEffect(() => {
+    const boardDetail = async() => {
+      const board = {
+        board_no: bno
+      }
+      const res = await boardDetailDB(board)
+      console.log(res.data);
+      const temp = JSON.stringify(res.data)
+      const jsonDoc = JSON.parse(temp)
+      setSelected(jsonDoc[0].BOARD_CATEGORY)
+      setTitle(jsonDoc[0].BOARD_TITLE)
+      setContent(jsonDoc[0].BOARD_CONTENT)
+      if(jsonDoc[0].USER_NICKNAME !== sessionStorage.getItem("user_nickname")) {
+        alert('작성자가 아닙니다');
+        navigate('/board/all')
+      }
+    }
+    boardDetail()
+  }, [bno])
+
+  const boardUpdate = async() => {
     const board = {
-      user_id: sessionStorage.getItem('user_id'),
+      board_no: bno,
       board_category: selected,
       board_title: title,
       board_content: content,
       imageNames: files
     }
-    const res = await boardInsertDB(board)
-    console.log(res)
+    const res = await boardUpdateDB(board)
+    if(!res.data) return console.log('게시판 수정 실패');
     navigate('/board/all')
   }
 
@@ -75,11 +101,11 @@ const BoardWriteForm = () => {
             type="text"
             id="board_title"
             maxLength="60"
-            placeholder="제목을 입력해주세요."
+            value={title}
             autoComplete="off"
             onChange={(e)=>{handleTitle(e.target.value)}}
           />
-          <button className='btnInsert' onClick={(e)=>{boardInsert()}}>등록</button>
+          <button className='btnInsert' onClick={(e)=>{boardUpdate()}}>등록</button>
         </Row>
         <QuillEditor value={content} handleContent={handleContent} quillRef={quillRef} files={files} handleFiles={handleFiles}/>
     </WriteSection>
@@ -88,4 +114,4 @@ const BoardWriteForm = () => {
   )
 }
 
-export default BoardWriteForm
+export default BoardUpdateForm

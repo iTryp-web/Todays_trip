@@ -14,6 +14,7 @@ import SignUpPage from './components/page/SignUpPage';
 import SignInPage from './components/page/SignInPage';
 import FaqPage from './components/page/FaqPage';
 import MarketWrite from './components/market/MarketWrite';
+import BoardUpdateForm from './components/board/BoardUpdateForm';
 
 
 
@@ -25,6 +26,7 @@ function App() {
       <Route path='/board/:category'  element={<BoardPage />} />
       <Route path='/board/detail/:bno' element={<BoardDetail />} />
       <Route path='/board/write' exact={true} element={<BoardWriteForm />} />
+      <Route path='/board/update/:bno' element={<BoardUpdateForm />} />
       <Route path='/test' exact={true} element={<TestPage />} />
       <Route path='/cart' exact={true} element={<CartPage />} />
       <Route path='/order' exact={true} element={<OrderPage />} />

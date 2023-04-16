@@ -33,8 +33,38 @@ public class BoardLogic {
 	 */
 	public List<Map<String, Object>> boardList(Map<String, Object> pMap) {
 		logger.info("boardList 호출");
-		List<Map<String,Object>> bList = new ArrayList<>();
-		bList= boardDao.boardList(pMap);
+		List<Map<String, Object>> bList = new ArrayList<>();
+		bList = boardDao.boardList(pMap);
+		// 이미지 존재여부, 미리보기에서 이미지태그 제거하는 코드
+		if (bList != null & bList.size() > 0) {
+			for (int i = 0; i < bList.size(); i++) {
+				Map<String, Object> iMap = new HashMap<>();
+				int board_no = 0;
+				if(bList.get(i).get("BOARD_NO") != null) {
+					board_no = Integer.parseInt(bList.get(i).get("BOARD_NO").toString());
+					iMap.put("board_no", board_no);
+					logger.info("board_no=> "+board_no);
+					List<Map<String, Object>> imageList = boardDao.imageList(iMap);
+					// 해당 글에 이미지db가 있는 경우
+					if (imageList != null & imageList.size() > 0) {
+						for (int j = 0; j < imageList.size(); j++) {
+							logger.info("board_content=> "+bList.get(i).get("BOARD_CONTENT").toString());
+							logger.info("file_name=> "+imageList.get(j).get("FILE_NAME").toString());
+							// 해당 글 내용에 이미지태그가 있는 경우
+							if (bList.get(i).get("BOARD_CONTENT").toString()
+									.contains(imageList.get(j).get("FILE_NAME").toString())) {
+								String temp = bList.get(i).get("BOARD_CONTENT").toString()
+										.replace("<img src=\"" + "http://localhost:8000/board/getImage?imageName="+ imageList.get(j).get("FILE_NAME").toString() + "\">", " ");
+								// 미리보기에서 이미지부분 지움 - 추후 경로테스트해보기
+								bList.get(i).put("BOARD_CONTENT", temp);
+								// 이미지 존재여부 변수
+								bList.get(i).put("FILE_EXIST", "YES");
+							}
+						}
+					}
+				}
+			}
+		}
 		return bList;
 	}
 
@@ -52,7 +82,6 @@ public class BoardLogic {
 			board_no = Integer.parseInt(pMap.get("board_no").toString());
 			pMap.put("board_no", board_no);
 		}
-		
 		List<Map<String,Object>> bList = new ArrayList<>();
 		bList= boardDao.boardDetail(pMap);
 		// 조회 결과가 있을 경우 조회수 올리기
@@ -122,6 +151,11 @@ public class BoardLogic {
 	 */
 	public int boardUpdate(Map<String, Object> pMap) {
 		logger.info("boardUpdate 호출");
+		int board_no = -1;
+		if(pMap.get("board_no") != null) {
+			board_no = Integer.parseInt(pMap.get("board_no").toString());
+			pMap.put("board_no", board_no);
+		}
 		int result = 0;
 		result = boardDao.boardUpdate(pMap);
 		// Quill image가 있을 경우
@@ -319,8 +353,8 @@ public class BoardLogic {
 			// 오리지널 파일명 앞에 날짜와 시간 정보를 활용하여 절대 같은 이름이 발생하지 않도록 처리한다
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHMmmss");
 			Calendar time = Calendar.getInstance();
-			filename = sdf.format(time.getTime()) + "-" + image.getOriginalFilename().replaceAll(" ", "-");
-			String saveFolder = "..\\..\\..\\..\\..\\webapp\\pds";
+			filename = sdf.format(time.getTime()) + "-" + image.getOriginalFilename().replaceAll(" ", "_");
+			String saveFolder = "\\Todays_trip\\backend\\src\\main\\webapp\\pds";
 			fullPath = saveFolder + "\\" + filename;
 			try {
 				// File객체는 파일명을 객체화해주는 클래스 - 생성되었다고해서 실제 파일까지 생성되는 것이 아님
@@ -335,10 +369,10 @@ public class BoardLogic {
 				bos.close();
 				// 여기까지는 이미지 파일 쓰기 처리
 				// 아래부터는 mblog_file 테이블에 insert될 정보를 초기화해줌
-				d_size = Math.floor(file.length()/(1024.0)*10)/10;
+				d_size = Math.floor(file.length()/(1024.00)*10)/10;
 				pMap.put("file_name", filename);
+				pMap.put("file_url", fullPath);
 				pMap.put("file_size", d_size);
-				pMap.put("file_path", fullPath);
 				logger.info(d_size);
 				int result = boardDao.imageInsert(pMap);
 				logger.info(result);

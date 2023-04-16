@@ -65,6 +65,19 @@ public class BoardDao {
 	}
 	
 	/**
+	 * Quill image 목록 조회
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> imageList(Map<String, Object> pMap) {
+		logger.info("imageList 호출");
+		List<Map<String, Object>> iList = null;
+		iList = sqlSessionTemplate.selectList("imageList", pMap);
+		return iList;
+	}
+	
+	/**
 	 * Quill image 추가 - 이미지 선택할때마다 인서트
 	 * 
 	 * @param pMap

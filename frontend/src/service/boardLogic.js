@@ -52,6 +52,45 @@ export const boardInsertDB = (board) => {
   });
 };
 
+/* 커뮤니티 글 수정 */
+export const boardUpdateDB = (board) => {
+  console.log(board)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "board/boardUpdate",
+        data: board,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// 커뮤니티 이미지 추가
+export const uploadImageDB = (file) => {
+  console.log(file);
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "board/uploadImage",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        processData: false,
+        contentType: false,
+        data: file, // 스프링 부트와 연동시 @RequestBody 사용
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 /* 커뮤니티 글 삭제 */
 export const boardDeleteDB = (board) => {
   console.log(board)
