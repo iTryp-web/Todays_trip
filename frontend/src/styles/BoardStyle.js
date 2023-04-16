@@ -579,6 +579,59 @@ export const ModalUl = styled.ul`
   }
 `;
 
+export const ModalReport = styled.div`
+  border: 1px solid #e9e9e9;
+  background-color: white;
+  border-radius: 5px;
+  width: 300px;
+  height: 230px;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  z-index: 10;
+  text-align: center;
+  .x-icon {
+    font-size: 30px;
+    color: #464646;
+    display: flex;
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    cursor: pointer;
+  }
+`
+
+export const ReportText = styled.textarea`
+  width: 250px;
+  height: 135px;
+  margin-top: 40px;
+  padding: 5px;
+  resize: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  &:focus {
+    border: none;
+    outline: none;
+  }
+`
+
+export const BtnReport = styled.div`
+  cursor: pointer;
+  width: 70px;
+  height: 30px;
+  padding: 6px;
+  background-color: #4996F3;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-size: 12px;
+  font-weight: 600; 
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+`
+
 export const HrLine = styled.hr`
   height: 1px;
   color: lightgray;
@@ -685,7 +738,7 @@ export const CommentBox = styled.div`
   position: relative;
   border-radius: 5px;
   background-color: ${({ liked, status }) => 
-  (liked >= 5  && status === 0? 
+  (liked >= 5  && (status === 0 || status === 3)? 
     (liked >= 10 ? "#DBEAFD" : "#EDF5FE") 
   : "white")};
 `;
@@ -730,9 +783,16 @@ export const CommentContent = styled.div`
   font-size: 14px;
   margin: 5px 1px;
   word-break: break-all;
-  color:  ${({ status }) => (status > 0 ? "#9E9E9E" : "black")};
-  font-style: ${({ status }) => (status > 0 ? "italic" : "normal")};
+  color:  ${({ status }) => (status === 1 ? "#9E9E9E" : "black")};
+  font-style: ${({ status }) => (status === 1 ? "italic" : "normal")};
 `;
+
+export const EditText = styled.span`
+  color: #9E9E9E;
+  font-style: italic;
+  font-size: 11px;
+  margin-left: 5px;
+`
 
 export const CommentDate = styled.span`
   font-size: 12px;
