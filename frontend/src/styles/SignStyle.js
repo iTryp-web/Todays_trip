@@ -170,6 +170,16 @@ export const SignUpBlock = styled.form`
     margin-bottom: 0.8rem;
   }
   overflow-x: hidden;
+
+  .lastP {
+    margin: auto;
+    margin-top: 7%;
+    a {
+      padding-left: 15px;
+      color: black;
+      font-weight: 700;
+    }
+  }
 `;
 
 export const EmailBlock = styled.div`
@@ -397,42 +407,42 @@ export const TermsBlock = styled.div`
 `;
 
 export const ModalWrapper = styled(Modal)`
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-background-color: white;
-border : 1px solid #4996f3;
-border-radius: 8px;
-padding: 20px;
-width: 800px;
-height: 300px;
-overflow: auto;
-.mbutton4 {
-  margin-left : 75%;
-  width: 10%;
-  font-size: 20px;
-  outline: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: white;
+  border: 1px solid #4996f3;
+  border-radius: 8px;
+  padding: 20px;
+  width: 800px;
+  height: 300px;
+  overflow: auto;
+  .mbutton4 {
+    margin-left: 92%;
+    width: 10%;
+    font-size: 20px;
+    outline: none;
+    background-color: white;
+    border: none;
+    color: black;
+  }
+`;
+
+export const SubmitButton = styled.button`
+  margin-top: 0.9rem;
+  margin-left: 0.5%;
+  border-radius: 5px;
+  height: 45px;
+  width: 99%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
   border: none;
-  color: black;
-}
-.mbutton5 {
-  margin-left : 60%;
-  width: 10%;
-  font-size: 20px;
-  outline: none;
-  background-color: white;
-  border: none;
-  color: black;
-}
-.mbutton6 {
-  margin-left : 59%;
-  width: 10%;
-  font-size: 20px;
-  outline: none;
-  background-color: white;
-  border: none;
-  color: black;
-}
+  background-color: #4996f3;
+  color: white;
+  &:hover {
+    background-color: #537fe7;
+    border: none;
+  }
 `;

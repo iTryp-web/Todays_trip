@@ -8,6 +8,7 @@ import {
   SignUpBlock,
   SignUpDiv,
   SocialBlock,
+  SubmitButton,
   TermsBlock,
 } from "../../styles/SignStyle";
 import HeaderIcon from "../include/HeaderIcon";
@@ -15,7 +16,9 @@ import { useEffect } from "react";
 import { GoSearch } from "react-icons/go";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
-import { TermData } from "../member/TermData";
+import Term1 from "../member/Term1";
+import Term2 from "../member/Term2";
+import Term3 from "../member/Term3";
 
 const SignUpPage = () => {
   const [idInput, setIdInput] = useState("");
@@ -321,6 +324,11 @@ const SignUpPage = () => {
     }
   };
 
+  //회원가입 버튼 핸들러
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  }
+
   //비밀번호 같은값인지 체크
   useEffect(() => {
     if (pwCheckInput === "") {
@@ -604,13 +612,11 @@ const SignUpPage = () => {
               <button className="mbutton1" onClick={handleModal1}>
                 <IoIosArrowForward />
               </button>
-              <ModalWrapper isOpen={modal1IsOpen}>
+              <ModalWrapper isOpen={modal1IsOpen} ariaHideApp={false}>
                 <button className="mbutton4" onClick={handleModal1}>
                   <IoClose />
                 </button>
-                {TermData.map((term) => (
-                  <p>{term.content1}</p>
-                ))}
+                <Term1 />
               </ModalWrapper>
             </label>
             <label>
@@ -624,11 +630,11 @@ const SignUpPage = () => {
               <button className="mbutton2" onClick={handleModal2}>
                 <IoIosArrowForward />
               </button>
-              <ModalWrapper isOpen={modal2IsOpen}>
-                개인정보수집 및 이용동의 모달
-                <button className="mbutton5" onClick={handleModal2}>
+              <ModalWrapper isOpen={modal2IsOpen} ariaHideApp={false}>
+                <button className="mbutton4" onClick={handleModal2}>
                   <IoClose />
                 </button>
+                <Term2 />
               </ModalWrapper>
             </label>
             <label>
@@ -642,11 +648,11 @@ const SignUpPage = () => {
               <button className="mbutton3" onClick={handleModal3}>
                 <IoIosArrowForward />
               </button>
-              <ModalWrapper isOpen={modal3IsOpen}>
-                개인정보 마케팅 활용 동의 모달
-                <button className="mbutton6" onClick={handleModal3}>
+              <ModalWrapper isOpen={modal3IsOpen} ariaHideApp={false}>
+                <button className="mbutton4" onClick={handleModal3}>
                   <IoClose />
                 </button>
+                <Term3 />
               </ModalWrapper>
             </label>
           </TermsBlock>
@@ -663,6 +669,15 @@ const SignUpPage = () => {
               {`${termtext}`}
             </p>
           )}
+        {/* 구글 Recaptcha 적용?(시간나면) */}
+        <SubmitButton
+            type="submit"
+            onClick = {handleSubmit}
+          >회원가입하기
+          </SubmitButton>
+          <p className="lastP">이미 아이디가 있으신가요? 
+            <a href="/signin">로그인</a>
+          </p>
         </SignUpBlock>
       </SignUpDiv>
     </>
