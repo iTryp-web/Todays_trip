@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Modal from "react-modal";
 
 export const SignDiv = styled.section`
   max-width: 1344px;
-  height : 1000px;
+  height: 400px;
   padding: 10rem;
   display: flex;
   justify-content: center;
@@ -11,7 +12,6 @@ export const SignDiv = styled.section`
   margin-top: 15em;
   margin-bottom: 6em;
   position: relative;
-  overflow-y : scroll;
 `;
 export const LoginFormBlock = styled.form`
   width: 300px;
@@ -40,7 +40,6 @@ export const LoginFormBlock = styled.form`
     }
   }
   overflow-x: hidden;
-  
 `;
 
 export const LogoBlock = styled(Link)`
@@ -135,12 +134,14 @@ export const SocialBlock = styled.div`
 `;
 export const SignUpDiv = styled.section`
   max-width: 1344px;
-  height : 1200px;
-  margin-top : 10px;
+  height: 1200px;
+  margin-top: 10px;
   padding: 10rem;
   display: flex;
   justify-content: center;
   margin-bottom: 6em;
+  margin-left: auto;
+  margin-right: auto;
   position: relative;
 `;
 
@@ -325,7 +326,7 @@ export const TermsBlock = styled.div`
   label {
     margin: 0.7rem;
     width: 90%;
-    cursor : pointer;
+    cursor: pointer;
     input {
       position: relative;
       top: 4px;
@@ -362,8 +363,8 @@ export const TermsBlock = styled.div`
         color: gray;
       }
     }
-    .mbutton1{
-      margin-left :57%;
+    .mbutton1 {
+      margin-left: 57%;
       width: 10%;
       font-size: 15px;
       border-radius: 5px;
@@ -372,8 +373,8 @@ export const TermsBlock = styled.div`
       border: none;
       color: black;
     }
-    .mbutton2{
-      margin-left :28%;
+    .mbutton2 {
+      margin-left: 28%;
       width: 10%;
       font-size: 15px;
       border-radius: 5px;
@@ -382,8 +383,8 @@ export const TermsBlock = styled.div`
       border: none;
       color: black;
     }
-    .mbutton3{
-      margin-left :27%;
+    .mbutton3 {
+      margin-left: 27%;
       width: 10%;
       font-size: 15px;
       border-radius: 5px;
@@ -391,20 +392,47 @@ export const TermsBlock = styled.div`
       background-color: white;
       border: none;
       color: black;
-    }
-    .mmodal{
-      background-color : black;
-    .mbutton4{
-      margin-left :27%;
-      width: 10%;
-      font-size: 15px;
-      border-radius: 5px;
-      outline: none;
-      background-color: white;
-      border: none;
-      color: black;
-    }
     }
   }
-  `;
+`;
 
+export const ModalWrapper = styled(Modal)`
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background-color: white;
+border : 1px solid #4996f3;
+border-radius: 8px;
+padding: 20px;
+width: 800px;
+height: 300px;
+overflow: auto;
+.mbutton4 {
+  margin-left : 75%;
+  width: 10%;
+  font-size: 20px;
+  outline: none;
+  background-color: white;
+  border: none;
+  color: black;
+}
+.mbutton5 {
+  margin-left : 60%;
+  width: 10%;
+  font-size: 20px;
+  outline: none;
+  background-color: white;
+  border: none;
+  color: black;
+}
+.mbutton6 {
+  margin-left : 59%;
+  width: 10%;
+  font-size: 20px;
+  outline: none;
+  background-color: white;
+  border: none;
+  color: black;
+}
+`;

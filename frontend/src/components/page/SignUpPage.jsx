@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   AuthButton,
   EmailBlock,
+  ModalWrapper,
   PWnNickBlock,
   RefferBlock,
   SignUpBlock,
@@ -14,7 +15,7 @@ import { useEffect } from "react";
 import { GoSearch } from "react-icons/go";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
-import Modal from "react-modal";
+import { TermData } from "../member/TermData";
 
 const SignUpPage = () => {
   const [idInput, setIdInput] = useState("");
@@ -28,8 +29,10 @@ const SignUpPage = () => {
   const [textPwCheckColor, setTextPwCheckColor] = useState("black");
   const [textNicknameColor, setTextNickNameColor] = useState("black");
   const [textReferrerColor, setTextReferrerColor] = useState("black");
+  const [textTermColor, setTextTermColor] = useState("black");
   const [idtext, setIdText] = useState("");
   const [pwtext, setPwText] = useState("");
+  const [termtext, setTermText] = useState("");
   const [pwChecktext, setPwCheckText] = useState("");
   const [nicknametext, setNicknameText] = useState("");
   const [referrertext, setReferrerText] = useState("");
@@ -61,7 +64,69 @@ const SignUpPage = () => {
   //
   const [referrerShadowColor, setReferrerShadowColor] = useState("none");
   //
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [termBoxColor, setTermBoxColor] = useState("lightgray");
+  //
+  const [modal1IsOpen, setModal1IsOpen] = useState(false);
+  const [modal2IsOpen, setModal2IsOpen] = useState(false);
+  const [modal3IsOpen, setModal3IsOpen] = useState(false);
+  //체크박스 전체체크 상태
+  const [isCheckedAll, setIsCheckedAll] = useState(false);
+  //개별 체크박스 상태(초기값 false)
+  const [checkItems, setCheckItems] = useState({
+    check1: false,
+    check2: false,
+    check3: false,
+    check4: false,
+  });
+  //필수항목 체크 여부
+  const [isRequiredChecked, setIsRequiredChecked] = useState(false);
+
+  //개별 체크박스 handler
+  const handleSingleCheck = (e) => {
+    const { id, checked } = e.target;
+    setCheckItems((prevState) => ({ ...prevState, [id]: checked }));
+
+    const allChecked = Object.values({
+      ...checkItems,
+      [id]: checked,
+    }).every(Boolean);
+    setIsCheckedAll(allChecked);
+  };
+
+  //전체 체크박스 handler
+  const handleCheckAll = (e) => {
+    const { checked } = e.target;
+    setIsCheckedAll(checked);
+    setCheckItems((prevState) => ({
+      ...prevState,
+      check1: checked,
+      check2: checked,
+      check3: checked,
+      check4: checked,
+    }));
+  };
+  //필수항목 체크여부에 따른 화면 이펙트처리
+  useEffect(() => {
+    const isAllChecked =
+      checkItems.check1 && checkItems.check2 && checkItems.check3;
+    const isNotChecked =
+      !checkItems.check1 && !checkItems.check2 && !checkItems.check3;
+    setIsRequiredChecked(isAllChecked);
+
+    if (isNotChecked) {
+      setTextTermColor("black");
+      setTermBoxColor("lightgray");
+    } else if (isAllChecked) {
+      setTextTermColor("black");
+      setTermBoxColor("lightgray");
+      setTermText("");
+    } else {
+      setTextTermColor("#f77");
+      setTermBoxColor("#f77");
+      setTermText("필수 항목에 동의해주세요.");
+    }
+  }, [checkItems]);
+
   //Domainselect박스 handler
   const handleDomainSelect = (e) => {
     const value = e.target.value;
@@ -234,11 +299,25 @@ const SignUpPage = () => {
     console.log("버튼클릭");
   };
 
-  const handleModal = (e) => {
+  const handleModal1 = (e) => {
     e.preventDefault();
-    setModalIsOpen(true);
-    if (modalIsOpen) {
-      setModalIsOpen(false);
+    setModal1IsOpen(true);
+    if (modal1IsOpen) {
+      setModal1IsOpen(false);
+    }
+  };
+  const handleModal2 = (e) => {
+    e.preventDefault();
+    setModal2IsOpen(true);
+    if (modal2IsOpen) {
+      setModal2IsOpen(false);
+    }
+  };
+  const handleModal3 = (e) => {
+    e.preventDefault();
+    setModal3IsOpen(true);
+    if (modal3IsOpen) {
+      setModal3IsOpen(false);
     }
   };
 
@@ -488,58 +567,102 @@ const SignUpPage = () => {
               </p>
             )}
           </RefferBlock>
-          <h6>약관동의</h6>
-          <TermsBlock>
+          <h6 style={{ color: textTermColor }}>약관동의</h6>
+          <TermsBlock
+            style={{
+              border: "1px solid " + termBoxColor,
+            }}
+          >
             <label>
-              <input id="checkbox" type="checkbox"></input>
+              <input
+                id="checkboxAll"
+                type="checkbox"
+                onChange={handleCheckAll}
+                checked={isCheckedAll}
+              />
               <span className="span1">전체동의</span>
               <span className="span2">선택항목에 대한 동의 포함</span>
             </label>
             <hr />
             <label>
-              <input id="checkbox" type="checkbox"></input>
+              <input
+                id="check1"
+                type="checkbox"
+                onChange={handleSingleCheck}
+                checked={checkItems.check1}
+              />
               <span className="span3">만 14세 이상입니다</span>
             </label>
             <label>
-              <input id="checkbox" type="checkbox"></input>
+              <input
+                id="check2"
+                type="checkbox"
+                onChange={handleSingleCheck}
+                checked={checkItems.check2}
+              />
               <span className="span3">이용약관</span>
-              <button className="mbutton1" onClick={handleModal}>
+              <button className="mbutton1" onClick={handleModal1}>
                 <IoIosArrowForward />
               </button>
-              <Modal className ="mmodal" isOpen={modalIsOpen}>
-                This is Modal content
-                <button className="mbutton4" onClick={handleModal}>
-                  <IoClose/>
+              <ModalWrapper isOpen={modal1IsOpen}>
+                <button className="mbutton4" onClick={handleModal1}>
+                  <IoClose />
                 </button>
-              </Modal>
+                {TermData.map((term) => (
+                  <p>{term.content1}</p>
+                ))}
+              </ModalWrapper>
             </label>
             <label>
-              <input id="checkbox" type="checkbox"></input>
+              <input
+                id="check3"
+                type="checkbox"
+                onChange={handleSingleCheck}
+                checked={checkItems.check3}
+              />
               <span className="span3">개인정보수집 및 이용동의</span>
-              <button className="mbutton2" onClick={handleModal}>
+              <button className="mbutton2" onClick={handleModal2}>
                 <IoIosArrowForward />
               </button>
-              <Modal isOpen={modalIsOpen}>
-                This is Modal content
-                <button className="mbutton4" onClick={handleModal}>
-                  <IoClose/>
+              <ModalWrapper isOpen={modal2IsOpen}>
+                개인정보수집 및 이용동의 모달
+                <button className="mbutton5" onClick={handleModal2}>
+                  <IoClose />
                 </button>
-              </Modal>
+              </ModalWrapper>
             </label>
             <label>
-              <input id="checkbox" type="checkbox"></input>
+              <input
+                id="check4"
+                type="checkbox"
+                onChange={handleSingleCheck}
+                checked={checkItems.check4}
+              />
               <span className="span4">개인정보 마케팅 활용 동의</span>
-              <button className="mbutton3" onClick={handleModal}>
+              <button className="mbutton3" onClick={handleModal3}>
                 <IoIosArrowForward />
               </button>
-              <Modal isOpen={modalIsOpen}>
-                This is Modal content
-                <button className="mbutton4" onClick={handleModal}>
-                  <IoClose/>
+              <ModalWrapper isOpen={modal3IsOpen}>
+                개인정보 마케팅 활용 동의 모달
+                <button className="mbutton6" onClick={handleModal3}>
+                  <IoClose />
                 </button>
-              </Modal>
+              </ModalWrapper>
             </label>
           </TermsBlock>
+          {termtext !== "" && (
+            <p
+              style={{
+                marginLeft: "0.5%",
+                marginTop: "10px",
+                marginBottom: "1px",
+                color: "#f77",
+                fontSize: "13px",
+              }}
+            >
+              {`${termtext}`}
+            </p>
+          )}
         </SignUpBlock>
       </SignUpDiv>
     </>
