@@ -50,7 +50,7 @@ const BoardWriteForm = () => {
       imageNames: files
     }
     const res = await boardInsertDB(board)
-    console.log(res)
+    console.log(res.data)
     navigate('/board/all')
   }
 

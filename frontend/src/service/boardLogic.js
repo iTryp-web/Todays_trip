@@ -142,6 +142,23 @@ export const likeOffDB = (board) => {
   });
 };
 
+/* 신고 */
+export const reportDB = (board) => {
+  console.log(board)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "board/report",
+        data: board,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 /* 댓글달기 */
 export const replyInsertDB = (board) => {
   console.log(board)
@@ -150,6 +167,23 @@ export const replyInsertDB = (board) => {
       const response = axios({
         method: "post",
         url: process.env.REACT_APP_SPRING_IP + "board/replyInsert",
+        data: board,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/* 댓글 수정 */
+export const replyUpdateDB = (board) => {
+  console.log(board)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "board/replyUpdate",
         data: board,
       });
       resolve(response);
