@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
 
+	<!-- /////////////////////// getCartPage 필요 없어짐... /////////////////////// -->
 	<!-- 카트 페이지로 이동할 때 필요한 정보 가져오기 -->
 	<select id="getCartPage" parameterType="map" resultType="map">
 		SELECT market_no, user_id, market_category, market_title, market_content, market_price, market_date
@@ -11,46 +12,117 @@
 	
 	<!-- 주문 페이지로 이동할 때 필요한 정보 가져오기 -->
 	<select id="getOrderPage" parameterType="map" resultType="map">
-		SELECT c.coupon_no, c.coupon_rate, c.coupon_min, c.coupon_max, c.coupon_date, c.coupon_valid
-			   u.user_name, u.user_phone, u.user_zipcode, u.user_address, u.user_address_detail
+		SELECT c.coupon_no,
+				c.coupon_rate, 
+				c.coupon_min, 
+				c.coupon_max, 
+				c.coupon_date, 
+				c.coupon_valid
+				u.user_name, 
+				u.user_phone, 
+				u.user_zipcode, 
+				u.user_address, 
+				u.user_address_detail,
+				u.user_email
 		  FROM TB_U_COUPON c, TB_USER u
 		 WHERE c.user_id = #{user_id}
 		   AND u.user_id = #{user_id}<!-- 맞습니까??? -->
+		   AND c.coupon_exp == 0
 	</select>
 	
 	<!-- 주문 완료 후 주문 내역 DB에 저장 -->
 	<insert id="InsertOrder" parameterType="map">
-		INSERT INTO TB_ORDER (ORDER_NO, USER_ID, COUPON_NO, ORDER_TOTAL, ORDER_DISCOUNT, ORDER_PAYMENT)
-		VALUES (TB_ORDER_NO_SEQ.NEXTVAL, #{user_id}, #{coupon_no}, #{order_total}, #{order_discount}, #{order_payment})
-	</insert>
-	
-	<!-- 주문 내역 DB에 저장한 후 저장한 주문 번호 읽어오기 -->
-	<select id="getOrderNo" parameterType="map" resultType="map">
-		 SELECT TB_ORDER_NO_SEQ.CURRVAL FROM DUAL;
-	</select>
+		INSERT INTO TB_ORDER (
+								order_no,
+								user_id,
+							<if test="coupon_no != null and coupon_no > 0">
+								coupon_no,
+							</if>
+								order_total,
+								order_discount,
+								order_payment)
+					VALUES (
+								TB_ORDER_NO_SEQ.NEXTVAL, 
+								#{user_id},
+							<if test="coupon_no != null and coupon_no > 0">
+								#{coupon_no},
+							</if>
+								#{order_total},
+								#{order_discount},
+								#{order_payment})
+	</insert>	
 	
 	<!-- 주문 상세 내역 DB에 저장 -->
 	<insert id="InsertOrderDetail" parameterType="map">
-		INSERT INTO TB_ORDER_DETAIL (DETAIL_NO, ORDER_NO, MARKET_NO, MARKET_COUNT, ORDER_AMOUNT)
-		VALUES (TB_ORDER_DETAIL_NO_SEQ.NEXTVAL, #{order_no}, #{market_no}, #{market_count}, #{order_amount})
+		INSERT INTO TB_ORDER_DETAIL (
+										detail_no,
+										order_no,
+										market_no,
+										market_count,
+										order_amount)
+							VALUES (
+										TB_ORDER_DETAIL_NO_SEQ.NEXTVAL,
+										#{order_no},
+										#{market_no},
+										#{market_count},
+										#{order_amount})
 	</insert>
+	
+	<!-- 주문 내역 DB에 저장한 후 저장한 주문 번호 읽어오기 -->
+	<select id="getOrderNo" parameterType="map" resultType="int">
+		 SELECT TB_ORDER_NO_SEQ.CURRVAL FROM DUAL;
+	</select>
 	
 	<!-- 결제 완료 후 결제 내역 DB에 저장 -->
 	<insert id="InsertPay" parameterType="map">
-		INSERT INTO TB_PAY () VALUES ()
+		INSERT INTO TB_PAY (
+							pay_no,
+							order_no,
+							user_id,
+							pay_method,
+							pay_date,
+							pay_total,
+							pay_check)
+					VALUES (
+							TB_PAY_NO_SEQ.NEXTVAL,
+							#{order_no},
+							#{user_id},
+							#{pay_method},
+							#{pay_date},
+							#{pay_total},
+							#{pay_check}
+					)
 	</insert>
 	
 	<!-- 주문 내역 리스트 가져오기 -->
 	<select id="getOrderList" parameterType="map" resultType="map">
-		SELECT ORDER_NO, USER_ID, COUPON_NO, ORDER_TOTAL, ORDER_DISCOUNT, ORDER_PAYMENT
+		SELECT
+				order_no,
+				user_id,
+				coupon_no,
+				order_total,
+				order_discount,
+				order_payment,
+				order_date
 		  FROM TB_ORDER
-		 WHERE ORDER_NO = #{order_no}
+		 WHERE USER_ID = #{user_id}
+		 ORDER BY DESC
 	</select>
 	
 	<!-- 주문 상세 내역 가져오기 -->
 	<select id="getOrderDetail" parameterType="map" resultType="map">
-		SELECT c.coupon_no, c.coupon_rate, c.coupon_min, c.coupon_max, c.coupon_date, c.coupon_valid
-			   u.user_name, u.user_phone, u.user_zipcode, u.user_address, u.user_address_detail
+		SELECT
+				c.coupon_no,
+				c.coupon_rate,
+				c.coupon_min,
+				c.coupon_max,
+				c.coupon_date,
+				c.coupon_valid
+				u.user_name,
+				u.user_phone,
+				u.user_zipcode,
+				u.user_address,
+				u.user_address_detail
 		  FROM TB_U_COUPON c, TB_USER u
 		 WHERE c.user_id = #{user_id}
 		   AND u.user_id = #{user_id}
