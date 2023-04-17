@@ -14,28 +14,33 @@ export const CustomerService = styled.div`
     max-width: 850px;
     margin: 0px auto;
   }
-  innerStyle {
+
+  .innerStyle {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     padding-bottom: 24px;
     padding-bottom: 32px;
     color: rgb(47, 52, 56);
     margin: 0;
     padding: 0;
-    flex: 1; /* 추가 */
+    flex: 1;
+    justify-content:  center;
   }
 
   .helpDiv {
     flex-grow: 1;
     flex-shrink: 1;
-    flex-basis: 0;
     margin-bottom: 30px;
+    width: 50%;
+    display: inline-flex;
   }
+
   .csDiv {
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 0;
-    width: 100%;
+    width: 50%;
+    display: inline-flex;
   }
 
   .helpTitle {
@@ -132,26 +137,11 @@ export const CustomerService = styled.div`
     text-align: center;
     color: rgb(255, 255, 255);
   }
-
-  @media screen and (max-width: 1000px) {
-    .innerStyle {
-      display: block;
-    }
-
-    .helpDiv {
-      width: 100%;
-      margin-bottom: 30px;
-    }
-
-    .csDiv {
-      width: 100%;
-    }
-  }
 `;
 
 export const fnDiv = styled.div`
-  backgrounc-color: #fff;
-  z-index : 10;
+  background-color: #fff;
+  z-index: 10;
 `;
 
 export const faqNav = styled.nav`
@@ -180,3 +170,21 @@ export const faqLabel = styled.label`
   color: rgb(255, 255, 255);
   background-color: rgb(53, 197, 240);
 `;
+
+export const fnStyle = styled.div`
+  box-sizing: border-box;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 40px 24px 0px;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+`;
+
+export const fnNav = styled.nav`
+
+#label {
+  cursor: pointer;
+  margin-right: 8px;
+}
+`

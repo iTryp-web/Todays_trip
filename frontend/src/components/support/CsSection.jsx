@@ -9,7 +9,7 @@ const csSection = () => {
       <CustomerService>
         <section className="csSection">
           <div className="innerStyle">
-            <div className="helpDiv">
+            <div className="helpDiv" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
               <h2 className="helpTitle">무엇을 도와드릴까요?</h2>
               <ul className="helpUl">
                 <li className="helpLi">
@@ -44,7 +44,7 @@ const csSection = () => {
                 </li>
               </ul>
             </div>
-            <div className="csDiv">
+            <div className="csDiv" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
               <h2 className="csTitle">
                 고객센터 <span className="time">09:00 ~ 18:00</span>
               </h2>
