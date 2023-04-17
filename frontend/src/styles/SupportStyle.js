@@ -14,30 +14,34 @@ export const CustomerService = styled.div`
     max-width: 850px;
     margin: 0px auto;
   }
-  innerStyle {
+
+  .innerStyle {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     padding-bottom: 24px;
     padding-bottom: 32px;
     color: rgb(47, 52, 56);
     margin: 0;
     padding: 0;
-    flex: 1; /* 추가 */
+    flex: 1;
+    justify-content: center;
   }
-  
+
   .helpDiv {
     flex-grow: 1;
     flex-shrink: 1;
-    flex-basis: 0;
     margin-bottom: 30px;
+    width: 50%;
+    display: inline-flex;
   }
+
   .csDiv {
     flex-grow: 1;
     flex-shrink: 1;
-    flex-basis: 0;
-    width: 100%;
+    width: 50%;
+    display: inline-flex;
   }
-  
+
   .helpTitle {
     font-size: 20px;
     line-height: 28px;
@@ -132,29 +136,82 @@ export const CustomerService = styled.div`
     text-align: center;
     color: rgb(255, 255, 255);
   }
+`;
 
-  @media screen and (max-width: 1000px) {
-    .innerStyle {
-      display: block;
-    }
-  
-    .helpDiv {
-      width: 100%;
-      margin-bottom: 30px;
-    }
-  
-    .csDiv {
-      width: 100%;
-    }
+export const fnDiv = styled.div`
+  background-color: #fff;
+  z-index: 10;
+`;
+
+export const faqNav = styled.nav`
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 40px 24px 0px;
+  display: flex;
+  justify-content: center;
+
+  .label {
+    cursor: pointer;
+    margin-right: 8px;
   }
 `;
 
-/*============== FAQ ==============*/
+export const faqLabel = styled.label`
+  display: inline-block;
+  position: relative;
+  height: 38px;
+  border-radius: 19px;
+  padding-left: 14px;
+  padding-right: 14px;
+  line-height: 0;
+  color: rgb(255, 255, 255);
+  background-color: rgb(53, 197, 240);
+`;
 
-export const FaqDesc = styled.p``;
+export const fnStyle = styled.div`
+  box-sizing: border-box;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 40px 24px 0px;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+`;
 
-export const FaqH1 = styled.h1``;
+export const fnNav = styled.nav`
+.fnSelectedLabel{
+  background-color: #007bff;
+  color: #fff;
+}
+.fnLabel{
+  background-color: #ccc;
+  color: #000;
+}
+.fnInput{
+display : "none";
+}
+.fnSpan{
 
-export const BtnFaq1 = styled.button``;
-export const BtnFaq2 = styled.button``;
-export const BtnFaq3 = styled.button``;
+}
+`;
+
+export const fnDefaultLabel = styled.label`
+  display: inline-block;
+  margin: 0 4px;
+  padding: 4px 8px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: #000;
+`;
+
+export const fnSelectedLabel = styled(fnDefaultLabel)`
+  background-color: #007bff;
+  color: #fff;
+`;
+
+export const fnLabel = styled(fnDefaultLabel)`
+  background-color: #ccc;
+  color: #000;
+`;

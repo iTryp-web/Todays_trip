@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Modal from "react-modal";
 
+//=================로그인 페이지 CSS 시작===================//
 export const SignDiv = styled.section`
   max-width: 1344px;
   height: 400px;
@@ -112,6 +113,8 @@ export const LoginBlock = styled.div`
   }
 `;
 
+//=================로그인 페이지 CSS 끝===================//
+
 export const SocialBlock = styled.div`
   margin: 0.8rem auto;
   span {
@@ -132,6 +135,8 @@ export const SocialBlock = styled.div`
     }
   }
 `;
+
+//============회원가입 페이지 CSS 시작(socialblock은 공통)=========//
 export const SignUpDiv = styled.section`
   max-width: 1344px;
   height: 1200px;
@@ -446,3 +451,93 @@ export const SubmitButton = styled.button`
     border: none;
   }
 `;
+
+//======================회원가입 페이지 CSS 끝====================//
+
+export const FindEmailBlock = styled.section`
+  max-width: 500px;
+  padding: 10rem;
+  display: flex;
+  justify-content: center;
+  position: relative;
+`;
+
+export const EmailInputBox = styled.div`
+  p {
+    font-size: 12px;
+  }
+  label {
+    width: 300px;
+    position: relative;
+
+    input {
+      width: 100%;
+      height: 38px;
+      font-size: 14px;
+      border: 1px solid lightgray;
+      padding-left: 15px;
+      &:focus {
+        outline: none;
+      }
+      &::placeholder {
+        font-weight: 550;
+        font-size: 14px;
+        color: lightgray;
+      }
+    }
+    button {
+      position: absolute;
+      width: 16%;
+      top: 5.5px;
+      right: 13px;
+      font-size: 15px;
+      border-radius: 5px;
+      outline: none;
+      background-color: #4996f3;
+      border: 1px solid #4996f3;
+      color: white;
+      font-size: 14px;
+      font-weight: 550;
+      &:hover {
+        background-color: #537fe7;
+        border: 1px solid #537fe7;
+      }
+    }
+  }
+`;
+
+export const ConfirmButton = styled.button`
+  margin-top: 2rem;
+  margin-left: 0.5%;
+  border-radius: 5px;
+  height: 45px;
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+`;
+
+export const Div = styled.div`
+  display: flex;
+  justify-content : center;;
+  align-items: center;
+`;
+
+export const IfBox = styled.div`
+  margin-top: 2rem;
+  text-align : center;
+  background-color : #f7f8fa;
+  .p1{
+    font-size : 11px;
+    padding-top : 15px;
+    margin : 0;
+
+  }
+
+  .p2{
+    font-size : 11px;
+    color : #4996f3;
+    padding-bottom : 15px;
+    ;
+  }
+`

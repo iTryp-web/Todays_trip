@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ContentsBlock = styled.div`
@@ -84,19 +85,18 @@ const ItemBlock = styled.div`
   }
 `;
 
-const ProductItem = () => {
-  const [items, setItems]=useState([
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-162303132447303472.jpeg/640/640",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166141476368385159.jpg/640/640",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560"
-  ]);
+const ProductItem = ({items}) => {
+  
+  const navigate=useNavigate()
+  
   
   const itemBody = (
     <ItemBlock>
       <div className="image">
-            {items.map((item,index)=>(
-              <img src={item} />
+            {items && items.map((item,index)=>(
+
+                <img src={item} />
+
             ))}
       </div>
       <div className="body">
@@ -116,9 +116,19 @@ const ProductItem = () => {
   return (
     <>
       <ContentsBlock>
-      <ItemBlock>
-        {itemBody}
-      </ItemBlock>
+        {items && items.map((item,index)=>(
+          <ItemBlock>
+            <img className='image' src={item} />
+            <div className="body">
+            <span className="brand">오행</span>
+            <span className="title">비침없는 도톰레이스</span>
+            <span className="star">
+            <span>★</span> 
+          </span>
+          <span className="review_count">리뷰 123</span>
+            </div>
+          </ItemBlock>
+))}
       </ContentsBlock>
     </>
   )
