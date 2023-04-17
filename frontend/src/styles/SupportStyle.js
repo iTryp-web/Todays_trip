@@ -196,11 +196,13 @@ export const FnLink = styled(Link)`
 
 /*================ Question List ================*/
 export const QlSection = styled.section`
-display:flex
-justify-content: center
+  width: 800px;
+  display: flex;
+  justify-content: center;
 `;
 
 export const QlUl = styled.ul`
+  justify-content: center;
   display: flex;
   align-items: center;
   padding-top: 30px;
@@ -213,6 +215,8 @@ export const QlLi = styled.li`
   line-height: 28px;
   list-style: none;
   color: rgb(47, 52, 56);
+  display: list-item;
+  text-align: -webkit-match-parent;
 `;
 export const QlH3 = styled.h3`
   color: rgb(47, 52, 56);
@@ -236,6 +240,17 @@ export const QlButton = styled.button`
   align-items: center;
   .questionText {
     font-size: 16px;
+  }
+  .questionDownArrow {
+    text-align: right;
+    display: inline-block;
+    font-size: 24px;
+    line-height: 1;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .questionDownArrow.rotate {
+    transform: rotate(180deg);
   }
 `;
 
