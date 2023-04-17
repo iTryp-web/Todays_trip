@@ -24,7 +24,7 @@ export const CustomerService = styled.div`
     padding: 0;
     flex: 1; /* 추가 */
   }
-  
+
   .helpDiv {
     flex-grow: 1;
     flex-shrink: 1;
@@ -37,7 +37,7 @@ export const CustomerService = styled.div`
     flex-basis: 0;
     width: 100%;
   }
-  
+
   .helpTitle {
     font-size: 20px;
     line-height: 28px;
@@ -137,24 +137,46 @@ export const CustomerService = styled.div`
     .innerStyle {
       display: block;
     }
-  
+
     .helpDiv {
       width: 100%;
       margin-bottom: 30px;
     }
-  
+
     .csDiv {
       width: 100%;
     }
   }
 `;
 
-/*============== FAQ ==============*/
+export const fnDiv = styled.div`
+  backgrounc-color: #fff;
+  z-index : 10;
+`;
 
-export const FaqDesc = styled.p``;
+export const faqNav = styled.nav`
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 40px 24px 0px;
+  display: flex;
+  justify-content: center;
 
-export const FaqH1 = styled.h1``;
+  .label {
+    cursor: pointer;
+    margin-right: 8px;
+  }
+`;
 
-export const BtnFaq1 = styled.button``;
-export const BtnFaq2 = styled.button``;
-export const BtnFaq3 = styled.button``;
+export const faqLabel = styled.label`
+  display: inline-block;
+  position: relative;
+  height: 38px;
+  border-radius: 19px;
+  padding-left: 14px;
+  padding-right: 14px;
+  line-height: 0;
+  color: rgb(255, 255, 255);
+  background-color: rgb(53, 197, 240);
+`;
