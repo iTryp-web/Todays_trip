@@ -595,23 +595,22 @@ export const ModalReport = styled.div`
     color: #464646;
     display: flex;
     position: absolute;
-    top: 7px;
-    right: 7px;
+    top: 4px;
+    right: 4px;
     cursor: pointer;
   }
 `
 
 export const ReportText = styled.textarea`
-  width: 250px;
+  width: 255px;
   height: 135px;
   margin-top: 40px;
   padding: 5px;
   resize: none;
-  border: none;
+  border: 1px solid #e9e9e9;
   border-radius: 5px;
   font-size: 13px;
   &:focus {
-    border: none;
     outline: none;
   }
 `
@@ -643,13 +642,11 @@ export const BodyContainer = styled.div`
 `;
 
 export const DetailContent = styled.div`
-  margin: 20px 0 40px 0;
+  margin: 10px 0 40px 0;
   line-height: 30px;
   font-size: 15px;
   img {
-    display: block;
-    margin: 0 auto;
-    width: 100%;
+    max-width: 100%;
   }
 `;
 

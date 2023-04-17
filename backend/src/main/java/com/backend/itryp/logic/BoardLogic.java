@@ -54,7 +54,7 @@ public class BoardLogic {
 							if (bList.get(i).get("BOARD_CONTENT").toString()
 									.contains(imageList.get(j).get("FILE_NAME").toString())) {
 								String temp = bList.get(i).get("BOARD_CONTENT").toString()
-										.replace("<img src=\"" + "http://localhost:8000/board/getImage?imageName="+ imageList.get(j).get("FILE_NAME").toString() + "\">", " ");
+										.replace("http://localhost:8000/board/getImage?imageName="+ imageList.get(j).get("FILE_NAME").toString(), "");
 								// 미리보기에서 이미지부분 지움 - 추후 경로테스트해보기
 								bList.get(i).put("BOARD_CONTENT", temp);
 								// 이미지 존재여부 변수
