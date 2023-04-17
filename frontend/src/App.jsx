@@ -16,6 +16,7 @@ import FaqPage from './components/page/FaqPage';
 import MarketWrite from './components/market/MarketWrite';
 import BoardUpdateForm from './components/board/BoardUpdateForm';
 import MarketDetail from './components/market/MarketDetail';
+import FindUserPage from './components/page/FindUserPage';
 
 
 
@@ -39,6 +40,7 @@ function App() {
       <Route path='/market/write' exact={true} element={<MarketWrite />} />
       <Route path='/market/detail' element={<MarketDetail />} />
       <Route path='/Support' exact={true} element={<FaqPage />} />
+      <Route path='/findEmail' exact ={true} element={<FindUserPage/>} />
     </Routes>
     </> 
   );
