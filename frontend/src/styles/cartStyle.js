@@ -46,7 +46,7 @@ export const ImgDiv = styled.div`
 `;
 
 export const CartItemTitle = styled.th`
-  width: 50%;
+  width: 40%;
 `;
 
 export const CartTitle = styled.div`
