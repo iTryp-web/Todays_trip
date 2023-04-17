@@ -1,58 +1,27 @@
-import React, { useState } from "react";
-import { fnDefaultLabel, fnStyle } from "../../styles/SupportStyle";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FnLink, FnNavDiv, FnNavbar } from '../../styles/SupportStyle';
 
-const NavWrapper = styled.div`
-  ${fnStyle}
-`;
+const NavBar = () => {
+  const [selected, setSelected] = useState('전체');
 
-const FaqNav = () => {
-  const [selectedLabel, setSelectedLabel] = useState("전체");
-
-  const handleLabelClick = (e) => {
-    const label = e.target.textContent;
-    setSelectedLabel(label);
+  const handleClick = (item) => {
+    setSelected(item);
   };
 
-
-
   return (
-    <>
-      <NavWrapper>
-        <nav>
-          <label
-            className={selectedLabel === "전체" ? "fnSelectedLabel" : "fnLabel"}
-            htmlFor="전체"
-          >
-            <input id="전체" type="checkbox" className="fnInput" name="fnInput" />
-            <span className="fnSpan" onClick={handleLabelClick}>
-              전체
-            </span>
-          </label>
-          <label
-            className={
-              selectedLabel === "환불" ? "fnSelectedLabel" : "fnLabel"
-            }
-            htmlFor="환불"
-          >
-            <input id="환불" type="checkbox" className="fnInput" name="fnInput"/>
-            <span className="fnSpan" onClick={handleLabelClick}>
-              환불
-            </span>
-          </label>
-          <label
-            className={selectedLabel === "결제" ? "fnSelectedLabel" : "fnLabel"}
-            htmlFor="결제"
-          >
-            <input id="결제" type="checkbox" className="fnInput" name="fnInput"/>
-            <span className="fnSpan" onClick={handleLabelClick}>
-              결제
-            </span>
-          </label>
-        </nav>
-      </NavWrapper>
-    </>
+    <FnNavDiv>
+
+    <FnNavbar>
+      <FnLink to="/support/" className={selected === '전체' ? 'fnSelectedLink' : 'fnLink'} onClick={() => handleClick('전체')}>전체</FnLink>
+      <FnLink to="/support/refund" className={selected === '환불' ? 'fnSelectedLink' : 'fnLink'} onClick={() => handleClick('환불')}>환불</FnLink>
+      <FnLink to="/support/member-info" className={selected === '회원정보' ? 'fnSelectedLink' : 'fnLink'} onClick={() => handleClick('회원정보')}>회원정보</FnLink>
+      <FnLink to="/support/payment" className={selected === '결제' ? 'fnSelectedLink' : 'fnLink'} onClick={() => handleClick('결제')}>결제</FnLink>
+      <FnLink to="/support/login" className={selected === '로그인' ? 'fnSelectedLink' : 'fnLink'} onClick={() => handleClick('로그인')}>로그인</FnLink>
+      <FnLink to="/support/service" className={selected === '서비스' ? 'fnSelectedLink' : 'fnLink'} onClick={() => handleClick('서비스')}>서비스</FnLink>
+    </FnNavbar>
+    </FnNavDiv>
   );
 };
 
-export default FaqNav;
+export default NavBar;

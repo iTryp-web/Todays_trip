@@ -39,7 +39,12 @@ function App() {
       <Route path='/market' exact={true} element={<MarketPage />} />
       <Route path='/market/write' exact={true} element={<MarketWrite />} />
       <Route path='/market/detail' element={<MarketDetail />} />
-      <Route path='/Support' exact={true} element={<FaqPage />} />
+      <Route path='/support' exact={true} element={<FaqPage />} />
+      <Route path='/support/refund' exact={true} element={<FaqPage />} />
+      <Route path='/support/member-info' exact={true} element={<FaqPage />} />
+      <Route path='/support/payment' exact={true} element={<FaqPage />} />
+      <Route path='/support/login' exact={true} element={<FaqPage />} />
+      <Route path='/support/service' exact={true} element={<FaqPage />} />
       <Route path='/findEmail' exact ={true} element={<FindUserPage/>} />
     </Routes>
     </> 
