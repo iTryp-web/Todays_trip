@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+/*================ csSection ================*/
 export const CustomerService = styled.div`
   position: relative;
   #li {
@@ -10,13 +11,17 @@ export const CustomerService = styled.div`
   #ul {
     list-style: none;
   }
-  csSection {
+  .csSection {
+    display: "flex";
+    justifycontent: "center";
     max-width: 850px;
     margin: 0px auto;
   }
 
   .innerStyle {
+    width: 800px;
     display: flex;
+    justify-content: center;
     align-items: center;
     padding-bottom: 24px;
     padding-bottom: 32px;
@@ -24,7 +29,6 @@ export const CustomerService = styled.div`
     margin: 0;
     padding: 0;
     flex: 1;
-    justify-content: center;
   }
 
   .helpDiv {
@@ -66,23 +70,6 @@ export const CustomerService = styled.div`
     padding-left: 36px;
     font-size: 16px;
     line-height: 28px;
-  }
-  .qMark {
-    position: absolute;
-    left: 0px;
-    width: 28px;
-    height: 28px;
-    display: inline-flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 16px;
-    line-height: 20px;
-    color: rgb(53, 197, 240);
-    border: 1px solid rgb(234, 237, 239);
-    box-shadow: rgba(63, 71, 77, 0.05) 0px 2px 6px;
   }
 
   .csTitle {
@@ -138,64 +125,58 @@ export const CustomerService = styled.div`
   }
 `;
 
-export const fnDiv = styled.div`
-  background-color: #fff;
-  z-index: 10;
-`;
-
-export const faqNav = styled.nav`
-  position: relative;
-  z-index: 10;
-  box-sizing: border-box;
-  text-align: center;
-  padding: 40px 24px 0px;
-  display: flex;
-  justify-content: center;
-
-  .label {
-    cursor: pointer;
-    margin-right: 8px;
-  }
-`;
-
-export const faqLabel = styled.label`
-  display: inline-block;
-  position: relative;
-  height: 38px;
-  border-radius: 19px;
-  padding-left: 14px;
-  padding-right: 14px;
-  line-height: 0;
-  color: rgb(255, 255, 255);
-  background-color: rgb(53, 197, 240);
-`;
-
-export const fnStyle = styled.div`
-  box-sizing: border-box;
-  background-color: rgb(255, 255, 255);
-  text-align: center;
-  padding: 40px 24px 0px;
-  display: flex;
+export const QMark = styled.span`
+  position: absolute;
+  left: 0px;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
   -webkit-box-pack: center;
   justify-content: center;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgb(53, 197, 240);
+  border: 1px solid rgb(234, 237, 239);
+  box-shadow: rgba(63, 71, 77, 0.05) 0px 2px 6px;
+`;
+/*================ FaqNav ================*/
+export const FnHr = styled.hr`
+  margin: 0px;
+  padding: 0px;
+  height: 10px;
+  border: none;
+  background-color: #ced4da;
+  display: block;
+  unicode-bidi: isolate;
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  overflow: hidden;
 `;
 
 export const FnNavDiv = styled.div`
-display: flex;
-justify-content: center;
+  display: flex;
+  justify-content: center;
+  padding: 40px 24px 0px;
 `;
+
 export const FnNavbar = styled.nav`
-  width : 500px;
+  height: 40px;
+  width: 500px;
   color: black;
   margin-right: 15px;
   font-size: 0.9rem;
   .fnSelectedLink {
-    background-color: #4996F3;
+    background-color: #4996f3;
     color: white;
   }
   .fnLink {
-    background-color: #F7F9FA;
-    color: #2F3438;
+    background-color: #f7f9fa;
+    color: #2f3438;
   }
   &.active {
     color: #4996f3;
@@ -209,6 +190,53 @@ export const FnNavbar = styled.nav`
 export const FnLink = styled(Link)`
   padding: 5px 14px;
   margin-right: 8px;
-  border-radius: 1.0rem;
+  border-radius: 1rem;
   text-decoration-line: none;
 `;
+
+/*================ Question List ================*/
+export const QlSection = styled.section`
+display:flex
+justify-content: center
+`;
+
+export const QlUl = styled.ul`
+  display: flex;
+  align-items: center;
+  padding-top: 30px;
+  overflow: hidden;
+  padding-bottom: 60px;
+  list-style: none;
+`;
+export const QlLi = styled.li`
+  font-size: 16px;
+  line-height: 28px;
+  list-style: none;
+  color: rgb(47, 52, 56);
+`;
+export const QlH3 = styled.h3`
+  color: rgb(47, 52, 56);
+  border-bottom: 1px solid rgb(234, 237, 239);
+  padding: 8px 0px;
+  font-size: 16px;
+  line-height: 28px;
+`;
+export const QlButton = styled.button`
+  display: inline-block;
+  margin: 0px;
+  border: none;
+  background: none;
+  font: inherit;
+  color: rgb(47, 52, 56);
+  width: 100%;
+  position: relative;
+  text-align: left;
+  padding: 10px 40px 10px 36px;
+  display: flex;
+  align-items: center;
+  .questionText {
+    font-size: 16px;
+  }
+`;
+
+export const QuestionText = styled.span``;
