@@ -607,7 +607,7 @@ export const ReportText = styled.textarea`
   margin-top: 40px;
   padding: 5px;
   resize: none;
-  border: 1px solid #e9e9e9;
+  border: none;
   border-radius: 5px;
   font-size: 13px;
   &:focus {

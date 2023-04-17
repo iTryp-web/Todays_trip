@@ -43,7 +43,7 @@ public class AdminController {
 	}
 	
 	/**
-	 * 신고 글, 회원 목록 조회(글0, 댓글1, 리뷰3)
+	 * 신고 목록 조회(글0, 댓글1)
 	 * 
 	 * @param pMap
 	 * @return
@@ -62,23 +62,23 @@ public class AdminController {
 	}
 	
 	/**
-	 * 신고 글, 회원 상태 수정
+	 * 회원, 글, 댓글 상태 수정
 	 * 
 	 * @param pMap
 	 * @return
 	 */
-	@PostMapping("reportUpdate")
-	public String reportUpdate(@RequestBody Map<String, Object> pMap) {
-		logger.info("reportUpdate 호출");
+	@PostMapping("statusUpdate")
+	public String statusUpdate(@RequestBody Map<String, Object> pMap) {
+		logger.info("statusUpdate 호출");
 		logger.info(pMap);
 		int result = 0;
-		result = adminLogic.reportUpdate(pMap);
+		result = adminLogic.statusUpdate(pMap);
 		logger.info(result);
 		return String.valueOf(result);
 	}
 	
 	/**
-	 * 차단 글, 회원 목록 조회
+	 * 차단 회원, 글, 댓글 목록 조회
 	 * @param pMap
 	 * @return
 	 */
@@ -96,23 +96,7 @@ public class AdminController {
 	}
 	
 	/**
-	 * 차단 글, 회원 상태 수정
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	@PostMapping("banUpdate")
-	public String banUpdate(@RequestBody Map<String, Object> pMap) {
-		logger.info("banUpdate 호출");
-		logger.info(pMap);
-		int result = 0;
-		result = adminLogic.banUpdate(pMap);
-		logger.info(result);
-		return String.valueOf(result);
-	}
-	
-	/**
-	 * 차단 글, 회원 삭제(탈퇴)
+	 * 차단 글, 댓글 삭제
 	 * 
 	 * @param pMap
 	 * @return
@@ -147,7 +131,7 @@ public class AdminController {
 	}
 	
 	/**
-	 * 탈퇴(신청) 회원 상태 수정
+	 * 탈퇴(신청) 회원 상태 수정 탈퇴1
 	 * 
 	 * @param pMap
 	 * @return

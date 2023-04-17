@@ -17,7 +17,7 @@ public class AdminDao {
 	private SqlSessionTemplate sqlSessionTemplate = null;
 
 	/**
-	 * 신고 글, 회원 목록 조회(글0, 댓글1, 리뷰3)
+	 * 신고 목록 조회(글0, 댓글1)
 	 * 
 	 * @param pMap
 	 * @return
@@ -30,7 +30,7 @@ public class AdminDao {
 	}
 	
 	/**
-	 * 신고 글, 회원 상태 수정
+	 * 신고 상태 수정 - 처리완료1
 	 * 
 	 * @param pMap
 	 * @return
@@ -41,44 +41,108 @@ public class AdminDao {
 		result = sqlSessionTemplate.update("reportUpdate", pMap);
 		return result;
 	}
-
-
+	
 	/**
-	 * 차단 글, 회원 목록 조회
+	 * 회원 상태 수정 - 기본0 차단2
 	 * 
 	 * @param pMap
 	 * @return
 	 */
-	public List<Map<String, Object>> banList(Map<String, Object> pMap) {
-		logger.info("banList 호출");
-		List<Map<String,Object>> bList = null;
-		bList = sqlSessionTemplate.selectList("banList", pMap);
-		return bList;
+	public int userStatusUpdate(Map<String, Object> pMap) {
+		logger.info("userStatusUpdate 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("userStatusUpdate", pMap);
+		return result;
 	}
 	
 	/**
-	 * 차단 글, 회원 상태 수정
+	 * 글 상태 수정 - 기본0 차단1
 	 * 
 	 * @param pMap
 	 * @return
 	 */
-	public int banUpdate(Map<String, Object> pMap) {
-		logger.info("banUpdate 호출");
+	public int boardStatusUpdate(Map<String, Object> pMap) {
+		logger.info("boardStatusUpdate 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("banUpdate", pMap);
+		result = sqlSessionTemplate.update("boardStatusUpdate", pMap);
+		return result;
+	}
+	
+	/**
+	 * 댓글 상태 수정 - 기본0 차단2
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int commentStatusUpdate(Map<String, Object> pMap) {
+		logger.info("commentStatusUpdate 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("commentStatusUpdate", pMap);
 		return result;
 	}
 
 	/**
-	 * 차단 글, 회원 삭제(탈퇴)
+	 * 차단 회원 목록 조회
 	 * 
 	 * @param pMap
 	 * @return
 	 */
-	public int banDelete(Map<String, Object> pMap) {
-		logger.info("banDelete 호출");
+	public List<Map<String, Object>> banUserList(Map<String, Object> pMap) {
+		logger.info("banUserList 호출");
+		List<Map<String,Object>> bList = null;
+		bList = sqlSessionTemplate.selectList("banUserList", pMap);
+		return bList;
+	}
+	
+	/**
+	 * 차단 글 목록 조회
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> banBoardList(Map<String, Object> pMap) {
+		logger.info("banBoardList 호출");
+		List<Map<String,Object>> bList = null;
+		bList = sqlSessionTemplate.selectList("banBoardList", pMap);
+		return bList;
+	}
+	
+	/**
+	 * 차단 댓글 목록 조회
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> banCommentList(Map<String, Object> pMap) {
+		logger.info("banCommentList 호출");
+		List<Map<String,Object>> bList = null;
+		bList = sqlSessionTemplate.selectList("banCommentList", pMap);
+		return bList;
+	}
+
+	/**
+	 * 차단 글 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int banBoardDelete(Map<String, Object> pMap) {
+		logger.info("banBoardDelete 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("banDelete", pMap);
+		result = sqlSessionTemplate.update("banBoardDelete", pMap);
+		return result;
+	}
+	
+	/**
+	 * 차단 댓글 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int banCommentDelete(Map<String, Object> pMap) {
+		logger.info("banCommentDelete 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("banCommentDelete", pMap);
 		return result;
 	}
 
@@ -96,7 +160,7 @@ public class AdminDao {
 	}
 
 	/**
-	 * 탈퇴(신청) 회원 상태 수정
+	 * 탈퇴(신청) 회원 상태 수정 탈퇴1
 	 * 
 	 * @param pMap
 	 * @return
