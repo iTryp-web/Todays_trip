@@ -27,12 +27,13 @@ public class AdminLogic {
 	public List<Map<String, Object>> overview(Map<String, Object> pMap) {
 		logger.info("overview 호출");
 		List<Map<String,Object>> oList = new ArrayList<>();
-		//oList= adminDao.overview(pMap);
+		// 신고글, 차단유저, 차단글, 차단댓글, 탈퇴(신청)유저
+		// reportList, banUserList, banBoardList, banCommentList, resignList
 		return oList;
 	}
 
 	/**
-	 * 신고 글, 회원 목록 조회(글0, 댓글1, 리뷰3)
+	 * 신고 목록 조회(글0, 댓글1)
 	 * 
 	 * @param pMap
 	 * @return
@@ -45,46 +46,43 @@ public class AdminLogic {
 	}
 
 	/**
-	 * 신고 글, 회원 상태 수정
+	 * 회원, 글, 댓글 상태 수정
 	 * 
 	 * @param pMap
 	 * @return
 	 */
-	public int reportUpdate(Map<String, Object> pMap) {
-		logger.info("reportUpdate 호출");
+	public int statusUpdate(Map<String, Object> pMap) {
+		logger.info("statusUpdate 호출");
 		int result = 0;
-		result = adminDao.reportUpdate(pMap);
+		result = adminDao.reportUpdate(pMap); // 신고 상태 수정 - 처리완료1
+		int result0 = 0;
+		result = adminDao.userStatusUpdate(pMap); // 회원 상태 수정 - 기본0 차단2
+		int result1 = 0;
+		result = adminDao.boardStatusUpdate(pMap); // 글 상태 수정 - 기본0 차단1
+		int result2 = 0;
+		result = adminDao.commentStatusUpdate(pMap); // 댓글 상태 수정 - 기본0 차단2
 		return result;
 	}
 	
 	/**
-	 * 차단 글, 회원 목록 조회
+	 * 차단 회원, 글, 댓글 목록 조회
 	 * 
 	 * @param pMap
 	 * @return
 	 */
 	public List<Map<String, Object>> banList(Map<String, Object> pMap) {
 		logger.info("banList 호출");
-		List<Map<String,Object>> bList = new ArrayList<>();
-		bList= adminDao.banList(pMap);
-		return bList;
-	}
-	
-	/**
-	 * 차단 글, 회원 상태 수정
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	public int banUpdate(Map<String, Object> pMap) {
-		logger.info("banUpdate 호출");
-		int result = 0;
-		result = adminDao.banUpdate(pMap);
-		return result;
+		List<Map<String,Object>> bUserList = new ArrayList<>();
+		bUserList= adminDao.banUserList(pMap); // 차단 회원
+		List<Map<String,Object>> bBoardList = new ArrayList<>();
+		bBoardList= adminDao.banBoardList(pMap); // 차단 글
+		List<Map<String,Object>> bCommentList = new ArrayList<>();
+		bCommentList= adminDao.banCommentList(pMap); // 차단 댓글
+		return bUserList;
 	}
 
 	/**
-	 * 차단 글, 회원 삭제(탈퇴)
+	 * 차단 글, 댓글 삭제
 	 * 
 	 * @param pMap
 	 * @return
@@ -92,7 +90,9 @@ public class AdminLogic {
 	public int banDelete(Map<String, Object> pMap) {
 		logger.info("banDelete 호출");
 		int result = 0;
-		result = adminDao.banDelete(pMap);
+		result = adminDao.banBoardDelete(pMap); // 글 삭제
+		int result1 = 0;
+		result = adminDao.banCommentDelete(pMap); // 댓글 삭제
 		return result;
 	}
 
@@ -110,7 +110,7 @@ public class AdminLogic {
 	}
 
 	/**
-	 * 탈퇴(신청) 회원 상태 수정
+	 * 탈퇴(신청) 회원 상태 수정 탈퇴1
 	 * 
 	 * @param pMap
 	 * @return

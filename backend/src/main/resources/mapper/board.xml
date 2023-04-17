@@ -257,6 +257,7 @@
 								(report_no
 							 , user_id
 							 , report_type
+							 , report_num
 							 , report_group
 						 <if test="report_step != null and report_step > 0">
 						 	 , report_step
@@ -268,6 +269,7 @@
 				VALUES (TB_REPORT_NO_SEQ.NEXTVAL
 							, #{user_id}
 							, #{report_type}
+							, #{report_num}
 							, #{report_group}
 						<if test="report_step != null and report_step > 0">
 							, #{report_step}
