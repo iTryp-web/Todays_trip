@@ -180,38 +180,35 @@ export const fnStyle = styled.div`
   justify-content: center;
 `;
 
-export const fnNav = styled.nav`
-.fnSelectedLabel{
-  background-color: #007bff;
-  color: #fff;
-}
-.fnLabel{
-  background-color: #ccc;
-  color: #000;
-}
-.fnInput{
-display : "none";
-}
-.fnSpan{
-
-}
+export const FnNavDiv = styled.div`
+display: flex;
+justify-content: center;
+`;
+export const FnNavbar = styled.nav`
+  width : 500px;
+  color: black;
+  margin-right: 15px;
+  font-size: 0.9rem;
+  .fnSelectedLink {
+    background-color: #4996F3;
+    color: white;
+  }
+  .fnLink {
+    background-color: #F7F9FA;
+    color: #2F3438;
+  }
+  &.active {
+    color: #4996f3;
+    font-weight: bold;
+  }
+  &:hover {
+    color: #4996f3;
+  }
 `;
 
-export const fnDefaultLabel = styled.label`
-  display: inline-block;
-  margin: 0 4px;
-  padding: 4px 8px;
-  border-radius: 50%;
-  background-color: #ccc;
-  color: #000;
-`;
-
-export const fnSelectedLabel = styled(fnDefaultLabel)`
-  background-color: #007bff;
-  color: #fff;
-`;
-
-export const fnLabel = styled(fnDefaultLabel)`
-  background-color: #ccc;
-  color: #000;
+export const FnLink = styled(Link)`
+  padding: 5px 14px;
+  margin-right: 8px;
+  border-radius: 1.0rem;
+  text-decoration-line: none;
 `;
