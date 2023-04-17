@@ -1,6 +1,7 @@
 import { LoginBlock, LoginFormBlock, LogoBlock, SignDiv, SocialBlock } from "../../styles/SignStyle";
 import { Logo } from "../../styles/FormStyle";
 import { createGlobalStyle } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -10,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
 
 
 const SignIn = () => {
+  const navigate = useNavigate()
   return (
     <>
     <GlobalStyle/ >
@@ -23,8 +25,8 @@ const SignIn = () => {
           <input className="password" type="password" placeholder="비밀번호" />
           <button>로그인</button>
           <div className="smallButton">
-            <span>비밀번호 재설정</span>
-            <span>회원가입</span>
+            <span onClick={()=>navigate("/findEmail")}>비밀번호 재설정</span>
+            <span onClick={()=>navigate("/signup")}>회원가입</span>
           </div>
         </LoginBlock>
         <SocialBlock>
