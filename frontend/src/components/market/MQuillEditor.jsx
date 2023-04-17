@@ -2,9 +2,9 @@ import React from 'react';
 import { useCallback, useEffect, useMemo } from 'react';
 import ReactQuill, { Quill } from 'react-quill'; 
 import { QuillDiv } from '../../styles/BoardStyle';
-import { uploadImageDB } from '../../service/boardLogic';
+import { mUploadImageDB} from '../../service/marketLogic';
 
-const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
+const MQuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
     console.log(files);
     console.log(Array.isArray(files)); // array
 
@@ -39,7 +39,7 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
                 console.log(pair[0], pair[1]); 
             }
             // 폼데이터를 서버에 넘겨 multer로 이미지 URL 받아오기
-            const res = await uploadImageDB(formData)
+            const res = await mUploadImageDB(formData)
             files.push(res.data)
             console.log(res.data); // 리턴받는 파일명
             if (!res.data) {
@@ -107,7 +107,6 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
         <ReactQuill 
         className='quill'
         ref={quillRef}
-        style={{height: "470px", width: "100%"}} 
         theme="snow" 
         placeholder= "본문을 입력해주세요."
         modules={modules} 
@@ -118,4 +117,4 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
     )
 }
 
-export default QuillEditor
+export default MQuillEditor

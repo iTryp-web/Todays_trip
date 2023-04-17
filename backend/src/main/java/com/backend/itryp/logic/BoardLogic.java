@@ -54,7 +54,7 @@ public class BoardLogic {
 							if (bList.get(i).get("BOARD_CONTENT").toString()
 									.contains(imageList.get(j).get("FILE_NAME").toString())) {
 								String temp = bList.get(i).get("BOARD_CONTENT").toString()
-										.replace("<img src=\"" + "http://localhost:8000/board/getImage?imageName="+ imageList.get(j).get("FILE_NAME").toString() + "\">", " ");
+										.replace("http://localhost:8000/board/getImage?imageName="+ imageList.get(j).get("FILE_NAME").toString(), "");
 								// 미리보기에서 이미지부분 지움 - 추후 경로테스트해보기
 								bList.get(i).put("BOARD_CONTENT", temp);
 								// 이미지 존재여부 변수
@@ -287,7 +287,7 @@ public class BoardLogic {
 			}
 		}
 		// 대댓글이 없거나 모두 삭제된 댓글 삭제 -> 바로 삭제(댓글, 대댓글 모두)
-		else if(comment_status == 1 && (c_step == 0 || c_step == c_status)) {
+		else if((comment_status == 0 || comment_status == 1) && (c_step == 0 || c_step == c_status)) {
 			pMap.put("delete_all", 1); // 0이면 특정글 , 1이면 댓글,대댓글 전부 삭제
 			result = boardDao.replyDelete(pMap);			
 		}

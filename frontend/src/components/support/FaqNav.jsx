@@ -1,68 +1,58 @@
-// import { useState } from "react";
-// import styled from "styled-components";
-// import { NavLink, Route } from "react-router-dom";
-// import { Button, Nav } from "react-bootstrap";
+import React, { useState } from "react";
+import { fnDefaultLabel, fnStyle } from "../../styles/SupportStyle";
+import styled from "styled-components";
 
-// export const NavSup = styled.nav`
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   padding: 10px;
-// `;
+const NavWrapper = styled.div`
+  ${fnStyle}
+`;
 
-// export const BtnSup = styled.button`
-//   background-color: transparent;
-//   color: ${(props) => (props.active ? '#fff' : '#333')};
-//   border: none;
-//   font-size: 16px;
-//   cursor: pointer;
-//   padding: 10px;
-//   &:hover {
-//     background-color: ${(props) => (props.active ? '#007bff' : '#f8f9fa')};
-//     color: ${(props) => (props.active ? '#fff' : '#333')};
-//   }
-// `;
+const FaqNav = () => {
+  const [selectedLabel, setSelectedLabel] = useState("전체");
 
-// function Navbar() {
-//   const [activeBtn, setActiveBtn] = useState("전체");
+  const handleLabelClick = (e) => {
+    const label = e.target.textContent;
+    setSelectedLabel(label);
+  };
 
-//   const handleClick = (btnName) => {
-//     setActiveBtn(btnName);
-//   };
 
-//   const buttons = ["전체", "결제", "환불", "판매자등록", "서비스"];
 
-//   return (
-//     <>
-//       <Nav>
-//         {buttons.map((buttonName) => (
-//           <NavLink
-//             key={buttonName}
-//             to={`/${buttonName}`}
-//             activeClassName="active"
-//             onClick={() => handleClick(buttonName)}
-//           >
-//             <Button active={buttonName === activeBtn}>{buttonName}</Button>
-//           </NavLink>
-//         ))}
-//       </Nav>
-//       <Route exact path="/전체">
-//         전체 페이지입니다.
-//       </Route>
-//       <Route exact path="/결제">
-//         결제 페이지입니다.
-//       </Route>
-//       <Route exact path="/환불">
-//         환불 페이지입니다.
-//       </Route>
-//       <Route exact path="/판매자등록">
-//         판매자등록 페이지입니다.
-//       </Route>
-//       <Route exact path="/서비스">
-//         서비스 페이지입니다.
-//       </Route>
-//     </>
-//   );
-// }
+  return (
+    <>
+      <NavWrapper>
+        <nav>
+          <label
+            className={selectedLabel === "전체" ? "fnSelectedLabel" : "fnLabel"}
+            htmlFor="전체"
+          >
+            <input id="전체" type="checkbox" className="fnInput" name="fnInput" />
+            <span className="fnSpan" onClick={handleLabelClick}>
+              전체
+            </span>
+          </label>
+          <label
+            className={
+              selectedLabel === "환불" ? "fnSelectedLabel" : "fnLabel"
+            }
+            htmlFor="환불"
+          >
+            <input id="환불" type="checkbox" className="fnInput" name="fnInput"/>
+            <span className="fnSpan" onClick={handleLabelClick}>
+              환불
+            </span>
+          </label>
+          <label
+            className={selectedLabel === "결제" ? "fnSelectedLabel" : "fnLabel"}
+            htmlFor="결제"
+          >
+            <input id="결제" type="checkbox" className="fnInput" name="fnInput"/>
+            <span className="fnSpan" onClick={handleLabelClick}>
+              결제
+            </span>
+          </label>
+        </nav>
+      </NavWrapper>
+    </>
+  );
+};
 
-// export default Navbar;
+export default FaqNav;
