@@ -161,6 +161,7 @@ const BoardDetail = () => {
     const board = {
       user_id: sessionStorage.getItem('user_id'),
       report_type: type,
+      report_num: bno,
       report_group: no,
       report_step: step,
       report_user: rUser,
@@ -423,7 +424,7 @@ const BoardDetail = () => {
                         onChange={(e)=>{handleReportPost(e.target.value)}}>
                       </ReportText>
                       {/* type, group, step, 신고대상 */}
-                      <BtnReport onClick={() => report(0, bno, 0, detailPost.user_nickname)}>신고하기</BtnReport>
+                      <BtnReport onClick={() => report(0, -1, 0, detailPost.user_nickname)}>신고하기</BtnReport>
                     </ModalReport>
                     ) : null}
               </Profile>
@@ -431,8 +432,10 @@ const BoardDetail = () => {
             </TitleContainer>
 
             <BodyContainer>
-              <DetailContent dangerouslySetInnerHTML={{__html:detailPost.board_content}}>
-              </DetailContent>
+              <section style={{minHeight: '400px'}}>
+                <DetailContent dangerouslySetInnerHTML={{__html:detailPost.board_content}}>
+                </DetailContent>
+              </section>
               <CountDiv>
                 <Like
                   onClick={() => {

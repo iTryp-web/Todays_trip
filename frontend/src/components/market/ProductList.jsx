@@ -129,6 +129,14 @@ const ItemBlock = styled.div`
 
 const ProductList = () => {
   /* 판매글 목록 */
+  //화면위한 테스트 이미지
+  const [items, setItems]=useState([
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-162303132447303472.jpeg/640/640",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166141476368385159.jpg/640/640",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560"
+  ]);
+
 // 판매글 담을 객체배열
 const [posts, setPosts] = useState([{}])
 
@@ -245,17 +253,7 @@ const content=posts.map((post) => {
             </option>
           </SelectBlock>
         </div>
-        <ItemBlock>
-        <div className="items">
-        <ProductItem/>
-        </div>
-        </ItemBlock>
-        {/* 글 목록 */}
-        <ul>
-            {posts && posts.map((post) => {
-              return <marketRow key={post.market_no} post={post} />
-            })}
-          </ul>
+        <ProductItem items={items}/>
         </ProductListBlock>
     </>
   )
