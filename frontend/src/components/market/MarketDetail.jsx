@@ -11,10 +11,29 @@ import { categories, profileImg } from './MarketData';
 import { dislikeDB, likeDB, marketDeleteDB, marketDetailDB, reviewInsertDB } from '../../service/marketLogic';
 import MarketReview from './MarketReview';
 import MarketQna from './MarketQna';
+import { useCookies } from 'react-cookie';
+import { Button } from 'react-bootstrap';
 
 
 const MarketDetail = () => {
+  
   const navigate = useNavigate()
+  const [cookies, setCookies] = useCookies(['cart']);
+  let cartList=[];
+  let [cartAdd,setCartAdd]=useState({});
+  //쿠키에 장바구니 담기
+      
+      if(cookies===undefined){//장바구니 없는 경우
+        //앞의 키값은 바꾸지 않기! 은재언니가 씀 뒤에는 변수로 연결
+        cartList={cartAdd}
+      }else{//장바구니 이미 있는 경우
+       cartList=[...cookies, {cartAdd}]
+      }
+  //3600000초 후에 없어지기-장바구니 리셋
+  //Date.now() + 259200000의 값을 expires에 할당하면 3일 후 만료되는 쿠키를 설정할 수 있습니다.
+  setCookies('cart', 
+    cartList, {expires: new Date(Date.now() +259200000)}
+    )
 
    // 해시값으로 글번호 가져오기
   const {mno} = useParams()
@@ -46,6 +65,7 @@ const MarketDetail = () => {
       }
       const res = await marketDetailDB(market)
       console.log(res.data)
+
       const temp = JSON.stringify(res.data)
       const jsonDoc = JSON.parse(temp)
       
@@ -60,9 +80,17 @@ const MarketDetail = () => {
         market_content: jsonDoc[0].MARKET_CONTENT,
         market_price: jsonDoc[0].MARKET_PRICE,
         market_date: jsonDoc[0].MARKET_DATE,
-      
-       
       })
+      //장바구니 카트에 담기
+      setCartAdd({
+        "marketNum" : jsonDoc[0].MARKET_NO, 
+        "marketImg" : "대표이미지.png",//프론트에서 대표이미지 처리 할예정
+        "marketName" : jsonDoc[0].MARKET_TITLE,
+        "marketOption" : "시간선택",//프론트에서 시간선택 처리 할예정
+        "marketCnt" : jsonDoc[0],//????????
+        "marketPrice" : jsonDoc[0].MARKET_PRICE 
+      })
+      
       // 카테고리 담기
       {categories.map((item) => {
         if(item.name == jsonDoc[0].MARKET_CATEGORY) {
@@ -219,6 +247,8 @@ const MarketDetail = () => {
      <h1>
       마켓 상세보기
       </h1>
+      <Button onClick={setCartAdd}>장바구니담기</Button>
+      <Button>결제하기</Button>
      <MarketReview />
      <MarketQna />
     <Footer />

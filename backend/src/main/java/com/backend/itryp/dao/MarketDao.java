@@ -50,7 +50,7 @@ public class MarketDao {
 		return result;
 	}
 	/**
-	 * 마켓 글쓰기 이미지 업로드 - Quill image가 있는 경우
+	 * 마켓 글쓰기 이미지 업로드 - Quill image추가 선택할때마다 인서트
 	 * @param pMap
 	 * @return
 	 */
@@ -58,19 +58,6 @@ public class MarketDao {
 		logger.info("mImageInsert 호출");
 		int result = 0;
 		result = sqlSessionTemplate.update("mImageInsert", pMap);
-		return result;
-	}
-	/**
-	 * Quill image 추가 - 이미지 선택할때마다 인서트
-	 * 이미지 리스트에서 이름 
-	 * @param pMap
-	 * @return
-	 */
-	public int mImageNames(Map<String, Object> pMap) {
-		logger.info("mImageNames 호출");
-		logger.info(pMap);
-		int result = 0;
-		result = sqlSessionTemplate.update("mImageNames", pMap);
 		return result;
 	}
 	/**
@@ -89,11 +76,11 @@ public class MarketDao {
 	 * @param mImageNames-리스트임
 	 * @return
 	 */
-	public int mImageUpdate(List<Map<String, Object>> mImageNames) {
+	public int mImageUpdate(List<Map<String, Object>> pList) {
 		logger.info("mImageUpdate 호출");
-		logger.info(mImageNames);
+		logger.info(pList);
 		int result = 0;
-		result = sqlSessionTemplate.update("mImageUpdate", mImageNames);
+		result = sqlSessionTemplate.update("mImageUpdate", pList);
 		return result;
 	}
 	/**
