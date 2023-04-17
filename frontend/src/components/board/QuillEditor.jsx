@@ -107,6 +107,7 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
         <ReactQuill 
         className='quill'
         ref={quillRef}
+        style={{height: "470px", width: "100%"}} 
         theme="snow" 
         placeholder= "본문을 입력해주세요."
         modules={modules} 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.itryp">
+	<!-- 신고 글, 회원 목록 조회(글0, 댓글1, 리뷰3) -->
+	<select id="reportList" parameterType="map" resultType="map">
+				SELECT report_no
+		     , user_id
+		     , report_type
+		     , report_num
+		     , report_group
+		     , report_step
+		     , report_user
+		     , report_reason
+		     , report_date
+		     , report_result
+		  FROM TB_REPORT
+		  <if test="report_type != null and report_type == 0">
+		  	WHERE report_type = 0
+		  </if>
+		  <if test="report_type != null and report_type == 1">
+		  	WHERE report_type = 1
+		  </if>
+		  <if test="report_type != null and report_type == 2">
+		  	WHERE report_type = 2
+		  </if>
+		  <if test="report_type != null and report_type == 3">
+		  	WHERE report_type = 3
+		  </if>
+	</select>
+	
+	<!-- 신고 글, 회원 상태 수정 -->
+	<update id="reportUpdate" parameterType="map">
+		UPDATE TB_B_FILE
+					SET board_no = #{board_no}
+				WHERE file_name = #{file_name}
+	</update>
+	
+	<!-- 차단 글, 회원 목록 조회 -->
+	<select id="banList" parameterType="map" resultType="map">
+		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
+	</select>
+	
+	<!-- 차단 글, 회원 상태 수정 -->
+	<update id="banUpdate" parameterType="map">
+		UPDATE TB_B_FILE
+					SET board_no = #{board_no}
+				WHERE file_name = #{file_name}
+	</update>
+	
+	<!-- 차단 글, 회원 삭제(탈퇴) -->
+	<delete id="banDelete" parameterType="map">
+				DELETE FROM TB_B_FILE
+		WHERE board_no = #{board_no}
+	</delete>
+	
+	<!-- 탈퇴(신청) 회원 목록 조회 -->
+	<select id="resignList" parameterType="map" resultType="map">
+		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
+	</select>
+	
+		<!-- 탈퇴(신청) 회원 상태 수정 -->
+	<update id="resignUpdate" parameterType="map">
+		UPDATE TB_B_FILE
+					SET board_no = #{board_no}
+				WHERE file_name = #{file_name}
+	</update>
+	
+	<!-- 탈퇴 회원 삭제  -->
+	<delete id="resignDelete" parameterType="map">
+				DELETE FROM TB_B_FILE
+		WHERE board_no = #{board_no}
+	</delete>
+</mapper>

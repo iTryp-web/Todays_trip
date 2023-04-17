@@ -431,8 +431,10 @@ const BoardDetail = () => {
             </TitleContainer>
 
             <BodyContainer>
-              <DetailContent dangerouslySetInnerHTML={{__html:detailPost.board_content}}>
-              </DetailContent>
+              <section style={{minHeight: '400px'}}>
+                <DetailContent dangerouslySetInnerHTML={{__html:detailPost.board_content}}>
+                </DetailContent>
+              </section>
               <CountDiv>
                 <Like
                   onClick={() => {
