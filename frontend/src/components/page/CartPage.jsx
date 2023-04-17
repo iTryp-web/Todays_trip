@@ -4,26 +4,32 @@ import '../../styles/cartStyle'
 import { CartButton, CartButtonDiv, CartCalcDiv, CartDiv, CartItemTitle, CartListDiv, CartTable, CartTitle, EmptySpan, LineHr, NoticeDiv, ResultDiv } from '../../styles/cartStyle'
 import CartRow from '../cart/CartRow'
 import Footer from '../include/Footer'
+import { useCookies } from 'react-cookie'
 
 const CartPage = () => {
 
-  //임시 데이터
-  const cartList = 1;
-  const price = 30000;
-  const count = 4;
+  const [cookies] = useCookies(['cart']);
 
+  const cartList = cookies.cart;
+  let price = 0;
+  if(cartList !== undefined && cartList.length > 0) {
+    cartList.forEach(cart => {
+      price += cart.marketPrice * cart.marketCnt;
+    });
+  }
   return (
     <>
       <Header/>
       <CartDiv>
-      {!cartList || cartList.length <= 0 ? 
+      {cartList !== undefined && cartList.length > 0 ? 
         <CartListDiv>
           <CartTitle>장바구니</CartTitle>
           <LineHr/>
+          {}
           <CartTable>
             <thead>
               <tr>
-                <th><input type="checkbox" name="" id="" /></th>
+                <th><input type="checkbox" id="allCkeck" /></th>
                 <th></th>
                 <CartItemTitle></CartItemTitle>
                 <th></th>
@@ -33,14 +39,15 @@ const CartPage = () => {
               </tr>
             </thead>
             <tbody>
-              <CartRow/>
-              <CartRow/>
-              <CartRow/>
-              <CartRow/>
+              {
+                cartList.map((cart, index) => (
+                 <CartRow key={cart.marketNum} cart={cart} index={index} />
+                ))
+              }
             </tbody>
           </CartTable>
           <CartCalcDiv>
-            <ResultDiv>상품 개수 : {count}개</ResultDiv>
+            <ResultDiv>상품 개수 : {cartList.length}개</ResultDiv>
             <div>상품 금액 : {price}원</div>
           </CartCalcDiv>
           <CartButtonDiv>
