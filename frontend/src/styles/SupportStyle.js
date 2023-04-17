@@ -24,7 +24,7 @@ export const CustomerService = styled.div`
     margin: 0;
     padding: 0;
     flex: 1;
-    justify-content:  center;
+    justify-content: center;
   }
 
   .helpDiv {
@@ -38,7 +38,6 @@ export const CustomerService = styled.div`
   .csDiv {
     flex-grow: 1;
     flex-shrink: 1;
-    flex-basis: 0;
     width: 50%;
     display: inline-flex;
   }
@@ -182,9 +181,37 @@ export const fnStyle = styled.div`
 `;
 
 export const fnNav = styled.nav`
-
-#label {
-  cursor: pointer;
-  margin-right: 8px;
+.fnSelectedLabel{
+  background-color: #007bff;
+  color: #fff;
 }
-`
+.fnLabel{
+  background-color: #ccc;
+  color: #000;
+}
+.fnInput{
+display : "none";
+}
+.fnSpan{
+
+}
+`;
+
+export const fnDefaultLabel = styled.label`
+  display: inline-block;
+  margin: 0 4px;
+  padding: 4px 8px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: #000;
+`;
+
+export const fnSelectedLabel = styled(fnDefaultLabel)`
+  background-color: #007bff;
+  color: #fff;
+`;
+
+export const fnLabel = styled(fnDefaultLabel)`
+  background-color: #ccc;
+  color: #000;
+`;
