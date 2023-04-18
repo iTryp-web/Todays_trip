@@ -265,11 +265,15 @@ export const AnswerText = styled.div`
   border-radius: 4px;
   transition: all 0.2s ease 0s;
   box-sizing: border-box;
-  padding: 0px 16px;
   opacity: 0;
   height: 0px;
   overflow: hidden;
+  align-items: center;
   &.show {
+    .answerTextP{
+      margin-bottom: 0px;
+    }
+    padding: 16px;
     opacity: 1;
     height: auto;
     overflow: visible;
