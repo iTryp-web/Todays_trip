@@ -17,9 +17,9 @@ import { useEffect } from "react";
 import { GoSearch } from "react-icons/go";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
-import Term1 from "../member/Term1";
-import Term2 from "../member/Term2";
-import Term3 from "../member/Term3";
+import Term1 from "../Term/Term1";
+import Term2 from "../Term/Term2";
+import Term3 from "../Term/Term3";
 
 const SignUpPage = () => {
   const [idInput, setIdInput] = useState("");
