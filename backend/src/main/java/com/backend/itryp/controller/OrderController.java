@@ -29,8 +29,8 @@ public class OrderController {
 	/**
 	 * 상품 주문 페이지로 이동
 	 * 
-	 * @param pmap 유저 및 상품 정보
-	 * @return temp 쿠폰 정보 등
+	 * @param pmap 유저 아이디
+	 * @return temp 쿠폰 정보, 유저 정보
 	 */
 	@PostMapping("orderPage")
 	public String getOrderPage(@RequestBody Map<String, Object> pmap) {
