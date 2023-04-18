@@ -12,11 +12,14 @@ const CartPage = () => {
 
   const cartList = cookies.cart;
   let price = 0;
+  let count = 0;
   if(cartList !== undefined && cartList.length > 0) {
     cartList.forEach(cart => {
       price += cart.marketPrice * cart.marketCnt;
+      count += cart.marketCnt;
     });
   }
+  
   return (
     <>
       <Header/>
@@ -47,7 +50,7 @@ const CartPage = () => {
             </tbody>
           </CartTable>
           <CartCalcDiv>
-            <ResultDiv>상품 개수 : {cartList.length}개</ResultDiv>
+            <ResultDiv>상품 개수 : {count}개</ResultDiv>
             <div>상품 금액 : {price}원</div>
           </CartCalcDiv>
           <CartButtonDiv>
