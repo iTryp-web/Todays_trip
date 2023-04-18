@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-/*================ csSection ================*/
+/*================ CustomerService ================*/
 export const CustomerService = styled.div`
   position: relative;
   #li {
@@ -29,6 +29,8 @@ export const CustomerService = styled.div`
     margin: 0;
     padding: 0;
     flex: 1;
+    @media only screen and (max-width: 900px) {
+    }
   }
 
   .helpDiv {
@@ -40,10 +42,12 @@ export const CustomerService = styled.div`
   }
 
   .csDiv {
+    height: 100%;
     flex-grow: 1;
     flex-shrink: 1;
     width: 50%;
     display: inline-flex;
+    color: rgb(47, 52, 56);
   }
 
   .helpTitle {
@@ -142,7 +146,8 @@ export const QMark = styled.span`
   border: 1px solid rgb(234, 237, 239);
   box-shadow: rgba(63, 71, 77, 0.05) 0px 2px 6px;
 `;
-/*================ FaqNav ================*/
+
+/*================ FaQ NavBar ================*/
 export const FnHr = styled.hr`
   margin: 0px;
   padding: 0px;
@@ -233,20 +238,41 @@ export const QlButton = styled.button`
   .questionText {
     font-size: 16px;
   }
+  .questionText.open {
+    font-weight: bold;
+  }
+
   .questionDownArrow {
     display: inline-block;
     font-size: 24px;
     line-height: 1;
+    transition: all 0.2s ease 0s;
   }
-
-  .questionDownArrow.rotate {
+  .questionDownArrow.open {
     transform: rotate(180deg);
   }
 
-  .qlOrganizer {
-    justify-content: space-between;
+  .qlConatiner {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 `;
 
-export const QuestionText = styled.span``;
+export const AnswerText = styled.div`
+  background-color: rgb(247, 249, 250);
+  border-radius: 4px;
+  transition: all 0.2s ease 0s;
+  box-sizing: border-box;
+  padding: 0px 16px;
+  opacity: 0;
+  height: 0px;
+  overflow: hidden;
+  &.show {
+    opacity: 1;
+    height: auto;
+    overflow: visible;
+    transition: all 0.1s ease-in-out;
+  }
+`;
