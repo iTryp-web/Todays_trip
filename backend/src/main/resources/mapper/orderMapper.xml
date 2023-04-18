@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
-
-	<!-- /////////////////////// getCartPage 필요 없어짐... /////////////////////// -->
-	<!-- 카트 페이지로 이동할 때 필요한 정보 가져오기 -->
-	<select id="getCartPage" parameterType="map" resultType="map">
-		SELECT market_no, user_id, market_category, market_title, market_content, market_price, market_date
-		  FROM TB_MARKET
-		 WHERE market_no =#{market_no}
-	</select>
 	
 	<!-- 주문 페이지로 이동할 때 필요한 정보 가져오기 -->
 	<select id="getOrderPage" parameterType="map" resultType="map">
@@ -17,7 +9,7 @@
 				c.coupon_min, 
 				c.coupon_max, 
 				c.coupon_date, 
-				c.coupon_valid
+				c.coupon_valid,
 				u.user_name, 
 				u.user_phone, 
 				u.user_zipcode, 
@@ -27,7 +19,7 @@
 		  FROM TB_U_COUPON c, TB_USER u
 		 WHERE c.user_id = #{user_id}
 		   AND u.user_id = #{user_id}<!-- 맞습니까??? -->
-		   AND c.coupon_exp == 0
+		   AND c.coupon_exp = 0
 	</select>
 	
 	<!-- 주문 완료 후 주문 내역 DB에 저장 -->
