@@ -531,6 +531,10 @@ export const UserWrap = styled.div`
 
 export const Username = styled.div`
   font-size: 14px;
+  cursor: pointer;
+  &:hover {
+    color: #4996f3;
+  }
 `;
 
 export const User = styled.div`
@@ -668,6 +672,7 @@ export const ReactIcon = styled.div`
   color: gray;
   margin-top: 0;
   margin-right: 3px;
+  
 `;
 
 export const FontContent = styled.div`
@@ -818,6 +823,9 @@ export const CommentReply = styled.span`
   color: gray;
   font-weight: 500;
   cursor: pointer;
+  &:hover {
+    color: #4996f3;
+  }
 `;
 
 export const InputComment = styled.div`
