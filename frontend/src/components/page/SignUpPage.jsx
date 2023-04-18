@@ -3,6 +3,7 @@ import {
   AuthButton,
   EmailBlock,
   ModalWrapper,
+  NamenPhoneBlock,
   PWnNickBlock,
   RefferBlock,
   SignUpBlock,
@@ -24,16 +25,22 @@ const SignUpPage = () => {
   const [idInput, setIdInput] = useState("");
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [pwInput, setPwInput] = useState("");
+  const [nameInput, setNameInput] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
   const [pwCheckInput, setPwCheckInput] = useState("");
   const [nicknameInput, setNicknameInput] = useState("");
   const [referrerInput, setReferrerInput] = useState("");
   const [textIdColor, setTextIdColor] = useState("black");
+  const [textNameColor, setTextNameColor] = useState("black");
+  const [textPhoneColor, setTextPhoneColor] = useState("black");
   const [textPwColor, setTextPwColor] = useState("black");
   const [textPwCheckColor, setTextPwCheckColor] = useState("black");
   const [textNicknameColor, setTextNickNameColor] = useState("black");
   const [textReferrerColor, setTextReferrerColor] = useState("black");
   const [textTermColor, setTextTermColor] = useState("black");
   const [idtext, setIdText] = useState("");
+  const [nametext, setNameText] = useState("");
+  const [phonetext, setPhoneText] = useState("");
   const [pwtext, setPwText] = useState("");
   const [termtext, setTermText] = useState("");
   const [pwChecktext, setPwCheckText] = useState("");
@@ -48,6 +55,14 @@ const SignUpPage = () => {
   const [emailSelectColor, setEmailSelectColor] = useState("lightgray");
   //이메일 select박스 shadow테두리 색깔
   const [emailSelectShadowColor, setEmailSelectShadowColor] = useState("none");
+  //이름 input박스 얇은 테두리색깔
+  const [nameInputColor, setNameInputColor] = useState("lightgray");
+  //이름 input박스 shadow 테두리 색깔
+  const [nameInputShadowColor, setNameInputShadowColor] = useState("none");
+  //휴대전화번호 input박스 얇은 테두리색깔
+  const [phoneInputColor, setPhoneInputColor] = useState("lightgray");
+  //휴대전화번호 input박스 shadow 테두리 색깔
+  const [phoneInputShadowColor, setPhoneInputShadowColor] = useState("none");
   //Domainselect박스에서 직접입력 선택할때 select박스를 input박스로 바꾸기
   const [inputVisible, setInputVisible] = useState(false);
   //패스워드 input박스 얇은 테두리 색깔
@@ -139,6 +154,46 @@ const SignUpPage = () => {
       setInputVisible(true);
     } else {
       setInputVisible(false);
+    }
+  };
+  //이름 input handler
+  const handleName = (e) => {
+    const Name = e.target.value;
+    setNameInput(Name);
+    if (Name === "") {
+      setNameInputColor("#f77");
+      setNameInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+      setTextNameColor("#f77");
+      setNameText("필수 입력 항목입니다");
+    }else{
+      setNameInputColor("#4996f3");
+      setNameInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+      setTextNameColor("black");
+      setNameText("");
+    }
+  };
+  //휴대전화번호 input handler
+  const handlePhone = (e) => {
+    const Phone = e.target.value;
+    const regPhExp = new RegExp("^01([0|1|6|7|8|9])[0-9]{7,8}$")
+    setPhoneInput(Phone);
+    const phValidInput = regPhExp.test(Phone);
+    if (Phone === "") {
+      setPhoneInputColor("#f77");
+      setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+      setTextPhoneColor("#f77");
+      setPhoneText("필수 입력 항목입니다");
+    } else if(!phValidInput){
+      setPhoneInputColor("#f77");
+      setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+      setTextPhoneColor("#f77");
+      setPhoneText("형식이 올바르지 않습니다");
+    }
+    else{
+      setPhoneInputColor("#4996f3");
+      setPhoneInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+      setTextPhoneColor("black");
+      setPhoneText("");
     }
   };
   //직접입력 선택시 생기는 x버튼 클릭시 발생 이벤트
@@ -247,6 +302,30 @@ const SignUpPage = () => {
       setEmailSelectShadowColor("");
     }
   };
+  //이름 focus handler
+  const handleNameFocus = () => {
+    setNameInputColor("#4996f3");
+    setNameInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+  };
+  //이름 shadow handler
+  const handleNameBlur = () => {
+    if (nameInputColor !== "#f77") {
+      setNameInputColor("lightgray");
+      setNameInputShadowColor("");
+    }
+  };
+  //휴대전화번호 focus handler
+  const handlePhoneFocus = () => {
+    setPhoneInputColor("#4996f3");
+    setPhoneInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+  };
+  //이름 shadow handler
+  const handlePhoneBlur = () => {
+    if (phoneInputColor !== "#f77") {
+      setPhoneInputColor("lightgray");
+      setPhoneInputShadowColor("");
+    }
+  };
   //비밀번호 focus handler
   const handlePwInputFocus = () => {
     setPwInputColor("#4996f3");
@@ -327,7 +406,7 @@ const SignUpPage = () => {
   //회원가입 버튼 핸들러
   const handleSubmit = (e) => {
     e.preventDefault();
-  }
+  };
 
   //비밀번호 같은값인지 체크
   useEffect(() => {
@@ -457,6 +536,58 @@ const SignUpPage = () => {
           >
             이메일 인증하기
           </AuthButton>
+          <NamenPhoneBlock>
+            <h6 style={{ color: textNameColor }}>이름</h6>
+            <input
+              className="name"
+              placeholder="실명을 입력해주세요"
+              value={nameInput}
+              style={{
+                border: "1px solid " + nameInputColor,
+                boxShadow: nameInputShadowColor,
+              }}
+              onChange={handleName}
+              onFocus={handleNameFocus}
+              onBlur={handleNameBlur}
+            ></input>
+            {nametext !== "" && (
+              <p
+                style={{
+                  marginLeft: "0.5%",
+                  marginTop: "10px",
+                  marginBottom: "1px",
+                  color: "#f77",
+                  fontSize: "13px",
+                }}
+              >
+                {`${nametext}`}
+              </p>
+            )}
+            <h6 className ="phone6" style ={{ color : textPhoneColor }}>휴대전화번호</h6>
+            <input className="phone"
+              placeholder="ex)0161234567/01012345678"
+              value={phoneInput}
+              style={{
+                border: "1px solid " + phoneInputColor,
+                boxShadow: phoneInputShadowColor,
+              }}
+              onChange={handlePhone}
+              onFocus={handlePhoneFocus}
+              onBlur={handlePhoneBlur}></input>
+              {phonetext !== "" && (
+              <p
+                style={{
+                  marginLeft: "0.5%",
+                  marginTop: "10px",
+                  marginBottom: "1px",
+                  color: "#f77",
+                  fontSize: "13px",
+                }}
+              >
+                {`${phonetext}`}
+              </p>
+            )}
+          </NamenPhoneBlock>
           <PWnNickBlock>
             <h6 style={{ color: textPwColor }}>비밀번호</h6>
             <p>영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.</p>
@@ -669,13 +800,12 @@ const SignUpPage = () => {
               {`${termtext}`}
             </p>
           )}
-        {/* 구글 Recaptcha 적용?(시간나면) */}
-        <SubmitButton
-            type="submit"
-            onClick = {handleSubmit}
-          >회원가입하기
+          {/* 구글 Recaptcha 적용?(시간나면) */}
+          <SubmitButton type="submit" onClick={handleSubmit}>
+            회원가입하기
           </SubmitButton>
-          <p className="lastP">이미 아이디가 있으신가요? 
+          <p className="lastP">
+            이미 아이디가 있으신가요?
             <a href="/signin">로그인</a>
           </p>
         </SignUpBlock>
