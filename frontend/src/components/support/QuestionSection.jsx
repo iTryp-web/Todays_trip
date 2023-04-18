@@ -10,12 +10,11 @@ import {
 } from "../../styles/SupportStyle";
 import { BsChevronDown } from "react-icons/bs";
 import { faqPost } from "./QuestionData";
+import { useParams } from "react-router-dom";
 
 const QuestionSection = () => {
-  const [faqPosts, setFaqPosts] = useState([{}]);
-  useEffect(() => {
-    setFaqPosts(faqPost);
-  }, []);
+  let {fPost} = useParams()
+  console.log(fPost);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,31 +26,27 @@ const QuestionSection = () => {
     <>
       <QlSection>
         <QlUl>
-          {faqPosts &&
-            faqPosts.map((post) => {
-              <QlLi key={post.fboard_no}>
-                <QlH3>
-                  <QlButton onClick={handleClick}>
-                    <QMark>Q</QMark>
-                    <div className={`qlConatiner ${isOpen ? "open" : ""}`}>
-                      <span className={`questionText ${isOpen ? "open" : ""}`}>
-                        {post.fboard_title}
-                      </span>
-                      <span
-                        className={`questionDownArrow ${isOpen ? "open" : ""}`}
-                      >
-                        <BsChevronDown />
-                      </span>
-                    </div>
-                  </QlButton>
-                </QlH3>
-                <AnswerText className={isOpen ? "show" : ""}>
-                  <p className="answerTextP">
-                    {post.fboard_content}
-                  </p>
-                </AnswerText>
-              </QlLi>;
-            })}
+          {faqPost&& faqPost.map((fPost))}
+          <QlLi key={fPost.fboard_no}>
+            <QlH3>
+              <QlButton onClick={handleClick}>
+                <QMark>Q</QMark>
+                <div className={`qlConatiner ${isOpen ? "open" : ""}`}>
+                  <span className={`questionText ${isOpen ? "open" : ""}`}>
+                    {fPost.fboard_title}
+                  </span>
+                  <span className={`questionDownArrow ${isOpen ? "open" : ""}`}>
+                    <BsChevronDown />
+                  </span>
+                </div>
+              </QlButton>
+            </QlH3>
+            <AnswerText className={isOpen ? "show" : ""}>
+              <p className="answerTextP">
+                {fPost.fboard_content}
+              </p>
+            </AnswerText>
+          </QlLi>
         </QlUl>
       </QlSection>
     </>

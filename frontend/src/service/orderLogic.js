@@ -1,12 +1,13 @@
 import axios from "axios";
 
-export const testDB = (test) => {
+export const getOrderPage = (userId) => {
+  console.log(userId);
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
-        method: "get",
-        url: process.env.REACT_APP_SPRING_IP + "test/testList",
-        params: test,
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "shop/orderPage",
+        data: userId,
       });
       resolve(response);
     } catch (error) {
