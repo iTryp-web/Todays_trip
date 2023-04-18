@@ -25,7 +25,7 @@ public class AdminController {
 	private AdminLogic adminLogic = null;
 
 	/**
-	 * 오버뷰(신고글'회원, 차단글'회원, 탈퇴회원) - 처리안된것 있으면 마크표시해주는 용도
+	 * 오버뷰(새로운 문의, 신고, 신청 표시) - 처리안된것 있으면 마크표시해주는 용도
 	 * @param pMap
 	 * @return
 	 */
@@ -43,7 +43,26 @@ public class AdminController {
 	}
 	
 	/**
-	 * 신고 목록 조회(글0, 댓글1)
+	 * 판매목록(새로운 문의) 조회
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@GetMapping("marketQnaList")
+	public String marketQnaList(@RequestParam Map<String, Object> pMap) {
+		logger.info("marketQnaList 호출");
+		logger.info(pMap);
+		String temp = null;
+		List<Map<String, Object>> bList = null;
+		bList = adminLogic.marketQnaList(pMap);
+		logger.info(bList);
+		Gson g = new Gson();
+		temp = g.toJson(bList);
+		return temp;
+	}
+	
+	/**
+	 * 신고 목록 조회(회원4, 글0, 댓글1
 	 * 
 	 * @param pMap
 	 * @return

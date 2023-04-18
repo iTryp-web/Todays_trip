@@ -239,7 +239,7 @@ export const SearchDiv = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  left: 32%;
+  justify-content: center;
   margin: 0 auto;
   margin-top: 5em;
   font-size: 14px;
@@ -531,6 +531,10 @@ export const UserWrap = styled.div`
 
 export const Username = styled.div`
   font-size: 14px;
+  &:hover {
+    color: ${({ isUser }) => (isUser ? "#4996F3" : "black")};
+    cursor: ${({ isUser }) => (isUser ? "pointer" : "dafault")};
+  }
 `;
 
 export const User = styled.div`
@@ -564,6 +568,28 @@ export const ModalDiv = styled.div`
   z-index: 10;
 `;
 
+export const ModalUserDiv = styled.div`
+  border: 1px solid #e9e9e9;
+  background-color: white;
+  border-radius: 5px;
+  width: 120px;
+  position: absolute;
+  top: 28px;
+  left: 54px;
+  z-index: 10;
+`;
+
+export const ModalCommentUserDiv = styled.div`
+  border: 1px solid #e9e9e9;
+  background-color: white;
+  border-radius: 5px;
+  width: 120px;
+  position: absolute;
+  top: 33px;
+  z-index: 10;
+  left: ${({ cstep }) => (cstep == 0 ? "54px" : "89px")};
+`;
+
 export const ModalUl = styled.ul`
   padding: 5px;
   margin: 5px 0;
@@ -588,6 +614,50 @@ export const ModalReport = styled.div`
   position: absolute;
   top: 40px;
   right: 0;
+  z-index: 10;
+  text-align: center;
+  .x-icon {
+    font-size: 30px;
+    color: #464646;
+    display: flex;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    cursor: pointer;
+  }
+`
+
+export const ModalUserReport = styled.div`
+  border: 1px solid #e9e9e9;
+  background-color: white;
+  border-radius: 5px;
+  width: 300px;
+  height: 230px;
+  position: absolute;
+  top: 28px;
+  left: 54px;
+  z-index: 10;
+  text-align: center;
+  .x-icon {
+    font-size: 30px;
+    color: #464646;
+    display: flex;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    cursor: pointer;
+  }
+`
+
+export const ModalCommentUserReport = styled.div`
+  border: 1px solid #e9e9e9;
+  background-color: white;
+  border-radius: 5px;
+  width: 300px;
+  height: 230px;
+  position: absolute;
+  top: 33px;
+  left: ${({ cstep }) => (cstep == 0 ? "54px" : "89px")};
   z-index: 10;
   text-align: center;
   .x-icon {
@@ -668,6 +738,7 @@ export const ReactIcon = styled.div`
   color: gray;
   margin-top: 0;
   margin-right: 3px;
+  
 `;
 
 export const FontContent = styled.div`
@@ -774,6 +845,10 @@ export const CommentUser = styled.div`
   margin-top: 3px;
   font-size: 13px;
   font-weight: 600;
+    &:hover {
+    color: ${({ isCommentUser }) => (isCommentUser ? "#4996F3" : "black")};
+    cursor: ${({ isCommentUser }) => (isCommentUser ? "pointer" : "dafault")};
+  }
 `;
 
 export const CommentContent = styled.div`
@@ -818,6 +893,9 @@ export const CommentReply = styled.span`
   color: gray;
   font-weight: 500;
   cursor: pointer;
+  &:hover {
+    color: #4996f3;
+  }
 `;
 
 export const InputComment = styled.div`

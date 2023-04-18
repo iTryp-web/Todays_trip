@@ -40,3 +40,6 @@ export const categories = [
   category: 'together',
   img: '/images/icon-together2.png'},
 ]
+
+// ProductList 검색 조건
+export const search = ['작성자', '제목', '내용', '제목+내용']

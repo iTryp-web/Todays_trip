@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../include/Header';
 import Footer from '../include/Footer';
-import { BodyContainer, BtnCommentInsert, BtnDot, BtnDotComment, BtnReport, CategoryDiv, Comment, CommentBox, CommentContainer, CommentContent, CommentDate, CommentDiv, CommentImg, CommentInput, CommentLike, CommentModal, CommentModalUl, CommentReply, CommentUser, CountDiv, DetailContent, DetailSection, DetailTitle, DetialContainer, EditText, FontContent, HrLine, InputComment, InputDiv, InputReport, Like, ModalDiv, ModalReport, ModalUl, Profile, ReCommentInput, ReactIcon, ReplyIcon, ReportText, TitleContainer, User, UserImg, UserWrap, Username } from '../../styles/BoardStyle';
+import { BodyContainer, BtnCommentInsert, BtnDot, BtnDotComment, BtnReport, CategoryDiv, Comment, CommentBox, CommentContainer, CommentContent, CommentDate, CommentDiv, CommentImg, CommentInput, CommentLike, CommentModal, CommentModalUl, CommentReply, CommentUser, CountDiv, DetailContent, DetailSection, DetailTitle, DetialContainer, EditText, FontContent, HrLine, InputComment, InputDiv, InputReport, Like, ModalCommentUserDiv, ModalCommentUserReport, ModalDiv, ModalReport, ModalUl, ModalUserDiv, ModalUserReport, Profile, ReCommentInput, ReactIcon, ReplyIcon, ReportText, TitleContainer, User, UserImg, UserWrap, Username } from '../../styles/BoardStyle';
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentDots } from 'react-icons/fa';
 import { BsArrowReturnLeft, BsArrowReturnRight, BsBookmarkStar, BsBookmarkStarFill, BsThreeDotsVertical } from 'react-icons/bs';
@@ -144,6 +144,8 @@ const BoardDetail = () => {
     setIsCommentReport(false)
     setCommentDot({})
     setClickBtnDot(false)
+    setIsUserReport(false)
+    setCommentUserReport({})
   }
   // 신고창, 신고사유 변수
   const [isReport, setIsReport] = useState(false)
@@ -158,6 +160,8 @@ const BoardDetail = () => {
     console.log('report=> ' + type + ", " + no + ", " + step + ", " + rUser + ", " + reportReason);
     setIsReport(false)
     setIsCommentReport(false)
+    setIsUserReport(false)
+    setCommentUserReport({})
     const board = {
       user_id: sessionStorage.getItem('user_id'),
       report_type: type,
@@ -286,6 +290,7 @@ const BoardDetail = () => {
   const deleteComment = async (cno, cstep) => {
     console.log('deleteComment' + bno, cno, cstep);
     const board = {
+      user_id: userId,
       board_no: bno,
       comment_no: cno,
       comment_step: cstep,
@@ -371,6 +376,38 @@ const BoardDetail = () => {
     setStart(new Date()) // useEffect 부르는 용도
   }
 
+  /* 글 유저 신고하기 */
+  const [isClickBtnUser, setIsClickBtnUser] = useState(false)
+  const [isUserReport, setIsUserReport] = useState(false)
+  const onClickBtnUser = () => {
+    setIsClickBtnUser(!isClickBtnUser)
+  }
+  const reportUser = (userNickname) => {
+    console.log('reportUser=> ' + userNickname);
+    setIsUserReport(true)
+    setIsClickBtnUser(false)
+  }
+  /* 댓글 유저 신고하기 */
+  const [isClickBtnCommentUser, setIsClickBtnCommentUser] = useState(false)
+  const [commentUser, setCommentUser] = useState({})
+  const [commentUserReport, setCommentUserReport] = useState({})
+  const onClickBtnCommentUser = (cno, cstep) => {
+    console.log('onClickBtnCommentUser=> ' + cno + cstep);
+    if(commentUser.cno === cno && commentUser.cstep === cstep) {
+      setCommentUser({})
+    } else {
+      setCommentUser({cno, cstep});
+    }
+  }
+  const reportCommentUser = (cno, cstep) => {
+    setCommentUser({})
+    if(commentUserReport.cno === cno && commentUserReport.cstep === cstep) {
+      setCommentUserReport({})
+    } else {
+      setCommentUserReport({cno, cstep});
+    }
+  }
+
   return (
     <>
     <Header />
@@ -387,7 +424,32 @@ const BoardDetail = () => {
                   <img className='userImg' src={profileImg[Math.floor(((new Date(detailPost.board_date).getSeconds())%10))]} alt="" />
                 </UserImg>
                 <UserWrap>
-                  <Username>{detailPost.user_nickname}</Username>
+                  <Username isUser={userNickname === detailPost.user_nickname ? false : true}
+                    onClick={() => {
+                      onClickBtnUser()
+                    }}
+                  >{detailPost.user_nickname}</Username>
+                  {isClickBtnUser && userNickname !== detailPost.user_nickname ? (
+                    <ModalUserDiv className='user'>
+                    <ModalUl onClick={() => reportUser(detailPost.user_nickname)}>신고하기</ModalUl>
+                    </ModalUserDiv>
+                    ) : (
+                    null
+                    )}
+                    {isUserReport ? (
+                      <ModalUserReport>
+                        <HiOutlineX className='x-icon' onClick={() => reportCancel()} />
+                      <ReportText
+                        type="text"
+                        maxLength="100"
+                        placeholder="신고사유를 입력해주세요."
+                        autoComplete="off"
+                        onChange={(e)=>{handleReportPost(e.target.value)}}>
+                      </ReportText>
+                      {/* type, group, step, 신고대상 */}
+                      <BtnReport onClick={() => report(4, -1, 0, detailPost.user_nickname)}>신고하기</BtnReport>
+                    </ModalUserReport>
+                    ) : null}
                   <User>
                     {new Date(detailPost.board_date).toLocaleString()}{' · '}조회{' '}
                     {detailPost.board_hit}
@@ -512,7 +574,41 @@ const BoardDetail = () => {
                     </InputDiv>
                     ) : (
                     <CommentDiv>
-                      <CommentUser>{item.user_nickname}</CommentUser>
+                      <CommentUser isCommentUser={userNickname === item.user_nickname ? false : true}
+                        onClick={() => {
+                          onClickBtnCommentUser(item.comment_no, item.comment_step)
+                        }}>
+                      {item.user_nickname}
+                    </CommentUser>
+                    {commentUser.cno === item.comment_no && commentUser.cstep === item.comment_step && userNickname !== item.user_nickname ? (
+                    <ModalCommentUserDiv cstep={item.comment_step}>
+                    <ModalUl onClick={() => reportCommentUser(item.comment_no, item.comment_step, item.user_nickname)}>신고하기</ModalUl>
+                    </ModalCommentUserDiv>
+                    ) : (
+                    null
+                    )}
+                    {commentUserReport.cno === item.comment_no && commentUserReport.cstep === item.comment_step ? (
+                      <ModalCommentUserReport cstep={item.comment_step}>
+                        <HiOutlineX className='x-icon' onClick={() => reportCancel()} />
+                      <ReportText
+                        type="text"
+                        maxLength="100"
+                        placeholder="신고사유를 입력해주세요."
+                        autoComplete="off"
+                        onChange={(e)=>{handleReportPost(e.target.value)}}>
+                      </ReportText>
+                      {/* type, group, step, 신고대상 */}
+                      <BtnReport onClick={() => report(4, item.comment_no, item.comment_step, item.user_nickname)}>신고하기</BtnReport>
+                    </ModalCommentUserReport>
+                    ) : null}
+
+
+
+
+
+
+
+
                       <CommentContent status={item.comment_status}>{item.comment_content}
                       {item.comment_status === 3 ? <EditText>(수정됨)</EditText> : null}
                       </CommentContent>

@@ -98,7 +98,7 @@
 	            , #{board_category}
 	            , #{board_title}
 	            , #{board_content}
-	            , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+	            , TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 		          )
 	</insert>
 
@@ -200,8 +200,8 @@
 		            , user_id
 		            , comment_no
 		            <if test="comment_step > 0">
-		            , comment_step
-		            </if>
+                , comment_step
+                </if>
 		            , comment_content
 		            , comment_date
 			          )
@@ -213,11 +213,11 @@
 	            <if test="comment_no != null">
 				    		, #{comment_no}
 							</if>
-							<if test="comment_step > 0">
+	            <if test="comment_step > 0">
 		            , TB_B_COMMENT_STEP_SEQ.NEXTVAL
 							</if>
 		            , #{comment_content}
-		            , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+		            , TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 			          )
 	</insert>
 	
@@ -276,7 +276,7 @@
 					  </if>
 							, #{report_user}
 							, #{report_reason}
-							, TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+							, TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 							 )
 	</insert>
 	
@@ -288,9 +288,7 @@
 	       , l.like_step
 	   FROM TB_USER u, TB_LIKE l
 	  WHERE u.user_id = l.user_id
-	  <if test="user_nickname != null and user_nickname.length() != 0">
       AND u.user_nickname = #{user_nickname}
-	  </if>
 	    AND (l.like_type = 0 OR l.like_type = 1)
 	    AND l.like_no = #{board_no}
 	</select>
@@ -301,24 +299,16 @@
 								(user_id
 							 , like_type
 							 , like_no
-						 <if test="like_group != null and like_group >= 0">
 							 , like_group
-						 </if>
-						 <if test="like_step != null and like_step > 0">
 						 	 , like_step
-						 </if>
 							 , like_date
 							 )
 				 VALUES (#{user_id}
 				 			 , #{like_type}
 				 			 , #{like_no}
-				 		 <if test="like_group != null and like_group >= 0">
 				 			 , #{like_group}
-						 </if>
-				  	 <if test="like_step != null and like_step > 0">
 				 			 , #{like_step}
-						 </if>
-				 			 , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+				 			 , TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 							 )
 	</insert>
 	
@@ -326,17 +316,12 @@
 	<delete id="likeOff" parameterType="map">
 		DELETE FROM TB_LIKE
 					WHERE like_no = #{like_no}
-						<if test="user_id != null">
+					<!-- 0이면 해당 좋아요취소, 1이면 모든좋아요 취소-->
+					<if test="delete_all_like != null and delete_all_like == 0">
 						AND user_id = #{user_id}
-						</if>
-						<if test="like_type != null">
 						AND like_type = #{like_type}
-						</if>
-						<if test="like_group != null">
 						AND like_group = #{like_group}
-						</if>
-						<if test="like_step != null">
 						AND like_step = #{like_step}
-						</if>
+					</if>
 	</delete>
 </mapper>

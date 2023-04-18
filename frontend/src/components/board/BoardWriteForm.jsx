@@ -16,8 +16,6 @@ const BoardWriteForm = () => {
   const[content, setContent]= useState('');
   const[files, setFiles]= useState([]);
   const quillRef = useRef();
-  // 테스트용 유저아이디
-  window.sessionStorage.setItem('user_id', 'test1')
 
   const handleCategory = useCallback((e) => {
     console.log(e);
