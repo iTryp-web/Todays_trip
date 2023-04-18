@@ -31,8 +31,6 @@ const BoardDetail = () => {
   const [liked, setLiked] = useState([{}])
   // 좋아요 판별 변수
   const [isLiked, setIsLiked] = useState(false)
-  // 유저 댓글 좋아요 변수
-  const [likedComment, setLikedComment] = useState([{}])
   // useEffect 실행용 변수
   const [start, setStart] = useState('')
   // 해당글 카테고리 저장
@@ -85,7 +83,7 @@ const BoardDetail = () => {
       {categories.map((item) => {
         if(item.name == jsonDoc[0].BOARD_CATEGORY) {
           setCategory(item.category)
-          console.log('1!!!'+item.category);
+          console.log('카테고리 담기=> '+item.category);
         }
       })}
       console.log(category);

@@ -124,7 +124,7 @@ useEffect(() => {
                     active={category.name === selected}
                     onClick={() => handleCategory(category.name)}
                   >
-                    <img src={category.img} alt={category.name} />
+                    <img src={category.img} alt={category.category} />
                     {category.name}
                   </CategoryLi>
                 );
