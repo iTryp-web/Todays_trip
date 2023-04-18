@@ -2,12 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../include/Header';
 import Footer from '../include/Footer';
-import { BodyContainer, BtnCommentInsert, BtnDot, BtnDotComment, CategoryDiv, Comment, CommentBox, CommentContainer, CommentContent, CommentDate, CommentDiv, CommentImg, CommentInput, CommentLike, CommentModal, CommentModalUl, CommentReply, CommentUser, CountDiv, DetailContent, DetailSection, DetailTitle, DetialContainer, FontContent, HrLine, InputComment, InputDiv, Like, ModalDiv, ModalUl, Profile, ReCommentInput, ReactIcon, ReplyIcon, TitleContainer, User, UserImg, UserWrap, Username } from '../../styles/BoardStyle';
-import { AiFillLike } from 'react-icons/ai';
-import { FaCommentDots } from 'react-icons/fa';
-import { BsArrowReturnLeft, BsArrowReturnRight, BsBookmarkStar, BsBookmarkStarFill, BsThreeDotsVertical } from 'react-icons/bs';
 
-import { categories, profileImg } from './MarketData';
+import { categories} from './MarketData';
 import { dislikeDB, likeDB, marketDeleteDB, marketDetailDB, reviewInsertDB } from '../../service/marketLogic';
 import MarketReview from './MarketReview';
 import MarketQna from './MarketQna';

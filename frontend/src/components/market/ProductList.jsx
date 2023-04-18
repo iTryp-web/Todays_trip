@@ -1,140 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { marketListDB } from '../../service/marketLogic';
+import { BtnSearch, SearchInput } from '../../styles/BoardStyle';
+import { ProductListBlock, SearchDiv, SelectBlock } from '../../styles/MarketStyle';
+import { search } from './MarketData';
 import ProductItem from './ProductItem';
-const ProductListBlock = styled.div`
-  padding: 0 4rem;
-  max-width: 1256px;
-  margin: 5rem auto;
-  justify-content: space-between;
-  .title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    h2 {
-      letter-spacing: -2px;
-      font-size: 1.3rem;
-    }
-    span {
-      color: var(--red);
-      cursor: pointer;
-      font-weight: 700;
-      &:hover {
-        color: var(--light-red);
-      }
-    }
-  }
-  .items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    
-    overflow: hidden;
-    margin-bottom: 0.3rem;
-    border-radius: 5px;
-    position: relative;
-  }
-
-  @media only screen and (max-width: 1256px) {
-    padding: 0 3rem;
-  }
-  @media only screen and (max-width: 1024px) {
-    padding: 0 1.5rem;
-  }
-  @media only screen and (max-width: 768px) {
-    padding: 0 1rem;
-  }
-`;
-
-const SelectBlock = styled.select`
-  border: none;
-  outline: none;
-  width: 100px;
-`;
-
-const ItemBlock = styled.div`
-  padding: 1rem 0.5rem;
-  cursor: pointer;
-  span {
-    color: var(--gray);
-  }
-  .image {
-    max-height: 270px;
-    overflow: hidden;
-    margin-bottom: 0.3rem;
-    border-radius: 5px;
-    position: relative;
-    img {
-      width: 100%;
-      height: 100%;
-      &:hover {
-        transform: scale(1.1);
-        transition: transform 0.5s;
-      }
-    }
-    .mark {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      font-size: 1.5rem;
-      color: #ffffff84;
-    }
-  }
-
-  .body {
-    padding: 0 0.5rem;
-    font-size: 0.8rem;
-    .brand {
-      display: inline-block;
-      margin-bottom: 0.3rem;
-      font-size: 0.7rem;
-    }
-    .special-price {
-      display: block;
-      color: var(--red);
-      font-weight: 800;
-    }
-    .discount {
-      color: var(--blue);
-      font-weight: 600;
-      font-size: 1.2rem;
-      margin-right: 0.5rem;
-    }
-    .price {
-      color: var(--black);
-      font-weight: 600;
-      font-size: 1.2rem;
-    }
-    .star {
-      margin-right: 0.3rem;
-      color: var(--black);
-      font-weight: 600;
-      span {
-        color: var(--blue);
-      }
-    }
-    .review_count {
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-  }
-  @media only screen and (max-width: 768px) {
-    .image {
-      width: 100%;
-      max-height: 100%;
-    }
-  }
-`;
-
 
 const ProductList = () => {
   /* 판매글 목록 */
   //화면위한 테스트 이미지
   const [items, setItems]=useState([
     "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
     "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-162303132447303472.jpeg/640/640",
     "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166141476368385159.jpg/640/640",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560"
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
+    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
   ]);
 
 // 판매글 담을 객체배열
@@ -215,45 +101,57 @@ useEffect(() => {
 const content=posts.map((post) => {
   return <marketRow key={post.market_no} post={post} />
 })
-// const content = data?.pages.map((pg) => {
-//   return pg.map((item, index) => {
-//     if (pg.length === index + 1) {
-//       return <ProductItem ref={lastItemRef} key={index} item={item} />;
-//     }
-//     return <ProductItem key={index} item={item} />;
-//   });
-// });
+
 
   return (
     <>
+     <div style={{'align-items': 'center'}}>
+          {/* 마켓검색 */}
+          <SearchDiv className='searchDiv'>
+            <DropdownButton className='searchDropdown' variant="" title={searchVal}>
+              {search.map((item)=>(
+                  <Dropdown.Item as="button" key={item} onClick={()=>{
+                    handleSearch(item); 
+                  }}>
+                    {item}
+                  </Dropdown.Item>
+                )) 
+              }
+            </DropdownButton>
+            <SearchInput type="text" id="keyword" maxLength="60" placeholder="마켓상품을 검색하세요."
+              autoComplete="off" onChange={(e)=>{handleSearchKeyword(e.target.value)}} />
+            <BtnSearch className='btnSearch' onClick={btnSearch}>
+              검색
+            </BtnSearch>
+          </SearchDiv>
+          </div>
         <ProductListBlock>
         <div className="title">
-          <h2>인기상품</h2>
+          <h2>마켓</h2>
           <SelectBlock defaultValue="2">
             <option key="1" value="1">
               판매순
             </option>
             <option key="2" value="2">
-              인기순
+              리뷰순
             </option>
             <option key="3" value="3">
-              많은 리뷰순
+              높은별점순
             </option>
             <option key="4" value="4">
-              유저사진 많은순
+              낮은별점순
             </option>
             <option key="5" value="5">
-              높은가격순
+              최신순
             </option>
             <option key="6" value="6">
-              낮은가격순
-            </option>
-            <option key="7" value="7">
-              최신순
+              오래된순
             </option>
           </SelectBlock>
         </div>
-        <ProductItem items={items}/>
+
+          <ProductItem items={items}/>
+    
         </ProductListBlock>
     </>
   )

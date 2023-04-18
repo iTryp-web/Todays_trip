@@ -7,6 +7,8 @@ const Coupon=styled.h5`
   color: #ffffff;
   Font-weight:bold;
   margin:0px;
+  text-align: center;
+
 `
 const Image=styled.img`
   width:50px;
@@ -60,14 +62,13 @@ const MarketBanner = () => {
 
   return (
     <BannerBlock close={close}>
-      {auth===0?
+      {auth===1?
       <Coupon onClick={() => navigate('/signin')}>
-        
         <Image src="/images/voucher.png" />&nbsp;
-        오늘의 여행 첫구매 쿠폰받기!</Coupon>:
+        오늘의 여행 첫구매 쿠폰받기!
+        </Coupon>:
         <Button onClick={() => navigate('/market/write')} >
           지금 판매자 글쓰기!
-          
         </Button> 
 }
       <CgClose onClick={() => setClose(true)} />
