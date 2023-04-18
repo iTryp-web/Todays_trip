@@ -11,17 +11,32 @@ const CartRow = ({ cart, index }) => {
   const [cookies, setCookies, removeCookies] = useCookies(['cart']);
   const cartList = cookies.cart;
 
+  //카트 수량 추가
   const handlePlus = () => {
     cartList[index].marketCnt++;
     removeCookies("cart");
     setCookies("cart", cartList, {expires: new Date(Date.now() + 259200000)});
   }
 
+  //카트 수량 빼기
   const handleMinus = () => {
     if (cartList[index].marketCnt > 1) {
       cartList[index].marketCnt--;
       removeCookies("cart");
       setCookies("cart", cartList, {expires: new Date(Date.now() + 259200000)});
+    } else {
+      alert('카트에 담을 수 있는 최소 수량은 1개 입니다.');
+    }
+  }
+
+  //카트에서 삭제하기
+  const handleDelete = () => {
+    let newCartList = cartList.filter(cart => cart.marketNum !== cartList[index].marketNum)
+    if(newCartList.length > 0) {
+      removeCookies("cart");
+      setCookies("cart", newCartList, {expires: new Date(Date.now() + 259200000)});
+    } else {
+      removeCookies("cart");
     }
   }
 
@@ -55,7 +70,7 @@ const CartRow = ({ cart, index }) => {
         {cart.marketPrice * cart.marketCnt}
         </td>
         <td>
-        <span style={{marginRight:"0.5rem", cursor:"pointer"}}><img src={remove_img} alt="remove"/></span>
+        <span style={{marginRight:"0.5rem", cursor:"pointer"}}><img src={remove_img} alt="remove" onClick={handleDelete}/></span>
         </td>
       </CartTr>
     </>
