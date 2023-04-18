@@ -23,9 +23,6 @@ const BoardUpdateForm = () => {
   const[content, setContent]= useState('');
   const[files, setFiles]= useState([]);
   const quillRef = useRef();
-  // 테스트용 유저아이디, 닉네임
-  window.sessionStorage.setItem('user_id', 'test1')
-  window.sessionStorage.setItem('user_nickname', '테스트1')
 
   const handleCategory = useCallback((e) => {
     console.log(e);

@@ -10,13 +10,14 @@ const BoardPage = () => {
   // 단위테스트용!!
   window.sessionStorage.setItem('user_id', 'test1')
   window.sessionStorage.setItem('user_nickname', '테스트1')
-  window.sessionStorage.setItem('user_role', 0)
+  window.sessionStorage.setItem('user_role', '0')
   const navigate = useNavigate()
 
   // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
   // 아이디, 닉네임 담을 변수
   const [userId] = useState(window.sessionStorage.getItem('user_id'))
   const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+  const [userRole] = useState(window.sessionStorage.getItem('user_role'))
 
   return (
     <>

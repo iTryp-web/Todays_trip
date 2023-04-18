@@ -2,25 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
 	<!-- 판매목록(+새로운 문의) 조회 -->
-	<select id="marketQnaList">
+	<select id="marketQnaList" parameterType="map" resultType="map">
 		SELECT m.market_no
 		     , m.user_id
 		     , m.market_category
 		     , m.market_title
 		     , m.market_price
 		     , q.qna_count
+		     , (SELECT COUNT(qna_no) qna_count
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND qna_sort = 0
+		        ) qna_new
+		     , (SELECT COUNT(market_no)
+         		FROM TB_MARKET) market_count
 		FROM TB_MARKET m
 			, (SELECT COUNT(user_Id) qna_count, market_no
 			    FROM TB_QNA
 			    WHERE qna_step = 0
 			    GROUP BY market_no) q
 		WHERE m.market_no = q.market_no(+)
-		<if test="new != null and new == 1">
-			AND q.market_no IS NOT NULL
-		</if>
-		<if test="new != null and new == 0">
 			AND (q.market_no IS NOT NULL OR q.market_no IS NULL)
-		</if>
+	ORDER BY m.market_date DESC
 	</select>
 	
 	<!-- 신고 목록 조회(회원4, 글0, 댓글1) -->
@@ -35,18 +38,20 @@
 		     , report_reason
 		     , report_date
 		     , report_result
+         , (SELECT count(report_no)
+            FROM TB_REPORT
+            WHERE report_result = 0) report_new
+         , (SELECT COUNT(report_no)
+            FROM TB_REPORT) report_count
 		  FROM TB_REPORT
-		  <if test="report_type != null and report_type == 4">
+		  <if test='report_type != null and report_type == 4'>
 		  	WHERE report_type = 4
 		  </if>
-		  <if test="report_type != null and report_type == 0">
+		  <if test='report_type != null and report_type == 0'>
 		  	WHERE report_type = 0
 		  </if>
-		  <if test="report_type != null and report_type == 1">
+		  <if test='report_type != null and report_type == 1'>
 		  	WHERE report_type = 1
-		  </if>
-		  <if test="new != null and new == 1">
-		  	WHERE report_result = 0
 		  </if>
 		  ORDER BY report_date DESC
 	</select>
@@ -136,20 +141,24 @@
 	<select id="resignList" parameterType="map" resultType="map">
 		SELECT u.user_id
 		     , u.user_nickname
-		     , u.user_name
+		     , u.user_name 
 		     , u.user_phone
 		     , u.user_level
 		     , u.status
 		     , q.qna_title
 		     , q.qna_content
 		     , q.qna_date
+		     , (SELECT count(qna_no)
+				    FROM TB_QNA
+				    WHERE qna_step = 0
+				    AND qna_sort = 3) resign_new
+				 , (SELECT count(qna_no)
+            FROM TB_QNA
+            WHERE qna_sort = 3) resign_count
 		FROM TB_USER u, TB_QNA q
 		WHERE u.user_id = q.user_id
 			AND q.qna_sort = 3
-		<if test="new != null and new == 1">
-			AND q.qna_step = 0
-		</if>
-		ORDER BY q.qna_date DESC
+ ORDER BY q.qna_date DESC
 	</select>
 	
 		<!-- 탈퇴(신청) 회원 상태 수정 탈퇴1 -->
