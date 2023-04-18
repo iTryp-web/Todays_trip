@@ -3,7 +3,7 @@ import { AiOutlinePhone } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { CustomerService, QMark } from "../../styles/SupportStyle";
 
-const csSection = () => {
+const SupportSection = () => {
   return (
     <>
       <CustomerService>
@@ -76,4 +76,4 @@ const csSection = () => {
   );
 };
 
-export default csSection;
+export default SupportSection;
