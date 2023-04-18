@@ -139,7 +139,7 @@ export const SocialBlock = styled.div`
 //============회원가입 페이지 CSS 시작(socialblock은 공통)=========//
 export const SignUpDiv = styled.section`
   max-width: 1344px;
-  height: 1200px;
+  height: 1500px;
   margin-top: 10px;
   padding: 10rem;
   display: flex;
@@ -251,6 +251,57 @@ export const AuthButton = styled.button`
   font-weight: 700;
   cursor: pointer;
 `;
+
+export const NamenPhoneBlock = styled.div`
+  p {
+    margin-left: 0.5%;
+    width: 100%;
+    font-size: 0.85rem;
+    color: gray;
+  }
+
+  h6 {
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-left: 0.5%;
+    margin-bottom: 0.8rem;
+  }
+
+  .phone6 {
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-left: 0.5%;
+    margin-bottom: 0.8rem;
+    ::after {
+        padding-left: 3px;
+        font-size: 12px;
+        content: "(-를 제외하고 입력해주세요)";
+        color: gray;
+      }
+  }
+
+  input {
+    margin-left: 1%;
+    margin-right: 1%;
+    width: 98%;
+    height: 38px;
+    font-size: 14px;
+    color: gray;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding-left: 15px;
+    &:focus {
+      outline: none;
+    }
+    &::placeholder {
+      font-weight: 550;
+      font-size: 15px;
+      color: lightgray;
+    }
+  }
+
+`
+
 
 export const PWnNickBlock = styled.div`
   p {
