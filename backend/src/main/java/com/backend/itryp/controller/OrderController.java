@@ -32,8 +32,8 @@ public class OrderController {
 	 * @param pmap 유저 아이디
 	 * @return temp 쿠폰 정보, 유저 정보
 	 */
-	@PostMapping("orderPage")
-	public String getOrderPage(@RequestBody Map<String, Object> pmap) {
+	@GetMapping("orderPage")
+	public String getOrderPage(@RequestParam Map<String, Object> pmap) {
 		log.info("getOrderPage 호출");
 		String temp = null;
 		List<Map<String,Object>> list = null;
