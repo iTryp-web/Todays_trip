@@ -27,7 +27,6 @@ public class AdminLogic {
 	public List<Map<String, Object>> overview(Map<String, Object> pMap) {
 		logger.info("overview 호출");
 		List<Map<String,Object>> oList = new ArrayList<>();
-		pMap.put("new", 1);
 		// 새로운 문의
 		List<Map<String,Object>> marketQnaList= adminDao.marketQnaList(pMap);
 		oList.addAll(marketQnaList);
