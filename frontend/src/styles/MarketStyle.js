@@ -82,51 +82,66 @@ span {
 `;
 
 export const ProductListBlock = styled.div`
-  padding: 0 4rem;
-  max-width: 1256px;
-  margin: 5rem auto;
+padding: 0 4rem;
+max-width: 1256px;
+margin: 5rem auto;
+justify-content: space-between;
+height:100vh;
+.title {
+  display: flex;
   justify-content: space-between;
-  .title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    h2 {
-      letter-spacing: -2px;
-      font-size: 1.3rem;
-    }
-    span {
-      color: var(--red);
-      cursor: pointer;
-      font-weight: 700;
-      &:hover {
-        color: var(--light-red);
-      }
+  align-items: center;
+  h2 {
+    letter-spacing: -2px;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  span {
+    color: var(--red);
+    cursor: pointer;
+    font-weight: 700;
+    &:hover {
+      color: var(--light-red);
     }
   }
-  .items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    
-    overflow: hidden;
-    margin-bottom: 0.3rem;
-    border-radius: 5px;
-    position: relative;
-  }
+}
 
-  @media only screen and (max-width: 1256px) {
-    padding: 0 3rem;
-  }
-  @media only screen and (max-width: 1024px) {
-    padding: 0 1.5rem;
-  }
-  @media only screen and (max-width: 768px) {
-    padding: 0 1rem;
-  }
+@media only screen and (max-width: 1256px) {
+  padding: 0 3rem;
+}
+@media only screen and (max-width: 1024px) {
+  padding: 0 1.5rem;
+}
+@media only screen and (max-width: 768px) {
+  padding: 0 1rem;
+}
 `;
 
 export const SelectBlock = styled.select`
-  border: none;
-  outline: none;
-  width: 100px;
+border: none;
+outline: none;
+width: 100px;
+`;
+export const SearchDiv = styled.div`
+position: absoulte;
+width: 70%;
+height: 45px;
+padding: 0 4rem;
+display: flex;
+justify-content:center;
+align-items: center;
+text-align: center;
+margin: 0 auto;
+margin-top: 5em;
+font-size: 14px;
+.searchDropdown {
+  margin-left: 0.8em;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  height: 2.7em;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
 `;

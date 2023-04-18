@@ -5,18 +5,22 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ContentsBlock = styled.div`
-  width: 25%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   @media only screen and (max-width: 768px) {
-    width: 50%;
+    width: 100%;
   }
 `;
 
 const ItemBlock = styled.div`
+  width: 25%;
   padding: 1rem 0.5rem;
   cursor: pointer;
   span {
     color: var(--gray);
   }
+  
   .image {
     max-height: 270px;
     overflow: hidden;
@@ -89,35 +93,11 @@ const ProductItem = ({items}) => {
   
   const navigate=useNavigate()
   
-  
-  const itemBody = (
-    <ItemBlock>
-      <div className="image">
-            {items && items.map((item,index)=>(
-
-                <img src={item} />
-
-            ))}
-      </div>
-      <div className="body">
-        <span className="brand">오행</span>
-        <span className="title">비침없는 도톰레이스</span>
-       
-        <div>
-          <span className="star">
-            <span>★</span> 
-          </span>
-          <span className="review_count">리뷰 123</span>
-        </div>
-      </div>
-    </ItemBlock>
-  );
-
   return (
     <>
       <ContentsBlock>
         {items && items.map((item,index)=>(
-          <ItemBlock>
+          <ItemBlock onClick={() => navigate('/market/detail')}>
             <img className='image' src={item} />
             <div className="body">
             <span className="brand">오행</span>
