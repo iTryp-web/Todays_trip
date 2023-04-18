@@ -98,7 +98,7 @@
 	            , #{board_category}
 	            , #{board_title}
 	            , #{board_content}
-	            , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+	            , TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 		          )
 	</insert>
 
@@ -217,7 +217,7 @@
 		            , TB_B_COMMENT_STEP_SEQ.NEXTVAL
 							</if>
 		            , #{comment_content}
-		            , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+		            , TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 			          )
 	</insert>
 	
@@ -276,7 +276,7 @@
 					  </if>
 							, #{report_user}
 							, #{report_reason}
-							, TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+							, TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 							 )
 	</insert>
 	
@@ -308,7 +308,7 @@
 				 			 , #{like_no}
 				 			 , #{like_group}
 				 			 , #{like_step}
-				 			 , TO_CHAR(sysdate, 'YYYY-MM-DD HH:MM:SS')
+				 			 , TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 							 )
 	</insert>
 	
@@ -317,7 +317,7 @@
 		DELETE FROM TB_LIKE
 					WHERE like_no = #{like_no}
 					<!-- 0이면 해당 좋아요취소, 1이면 모든좋아요 취소-->
-					<if test="delete_board != null and delete_board == 0">
+					<if test="delete_all_like != null and delete_all_like == 0">
 						AND user_id = #{user_id}
 						AND like_type = #{like_type}
 						AND like_group = #{like_group}

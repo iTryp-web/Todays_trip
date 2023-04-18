@@ -17,9 +17,9 @@ public class AdminLogic {
 	
 	@Autowired
 	private AdminDao adminDao = null;
-
+	
 	/**
-	 * 오버뷰(신고글'회원, 차단글'회원, 탈퇴회원) - 처리안된것 있으면 마크표시해주는 용도
+	 * 오버뷰(새로운 문의, 신고, 신청 표시) - 처리안된것 있으면 마크표시해주는 용도
 	 * 
 	 * @param pMap
 	 * @return
@@ -27,13 +27,35 @@ public class AdminLogic {
 	public List<Map<String, Object>> overview(Map<String, Object> pMap) {
 		logger.info("overview 호출");
 		List<Map<String,Object>> oList = new ArrayList<>();
-		// 신고글, 차단유저, 차단글, 차단댓글, 탈퇴(신청)유저
-		// reportList, banUserList, banBoardList, banCommentList, resignList
+		pMap.put("new", 1);
+		// 새로운 문의
+		List<Map<String,Object>> marketQnaList= adminDao.marketQnaList(pMap);
+		oList.addAll(marketQnaList);
+		// 새로운 신고
+		List<Map<String,Object>> reportList = adminDao.reportList(pMap);
+		oList.addAll(reportList);
+		// 새로운 신청
+		List<Map<String,Object>> resignList = adminDao.resignList(pMap);
+		oList.addAll(resignList);
 		return oList;
 	}
 
 	/**
-	 * 신고 목록 조회(글0, 댓글1)
+	 * 판매목록(+새로운 문의) 조회
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> marketQnaList(Map<String, Object> pMap) {
+		logger.info("marketQnaList 호출");
+		List<Map<String,Object>> rList = new ArrayList<>();
+		pMap.put("new", 0);
+		rList= adminDao.marketQnaList(pMap);
+		return rList;
+	}
+
+	/**
+	 * 신고 목록 조회(회원4, 글0, 댓글1)
 	 * 
 	 * @param pMap
 	 * @return

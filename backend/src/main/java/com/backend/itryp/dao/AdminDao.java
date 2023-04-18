@@ -17,7 +17,20 @@ public class AdminDao {
 	private SqlSessionTemplate sqlSessionTemplate = null;
 
 	/**
-	 * 신고 목록 조회(글0, 댓글1)
+	 * 판매목록(새로운 문의) 조회
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> marketQnaList(Map<String, Object> pMap) {
+		logger.info("marketQnaList 호출");
+		List<Map<String,Object>> rList = null;
+		rList = sqlSessionTemplate.selectList("marketQnaList", pMap);
+		return rList;
+	}
+	
+	/**
+	 * 신고 목록 조회(회원4, 글0, 댓글1)
 	 * 
 	 * @param pMap
 	 * @return
