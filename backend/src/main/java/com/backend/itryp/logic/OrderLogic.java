@@ -94,8 +94,8 @@ public class OrderLogic {
 	/**
 	 * getOrderPage
 	 * 
-	 * @param pmap
-	 * @return
+	 * @param pmap 유저 아이디
+	 * @return list 쿠폰 정보, 유저 정보
 	 */
 	public List<Map<String, Object>> getOrderPage(Map<String, Object> pmap) {
 		log.info("getOrderPage 호출");
