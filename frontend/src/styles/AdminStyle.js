@@ -10,7 +10,7 @@ export const AdminSection = styled.section`
   justify-content: space-between;
   background: white;
   margin: 0 auto;
-  margin-top: 2em;
+  margin-top: 3em;
   margin-bottom: 6em;
 
   @media only screen and (max-width: 1356px) {
@@ -48,17 +48,22 @@ export const AdminSection = styled.section`
 
 /* 카테고리 전체 */
 export const AdminCategory = styled.nav`
-  position: absolute;
-  top: 14em;
   display: flex;
   flex-direction: column;
-  width: 200px;
+  width: 150px;
   ul {
     margin: 0;
     padding: 0;
-    position: sticky;
-    top: 102px;
   }
+`;
+
+export const AdminPageUl = styled.ul`
+  display: flex;
+  justify-content: center;
+  color: black;
+  font-size: 18px;
+  font-weight: 800;
+  height: 36px;
 `;
 
 export const AdminCategoryUl = styled.ul`
@@ -67,33 +72,27 @@ export const AdminCategoryUl = styled.ul`
   margin-right: 1.2rem;
   font-size: 1rem;
   font-weight: 600;
-  &.active {
-    color: #4996f3;
-    font-weight: 700;
-  }
-  &:hover {
-    color: #4996f3;
-  }
+  text-align: center;
 `;
 
 export const AdminCategoryLi = styled.li`
   list-style: none;
   margin: 2px 0;
-  padding: 19px 20px;
+  padding: 19px 20px 19px 14px;
   border-radius: 8px;
-  color: #969696;
+  color: gray;
   font-size: 0.9em;
   cursor: pointer;
   ${({ active }) =>
     active &&
     css`
-      background: #dbeafd;
+      background: #DBEAFD;
       color: black;
       font-weight: 700;
     `}
   img {
     width: 24px;
-    margin-right: 8px;
+    margin-right: 12px;
   }
 `;
 

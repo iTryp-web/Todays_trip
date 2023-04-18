@@ -2,18 +2,22 @@
 export const adminCategories = [
   {
     name: '판매',
-    catrgory: 'market',
+    category: 'market',
+    img: '/images/admin/market.png'
   },
   {
     name: '신고',
-    catrgory: 'report',
+    category: 'report',
+    img: '/images/admin/report.png'
   },
   {
     name: '차단',
-    catrgory: 'ban',
+    category: 'ban',
+    img: '/images/admin/ban.png'
   },
   {
     name: '탈퇴',
-    catrgory: 'resign',
+    category: 'resign',
+    img: '/images/admin/resign.png'
   },
 ]
