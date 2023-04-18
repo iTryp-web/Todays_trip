@@ -196,27 +196,19 @@ export const FnLink = styled(Link)`
 
 /*================ Question List ================*/
 export const QlSection = styled.section`
-  width: 800px;
-  display: flex;
-  justify-content: center;
+  display: block;
+  max-width: 850px;
+  margin: 0px auto;
 `;
 
 export const QlUl = styled.ul`
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  padding-top: 30px;
-  overflow: hidden;
-  padding-bottom: 60px;
-  list-style: none;
+  display: block;
 `;
 export const QlLi = styled.li`
   font-size: 16px;
   line-height: 28px;
   list-style: none;
   color: rgb(47, 52, 56);
-  display: list-item;
-  text-align: -webkit-match-parent;
 `;
 export const QlH3 = styled.h3`
   color: rgb(47, 52, 56);
@@ -242,15 +234,18 @@ export const QlButton = styled.button`
     font-size: 16px;
   }
   .questionDownArrow {
-    text-align: right;
     display: inline-block;
     font-size: 24px;
     line-height: 1;
-    transition: transform 0.3s ease-in-out;
   }
-  
+
   .questionDownArrow.rotate {
     transform: rotate(180deg);
+  }
+
+  .qlOrganizer {
+    justify-content: space-between;
+    width: 100%;
   }
 `;
 
