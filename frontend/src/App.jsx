@@ -1,6 +1,5 @@
 import './App.css'
 import { Route, Routes } from 'react-router-dom';
-import TestPage from './components/page/TestPage';
 import HomePage from './components/page/HomePage';
 import BoardPage from './components/page/BoardPage';
 import OrderPage from './components/page/OrderPage';
@@ -17,6 +16,7 @@ import MarketWrite from './components/market/MarketWrite';
 import BoardUpdateForm from './components/board/BoardUpdateForm';
 import MarketDetail from './components/market/MarketDetail';
 import FindUserPage from './components/page/FindUserPage';
+import AdminPage from './components/page/AdminPage';
 
 
 
@@ -29,7 +29,7 @@ function App() {
       <Route path='/board/detail/:bno' element={<BoardDetail />} />
       <Route path='/board/write' exact={true} element={<BoardWriteForm />} />
       <Route path='/board/update/:bno' element={<BoardUpdateForm />} />
-      <Route path='/test' exact={true} element={<TestPage />} />
+      <Route path='/admin/:category' element={<AdminPage />} />
       <Route path='/cart' exact={true} element={<CartPage />} />
       <Route path='/order' exact={true} element={<OrderPage />} />
       <Route path='/order/success' exact={true} element={<OrderSuccess />} />
