@@ -371,6 +371,11 @@ const BoardDetail = () => {
     setStart(new Date()) // useEffect 부르는 용도
   }
 
+  /* 유저닉네임 클릭 */
+  const onClickBtnUser = () => {
+    console.log('user')
+  }
+
   return (
     <>
     <Header />
@@ -387,7 +392,11 @@ const BoardDetail = () => {
                   <img className='userImg' src={profileImg[Math.floor(((new Date(detailPost.board_date).getSeconds())%10))]} alt="" />
                 </UserImg>
                 <UserWrap>
-                  <Username>{detailPost.user_nickname}</Username>
+                  <Username
+                    onClick={() => {
+                      onClickBtnUser()
+                    }}
+                  >{detailPost.user_nickname}</Username>
                   <User>
                     {new Date(detailPost.board_date).toLocaleString()}{' · '}조회{' '}
                     {detailPost.board_hit}

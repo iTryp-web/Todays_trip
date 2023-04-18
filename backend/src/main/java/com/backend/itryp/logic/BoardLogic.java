@@ -182,11 +182,19 @@ public class BoardLogic {
 		int imageDelete = boardDao.imageDelete(pMap);
 		logger.info("이미지삭제 => " + imageDelete);
 		// 댓글 삭제
+		// 해당글 댓글 전부삭제
 		pMap.put("delete_board", 1);
 		int commentDelete = boardDao.replyDelete(pMap);
 		logger.info("댓글삭제 => " + commentDelete);
+		int board_no = 0;
+		if(pMap.get("board_no") != null) {
+			board_no = Integer.parseInt(pMap.get("board_no").toString());
+			pMap.put("board_no", board_no);
+		}
 		// 좋아요 삭제
 		pMap.put("like_no", pMap.get("board_no"));
+		// 해당글 좋아요 전부삭제
+		pMap.put("delete_board", 1);
 		int likeDelete = boardDao.likeOff(pMap);
 		logger.info("좋아요삭제 => " + likeDelete);
 		return result;
@@ -315,6 +323,7 @@ public class BoardLogic {
 	 */
 	public int likeOn(Map<String, Object> pMap) {
 		logger.info("likeOn 호출");
+		logger.info(pMap);
 		int result = 0;
 		result = boardDao.likeOn(pMap);
 		return result;
@@ -328,6 +337,9 @@ public class BoardLogic {
 	 */
 	public int likeOff(Map<String, Object> pMap) {
 		logger.info("likeOff 호출");
+		logger.info(pMap);
+		// 해당 좋아요만 취소
+		pMap.put("delete_board", 0);
 		int result = 0;
 		result = boardDao.likeOff(pMap);
 		return result;
