@@ -1,12 +1,59 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../include/Header'
 import OrderRow from '../order/OrderRow'
 import Footer from '../include/Footer'
-import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, SelectList, OrdertysTitle, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, PointUseDiv, PointInput, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP, OrdererTyContentTd, AgreeAllCheckDiv, InputAllCheck, AddressTable, AddressTitleTd, AddressButton, AddressInput, AgreeCheckDiv } from '../../styles/OrderStyle'
+import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, 
+         SelectList, OrdertysTitle, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, 
+         OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, PointUseDiv, PointInput, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, 
+         OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP, OrdererTyContentTd, AgreeAllCheckDiv, InputAllCheck, AddressTable, AddressTitleTd, 
+         AddressButton, AddressInput, AgreeCheckDiv } from '../../styles/OrderStyle'
+import { useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import { getOrderPage } from '../../service/orderLogic'
 
 const OrderPage = () => {
 
-  const couponList = null;
+  const location = useLocation();
+  const [ orderItems ] = useState(location.state?.orderItems);
+
+  //사용 가능한 쿠폰 리스트 관리
+  let couponList = [];
+  const [cList, setCList] = useState([{}]);
+
+  let userInfo = {};
+
+  const cartList = orderItems;
+  let price = 0;
+  let count = 0;
+  if(cartList !== undefined && cartList.length > 0) {
+    cartList.forEach(cart => {
+      price += cart.marketPrice * cart.marketCnt;
+      count += cart.marketCnt;
+    });
+  }
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const user = { user_id: "userone" };
+      // const user = { user_id: sessionStorage.getItem('user_id') };
+      await getOrderPage(user).then((res) => {
+        if(res.data != null){
+          console.log(res.data);
+          couponList = res.data.couponList;
+          console.log(couponList);
+          userInfo = res.data.userInfo;
+          console.log(userInfo);
+          console.log(userInfo.user_name);
+          setCList(couponList);
+          console.log(couponList[0]);
+        } else {
+          
+        }
+      })
+    }
+    getUserInfo();
+  }, [])
+  // console.log(cList[0]);
 
   const getPostCode = () => {
   }
@@ -17,16 +64,16 @@ const OrderPage = () => {
     IMP.init(process.env.REACT_APP_IMPORT_INIT_KEY);
     
     const data = {
-      pg: 'html5_inicis',                               // PG사
-      pay_method: 'card',                               // 결제수단
-      merchant_uid: `mid_${new Date().getTime()}`,      // 주문번호
-      amount: 100,                                      // 결제금액
-      name: '아임포트 결제 데이터 분석',                // 주문명
-      buyer_name: sessionStorage.getItem('user_name'),  // 구매자 이름
-      buyer_tel: '01012341234',                         // 구매자 전화번호
-      buyer_email: 'example@example',                   // 구매자 이메일
-      buyer_addr: '신사동 661-16',                      // 구매자 주소
-      buyer_postcode: '06018',                          // 구매자 우편번호
+      pg: 'html5_inicis',                                                                                 // PG사
+      pay_method: 'card',                                                                                 // 결제수단
+      merchant_uid:  `mid_${new Date().getTime()}`,                                                       // 주문번호
+      amount: price,                                                                                      // 결제금액
+      name: cartList[0].marketName + cartList.length != 1 ? "외 " + (cartList.length - 1) +  " 건" : '',  // 주문명
+      buyer_name: userInfo.user_name,                                                                     // 구매자 이름
+      buyer_tel: userInfo.user_phone,                                                                     // 구매자 전화번호
+      buyer_email: userInfo.user_email,                                                                   // 구매자 이메일
+      buyer_addr: userInfo.user_addr + " " + userInfo.user_addr_detail,                                   // 구매자 주소
+      buyer_postcode: userInfo.user_zipcode,                                                              // 구매자 우편번호
     };
 
     function callback(response) {
@@ -37,12 +84,13 @@ const OrderPage = () => {
       } = response;
     
       if (success) {
+        //결제 정보 DB에 넣기 처리
         console.log(merchant_uid + ':: 결제 성공');
       } else {
+        //주문 정보 DB에서 삭제 처리
         console.log(`${merchant_uid} :: 결제 실패: ${error_msg}`);
       }
     }
-  
     IMP.request_pay(data, callback);
   }
 
@@ -81,16 +129,16 @@ const OrderPage = () => {
           <OrderCouponTyDiv>
             <OrdertysTitle>쿠폰 할인</OrdertysTitle>
             <SelectList>
-              {couponList ? 
+              { !couponList ? 
                 <option>사용 가능한 쿠폰이 존재하지 않습니다.</option>
                 : 
-                <option>쿠폰1</option>
+                <option>{cList[0].COUPON_NO}</option>
               }
             </SelectList><br/>
             <OrdertysTitle>포인트</OrdertysTitle>
             <div>{`사용 가능 포인트　${0} 점`}</div>
             <PointUseDiv>
-              <span><PointInput type="decimal" placeholder="" disabled="" pattern="[0-9]*" value="0"></PointInput></span><ConfirmSpan><ConfirmButton>모두 사용</ConfirmButton></ConfirmSpan>
+              <span><PointInput type="decimal" placeholder="" disabled="" pattern="[0-9]*" defaultValue="0"></PointInput></span><ConfirmSpan><ConfirmButton>모두 사용</ConfirmButton></ConfirmSpan>
             </PointUseDiv>
           </OrderCouponTyDiv>
         </OrderCouponDiv>
@@ -98,44 +146,48 @@ const OrderPage = () => {
           <OrdertyTitle>예약자 정보</OrdertyTitle>
           <LineHr/>
           <OrdererTable>
-            <tr>
-              <OrdererTytd>예약자 이름</OrdererTytd>
-              <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} value={"둘리"}/></OrdererTyContentTd>
-            </tr>
-            <tr>
-              <OrdererTytd>예약자 연락처</OrdererTytd>
-              <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} value={"요리보고-1111-2222"}/></OrdererTyContentTd> 
-            </tr>
-            <tr>
-              <OrdererTytd>예약자 이메일</OrdererTytd>
-              <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} value={"조리봐도@email.com"}/></OrdererTyContentTd> 
-            </tr>
+            <tbody>
+              <tr>
+                <OrdererTytd>예약자 이름</OrdererTytd>
+                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} value={userInfo.user_name} /></OrdererTyContentTd>
+              </tr>
+              <tr>
+                <OrdererTytd>예약자 연락처</OrdererTytd>
+                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} defaultValue={"요리보고-1111-2222"}/></OrdererTyContentTd> 
+              </tr>
+              <tr>
+                <OrdererTytd>예약자 이메일</OrdererTytd>
+                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} defaultValue={"조리봐도@email.com"}/></OrdererTyContentTd> 
+              </tr>
+            </tbody>
           </OrdererTable>
           </OrdererInfoDiv>
         <OrderAddressDiv>
           <OrdertyTitle>배송지 정보</OrdertyTitle>
           <LineHr/>
           <AddressTable>
-            <tr>
-              <AddressTitleTd>받는 사람</AddressTitleTd>
-              <td><AddressInput type='text' style={{width:"250px"}} value={"또치"}/></td>
-            </tr>
-            <tr>
-              <AddressTitleTd>연락처</AddressTitleTd>
-              <td><AddressInput type='text' style={{width:"250px"}} value={"010-8989-8989"}/></td>
-            </tr>
-            <tr>
-              <AddressTitleTd rowSpan={3}>주소</AddressTitleTd>
-              <td><AddressButton onClick={getPostCode}>주소찾기</AddressButton><AddressInput type="text" id='postCode' style={{width:"166px"}} disabled/></td>
-            </tr>
-            <tr>
-              <td><AddressInput type="text" style={{width:"400px"}}  disabled/></td>
-            </tr>
-            <tr>
-              <td width={'270px'}>
-                <AddressInput type="text" placeholder='상세주소 입력' style={{width:"400px"}} />
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <AddressTitleTd>받는 사람</AddressTitleTd>
+                <td><AddressInput type='text' style={{width:"250px"}} defaultValue={"또치"}/></td>
+              </tr>
+              <tr>
+                <AddressTitleTd>연락처</AddressTitleTd>
+                <td><AddressInput type='text' style={{width:"250px"}} defaultValue={"010-8989-8989"}/></td>
+              </tr>
+              <tr>
+                <AddressTitleTd rowSpan={3}>주소</AddressTitleTd>
+                <td><AddressButton onClick={getPostCode}>주소찾기</AddressButton><AddressInput type="text" id='postCode' style={{width:"166px"}} disabled/></td>
+              </tr>
+              <tr>
+                <td><AddressInput type="text" style={{width:"400px"}}  disabled/></td>
+              </tr>
+              <tr>
+                <td width={'270px'}>
+                  <AddressInput type="text" placeholder='상세주소 입력' style={{width:"400px"}} />
+                </td>
+              </tr>
+            </tbody>
           </AddressTable>
         </OrderAddressDiv>
         <OrderCalcDiv>

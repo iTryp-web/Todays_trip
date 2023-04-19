@@ -66,7 +66,7 @@ public class OrderDao {
 	 * @return TbUserVO 유저 정보
 	 */
 	public TbUserVO getUserInfo(Map<String, Object> pmap) {
-		log.info("cancelOrder 호출");
+		log.info("getUserInfo 호출");
 		TbUserVO user = new TbUserVO();
 		user = (TbUserVO) sst.selectOne("getUserInfo", pmap);
 		return user;
