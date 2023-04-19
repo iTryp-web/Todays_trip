@@ -1,23 +1,85 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../include/Header'
 import '../../styles/cartStyle'
-import { CartButton, CartButtonDiv, CartCalcDiv, CartDiv, CartItemTitle, CartListDiv, CartTable, CartTitle, EmptySpan, LineHr, NoticeDiv, ResultDiv } from '../../styles/cartStyle'
+import { CartButton, CartButtonDiv, CartCalcDiv, CartDiv, CartItemTitle, CartListDiv, CartTable, CartTitle, EmptySpan, LineHr, 
+         NoticeDiv, ResultDiv } from '../../styles/cartStyle'
 import CartRow from '../cart/CartRow'
 import Footer from '../include/Footer'
 import { useCookies } from 'react-cookie'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const CartPage = () => {
 
-  const [cookies] = useCookies(['cart']);
+  const navigate = useNavigate();
+  const [cookies, setCookies, removeCookies] = useCookies(['cart']);
 
+  //쿠키에서 장바구니 목록 가져오기
   const cartList = cookies.cart;
+
   let price = 0;
   let count = 0;
+
   if(cartList !== undefined && cartList.length > 0) {
     cartList.forEach(cart => {
       price += cart.marketPrice * cart.marketCnt;
       count += cart.marketCnt;
     });
+  }
+
+  //체크 박스 관리용
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  //체크 박스 전체 선택시 처리
+  const handleAllChecked = (e) => {
+    if(e.target.checked){
+      let list = [];
+      cartList.forEach((cart, index) => {
+        list.push(index);
+      })
+      setCheckedItems(list);
+    } else setCheckedItems([]);
+  }
+
+  //체크 박스 개별 선택시 처리
+  const handleChecked = (index) => {
+    if(checkedItems.includes(index)){
+      setCheckedItems(checkedItems.filter(item => item !== index))
+    } else setCheckedItems([...checkedItems, index])
+  }
+
+  useEffect(() => {
+    if(cartList.length === checkedItems.length) setIsAllChecked(true);
+    else setIsAllChecked(false);
+  }, [checkedItems])
+
+  //선택 삭제 처리
+  const handleSelectDelete = () => {
+    //해당 번호 제외한 아이템만 newCartList에 추가
+    let newCartList = [];
+    cartList.forEach((cart, index) => {
+      if(!checkedItems.includes(index)) newCartList = [...newCartList, cart];
+    })
+    //newCartList에 값이 들어있을 경우 쿠키에 추가
+    if(newCartList.length > 0) {
+      removeCookies("cart");
+      setCookies("cart", newCartList, {expires: new Date(Date.now() + 259200000)});
+    } else {
+      //newCartList에 값이 없을 경우 기존 쿠키 삭제
+      removeCookies("cart");
+    }
+    setCheckedItems([]);
+  }
+
+  //주문하기 처리
+  const handleOrder = () => {
+    //체크된 상품 아이디 정보 -> 새 배열에 담아서 orderPage로 넘겨주기
+    let orderItems = [];
+    cartList.forEach((cart, index) => {
+      if(checkedItems.includes(index)) orderItems = [...orderItems, cart];
+    })
+    navigate('/order', { state: { orderItems: orderItems }});
   }
   
   return (
@@ -28,14 +90,15 @@ const CartPage = () => {
         <CartListDiv>
           <CartTitle>장바구니</CartTitle>
           <LineHr/>
-          {}
           <CartTable>
             <thead>
               <tr>
-                <th><input type="checkbox" id="allCkeck" /></th>
+                <th>
+                  <input type="checkbox" id="allCkeck" onChange={e => handleAllChecked(e)} checked={isAllChecked}/ >
+                </th>
                 <th></th>
-                <CartItemTitle></CartItemTitle>
-                <th></th>
+                <CartItemTitle>상품명</CartItemTitle>
+                <th>옵션</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -44,7 +107,7 @@ const CartPage = () => {
             <tbody>
               {
                 cartList.map((cart, index) => (
-                 <CartRow key={cart.marketNum} cart={cart} index={index} />
+                 <CartRow key={cart.marketNum} cart={cart} index={index} handleChecked={handleChecked} checkedItems={checkedItems} />
                 ))
               }
             </tbody>
@@ -54,8 +117,8 @@ const CartPage = () => {
             <div>상품 금액 : {price}원</div>
           </CartCalcDiv>
           <CartButtonDiv>
-            <CartButton>선택 삭제</CartButton>
-            <CartButton>주문하기</CartButton>
+            <CartButton onClick={handleSelectDelete}>선택 삭제</CartButton>
+            <CartButton onClick={handleOrder}>주문하기</CartButton>
           </CartButtonDiv>
         </CartListDiv>
       :
