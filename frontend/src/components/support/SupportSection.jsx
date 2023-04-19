@@ -64,7 +64,7 @@ const SupportSection = () => {
                   <span>
                     <AiOutlinePhone />
                   </span>
-                  <strong>0000-0000</strong>
+                  <strong>1544-9970</strong>
                 </p>
               </div>
               <div>
