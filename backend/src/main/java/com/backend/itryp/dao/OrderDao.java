@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.itryp.controller.OrderController;
+import com.backend.itryp.vo.TbUserVO;
 
 @Service
 public class OrderDao {
@@ -56,6 +57,19 @@ public class OrderDao {
 		List<Map<String,Object>> list = null;
 		list = sst.selectList("cancelOrder", pmap);
 		return list;
+	}
+
+	/**
+	 * 유저 정보 조회하기
+	 * 
+	 * @param pmap userId 정보
+	 * @return TbUserVO 유저 정보
+	 */
+	public TbUserVO getUserInfo(Map<String, Object> pmap) {
+		log.info("cancelOrder 호출");
+		TbUserVO user = new TbUserVO();
+		user = (TbUserVO) sst.selectOne("getUserInfo", pmap);
+		return user;
 	}
 
 }

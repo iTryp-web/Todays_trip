@@ -4,22 +4,27 @@
 	
 	<!-- 주문 페이지로 이동할 때 필요한 정보 가져오기 -->
 	<select id="getOrderPage" parameterType="map" resultType="map">
-		SELECT c.coupon_no,
-				c.coupon_rate, 
-				c.coupon_min, 
-				c.coupon_max, 
-				c.coupon_date, 
-				c.coupon_valid,
-				u.user_name, 
-				u.user_phone, 
-				u.user_zipcode, 
-				u.user_address, 
-				u.user_address_detail,
-				u.user_email
-		  FROM TB_U_COUPON c, TB_USER u
-		 WHERE c.user_id = #{user_id}
-		   AND u.user_id = #{user_id}<!-- 맞습니까??? -->
-		   AND c.coupon_exp = 0
+		SELECT coupon_no,
+				coupon_rate, 
+				coupon_min, 
+				coupon_max, 
+				coupon_date, 
+				coupon_valid
+		  FROM TB_U_COUPON
+		 WHERE user_id = #{user_id}
+		   AND coupon_exp = 0
+	</select>
+	
+	<!-- 주문 페이지로 이동할 때 필요한 유저 정보 가져오기 -->
+	<select id="getUserInfo" parameterType="map" resultType="com.backend.itryp.vo.TbUserVO">
+		SELECT user_name, 
+				user_phone, 
+				user_zipcode, 
+				user_address, 
+				user_address_detail,
+				user_email
+		  FROM TB_USER u
+		 WHERE u.user_id = #{user_id}
 	</select>
 	
 	<!-- 주문 완료 후 주문 내역 DB에 저장 -->
