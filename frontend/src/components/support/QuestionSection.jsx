@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AnswerText,
   QMark,
@@ -13,18 +13,24 @@ import { useParams } from "react-router-dom";
 import { faqPost } from "./QuestionData";
 
 const QuestionSection = () => {
-
-  const [selected, setSelected] = useState("전체")
+  /* 카테고리 선택할 때, 해당 카테고리의 글만 가져오기 위한 useState*/ 
+  /* selected로 판별 */
+  const [selected, setSelected] = useState("전체");
+  const {category} = useParams()
+  useEffect(()=>{
+    setSelected(category)
+  },[category])
   return (
     <>
       <QlSection>
         <QlUl>
-          {faqPost.map((post) => (
-            post.fboard_category == selected ? 
-            <Question key={post.fboard_no} post={post} /> : (
-              selected == "전체" ? <Question key={post.fboard_no} post={post} /> : null
-            )
-          ))}
+          {faqPost.map((post) =>
+            post.category == selected ? (
+              <Question key={post.fboard_no} post={post} />
+            ) : selected == "all" ? (
+              <Question key={post.fboard_no} post={post} />
+            ) : null
+          )}
         </QlUl>
       </QlSection>
     </>
@@ -33,7 +39,6 @@ const QuestionSection = () => {
 
 /* Li요소들에 title과 content를 삽입해주기 위한 컴포넌트 Map을 돌며 값 삽입 */
 const Question = ({ post }) => {
-  
   /* 버튼이 열리고 닫히는 상태에 대한 kuseState 기본값 false */
   const [isOpen, setIsOpen] = useState(false);
 
@@ -42,8 +47,6 @@ const Question = ({ post }) => {
     setIsOpen(!isOpen);
   };
 
-  
-  
   return (
     <QlLi>
       <QlH3>

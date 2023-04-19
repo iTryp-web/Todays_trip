@@ -16,7 +16,7 @@ const NavBar = () => {
     <FnNavDiv>
       <FnNavbar>
         <FnLink
-          to="/support/"
+          to="/support/all"
           className={selected === "전체" ? "fnSelectedLink" : "fnLink"}
           onClick={() => handleClick("전체")}
         >
