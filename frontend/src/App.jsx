@@ -15,14 +15,14 @@ import FaqPage from './components/page/FaqPage';
 import MarketWrite from './components/market/MarketWrite';
 import BoardUpdateForm from './components/board/BoardUpdateForm';
 import MarketDetail from './components/market/MarketDetail';
-import FindUserPage from './components/page/FindUserPage';
 import AdminPage from './components/page/AdminPage';
 import SupportWriteForm from './components/support/InquiryWriteForm';
 import InquiryList from './components/support/InquiryList';
+import FindUserPage from './components/auth/FindUserPage';
 
 
 
-function App() {
+function App({authLogic}) {
   return (
     <>
     <Routes>
@@ -36,8 +36,8 @@ function App() {
       <Route path='/order' exact={true} element={<OrderPage />} />
       <Route path='/order/success' exact={true} element={<OrderSuccess />} />
       <Route path='/order/fail' exact={true} element={<OrderFail />} />
-      <Route path='/signup' exact={true} element={<SignUpPage />} />
-      <Route path='/signin' exact={true} element={<SignInPage />} />
+      <Route path='/signup' exact={true} element={<SignUpPage authLogic ={authLogic}/>} />
+      <Route path='/signin' exact={true} element={<SignInPage authLogic ={authLogic}/>} />
       <Route path='/market' exact={true} element={<MarketPage />} />
       <Route path='/market/write' exact={true} element={<MarketWrite />} />
       <Route path='/market/detail' element={<MarketDetail />} />
