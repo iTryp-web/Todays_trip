@@ -20,8 +20,25 @@ import { IoClose } from "react-icons/io5";
 import Term1 from "../Term/Term1";
 import Term2 from "../Term/Term2";
 import Term3 from "../Term/Term3";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { onAuthChange } from "../../service/authLogic";
 
-const SignUpPage = () => {
+const SignUpPage = ({authLogic}) => {
+  const auth = authLogic.getUserAuth();
+  const userAuth = useSelector(state => state.userAuth);
+  const navigate = useNavigate();
+  const type = window.location.search.split('&')[0].split('=')[1];//member담김
+
+  const [memInfo, setMemInfo] = useState({
+    email: "",
+    password: "",
+    password2: "",
+    name: "",
+    hp: "",
+    nickname: "",
+  });
+
   const [idInput, setIdInput] = useState("");
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [pwInput, setPwInput] = useState("");
@@ -425,6 +442,27 @@ const SignUpPage = () => {
       setPwCheckText("비밀번호가 일치하지 않습니다.");
     }
   }, [pwInput, pwCheckInput]);
+
+  useEffect(()=>{
+    const onAuth = async() => {
+      const user = await onAuthChange(userAuth.auth) ;
+      if(user){
+        setMemInfo({
+          email: user.email,
+          password: "",
+          password2: "",
+          name: "",
+          hp: "",
+          nickname: null,
+          birthday: "",
+          gender:"없음"
+        });
+      }
+    };
+    onAuth();
+  },[setMemInfo, userAuth.auth])
+
+
 
   return (
     <>
