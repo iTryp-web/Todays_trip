@@ -2,8 +2,11 @@ import React from "react";
 import { AiOutlinePhone } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { CustomerService, QMark } from "../../styles/SupportStyle";
+import { useNavigate } from "react-router-dom";
 
 const SupportSection = () => {
+
+  const navigate = useNavigate()
   return (
     <>
       <CustomerService>
@@ -65,7 +68,7 @@ const SupportSection = () => {
                 </p>
               </div>
               <div>
-                <button className="btnContact">1:1 상담하기</button>
+                <button onClick={()=>navigate('/support/write')} className="btnContact">1:1 상담하기</button>
                 <a href="/"></a>
               </div>
             </div>
