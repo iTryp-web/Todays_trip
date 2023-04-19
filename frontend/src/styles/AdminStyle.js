@@ -18,9 +18,6 @@ export const AdminSection = styled.section`
     .content {
       width: 35em;
     }
-    .searchDiv {
-      padding: 0;
-    }
   }
 
   @media only screen and (max-width: 1024px) {
@@ -29,9 +26,6 @@ export const AdminSection = styled.section`
       width: 30em;
       margin-left: 16em;
     }
-    .searchDiv {
-      width: 80%;
-    }
   }
 
   @media only screen and (max-width: 768px) {
@@ -39,9 +33,6 @@ export const AdminSection = styled.section`
     .content {
       width: 25em;
       margin-left: 15em;
-    }
-    .searchDiv {
-      width: 100%;
     }
   }
 `;
@@ -78,7 +69,8 @@ export const AdminCategoryUl = styled.ul`
 export const AdminCategoryLi = styled.li`
   list-style: none;
   margin: 2px 0;
-  padding: 19px 20px 19px 14px;
+  padding: 20px;
+  padding-left: 15px;
   border-radius: 8px;
   color: gray;
   font-size: 0.9em;
@@ -86,7 +78,7 @@ export const AdminCategoryLi = styled.li`
   ${({ active }) =>
     active &&
     css`
-      background: #DBEAFD;
+      background: #dbeafd;
       color: black;
       font-weight: 700;
     `}
@@ -94,15 +86,98 @@ export const AdminCategoryLi = styled.li`
     width: 24px;
     margin-right: 12px;
   }
+  .icon {
+    color: #e87676;
+    margin-left: 5px;
+    margin-bottom: 3px;
+    ${({ active }) =>
+      active &&
+      css`
+        color: #db3d3d;
+      `}
+  }
 `;
 
 /* 어드민 글목록 부분 */
 export const AContentSection = styled.section`
   flex: 1;
   max-width: 960px;
-  margin-left: 17em;
   h3 {
     font-size: 18px;
     font-weight: 700;
   }
+`;
+
+/********** AdminQnaRow 스타일 **********/
+export const QnaLi = styled.li`
+  list-style: none;
+  padding: 16px 8px;
+  margin-right: 3em;
+  border-bottom: 1px solid #f4f4f4;
+  font-size: 14px;
+  .categoryQ {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #dbeafd;
+    color: #4a71a4;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .dateQ {
+    font-size: 12px;
+    color: #888;
+    margin-left: 10px;
+  }
+`;
+
+export const QnaContent = styled.div`
+  font-size: 13px;
+  display: flex;
+  margin-bottom: 0px;
+  cursor: pointer;
+`;
+
+export const QnaImg = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 85px;
+  height: 85px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  margin-right: 20px;
+  .qnaImg {
+    width: 85px;
+    height: 85px;
+  }
+`;
+
+export const QnaDiv = styled.div`
+  width: 100%;
+`;
+
+export const QnaMarketTitle = styled.div`
+  font-weight: 600;
+  color: black;
+  margin-top: 3px;
+  padding-right: 5px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+`;
+
+export const QnaMarketContent = styled.div`
+  margin: 8px 0 5px 0;
+  word-break: break-all;
+  overflow: hidden;
+  padding-right: 16px;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  color: ${({ status }) => (status > 0 ? "#DB3D3D" : "#888")};
+  font-weight: ${({ status }) => (status > 0 ? "600" : "500")};
 `;

@@ -8,6 +8,7 @@
 		     , m.market_category
 		     , m.market_title
 		     , m.market_price
+		     , m.market_date
 		     , q.qna_count
 		     , (SELECT COUNT(qna_no) qna_new
 		        FROM TB_QNA

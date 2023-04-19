@@ -1,9 +1,9 @@
 import React from 'react'
 
-const AdminResignRow = () => {
+const AdminResignRow = ({resign}) => {
   return (
     <div>
-      
+      탈퇴
     </div>
   )
 }
