@@ -17,6 +17,7 @@ import BoardUpdateForm from './components/board/BoardUpdateForm';
 import MarketDetail from './components/market/MarketDetail';
 import FindUserPage from './components/page/FindUserPage';
 import AdminPage from './components/page/AdminPage';
+import SupportWriteForm from './components/support/SupportWriteForm';
 
 
 
@@ -45,6 +46,7 @@ function App() {
       <Route path='/support/payment' exact={true} element={<FaqPage />} />
       <Route path='/support/login' exact={true} element={<FaqPage />} />
       <Route path='/support/service' exact={true} element={<FaqPage />} />
+      <Route path='/support/write' exact={true} element={<SupportWriteForm />} />
       <Route path='/findEmail' exact ={true} element={<FindUserPage/>} />
     </Routes>
     </> 
