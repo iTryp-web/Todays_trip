@@ -10,6 +10,7 @@ import AdminQnaRow from './AdminQnaRow';
 import AdminReportRow from './AdminReportRow';
 import AdminResignRow from './AdminResignRow';
 import AdminBanRow from './AdminBanRow';
+import { AiFillPlusSquare } from 'react-icons/ai';
 
 const AdminLayout = () => {
   // 화면전환
@@ -30,7 +31,6 @@ const AdminLayout = () => {
   const [commentBanList, setCommentBanList] = useState([{}])
 
   /* 오버뷰 불러오기 - 새로운 업데이트 표시용 */
-  const [overview, setOverview] = useState([{}])
   useEffect(() => {
     const adminOverview = async() => {
       const res = await adminOverviewDB()
@@ -66,7 +66,9 @@ const AdminLayout = () => {
             market_category: jsonDoc[i].MARKET_CATEGORY,
             market_title: jsonDoc[i].MARKET_TITLE,
             market_price: jsonDoc[i].MARKET_PRICE,
-            qna_new: jsonDoc[i].QNA_NEW,
+            market_date: jsonDoc[i].MARKET_DATE,
+            qna_new: jsonDoc[i].QNA_NEW, // 새로운 문의 수
+            qna_count: jsonDoc[i].QNA_COUNT, // 해당글 문의 수
           }
           console.log(obj);
           list1.push(obj)
@@ -89,6 +91,7 @@ const AdminLayout = () => {
             report_reason: jsonDoc[i].REPORT_REASON,
             report_date: jsonDoc[i].REPORT_DATE,
             report_result: jsonDoc[i].REPORT_RESULT,
+            report_new: jsonDoc[i].REPORT_NEW,
           }
           console.log(obj);
           list2.push(obj)
@@ -106,6 +109,7 @@ const AdminLayout = () => {
               qna_title: jsonDoc[i].QNA_TITLE,
               qna_content: jsonDoc[i].QNA_CONTENT,
               qna_date: jsonDoc[i].QNA_DATE,
+              resign_new: jsonDoc[i].RESIGN_NEW,
             }
             console.log(obj);
             list3.push(obj)
@@ -293,8 +297,17 @@ const AdminLayout = () => {
                     active={category.name === selected}
                     onClick={() => handleCategory(category.name)}
                   >
-                    <img src={category.img} alt={category.catrgory} />
+                    <img src={category.img} alt={category.category} />
                     {category.name}
+                    {category.name === '판매' && qnaList[0].qna_new > 0 ? (
+                      <AiFillPlusSquare active={category.name === selected} className='icon' />
+                    ) : null}
+                    {category.name === '신고' && reportList[0].report_new > 0 ? (
+                      <AiFillPlusSquare active={category.name === selected} className='icon' />
+                    ) : null}
+                    {category.name === '탈퇴' && resignList[0].resign_new > 0 ? (
+                      <AiFillPlusSquare active={category.name === selected} className='icon' />
+                    ) : null}
                   </AdminCategoryLi>
                 );
               })}
