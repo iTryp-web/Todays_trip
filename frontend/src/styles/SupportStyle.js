@@ -83,7 +83,7 @@ export const CustomerService = styled.div`
     margin-bottom: 6px;
   }
   .time {
-    color: rgb(53, 197, 240);
+    color: #4996F3;
   }
   .desc {
     font-size: 14px;
@@ -96,13 +96,13 @@ export const CustomerService = styled.div`
   .tel {
     font-size: 20px;
     line-height: 28px;
-    color: rgb(53, 197, 240);
+    color: #4996F3;
     margin-bottom: 14px;
   }
   .btnContact {
     margin: 0px;
     border: none;
-    background: none rgb(53, 197, 240);
+    background: none #4996F3;
     font-style: inherit;
     font-variant: inherit;
     font-stretch: inherit;
