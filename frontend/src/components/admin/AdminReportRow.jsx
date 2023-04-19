@@ -1,9 +1,9 @@
 import React from 'react'
 
-const AdminReportRow = () => {
+const AdminReportRow = ({report}) => {
   return (
     <div>
-      
+      신고
     </div>
   )
 }
