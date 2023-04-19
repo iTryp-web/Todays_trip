@@ -2,49 +2,64 @@ import React from 'react'
 import { CartTr, ImgDiv } from '../../styles/cartStyle'
 import { useCookies } from 'react-cookie';
 
-const CartRow = ({ cart, index }) => {
+const CartRow = ({ cart, index, handleChecked, checkedItems }) => {
 
+  //아이콘 이미지
   const plus_img = "/images/add.png";
   const minus_img = "/images/minus.png";
   const remove_img = "/images/remove.png";
 
+  //카트 관리용 변수
   const [cookies, setCookies, removeCookies] = useCookies(['cart']);
   const cartList = cookies.cart;
 
   //카트 수량 추가
   const handlePlus = () => {
+    //해당 아이템 수량 증가
     cartList[index].marketCnt++;
+    //기존 쿠키 제거 후 다시 추가
     removeCookies("cart");
     setCookies("cart", cartList, {expires: new Date(Date.now() + 259200000)});
   }
 
   //카트 수량 빼기
   const handleMinus = () => {
+    //수량이 1 초과할 경우 수량 감소
     if (cartList[index].marketCnt > 1) {
       cartList[index].marketCnt--;
+      //쿠키에 추가
       removeCookies("cart");
       setCookies("cart", cartList, {expires: new Date(Date.now() + 259200000)});
     } else {
+      //수량 1 이하일 경우 메세지 출력
       alert('카트에 담을 수 있는 최소 수량은 1개 입니다.');
     }
   }
 
   //카트에서 삭제하기
   const handleDelete = () => {
+    //해당 번호 제외한 아이템만 newCartList에 추가
     let newCartList = cartList.filter(cart => cart.marketNum !== cartList[index].marketNum)
+    //newCartList에 값이 들어있을 경우 쿠키에 추가
     if(newCartList.length > 0) {
       removeCookies("cart");
       setCookies("cart", newCartList, {expires: new Date(Date.now() + 259200000)});
     } else {
+      //newCartList에 값이 없을 경우 기존 쿠키 삭제
       removeCookies("cart");
     }
+  }
+
+  //체크박스 관리
+  const handleClick = () => {
+    handleChecked(index);
   }
 
   return (
     <>
       <CartTr>
         <td className='check_box'>
-          <input type="checkbox" id={cart.marketNum} value={cart.marketNum} />
+          <input type="checkbox" id={cart.marketNum} value={cart.marketNum} onChange={handleClick} checked={checkedItems.includes(index)} />
         </td>
         <td>
           <ImgDiv>
