@@ -34,12 +34,12 @@ public class OrderController {
 	 */
 	@GetMapping("orderPage")
 	public String getOrderPage(@RequestParam Map<String, Object> pmap) {
-		log.info("getOrderPage 호출");
+		log.info("getOrderPage 호출 " + pmap);
 		String temp = null;
-		List<Map<String,Object>> list = null;
-		list = odrLogic.getOrderPage(pmap);
+		Map<String,Object> rmap = null;
+		rmap = odrLogic.getOrderPage(pmap);
 		Gson g = new Gson();
-		temp = g.toJson(list);
+		temp = g.toJson(rmap);
 		return temp;
 	}
 	
@@ -54,7 +54,7 @@ public class OrderController {
 	public String getOrderDetail(@RequestParam Map<String, Object> pmap) {
 		log.info("getOrderDetail 호출");
 		String temp = null;
-		List<Map<String,Object>> list = null;
+		Map<String, Object> list = null;
 		list = odrLogic.getOrderPage(pmap);
 		Gson g = new Gson();
 		temp = g.toJson(list);

@@ -1,6 +1,7 @@
 package com.backend.itryp.logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.itryp.controller.OrderController;
 import com.backend.itryp.dao.OrderDao;
+import com.backend.itryp.vo.TbUserVO;
 
 @Service
 public class OrderLogic {
@@ -20,18 +22,24 @@ public class OrderLogic {
 	@Autowired
 	OrderDao odao = null;
 	
-
 	/**
 	 * getOrderPage
 	 * 
 	 * @param pmap 유저 아이디
 	 * @return list 쿠폰 정보, 유저 정보
 	 */
-	public List<Map<String, Object>> getOrderPage(Map<String, Object> pmap) {
+	public Map<String, Object> getOrderPage(Map<String, Object> pmap) {
 		log.info("getOrderPage 호출");
-		List<Map<String,Object>> list = new ArrayList<>();
+		
+		Map<String,Object> rmap = new HashMap<>();
+		TbUserVO user = odao.getUserInfo(pmap);
+		rmap.put("userInfo", user);
+		
+		List<Map<String, Object>> list = new ArrayList<>();
 		list = odao.getOrderPage(pmap);
-		return list;
+		rmap.put("couponList", list);
+		
+		return rmap;
 	}
 
 

@@ -1,13 +1,13 @@
 import axios from "axios";
 
-export const getOrderPage = (user_id) => {
-  console.log("getOrderPage => " + user_id);
+export const getOrderPage = (user) => {
+  console.log("getOrderPage => " + user);
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
         method: "get",
         url: process.env.REACT_APP_SPRING_IP + "shop/orderPage",
-        params: user_id,
+        params: user,
       });
       resolve(response);
     } catch (error) {
