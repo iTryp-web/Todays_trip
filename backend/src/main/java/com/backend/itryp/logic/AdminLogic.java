@@ -36,6 +36,13 @@ public class AdminLogic {
 		// 새로운 신청
 		List<Map<String,Object>> resignList = adminDao.resignList(pMap);
 		oList.addAll(resignList);
+		// 차단 목록
+		List<Map<String,Object>> banUserList = adminDao.banUserList(pMap);
+		oList.addAll(banUserList);
+		List<Map<String,Object>> banBoardList = adminDao.banBoardList(pMap);
+		oList.addAll(banBoardList);
+		List<Map<String,Object>> banCommentList = adminDao.banCommentList(pMap);
+		oList.addAll(banCommentList);
 		return oList;
 	}
 

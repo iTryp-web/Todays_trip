@@ -189,7 +189,6 @@
      <if test="judge != null">
      AND c.comment_no = #{judge}
      </if>
-     AND (c.comment_status = 0 OR c.comment_status = 1 OR c.comment_status = 3)
 	ORDER BY c.comment_no ASC, c.comment_step ASC
 	</select>
 	

@@ -809,6 +809,7 @@ export const CommentBox = styled.div`
   (liked >= 5  && (status === 0 || status === 3)? 
     (liked >= 10 ? "#DBEAFD" : "#EDF5FE") 
   : "white")};
+
 `;
 
 export const ReplyIcon = styled.div`
@@ -862,7 +863,7 @@ export const CommentContent = styled.div`
 export const EditText = styled.span`
   color: #9E9E9E;
   font-style: italic;
-  font-size: 11px;
+  font-size: 12px;
   margin-left: 5px;
 `
 

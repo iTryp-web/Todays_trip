@@ -8,8 +8,8 @@ import BoardLayout from '../board/BoardLayout';
 
 const BoardPage = () => {
   // 단위테스트용!!
-  window.sessionStorage.setItem('user_id', 'test1')
-  window.sessionStorage.setItem('user_nickname', '테스트1')
+  window.sessionStorage.setItem('user_id', 'test2')
+  window.sessionStorage.setItem('user_nickname', '테스트2')
   window.sessionStorage.setItem('user_role', '0')
   const navigate = useNavigate()
 

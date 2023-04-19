@@ -270,11 +270,11 @@ public class BoardLogic {
 			if(Integer.parseInt(judge.get(i).get("COMMENT_NO").toString()) == comment_no) {
 				if(Integer.parseInt(judge.get(i).get("COMMENT_STEP").toString()) > 0) {
 					c_step++;
-					if(Integer.parseInt(judge.get(i).get("COMMENT_STATUS").toString()) == 1) {
+					if(Integer.parseInt(judge.get(i).get("COMMENT_STATUS").toString()) == 1 || Integer.parseInt(judge.get(i).get("COMMENT_STATUS").toString()) == 2) {
 						c_status++;
 					}
 				} else if(Integer.parseInt(judge.get(i).get("COMMENT_STEP").toString()) == 0) {
-					if(Integer.parseInt(judge.get(i).get("COMMENT_STATUS").toString()) == 1) {
+					if(Integer.parseInt(judge.get(i).get("COMMENT_STATUS").toString()) == 1 || Integer.parseInt(judge.get(i).get("COMMENT_STATUS").toString()) == 2) {
 						comment_status = 1;
 					}
 				}
@@ -295,7 +295,7 @@ public class BoardLogic {
 			}
 		}
 		// 대댓글이 모두 삭제된 댓글 삭제 -> 바로 삭제(댓글, 대댓글 모두)
-		else if(comment_status == 1 && (c_step == 0 || c_step == c_status)) {
+		else if((comment_status == 1 || comment_status == 2) && (c_step == 0 || c_step == c_status)) {
 			pMap.put("delete_all", 1); // 0이면 특정글 , 1이면 댓글,대댓글 전부 삭제
 			result = boardDao.replyDelete(pMap);			
 		}

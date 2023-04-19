@@ -543,7 +543,7 @@ const BoardDetail = () => {
                 ) : null}
               </InputDiv>
 
-              {comments.map((item) => {
+              {comments && comments.map((item) => {
                 if(item.comment_no >= 0) {
                 return (
                   <CommentBox key={item.comment_date}  liked={item.like_count} step={item.comment_step} status={item.comment_status} >
@@ -600,16 +600,16 @@ const BoardDetail = () => {
                     </ModalCommentUserReport>
                     ) : null}
 
-
-
-
-
-
-
-
-                      <CommentContent status={item.comment_status}>{item.comment_content}
-                      {item.comment_status === 3 ? <EditText>(수정됨)</EditText> : null}
-                      </CommentContent>
+                        {item.comment_status === 2 ? (
+                          <CommentContent status={item.comment_status}>
+                            <EditText>차단된 댓글입니다.</EditText>
+                          </CommentContent>
+                          ) : (
+                          <CommentContent status={item.comment_status}>
+                            {item.comment_content}
+                            {item.comment_status === 3 ? <EditText>(수정됨)</EditText> : null}
+                          </CommentContent>
+                        )}
                       <CommentDate>
                         {new Date(item.comment_date).toLocaleString()}
                       </CommentDate>

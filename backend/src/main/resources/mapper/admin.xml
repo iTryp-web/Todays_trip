@@ -9,13 +9,27 @@
 		     , m.market_title
 		     , m.market_price
 		     , q.qna_count
-		     , (SELECT COUNT(qna_no) qna_count
+		     , (SELECT COUNT(qna_no) qna_new
 		        FROM TB_QNA
 		        WHERE qna_step = 0
 		        AND qna_sort = 0
 		        ) qna_new
 		     , (SELECT COUNT(market_no)
          		FROM TB_MARKET) market_count
+         , (SELECT COUNT(report_no)
+            FROM TB_REPORT) report_count
+         , (SELECT COUNT(user_id)
+           FROM TB_USER
+           WHERE status = 2) userBan_count
+         , (SELECT COUNT(board_no)
+           FROM TB_BOARD
+           WHERE board_status = 1) boardBan_count  
+         , (SELECT COUNT(board_no)
+           FROM TB_B_COMMENT
+           WHERE comment_status = 2) commentBan_count
+         , (SELECT count(qna_no)
+            FROM TB_QNA
+            WHERE qna_sort = 3) resign_count		
 		FROM TB_MARKET m
 			, (SELECT COUNT(user_Id) qna_count, market_no
 			    FROM TB_QNA
@@ -41,8 +55,6 @@
          , (SELECT count(report_no)
             FROM TB_REPORT
             WHERE report_result = 0) report_new
-         , (SELECT COUNT(report_no)
-            FROM TB_REPORT) report_count
 		  FROM TB_REPORT
 		  <if test='report_type != null and report_type == 4'>
 		  	WHERE report_type = 4
@@ -104,7 +116,6 @@
 		     , board_category
 		     , board_title
 		     , board_date
-		     , board_hit
 		     , board_status
 		FROM TB_BOARD
 		WHERE board_status = 1
@@ -152,9 +163,6 @@
 				    FROM TB_QNA
 				    WHERE qna_step = 0
 				    AND qna_sort = 3) resign_new
-				 , (SELECT count(qna_no)
-            FROM TB_QNA
-            WHERE qna_sort = 3) resign_count
 		FROM TB_USER u, TB_QNA q
 		WHERE u.user_id = q.user_id
 			AND q.qna_sort = 3
