@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
 	
-	<!-- 주문 페이지로 이동할 때 필요한 정보 가져오기 -->
+	<!-- 주문 페이지로 이동할 때 쿠폰 정보 가져오기 -->
 	<select id="getOrderPage" parameterType="map" resultType="map">
 		SELECT coupon_no,
+				coupon_name,
 				coupon_rate, 
 				coupon_min, 
 				coupon_max, 
@@ -47,7 +48,7 @@
 								#{order_total},
 								#{order_discount},
 								#{order_payment})
-	</insert>	
+	</insert>
 	
 	<!-- 주문 상세 내역 DB에 저장 -->
 	<insert id="InsertOrderDetail" parameterType="map">
@@ -64,6 +65,11 @@
 										#{market_count},
 										#{order_amount})
 	</insert>
+	
+	<!-- 주문시 사용한 쿠폰 정보 업데이트 -->	
+	<update id="updateCouponInfo" parameterType="map">
+		UPDATE TB_U_COUPON SET coupon_exp = 1 WHERE coupon_no = #{coupon_no}
+	</update>
 	
 	<!-- 주문 내역 DB에 저장한 후 저장한 주문 번호 읽어오기 -->
 	<select id="getOrderNo" parameterType="map" resultType="int">
