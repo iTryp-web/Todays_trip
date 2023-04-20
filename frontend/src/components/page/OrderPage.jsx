@@ -18,30 +18,34 @@ const OrderPage = () => {
 
   //사용 가능한 쿠폰 리스트 관리
   let couponList = [];
-  const [cList, setCList] = useState([{}]);
-
-  let userInfo = {};
+  const [cList, setCList] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
 
   const cartList = orderItems;
   let price = 0;
   let count = 0;
-  if(cartList !== undefined && cartList.length > 0) {
-    cartList.forEach(cart => {
+  if(orderItems !== undefined && orderItems.length > 0) {
+    orderItems.forEach(cart => {
       price += cart.marketPrice * cart.marketCnt;
       count += cart.marketCnt;
     });
   }
 
+  const handleReserveName = () => {
+
+  }
+
   useEffect(() => {
     const getUserInfo = async () => {
-      const user = { user_id: "userone" };
+      const user = { user_id: "test1" };
       // const user = { user_id: sessionStorage.getItem('user_id') };
       await getOrderPage(user).then((res) => {
         if(res.data != null){
           console.log(res.data);
           couponList = res.data.couponList;
           console.log(couponList);
-          userInfo = res.data.userInfo;
+          setUserInfo(res.data.userInfo);
+          console.log(res.data.userInfo);
           console.log(userInfo);
           console.log(userInfo.user_name);
           setCList(couponList);
@@ -53,7 +57,6 @@ const OrderPage = () => {
     }
     getUserInfo();
   }, [])
-  // console.log(cList[0]);
 
   const getPostCode = () => {
   }
@@ -113,14 +116,13 @@ const OrderPage = () => {
               </tr>
             </thead>
             <tbody>
-              <OrderRow/>
-              <OrderRow/>
-              <OrderRow/>
-              <OrderRow/>
+              {cartList.map((cart, index) => (
+                <OrderRow key={index} cart={cart}/>
+              ))}
             </tbody>
           </OrderTable>
           <OrderTotalDiv>
-            <OrderTotalSpan>{`합계　${28000} 원`}</OrderTotalSpan>
+            <OrderTotalSpan>{`합계　${price} 원`}</OrderTotalSpan>
           </OrderTotalDiv>
         </OrderListDiv>
         <OrderCouponDiv>
@@ -129,10 +131,12 @@ const OrderPage = () => {
           <OrderCouponTyDiv>
             <OrdertysTitle>쿠폰 할인</OrdertysTitle>
             <SelectList>
-              { !couponList ? 
-                <option>사용 가능한 쿠폰이 존재하지 않습니다.</option>
+              { cList.length > 0 ? 
+                cList.map((coupon, index) => (
+                  <option key={index}>{coupon.COUPON_NAME} ({coupon.COUPON_DATE})</option>
+                ))
                 : 
-                <option>{cList[0].COUPON_NO}</option>
+                <option>사용 가능한 쿠폰이 존재하지 않습니다.</option>
               }
             </SelectList><br/>
             <OrdertysTitle>포인트</OrdertysTitle>
@@ -149,15 +153,15 @@ const OrderPage = () => {
             <tbody>
               <tr>
                 <OrdererTytd>예약자 이름</OrdererTytd>
-                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} value={userInfo.user_name} /></OrdererTyContentTd>
+                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} onChange={handleReserveName} defaultValue={userInfo.user_name || ''} /></OrdererTyContentTd>
               </tr>
               <tr>
                 <OrdererTytd>예약자 연락처</OrdererTytd>
-                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} defaultValue={"요리보고-1111-2222"}/></OrdererTyContentTd> 
+                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} defaultValue={userInfo.user_phone || ''}/></OrdererTyContentTd> 
               </tr>
               <tr>
                 <OrdererTytd>예약자 이메일</OrdererTytd>
-                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} defaultValue={"조리봐도@email.com"}/></OrdererTyContentTd> 
+                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} defaultValue={userInfo.user_email || ''}/></OrdererTyContentTd> 
               </tr>
             </tbody>
           </OrdererTable>
@@ -169,22 +173,22 @@ const OrderPage = () => {
             <tbody>
               <tr>
                 <AddressTitleTd>받는 사람</AddressTitleTd>
-                <td><AddressInput type='text' style={{width:"250px"}} defaultValue={"또치"}/></td>
+                <td><AddressInput type='text' style={{width:"250px"}} defaultValue={userInfo.user_name || ''}/></td>
               </tr>
               <tr>
                 <AddressTitleTd>연락처</AddressTitleTd>
-                <td><AddressInput type='text' style={{width:"250px"}} defaultValue={"010-8989-8989"}/></td>
+                <td><AddressInput type='text' style={{width:"250px"}} defaultValue={userInfo.user_phone || ''}/></td>
               </tr>
               <tr>
                 <AddressTitleTd rowSpan={3}>주소</AddressTitleTd>
-                <td><AddressButton onClick={getPostCode}>주소찾기</AddressButton><AddressInput type="text" id='postCode' style={{width:"166px"}} disabled/></td>
+                <td><AddressButton onClick={getPostCode}>주소찾기</AddressButton><AddressInput type="text" id='postCode' style={{width:"166px"}} defaultValue={userInfo.user_zipcode || ''} disabled/></td>
               </tr>
               <tr>
-                <td><AddressInput type="text" style={{width:"400px"}}  disabled/></td>
+                <td><AddressInput type="text" style={{width:"400px"}} defaultValue={userInfo.user_address || ''} disabled/></td>
               </tr>
               <tr>
                 <td width={'270px'}>
-                  <AddressInput type="text" placeholder='상세주소 입력' style={{width:"400px"}} />
+                  <AddressInput type="text" placeholder='상세주소 입력' style={{width:"400px"}} defaultValue={userInfo.user_address_detail || ''} />
                 </td>
               </tr>
             </tbody>
