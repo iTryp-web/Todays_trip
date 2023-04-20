@@ -23,6 +23,7 @@ import Term3 from "../Term/Term3";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { onAuthChange } from "../../service/authLogic";
+import { checkInfoDB, memberListDB } from "../../service/memberLogic";
 
 const SignUpPage = ({authLogic}) => {
   const auth = authLogic.getUserAuth();
@@ -33,7 +34,6 @@ const SignUpPage = ({authLogic}) => {
   const [memInfo, setMemInfo] = useState({
     email: "",
     password: "",
-    password2: "",
     name: "",
     hp: "",
     nickname: "",
@@ -63,6 +63,7 @@ const SignUpPage = ({authLogic}) => {
   const [pwChecktext, setPwCheckText] = useState("");
   const [nicknametext, setNicknameText] = useState("");
   const [referrertext, setReferrerText] = useState("");
+  const [checkNull, setCheckNull] = useState(false);
 
   //이메일 input박스 얇은 테두리색깔
   const [emailInputColor, setEmailInputColor] = useState("lightgray");
@@ -115,6 +116,64 @@ const SignUpPage = ({authLogic}) => {
   });
   //필수항목 체크 여부
   const [isRequiredChecked, setIsRequiredChecked] = useState(false);
+
+  //입력값 저장하기
+  const changeMemInfo = (e) => {
+    console.log('changeMemInfo');
+    const id = e.currentTarget.id;
+    console.log(id);
+    const value = e.target.value;
+    console.log(value);
+    setMemInfo({...memInfo, [id]: value});
+  }
+
+  //중복확인
+  
+  useEffect(()=> {
+    const overlap = async() => {
+      console.log('닉네임 중복확인')
+      let params;
+      params = {user_nickname : memInfo['nickname'], type :'overlap'}
+      console.log(params)
+
+      let response = {data:0}
+      response = await checkInfoDB(params)
+      console.log(response.data)
+  
+      const data = JSON.stringify(response.data)
+      console.log(data)
+      const jsonDoc = JSON.parse(data)
+  
+      //닉네임 존재해서 사용불가능할때
+      if(jsonDoc&&nicknameInput.length>0){
+        console.log(jsonDoc[0].USER_NICKNAME)
+        setNicknameText("사용 불가능한 닉네임 입니다")
+        setNicknameInputColor("#f77")
+        setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)")
+        setTextNickNameColor("#f77")
+      }
+      else if(nicknameInput.length==0){
+        setNicknameText("")
+        setNicknameInputColor("lightgray");
+        setNicknameShadowColor("none");
+        setTextNickNameColor("black")
+      }
+      else if(nicknameInput==null){
+        setNicknameText("필수항목입니다.")
+        setNicknameInputColor("#f77")
+        setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)")
+        setTextNickNameColor("#f77")
+      }
+      //닉네임 중복아니어서 사용가능할때
+      else{
+        setNicknameText("")
+        setNicknameInputColor("#4996f3");
+        setNicknameShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+        setTextNickNameColor("black")
+      }
+    }
+    overlap()
+  },[nicknameInput])
 
   //개별 체크박스 handler
   const handleSingleCheck = (e) => {
@@ -224,7 +283,7 @@ const SignUpPage = ({authLogic}) => {
   //이메일(아이디) input handler
   const handleIdInputChange = (e) => {
     //아이디 정규식
-    const regIdExp = new RegExp("^[a-zA-Z][0-9a-zA-Z]{3,7}$");
+    const regIdExp = new RegExp("^[a-zA-Z][0-9a-zA-Z]{1,15}$");
     const idValue = e.target.value;
     setIdInput(e.target.value);
     const idValidInput = regIdExp.test(idValue);
@@ -454,13 +513,12 @@ const SignUpPage = ({authLogic}) => {
           name: "",
           hp: "",
           nickname: null,
-          birthday: "",
-          gender:"없음"
         });
       }
     };
     onAuth();
   },[setMemInfo, userAuth.auth])
+
 
 
 
@@ -485,7 +543,7 @@ const SignUpPage = ({authLogic}) => {
               <input
                 id="email"
                 value={idInput}
-                onChange={handleIdInputChange}
+                onChange={(e)=>{handleIdInputChange(e); changeMemInfo(e)}}
                 onFocus={handleEmailFocus}
                 onBlur={handleEmailBlur}
                 type="text"
@@ -501,18 +559,20 @@ const SignUpPage = ({authLogic}) => {
               <label>
                 {inputVisible ? (
                   <input
+                    id="writeEmail"
                     className="inputDomain"
                     placeholder="입력해주세요"
                     style={{
                       border: "1px solid " + emailSelectColor,
                       boxShadow: emailSelectShadowColor,
                     }}
-                    onChange={handleWriteEmail}
+                    onChange={(e)=>{handleWriteEmail(e); changeMemInfo(e)}}
                     onFocus={handleEmailSelectFocus}
                     onBlur={handleEmailSelectBlur}
                   />
                 ) : (
                   <select
+                    id="selectEmail"
                     name="email"
                     style={{
                       border: "1px solid " + emailSelectColor,
@@ -520,7 +580,7 @@ const SignUpPage = ({authLogic}) => {
                     }}
                     onFocus={handleEmailSelectFocus}
                     onBlur={handleEmailSelectBlur}
-                    onChange={handleDomainSelect}
+                    onChange={(e)=>{handleDomainSelect(e); changeMemInfo(e)}}
                   >
                     <option value selected disabled>
                       &nbsp;&nbsp;선택해주세요
@@ -577,6 +637,7 @@ const SignUpPage = ({authLogic}) => {
           <NamenPhoneBlock>
             <h6 style={{ color: textNameColor }}>이름</h6>
             <input
+              id="name"
               className="name"
               placeholder="실명을 입력해주세요"
               value={nameInput}
@@ -584,7 +645,7 @@ const SignUpPage = ({authLogic}) => {
                 border: "1px solid " + nameInputColor,
                 boxShadow: nameInputShadowColor,
               }}
-              onChange={handleName}
+              onChange={(e)=>{handleName(e); changeMemInfo(e)}}
               onFocus={handleNameFocus}
               onBlur={handleNameBlur}
             ></input>
@@ -602,14 +663,16 @@ const SignUpPage = ({authLogic}) => {
               </p>
             )}
             <h6 className ="phone6" style ={{ color : textPhoneColor }}>휴대전화번호</h6>
-            <input className="phone"
+            <input 
+              id="phone"
+              className="phone"
               placeholder="ex)0161234567/01012345678"
               value={phoneInput}
               style={{
                 border: "1px solid " + phoneInputColor,
                 boxShadow: phoneInputShadowColor,
               }}
-              onChange={handlePhone}
+              onChange={(e)=>{handlePhone(e); changeMemInfo(e)}}
               onFocus={handlePhoneFocus}
               onBlur={handlePhoneBlur}></input>
               {phonetext !== "" && (
@@ -638,7 +701,7 @@ const SignUpPage = ({authLogic}) => {
                 border: "1px solid " + pwInputColor,
                 boxShadow: pwInputShadowColor,
               }}
-              onChange={handlePwInputChange}
+              onChange={(e)=>{handlePwInputChange(e);changeMemInfo(e)}}
               onFocus={handlePwInputFocus}
               onBlur={handlePwInputBlur}
             />
@@ -693,7 +756,7 @@ const SignUpPage = ({authLogic}) => {
                 border: "1px solid " + nicknameInputColor,
                 boxShadow: nicknameShadowColor,
               }}
-              onChange={handleNicknameInput}
+              onChange={(e)=>{handleNicknameInput(e); changeMemInfo(e); }}
               onFocus={handleNicknameFocus}
               onBlur={handleNicknameBlur}
             />
