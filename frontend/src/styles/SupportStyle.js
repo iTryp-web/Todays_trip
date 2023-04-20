@@ -29,8 +29,6 @@ export const CustomerService = styled.div`
     margin: 0;
     padding: 0;
     flex: 1;
-    @media only screen and (max-width: 900px) {
-    }
   }
 
   .helpDiv {
@@ -48,6 +46,13 @@ export const CustomerService = styled.div`
     width: 50%;
     display: inline-flex;
     color: rgb(47, 52, 56);
+  }
+
+  @media (max-width: 900px) {
+    .helpDiv,
+    .csDiv {
+      width: 100%;
+    }
   }
 
   .helpTitle {
@@ -171,7 +176,6 @@ export const FnNavDiv = styled.div`
 
 export const FnNavbar = styled.nav`
   height: 40px;
-  width: 500px;
   color: black;
   margin-right: 15px;
   font-size: 0.9rem;
@@ -190,7 +194,21 @@ export const FnNavbar = styled.nav`
   &:hover {
     color: #4996f3;
   }
+
+  @media (max-width: 1023px) {
+    width: 500px;
+  }
+
+  @media (max-width: 800px) {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    grid-template-columns: repeat(2, 1fr);
+    width: 80%;
+    margin: 0 auto;
+    gap: 10px;
+  }
 `;
+
 
 export const FnLink = styled(Link)`
   padding: 5px 14px;
@@ -280,3 +298,12 @@ export const AnswerText = styled.div`
     transition: all 0.1s ease-in-out;
   }
 `;
+
+/*================ 1대1문의 글 목록 ================*/
+export const InquiryH3 = styled.h3`
+
+`
+
+export const InquiryPost = styled.button`
+
+`
