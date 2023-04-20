@@ -41,6 +41,7 @@ const BoardDetail = () => {
     const boardDetail = async() => {
       const board = {
         board_no: bno,
+        board_update: '상세보기',
         user_nickname: userNickname
       }
       const res = await boardDetailDB(board)
@@ -561,8 +562,8 @@ const BoardDetail = () => {
                       <CommentInput
                         id='commentInput'
                         onChange={(e)=>{handleNewComment(e.target.value)}}
-                        maxLength={255}>
-                          {item.comment_content}
+                        maxLength={255}
+                        defaultValue={item.comment_content}>
                         </CommentInput>
                       <BtnCommentInsert
                         onClick={() => btnCommentUpdate(item.comment_no, item.comment_step)}

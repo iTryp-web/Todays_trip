@@ -5,8 +5,14 @@ import { AiFillLike, AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { FaCommentDots, FaHotjar } from 'react-icons/fa';
 import { BsBookmarkStar, BsBookmarkStarFill, BsFillEyeFill, BsFillImageFill } from 'react-icons/bs';
 
-
 const BoardRow = ({post}) => {
+  const test = (content) => {
+    if(content) {
+      const newText = content.replace(/(<([^>]+)>)/gi,'');
+      console.log(newText)
+      return newText
+    }
+  }
   return (
     <> 
       <PostLi>
@@ -25,7 +31,7 @@ const BoardRow = ({post}) => {
                   <BsFillImageFill  id='fileI' />
                 )}
               </p>
-              <p className='contentP' dangerouslySetInnerHTML={{__html:post.board_content}}></p>
+              <p className='contentP'>{test(post.board_content)}</p>
             </div>
           </PostContent>
           <PostFooter>

@@ -85,7 +85,7 @@ public class BoardLogic {
 		List<Map<String,Object>> bList = new ArrayList<>();
 		bList= boardDao.boardDetail(pMap);
 		// 조회 결과가 있을 경우 조회수 올리기
-		if(bList != null & bList.size() > 0) {
+		if(bList != null & bList.size() > 0 && pMap.get("board_update").toString().equals("상세보기")) {
 			pMap.put("board_hit", 1);
 			boardDao.boardUpdate(pMap);
 			// 댓글 처리 추가
