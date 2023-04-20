@@ -1,26 +1,26 @@
 import React from 'react'
 import { ImgDiv } from '../../styles/OrderStyle'
 
-const OrderRow = () => {
+const OrderRow = ({cart}) => {
   return (
     <>
       <tr>
         <td>
           <ImgDiv>
-            <img src="/images/naver-icon.png" width={'70px'} alt="product-img"/>
+            <img src={cart.marketImg} width={'70px'} alt="product-img"/>
           </ImgDiv>
         </td>
         <td>
-          {"아무거나 상품명"}
+          {cart.marketName}
         </td>
         <td>
-          {"2023-05-30 3pm"}
+          {cart.marketOption}
         </td>
         <td>
-          {"1개"}
+          {cart.marketCnt}개
         </td>
         <td>
-          {"7000 원"}
+          {cart.marketPrice * cart.marketCnt}원
         </td>
       </tr>
     </>
