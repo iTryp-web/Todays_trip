@@ -16,9 +16,8 @@ import MarketWrite from './components/market/MarketWrite';
 import BoardUpdateForm from './components/board/BoardUpdateForm';
 import MarketDetail from './components/market/MarketDetail';
 import AdminPage from './components/page/AdminPage';
-import SupportWriteForm from './components/support/InquiryWriteForm';
-import InquiryList from './components/support/InquiryList';
 import FindUserPage from './components/auth/FindUserPage';
+import InquiryWriteForm from './components/support/InquiryWriteForm';
 
 
 
@@ -42,7 +41,7 @@ function App({authLogic}) {
       <Route path='/market/write' exact={true} element={<MarketWrite />} />
       <Route path='/market/detail' element={<MarketDetail />} />
       <Route path='/support/:category' exact={true} element={<FaqPage />} />
-      <Route path='/support/inquiry' exact={true} element={<InquiryList />} />
+      <Route path='/support/helpLine' exact={true} element={<InquiryWriteForm />} />
       <Route path='/findEmail' exact ={true} element={<FindUserPage/>} />
     </Routes>
     </> 
