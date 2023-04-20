@@ -300,6 +300,61 @@ export const AnswerText = styled.div`
 `;
 
 /*================ 1대1문의 글 목록 ================*/
+export const InquirySection = styled.section`
+max-width: 1344px;
+padding: 0 5rem;
+margin: 0 auto;
+margin-top: 2.5em;
+margin-bottom: 6em;
+`;
+
+export const InqDiv = styled.div`
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 16px 0;
+border-bottom: 1px solid #f4f4f4;
+font-size: 14px;
+&:last-child {
+  border: none;
+}
+.categoryDropdown {
+  margin-left: 0.8em;
+  border: 1px solid lightgray;
+  border-Radius:5px;
+  height:2.7em;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+.btnInsert {
+  margin-right: 0.7em;
+  padding: 0 0.9rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.93rem;
+  font-weight: 600;
+  height:2.7em;
+  width: 5.7em;
+  background: #4996f3;
+  color: white;
+  }
+}
+#board_title {
+  width: 100%;
+  padding: 4px 14px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  &::placeholder {
+    color: #888;
+  }
+}
+`
+
 export const InquiryH3 = styled.h3`
 
 `
