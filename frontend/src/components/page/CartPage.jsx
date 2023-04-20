@@ -42,6 +42,10 @@ const CartPage = () => {
     } else setCheckedItems([...checkedItems, index])
   }
 
+  const handleDeleteChecked = (index) => {
+    setCheckedItems(checkedItems.filter(item => item !== index))
+  }
+
   //총 결제 금액 계산
   const handleTotal = () => {
     let pp = 0;
@@ -58,7 +62,7 @@ const CartPage = () => {
 
   //체크 박스 변경 읽어오기
   useEffect(() => {
-    if(cartList.length === checkedItems.length) setIsAllChecked(true);
+    if(cartList && cartList.length === checkedItems.length) setIsAllChecked(true);
     else setIsAllChecked(false);
     handleTotal();
   }, [checkedItems])
@@ -121,7 +125,7 @@ const CartPage = () => {
             <tbody>
               {
                 cartList.map((cart, index) => (
-                 <CartRow key={cart.marketNum} cart={cart} index={index} handleChecked={handleChecked} checkedItems={checkedItems} />
+                 <CartRow key={cart.marketNum} cart={cart} index={index} handleChecked={handleChecked} checkedItems={checkedItems} handleDeleteChecked={handleDeleteChecked} />
                 ))
               }
             </tbody>

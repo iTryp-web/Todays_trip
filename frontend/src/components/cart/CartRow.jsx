@@ -2,7 +2,7 @@ import React from 'react'
 import { CartTr, ImgDiv } from '../../styles/cartStyle'
 import { useCookies } from 'react-cookie';
 
-const CartRow = ({ cart, index, handleChecked, checkedItems }) => {
+const CartRow = ({ cart, index, handleChecked, checkedItems, handleDeleteChecked }) => {
 
   //아이콘 이미지
   const plus_img = "/images/add.png";
@@ -32,7 +32,7 @@ const CartRow = ({ cart, index, handleChecked, checkedItems }) => {
       setCookies("cart", cartList, {expires: new Date(Date.now() + 259200000)});
     } else {
       //수량 1 이하일 경우 메세지 출력
-      alert('카트에 담을 수 있는 최소 수량은 1개 입니다.');
+      alert('카트에 담을 수 있는 최소 수량은 1개입니다.');
     }
   }
 
@@ -40,6 +40,9 @@ const CartRow = ({ cart, index, handleChecked, checkedItems }) => {
   const handleDelete = () => {
     //해당 번호 제외한 아이템만 newCartList에 추가
     let newCartList = cartList.filter(cart => cart.marketNum !== cartList[index].marketNum)
+    if(checkedItems.includes(index)) {
+      handleDeleteChecked(index)
+    }
     //newCartList에 값이 들어있을 경우 쿠키에 추가
     if(newCartList.length > 0) {
       removeCookies("cart");
