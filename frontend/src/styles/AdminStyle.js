@@ -10,7 +10,7 @@ export const AdminSection = styled.section`
   justify-content: space-between;
   background: white;
   margin: 0 auto;
-  margin-top: 3em;
+  margin-top: 7em;
   margin-bottom: 6em;
 `;
 
@@ -19,6 +19,8 @@ export const AdminCategory = styled.nav`
   display: flex;
   flex-direction: column;
   width: 150px;
+  position: absolute;
+  top: 170px;
   ul {
     margin: 0;
     padding: 0;
@@ -79,16 +81,36 @@ export const AdminCategoryLi = styled.li`
 export const AContentSection = styled.section`
   flex: 1;
   max-width: 960px;
+  margin-left: 230px;
   h3 {
     font-size: 18px;
     font-weight: 700;
   }
+  .qnaNav {
+    margin-bottom: 20px;
+  }
 `;
+
+// 상단 카테고리 선택부분
+export const QnaCategory = styled.span`
+  color: rgb(51, 51, 51);
+  font-weight: 600;
+  font-size: 16px;
+  &:hover {
+    color: #4996f3;
+  }
+  ${({ active }) =>
+  active &&
+  css`
+    color: #4996f3;
+    font-weight: 800;
+  `}
+`
 
 /********** AdminQnaRow 스타일 **********/
 export const QnaLi = styled.li`
   list-style: none;
-  padding: 16px 8px;
+  padding: 25px 8px;
   margin-right: 3em;
   border-bottom: 1px solid #f4f4f4;
   font-size: 14px;
@@ -109,6 +131,17 @@ export const QnaLi = styled.li`
     margin-left: 10px;
   }
 `;
+
+export const QnaMarketStatus = styled.span`
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 10px;
+  color: #DB3D3D;
+  .newIcon {
+    font-size: 35px;
+    margin-bottom: 3px;
+  }
+`
 
 export const QnaContent = styled.div`
   font-size: 13px;
@@ -155,6 +188,6 @@ export const QnaMarketContent = styled.div`
   padding-right: 16px;
   text-overflow: ellipsis;
   word-break: break-all;
-  color: ${({ status }) => (status > 0 ? "#DB3D3D" : "#888")};
-  font-weight: ${({ status }) => (status > 0 ? "600" : "500")};
+  color: #888;
+  font-weight: 500;
 `;
