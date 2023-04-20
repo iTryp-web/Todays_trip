@@ -299,7 +299,7 @@ export const AnswerText = styled.div`
   }
 `;
 
-/*================ 1대1문의 글 목록 ================*/
+/*================ 1대1문의 글 ================*/
 export const InquirySection = styled.section`
 max-width: 1344px;
 padding: 0 5rem;
@@ -356,9 +356,14 @@ font-size: 14px;
 `
 
 export const InquiryH3 = styled.h3`
+  margin: 10px 0;
+  align-items: center;
+  font-weight: 600;
+  font-size: 2rem;
+`;
 
-`
-
-export const InquiryPost = styled.button`
-
+export const InquiryP = styled.p`
+border-radius: 15px;
+background-color : #F7F9FA;
+padding: 14px 20px;
 `
