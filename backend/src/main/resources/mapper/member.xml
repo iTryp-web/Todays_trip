@@ -23,6 +23,7 @@
 		</if>
 		<if test='user_email!= null'>
 			,#{user_email}
+			
 		</if>
 		<if test='user_nickname!= null'>
 			,#{user_nickname}

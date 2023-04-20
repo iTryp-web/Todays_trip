@@ -272,23 +272,6 @@ export const PaymentButton = styled.button`
   white-space: nowrap;
 `;
 
-export const SelectList = styled.select`
-  border-radius: 4px;
-  margin: 1% 0;
-  width: 320px;
-  padding: 1%;
-`;
-
-export const PointInput = styled.input`
-  border: 1px #6e6e6e solid;
-  border-radius: 4px;
-  margin: 1% 0;
-  width: 320px;
-  padding: 1%;
-  padding-right: 3%;
-  text-align: right;
-`;
-
 export const ConfirmSpan = styled.span`
   text-align: right;
   align-items: right;
