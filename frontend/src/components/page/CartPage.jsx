@@ -43,14 +43,21 @@ const CartPage = () => {
   }
 
   const handleDeleteChecked = (index) => {
-    setCheckedItems(checkedItems.filter(item => item !== index))
+    let newCheckedItems = [];
+    checkedItems.forEach(item => {
+      if(index < item) {
+        newCheckedItems.push(item - 1);
+      } else if(index > item) newCheckedItems.push(item);
+    })
+    // setCheckedItems(checkedItems.filter(item => item !== index))
+    setCheckedItems(newCheckedItems);
   }
 
   //총 결제 금액 계산
   const handleTotal = () => {
     let pp = 0;
     let cc = 0;
-    if(checkedItems.length > 0) {
+    if(checkedItems && checkedItems.length > 0) {
       checkedItems.forEach(index => {
         pp += cartList[index].marketPrice * cartList[index].marketCnt;
         cc += cartList[index].marketCnt;
