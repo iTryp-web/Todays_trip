@@ -85,7 +85,8 @@
 		, u.user_id
 		, u.user_nickname
 		, q.qna_title
-		, q.qna_content
+		,
+		q.qna_content
 		, q.qna_date
 		FROM TB_QNA q, TB_USER u
 		WHERE q.user_id =
@@ -129,9 +130,45 @@
 		#{qna_content},
 		2,
 		TO_CHAR(sysdate, 'YYYY-MM-DD
-		HH:MM:SS')
+		HH24:MI:SS')
 		)
 	</insert>
+
+	<!-- Quill image 추가 - 이미지 선택할때마다 인서트 -->
+	<insert id="qImageInsert" parameterType="map">
+		INSERT INTO TB_M_FILE
+		(file_no
+		, qna_no
+		, file_name
+		, file_url
+		, file_size
+		)
+		VALUES
+		(TB_M_FILE_NO_SEQ.NEXTVAL
+		, #{qna_no}
+		, #{file_name}
+		, #{file_url}
+		,
+		#{file_size}
+		)
+	</insert>
+
+	<!-- Quill image 수정 -->
+	<update id="qImageUpdate" parameterType="list">
+		<foreach collection="list" item="item" separator=";"
+			open="DECLARE BEGIN" close="; END;">
+			UPDATE TB_Q_FILE
+			SET qna_no = #{item.qna_no}
+			WHERE file_name =
+			LTRIM(#{item.file_name})
+		</foreach>
+	</update>
+	
+	<!-- Quill image 삭제 -->
+	<delete id="qImageDelete" parameterType="map">
+		DELETE FROM TB_Q_FILE
+		WHERE qna_no = #{qna_no}
+	</delete>
 
 	<!-- 1대1 문의 글 상세조회 -->
 	<select id="inquiryDetail" parameterType="map" resultType="map">

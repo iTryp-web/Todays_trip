@@ -4,7 +4,6 @@ import Footer from "../include/Footer";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import SQuillEditor from "./SQuillEditor";
-import { boardInsertDB } from "../../service/boardLogic";
 import {
   InqDiv,
   InquiryH3,
@@ -12,6 +11,7 @@ import {
   InquirySection,
 } from "../../styles/SupportStyle";
 import { BsDot } from "react-icons/bs";
+import { inquiryInsertDB } from "../../service/supportLogic";
 
 const InquiryWriteForm = () => {
   const navigate = useNavigate();
@@ -39,17 +39,17 @@ const InquiryWriteForm = () => {
   );
 
   const inquiryInsert = async () => {
-    console.log("boardInsert");
+    console.log("inquiryInsert");
     console.log(files);
     const board = {
+      qna_step: 0,
       user_id: sessionStorage.getItem("user_id"),
-      inquiry_title: title,
-      board_content: content,
-      imageNames: files,
+      qna_title: title,
+      qna_content: content,
     };
-    const res = await boardInsertDB(board);
+    const res = await inquiryInsertDB(board);
     console.log(res.data);
-    navigate("/board/all");
+    navigate("/support/all");
   };
 
   return (
@@ -58,17 +58,18 @@ const InquiryWriteForm = () => {
       <InquirySection>
         <InquiryH3>1대1 문의</InquiryH3>
         <InquiryP>
-          <BsDot />{" "}
-          문의 답변은 최대 3일까지 소요될 수 있습니다.
+          <BsDot /> 문의 답변은 최대 3일까지 소요될 수 있습니다.
           <br />
-          <BsDot />{" "}
-          1대1 문의로 작성된 글은 관리자와 작성자 이외에는 열람할 수 없습니다. 작성한 글은 마이페이지에서 작성한 글 목록에서 확인하실 수 있습니다.
-
+          <BsDot /> 1대1 문의로 작성된 글은 관리자와 작성자 이외에는 열람할 수
+          없습니다.
+          <br />
+          <BsDot /> 작성한 글은 마이페이지에서 작성한 글 목록에서 확인하실 수
+          있습니다.
         </InquiryP>
         <InqDiv>
           <input
             type="text"
-            id="board_title"
+            id="inquiry_title"
             maxLength="60"
             placeholder="문의 글 제목을 작성해주세요"
             autoComplete="off"
