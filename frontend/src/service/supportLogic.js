@@ -1,7 +1,7 @@
 import axios from "axios";
 
-/* 커뮤니티 전체 목록 조회 */
-export const boardListDB = (support) => {
+/* 1대1문의글 전체 목록 조회 */
+export const InquiryListDB = (support) => {
   console.log(support)
   return new Promise((resolve, reject) => {
     try {
@@ -18,15 +18,15 @@ export const boardListDB = (support) => {
   });
 };
 
-/* 커뮤니티 상세보기 */
-export const boardDetailDB = (board) => {
-  console.log(board)
+/* 1대1문의글 상세보기 */
+export const InquiryDetailDB = (support) => {
+  console.log(support)
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
         method: "get",
         url: process.env.REACT_APP_SPRING_IP + "board/boardDetail",
-        params: board,
+        params: support,
       });
       resolve(response);
     } catch (error) {
@@ -35,15 +35,15 @@ export const boardDetailDB = (board) => {
   });
 };
 
-/* 커뮤니티 글쓰기 */
-export const boardInsertDB = (board) => {
-  console.log(board)
+/* 1대1문의글 글쓰기 */
+export const InquiryInsertDB = (support) => {
+  console.log(support)
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
         method: "post",
         url: process.env.REACT_APP_SPRING_IP + "board/boardInsert",
-        data: board,
+        data: support,
       });
       resolve(response);
     } catch (error) {
@@ -52,15 +52,15 @@ export const boardInsertDB = (board) => {
   });
 };
 
-/* 커뮤니티 글 수정 */
-export const boardUpdateDB = (board) => {
-  console.log(board)
+/* 1대1문의글 글 수정 */
+export const InquiryUpdateDB = (support) => {
+  console.log(support)
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
         method: "post",
         url: process.env.REACT_APP_SPRING_IP + "board/boardUpdate",
-        data: board,
+        data: support,
       });
       resolve(response);
     } catch (error) {
@@ -69,8 +69,8 @@ export const boardUpdateDB = (board) => {
   });
 };
 
-// 커뮤니티 이미지 추가
-export const uploadImageDB = (file) => {
+/* 1대1문의글 사진 업로드 */
+export const InquiryImageDB = (file) => {
   console.log(file);
   return new Promise((resolve, reject) => {
     try {
@@ -92,14 +92,14 @@ export const uploadImageDB = (file) => {
 };
 
 /* 커뮤니티 글 삭제 */
-export const boardDeleteDB = (board) => {
-  console.log(board)
+export const InquiryDeleteDB = (support) => {
+  console.log(support)
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
         method: "post",
         url: process.env.REACT_APP_SPRING_IP + "board/boardDelete",
-        data: board,
+        data: support,
       });
       resolve(response);
     } catch (error) {
@@ -108,19 +108,3 @@ export const boardDeleteDB = (board) => {
   });
 };
 
-/* 댓글 수정 */
-export const replyUpdateDB = (board) => {
-  console.log(board)
-  return new Promise((resolve, reject) => {
-    try {
-      const response = axios({
-        method: "post",
-        url: process.env.REACT_APP_SPRING_IP + "board/replyUpdate",
-        data: board,
-      });
-      resolve(response);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
