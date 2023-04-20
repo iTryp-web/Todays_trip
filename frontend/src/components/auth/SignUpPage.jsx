@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   AuthButton,
   EmailBlock,
@@ -63,7 +63,6 @@ const SignUpPage = ({authLogic}) => {
   const [pwChecktext, setPwCheckText] = useState("");
   const [nicknametext, setNicknameText] = useState("");
   const [referrertext, setReferrerText] = useState("");
-  const [checkNull, setCheckNull] = useState(false);
 
   //이메일 input박스 얇은 테두리색깔
   const [emailInputColor, setEmailInputColor] = useState("lightgray");
@@ -128,10 +127,15 @@ const SignUpPage = ({authLogic}) => {
   }
 
   //중복확인
-  
+  //useRef는 useEffect에서 이전상태나 프롭스를 비교하는 작업에 사용
+  //처음 null값은 인식 안하고 다음 null값부터 처리하기위해 사용했음
+  //nicknameInputRef에 이전 닉네임값을 저장
+  const nicknameInputRef = useRef(null);
   useEffect(()=> {
     const overlap = async() => {
       console.log('닉네임 중복확인')
+      //이전닉네임값
+      const prevNicknameInput = nicknameInputRef.current;
       let params;
       params = {user_nickname : memInfo['nickname'], type :'overlap'}
       console.log(params)
@@ -143,37 +147,93 @@ const SignUpPage = ({authLogic}) => {
       const data = JSON.stringify(response.data)
       console.log(data)
       const jsonDoc = JSON.parse(data)
-  
+
+      //이전닉네임값이 null이아니고 nicknameInput이 null이 아닐때만 작동
       //닉네임 존재해서 사용불가능할때
-      if(jsonDoc&&nicknameInput.length>0){
-        console.log(jsonDoc[0].USER_NICKNAME)
-        setNicknameText("사용 불가능한 닉네임 입니다")
-        setNicknameInputColor("#f77")
-        setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)")
-        setTextNickNameColor("#f77")
+      if(nicknameInput!==null && prevNicknameInput!==null){
+        if(jsonDoc&&nicknameInput.length>0){
+          console.log(jsonDoc[0].USER_NICKNAME)
+          setNicknameText("사용 불가능한 닉네임 입니다")
+          setNicknameInputColor("#f77")
+          setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)")
+          setTextNickNameColor("#f77")
+        }
+        else if(nicknameInput.length==0){ 
+          setNicknameText("필수항목입니다.")
+          setNicknameInputColor("#f77")
+          setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)")
+          setTextNickNameColor("#f77")
+        }
+        //닉네임 중복아니어서 사용가능할때
+        else{
+          setNicknameText("")
+          setNicknameInputColor("#4996f3");
+          setNicknameShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+          setTextNickNameColor("black")
+        }
       }
-      else if(nicknameInput.length==0){
-        setNicknameText("")
-        setNicknameInputColor("lightgray");
-        setNicknameShadowColor("none");
-        setTextNickNameColor("black")
-      }
-      else if(nicknameInput==null){
-        setNicknameText("필수항목입니다.")
-        setNicknameInputColor("#f77")
-        setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)")
-        setTextNickNameColor("#f77")
-      }
-      //닉네임 중복아니어서 사용가능할때
-      else{
-        setNicknameText("")
-        setNicknameInputColor("#4996f3");
-        setNicknameShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
-        setTextNickNameColor("black")
-      }
+      nicknameInputRef.current = nicknameInput;
     }
     overlap()
   },[nicknameInput])
+
+  //회원 가입
+  const signup = async() => {
+    console.log('회원가입 구현');
+    try {
+      let uid;
+      console.log(googleEmail);
+      if(googleEmail){
+        console.log(auth); 
+        console.log(memInfo); 
+        uid = await linkEmail(auth, memInfo);
+        console.log(uid);
+      } else {
+        uid = await signupEmail(auth, memInfo);
+      }
+      console.log(uid);
+      //const pwd = pwdEncrypt(memInfo.password);
+      const b = memInfo.birthday;
+      let birthday = ""; 
+      if(b!==""){
+        birthday = b.slice(0,4) + '-' + b.slice(4, 6) + '-' + b.slice(6,8);
+      }
+      console.log('입력받은 생일정보 '+birthday);
+      const datas = {
+        MEM_UID: uid,
+        MEM_NAME: memInfo.name,
+        MEM_PW: memInfo.password,
+        MEM_EMAIL: memInfo.email,
+        MEM_BIRTHDAY: birthday,
+        MEM_TEL: memInfo.hp,
+        MEM_NICKNAME: memInfo.nickname,
+        MEM_ZIPCODE: post.zipcode,
+        MEM_ADDR: post.addr,
+        MEM_ADDR_DTL: post.addrDetail,
+        MEM_STATUS : 0,
+        MEM_AUTH: (type==='member'?1:2),
+        MEM_GENDER: memInfo.gender
+      }
+      console.log(datas)
+      const response = await memberInsertDB(datas);
+      console.log(response);
+      if(response.data!==1) {
+      return "DB 오류: 관리자에게 연락바랍니다.";
+    }
+      sessionStorage.clear();
+      navigate('/');
+      return "회원가입되었습니다. 감사합니다.";
+      
+    } catch (error) {
+      console.log(error+" 오류: 관리자에게 연락바랍니다.");
+    }
+  }//end of 회원가입 구현
+
+
+
+
+
+
 
   //개별 체크박스 handler
   const handleSingleCheck = (e) => {
@@ -482,6 +542,7 @@ const SignUpPage = ({authLogic}) => {
   //회원가입 버튼 핸들러
   const handleSubmit = (e) => {
     e.preventDefault();
+    signup();
   };
 
   //비밀번호 같은값인지 체크
