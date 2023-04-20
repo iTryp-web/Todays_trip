@@ -2,14 +2,14 @@ import React, { useEffect } from 'react'
 import Header from '../include/Header'
 import OrderRow from '../order/OrderRow'
 import Footer from '../include/Footer'
-import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, 
-         SelectList, OrdertysTitle, OrderCalcDiv, OrdererTable, ConfirmButton, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, 
-         OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, PointUseDiv, PointInput, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, 
-         OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP, OrdererTyContentTd, AgreeAllCheckDiv, InputAllCheck, AddressTable, AddressTitleTd, 
-         AddressButton, AddressInput, AgreeCheckDiv } from '../../styles/OrderStyle'
+import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCouponDiv, PaymentButton, OrderButtonDiv, OrdererInfoDiv, OrdertyTitle, OrdertysTitle, OrderCalcDiv, 
+         OrdererTable, ConfirmButton, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, 
+         PointUseDiv, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP, OrdererTyContentTd, AgreeAllCheckDiv, 
+         InputAllCheck, AddressTable, AddressTitleTd, AddressButton, AddressInput, AgreeCheckDiv } from '../../styles/OrderStyle'
 import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import { getOrderPage } from '../../service/orderLogic'
+import { Form } from 'react-bootstrap'
 
 const OrderPage = () => {
 
@@ -21,13 +21,38 @@ const OrderPage = () => {
   const [cList, setCList] = useState([]);
   const [userInfo, setUserInfo] = useState({});
 
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  //체크 박스 전체 선택시 처리
+  const handleAllChecked = (e) => {
+    if(e.target.checked){
+      let list = [];
+      checkedItems.forEach((item, index) => {
+        list.push(index);
+      })
+      setCheckedItems(list);
+    } else setCheckedItems([]);
+  }
+
+  //체크 박스 개별 선택시 처리
+  const handleChecked = (index) => {
+    if(checkedItems.includes(index)){
+      setCheckedItems(checkedItems.filter(item => item !== index))
+    } else setCheckedItems([...checkedItems, index])
+  }
+
+  //체크 박스 변경 읽어오기
+  useEffect(() => {
+    if(cartList && cartList.length === checkedItems.length) setIsAllChecked(true);
+    else setIsAllChecked(false);
+  }, [checkedItems])
+
   const cartList = orderItems;
   let price = 0;
-  let count = 0;
   if(orderItems !== undefined && orderItems.length > 0) {
     orderItems.forEach(cart => {
       price += cart.marketPrice * cart.marketCnt;
-      count += cart.marketCnt;
     });
   }
 
@@ -41,17 +66,9 @@ const OrderPage = () => {
       // const user = { user_id: sessionStorage.getItem('user_id') };
       await getOrderPage(user).then((res) => {
         if(res.data != null){
-          console.log(res.data);
           couponList = res.data.couponList;
-          console.log(couponList);
           setUserInfo(res.data.userInfo);
-          console.log(res.data.userInfo);
-          console.log(userInfo);
-          console.log(userInfo.user_name);
           setCList(couponList);
-          console.log(couponList[0]);
-        } else {
-          
         }
       })
     }
@@ -71,7 +88,7 @@ const OrderPage = () => {
       pay_method: 'card',                                                                                 // 결제수단
       merchant_uid:  `mid_${new Date().getTime()}`,                                                       // 주문번호
       amount: price,                                                                                      // 결제금액
-      name: cartList[0].marketName + cartList.length != 1 ? "외 " + (cartList.length - 1) +  " 건" : '',  // 주문명
+      name: cartList[0].marketName + cartList.length !== 1 ? "외 " + (cartList.length - 1) +  " 건" : '',  // 주문명
       buyer_name: userInfo.user_name,                                                                     // 구매자 이름
       buyer_tel: userInfo.user_phone,                                                                     // 구매자 전화번호
       buyer_email: userInfo.user_email,                                                                   // 구매자 이메일
@@ -130,7 +147,7 @@ const OrderPage = () => {
           <LineHr/>
           <OrderCouponTyDiv>
             <OrdertysTitle>쿠폰 할인</OrdertysTitle>
-            <SelectList>
+            <Form.Select style={{width: "330px"}}>
               { cList.length > 0 ? 
                 cList.map((coupon, index) => (
                   <option key={index}>{coupon.COUPON_NAME} ({coupon.COUPON_DATE})</option>
@@ -138,11 +155,11 @@ const OrderPage = () => {
                 : 
                 <option>사용 가능한 쿠폰이 존재하지 않습니다.</option>
               }
-            </SelectList><br/>
+            </Form.Select><br/>
             <OrdertysTitle>포인트</OrdertysTitle>
             <div>{`사용 가능 포인트　${0} 점`}</div>
             <PointUseDiv>
-              <span><PointInput type="decimal" placeholder="" disabled="" pattern="[0-9]*" defaultValue="0"></PointInput></span><ConfirmSpan><ConfirmButton>모두 사용</ConfirmButton></ConfirmSpan>
+              <span><Form.Control type='text' placeholder='0' style={{ width: "330px" }} disabled /></span><ConfirmSpan><ConfirmButton>모두 사용</ConfirmButton></ConfirmSpan>
             </PointUseDiv>
           </OrderCouponTyDiv>
         </OrderCouponDiv>
@@ -197,9 +214,9 @@ const OrderPage = () => {
         <OrderCalcDiv>
           <OrdertyTitle>결제 정보</OrdertyTitle>
           <OrderCalcTyDiv>
-            <OrderCalcListDiv>{`주문 금액　${1111} 원　ㅡ　할인 금액　${0} 원`}</OrderCalcListDiv>
+            <OrderCalcListDiv>{`주문 금액　${price} 원　ㅡ　할인 금액　${0} 원`}</OrderCalcListDiv>
             <OrderCalcResultDiv>
-              <span>{`결제 금액　${1111} 원`}</span>
+              <span>{`결제 금액　${price} 원`}</span>
             </OrderCalcResultDiv>
           </OrderCalcTyDiv>
         </OrderCalcDiv>
@@ -207,14 +224,14 @@ const OrderPage = () => {
         <OrderAgreeDiv>
           <OrderAgreeTyDiv>
             <AgreeAllCheckDiv>
-              <InputAllCheck type={'checkbox'}/>
+              <InputAllCheck type={'checkbox'} onChange={handleAllChecked} checked={isAllChecked}/>
               <span>아래 내용에 모두 동의합니다. (필수)</span>
               <LineHr/>
             </AgreeAllCheckDiv>
             <AgreeCheckDiv>
-              <InputAllCheck type={'checkbox'}/>
+              <InputAllCheck type={'checkbox'} onChange={handleChecked(1)} checked={checkedItems.includes(1)}/>
               <span>본인은 만 14세 이상이며, 주문 내용과 예약 취소 규정을 확인하였습니다.</span><br/>
-              <InputAllCheck type={'checkbox'}/>
+              <InputAllCheck type={'checkbox'} onChange={handleChecked(2)} checked={checkedItems.includes(2)}/>
               <span>(주)오늘의 여행은 원활한 서비스 제공을 위해 최소한의 범위 내에서 개인정보를 수집, 이용 및 제공합니다.</span><br/>
             </AgreeCheckDiv>
           </OrderAgreeTyDiv>
