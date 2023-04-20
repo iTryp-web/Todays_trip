@@ -149,7 +149,7 @@ useEffect(() => {
           )}
 
           {/* 글 목록 */}
-          <ul>
+          <ul className='contentUl'>
             {posts && posts.map((post) => {
               return <BoardRow key={post.board_no} post={post} />
             })}

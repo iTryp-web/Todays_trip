@@ -46,7 +46,7 @@ const AdminLayout = () => {
       let commentBan_count = 0
       // 문의 db 담기 - 새로운문의 qna_new
       const list1 = []
-      if(jsonDoc.length > 1) {
+      if(jsonDoc.length > 0) {
         market_count = jsonDoc[0].MARKET_COUNT
         report_count = jsonDoc[0].REPORT_COUNT
         resign_count = jsonDoc[0].RESIGN_COUNT
@@ -67,6 +67,7 @@ const AdminLayout = () => {
             market_title: jsonDoc[i].MARKET_TITLE,
             market_price: jsonDoc[i].MARKET_PRICE,
             market_date: jsonDoc[i].MARKET_DATE,
+            sales_count: jsonDoc[i].SALES_COUNT,
             qna_new: jsonDoc[i].QNA_NEW, // 새로운 문의 수
             qna_count: jsonDoc[i].QNA_COUNT, // 해당글 문의 수
           }
@@ -299,14 +300,14 @@ const AdminLayout = () => {
                   >
                     <img src={category.img} alt={category.category} />
                     {category.name}
-                    {category.name === '판매' && qnaList[0].qna_new > 0 ? (
-                      <AiFillPlusSquare active={category.name === selected} className='icon' />
+                    {qnaList.length > 0 && category.name === '판매' && qnaList[0].qna_new > 0 ? (
+                      <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
                     ) : null}
-                    {category.name === '신고' && reportList[0].report_new > 0 ? (
-                      <AiFillPlusSquare active={category.name === selected} className='icon' />
+                    {reportList.length > 0 && category.name === '신고' && reportList[0].report_new > 0 ? (
+                      <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
                     ) : null}
-                    {category.name === '탈퇴' && resignList[0].resign_new > 0 ? (
-                      <AiFillPlusSquare active={category.name === selected} className='icon' />
+                    {resignList.length > 0 && category.name === '탈퇴' && resignList[0].resign_new > 0 ? (
+                      <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
                     ) : null}
                   </AdminCategoryLi>
                 );
@@ -317,16 +318,16 @@ const AdminLayout = () => {
         {/* 오른쪽 커뮤 내용 */}
         <AContentSection className='content'>
           {/* 글 목록 */}
-          {qnaList && selected === '판매' ? (
+          {qnaList.length > 0 && selected === '판매' ? (
             <ul>
-              {qnaList && qnaList.map((qna) => {
+              {qnaList.map((qna) => {
                 return <AdminQnaRow key={qna.market_no} qna={qna} />
               })}
             </ul>
           ) : null}
-          {reportList && selected === '신고' ? (
+          {reportList.length > 0  && selected === '신고' ? (
             <ul>
-              {reportList && reportList.map((report) => {
+              {reportList.map((report) => {
                 return <AdminReportRow key={report.report_no} report={report} />
               })}
             </ul>
@@ -334,9 +335,9 @@ const AdminLayout = () => {
           {(userBanList || boardBanList || commentBanList) && selected === '차단' ? (
             <AdminBanRow userBanList={userBanList} boardBanList={boardBanList} commentBanList={commentBanList} />
           ) : null}
-          {resignList && selected === '탈퇴' ? (
+          {resignList.length > 0 && selected === '탈퇴' ? (
             <ul>
-              {resignList && resignList.map((resign) => {
+              {resignList.map((resign) => {
                 return <AdminResignRow key={resign.qna_date} resign={resign} />
               })}
             </ul>

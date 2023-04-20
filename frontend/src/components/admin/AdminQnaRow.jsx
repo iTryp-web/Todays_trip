@@ -28,6 +28,9 @@ const AdminQnaRow = ({qna}) => {
               <QnaMarketContent status={0}>
                 가격: {qna.market_price}원
               </QnaMarketContent>
+              <QnaMarketContent>
+                판매 개수: {qna.sales_count}개
+              </QnaMarketContent>
               <QnaMarketContent status={qna.qna_count}>
                 새로운 문의: {qna.qna_count ? qna.qna_count : 0}
               </QnaMarketContent>

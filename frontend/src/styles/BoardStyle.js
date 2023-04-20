@@ -151,6 +151,9 @@ export const BContentSection = styled.section`
     font-size: 18px;
     font-weight: 700;
   }
+  .contentUl {
+    margin-top: 50px;
+  }
 `;
 
 export const Wrap = styled.div`
@@ -285,7 +288,7 @@ export const BtnSearch = styled.button`
 /********** BoardRow 스타일 **********/
 export const PostLi = styled.li`
   list-style: none;
-  padding: 16px 8px;
+  padding: 25px 8px 16px 8px;
   margin-right: 3em;
   border-bottom: 1px solid #f4f4f4;
   font-size: 14px;
@@ -338,6 +341,7 @@ export const PostContent = styled.div`
     display: -webkit-box;
     margin: 8px 0 5px 0;
     padding-right: 16px;
+    padding-left: ${({ liked }) => (liked >= 5 ? "7px" : "3px" )};
     color: #888;
     text-overflow: ellipsis;
     word-break: break-all;
@@ -350,6 +354,7 @@ export const PostFooter = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 14px;
+  margin-bottom: 14px;
   ul.list-count {
     list-style: none;
     display: flex;

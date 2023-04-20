@@ -17,6 +17,12 @@ const BoardUpdateForm = () => {
   // 해시값으로 수정하는 bno 가져오기
   const {bno} = useParams()
   console.log(bno);
+  // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
+  // 아이디, 닉네임 담을 변수
+  const [userId] = useState(window.sessionStorage.getItem('user_id'))
+  const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+  const [userRole] = useState(window.sessionStorage.getItem('user_role'))
+
   const [category] = useState(['자유', '질문', '여행후기', '동행찾기'])
   const [selected, setSelected] = useState('')
   const[title, setTitle]= useState('');
@@ -47,7 +53,8 @@ const BoardUpdateForm = () => {
   useEffect(() => {
     const boardDetail = async() => {
       const board = {
-        board_no: bno
+        board_no: bno,
+        board_update: '수정'
       }
       const res = await boardDetailDB(board)
       console.log(res.data);
@@ -56,7 +63,7 @@ const BoardUpdateForm = () => {
       setSelected(jsonDoc[0].BOARD_CATEGORY)
       setTitle(jsonDoc[0].BOARD_TITLE)
       setContent(jsonDoc[0].BOARD_CONTENT)
-      if(jsonDoc[0].USER_NICKNAME !== sessionStorage.getItem("user_nickname")) {
+      if(jsonDoc[0].USER_NICKNAME !== userNickname) {
         alert('작성자가 아닙니다');
         navigate('/board/all')
       }

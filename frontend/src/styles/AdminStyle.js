@@ -12,29 +12,6 @@ export const AdminSection = styled.section`
   margin: 0 auto;
   margin-top: 3em;
   margin-bottom: 6em;
-
-  @media only screen and (max-width: 1356px) {
-    padding: 0 3rem;
-    .content {
-      width: 35em;
-    }
-  }
-
-  @media only screen and (max-width: 1024px) {
-    padding: 0 3rem;
-    .content {
-      width: 30em;
-      margin-left: 16em;
-    }
-  }
-
-  @media only screen and (max-width: 768px) {
-    padding: 0 3rem;
-    .content {
-      width: 25em;
-      margin-left: 15em;
-    }
-  }
 `;
 
 /* 카테고리 전체 */
