@@ -49,7 +49,6 @@ const CartPage = () => {
         newCheckedItems.push(item - 1);
       } else if(index > item) newCheckedItems.push(item);
     })
-    // setCheckedItems(checkedItems.filter(item => item !== index))
     setCheckedItems(newCheckedItems);
   }
 
