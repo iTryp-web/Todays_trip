@@ -1,6 +1,6 @@
 import React from 'react'
-import { AContentSection, AdminCategory, AdminCategoryLi, AdminCategoryUl, AdminH3, AdminPageUl, AdminSection } from '../../styles/AdminStyle'
-import { adminCategories } from './adminData';
+import { AContentSection, AdminCategory, AdminCategoryLi, AdminCategoryUl, AdminPageUl, AdminSection, QnaCategory } from '../../styles/AdminStyle'
+import { aMarketCategories, adminCategories } from './adminData';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCallback } from 'react';
@@ -11,6 +11,7 @@ import AdminReportRow from './AdminReportRow';
 import AdminResignRow from './AdminResignRow';
 import AdminBanRow from './AdminBanRow';
 import { AiFillPlusSquare } from 'react-icons/ai';
+import { Nav } from "react-bootstrap";
 
 const AdminLayout = () => {
   // 화면전환
@@ -19,7 +20,7 @@ const AdminLayout = () => {
   let {category} = useParams()
   console.log(category);
 
-  // 판매목록(새로운 문의) 변수
+  // 마켓목록(새로운 문의) 변수
   const [qnaList, setQnaList] = useState([{}])
   // 신고 목록(새로운 신고) 변수
   const [reportList, setReportList] = useState([{}])
@@ -44,7 +45,7 @@ const AdminLayout = () => {
       let userBan_count = 0
       let boardBan_count = 0
       let commentBan_count = 0
-      // 문의 db 담기 - 새로운문의 qna_new
+      // 마켓문의 db 담기 - 새로운문의 qna_new
       const list1 = []
       if(jsonDoc.length > 0) {
         market_count = jsonDoc[0].MARKET_COUNT
@@ -260,7 +261,7 @@ const AdminLayout = () => {
   
   /* 왼쪽 카테고리 */
   // 선택한 카테고리 담기
-  const [selected, setSelected] = useState('판매')
+  const [selected, setSelected] = useState('마켓')
   const handleCategory =  useCallback((name) => {
     let category = ''
     {adminCategories.map((item) => {
@@ -281,6 +282,9 @@ const AdminLayout = () => {
     setSelected(name)
   }, [category])
 
+  /* 상단 카테고리*/
+  const [selectedMarket, setSelectedMarket] = useState('전체')
+  
   return (
     <>
       <AdminSection>
@@ -297,10 +301,10 @@ const AdminLayout = () => {
                     key={category.name}
                     active={category.name === selected}
                     onClick={() => handleCategory(category.name)}
-                  >
+                    >
                     <img src={category.img} alt={category.category} />
                     {category.name}
-                    {qnaList.length > 0 && category.name === '판매' && qnaList[0].qna_new > 0 ? (
+                    {qnaList.length > 0 && category.name === '마켓' && qnaList[0].qna_new > 0 ? (
                       <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
                     ) : null}
                     {reportList.length > 0 && category.name === '신고' && reportList[0].report_new > 0 ? (
@@ -318,10 +322,21 @@ const AdminLayout = () => {
         {/* 오른쪽 커뮤 내용 */}
         <AContentSection className='content'>
           {/* 글 목록 */}
-          {qnaList.length > 0 && selected === '판매' ? (
+          {qnaList.length > 0 && selected === '마켓' ? (
             <ul>
+              <Nav className='qnaNav' fill variant="tabs">
+                {aMarketCategories && aMarketCategories.map((marketCategory) => (
+                    <Nav.Item>
+                      <Nav.Link
+                        onClick={() => setSelectedMarket(marketCategory.name)}>
+                        <QnaCategory active={marketCategory.name === selectedMarket}>{marketCategory.name}</QnaCategory>
+                      </Nav.Link>
+                    </Nav.Item>
+                ))}
+              </Nav>
+              {/* 카테고리 selected에따른 조건 설정할것! 패키지, 레저, 티켓, 교통, 숙소 */}
               {qnaList.map((qna) => {
-                return <AdminQnaRow key={qna.market_no} qna={qna} />
+                return <AdminQnaRow key={qna.market_no} qna={qna} selectedMarket={selectedMarket} />
               })}
             </ul>
           ) : null}
@@ -332,7 +347,7 @@ const AdminLayout = () => {
               })}
             </ul>
           ) : null}
-          {(userBanList || boardBanList || commentBanList) && selected === '차단' ? (
+          {(userBanList.length || boardBanList.length || commentBanList.length) > 0 && selected === '차단' ? (
             <AdminBanRow userBanList={userBanList} boardBanList={boardBanList} commentBanList={commentBanList} />
           ) : null}
           {resignList.length > 0 && selected === '탈퇴' ? (

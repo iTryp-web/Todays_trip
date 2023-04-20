@@ -18,8 +18,6 @@ public class SupportLogic {
 
 	@Autowired
 	private SupportDao supportDao = null;
-	@Autowired
-	private BoardDao boardDao = null;
 
 	/**
 	 * 1대1 문의/공지사항
@@ -46,7 +44,7 @@ public class SupportLogic {
 		result = supportDao.noticeInsert(pMap);
 		// Quill image가 있을 경우
 		if (result > 0 && pMap.get("file_name") != null && pMap.get("file_name").toString().length() > 0) {
-			int insertImg = supportDao.imageInsert(pMap);
+			int insertImg = supportDao.qImageInsert(pMap);
 			if (insertImg > 0) {
 				logger.info("이미지 업로드 성공");
 			} else {
