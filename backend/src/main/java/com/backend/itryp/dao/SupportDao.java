@@ -149,33 +149,45 @@ public class SupportDao {
 		return result;
 	}
 	
-
 	/**
-	 * Quill image 삭제
+	 * Quill image 목록 조회
 	 * 
 	 * @param pMap
 	 * @return
 	 */
-	public int imageDelete(Map<String, Object> pMap) {
-		logger.info("imageDelete 호출");
-		int result = 0;
-		result = sqlSessionTemplate.update("imageDelete", pMap);
-		return result;
+	public List<Map<String, Object>> qImageList(Map<String, Object> pMap) {
+		logger.info("qImageList 호출");
+		List<Map<String, Object>> iList = null;
+		iList = sqlSessionTemplate.selectList("qImageList", pMap);
+		return iList;
 	}
-
+	
 	/**
-	 * 1대1문의 혹은 공지사항 글쓰기 이미지 업로드 - Quill image가 있는 경우
+	 * Quill image 추가 - 이미지 선택할때마다 인서트
 	 * 
 	 * @param pMap
 	 * @return
 	 */
-	public int imageInsert(Map<String, Object> pMap) {
-		logger.info("imageInsert 호출");
+	public int qImageInsert(Map<String, Object> pMap) {
+		logger.info("qImageInsert 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("imageInsert", pMap);
+		result = sqlSessionTemplate.update("qImageInsert", pMap);
 		return result;
 	}
-
+	
+	/**
+	 * Quill image 수정 - board_no 추가
+	 * 
+	 * @param pList
+	 * @return
+	 */
+	public int qImageUpdate(List<Map<String, Object>> pList) {
+		logger.info("qImageUpdate 호출");
+		logger.info(pList);
+		int result = 0;
+		result = sqlSessionTemplate.update("qImageUpdate", pList);
+		return result;
+	}	
 	
 	/**
 	 * 댓글 삭제

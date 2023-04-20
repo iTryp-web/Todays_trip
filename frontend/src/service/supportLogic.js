@@ -36,13 +36,13 @@ export const InquiryDetailDB = (support) => {
 };
 
 /* 1대1문의글 글쓰기 */
-export const InquiryInsertDB = (support) => {
+export const inquiryInsertDB = (support) => {
   console.log(support)
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
         method: "post",
-        url: process.env.REACT_APP_SPRING_IP + "board/boardInsert",
+        url: process.env.REACT_APP_SPRING_IP + "support/inquiryInsert",
         data: support,
       });
       resolve(response);
@@ -70,13 +70,13 @@ export const InquiryUpdateDB = (support) => {
 };
 
 /* 1대1문의글 사진 업로드 */
-export const InquiryImageDB = (file) => {
+export const qUploadImageDB = (file) => {
   console.log(file);
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
         method: "post",
-        url: process.env.REACT_APP_SPRING_IP + "board/uploadImage",
+        url: process.env.REACT_APP_SPRING_IP + "support/uploadImage",
         headers: {
           "Content-Type": "multipart/form-data",
         },
