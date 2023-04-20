@@ -17,15 +17,8 @@ const CartPage = () => {
   //쿠키에서 장바구니 목록 가져오기
   const cartList = cookies.cart;
 
-  let price = 0;
-  let count = 0;
-
-  if(cartList !== undefined && cartList.length > 0) {
-    cartList.forEach(cart => {
-      price += cart.marketPrice * cart.marketCnt;
-      count += cart.marketCnt;
-    });
-  }
+  const [price, setPrice] = useState(0);
+  const [count, setCount] = useState(0);
 
   //체크 박스 관리용
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -49,10 +42,31 @@ const CartPage = () => {
     } else setCheckedItems([...checkedItems, index])
   }
 
+  //총 결제 금액 계산
+  const handleTotal = () => {
+    let pp = 0;
+    let cc = 0;
+    if(checkedItems.length > 0) {
+      checkedItems.forEach(index => {
+        pp += cartList[index].marketPrice * cartList[index].marketCnt;
+        cc += cartList[index].marketCnt;
+      });
+    }
+    setPrice(pp);
+    setCount(cc);
+  }
+
+  //체크 박스 변경 읽어오기
   useEffect(() => {
     if(cartList.length === checkedItems.length) setIsAllChecked(true);
     else setIsAllChecked(false);
+    handleTotal();
   }, [checkedItems])
+
+  //카트 바뀌면 총 결제금액 바꿔주기
+  useEffect(() => {
+    handleTotal();
+  }, [cartList])
 
   //선택 삭제 처리
   const handleSelectDelete = () => {
