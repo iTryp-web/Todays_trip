@@ -16,7 +16,7 @@ export const memberListDB = (member) => {
   });
 };
 
-//중복검사, 이메일 착기
+//중복검사, 이메일 찾기
 export const checkInfoDB = (member) => {
   return new Promise((resolve, reject) => {
     try {
