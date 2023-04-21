@@ -42,6 +42,7 @@ const CartPage = () => {
     } else setCheckedItems([...checkedItems, index])
   }
 
+  //상품 삭제 시 체크박스 반영
   const handleDeleteChecked = (index) => {
     let newCheckedItems = [];
     checkedItems.forEach(item => {
@@ -54,8 +55,8 @@ const CartPage = () => {
 
   //총 결제 금액 계산
   const handleTotal = () => {
-    let pp = 0;
-    let cc = 0;
+    let pp = 0;//가격
+    let cc = 0;//갯수
     if(checkedItems && checkedItems.length > 0) {
       checkedItems.forEach(index => {
         pp += cartList[index].marketPrice * cartList[index].marketCnt;
