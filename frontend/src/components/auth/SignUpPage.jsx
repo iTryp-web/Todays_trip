@@ -22,8 +22,8 @@ import Term2 from "../Term/Term2";
 import Term3 from "../Term/Term3";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { onAuthChange } from "../../service/authLogic";
-import { checkInfoDB, memberListDB } from "../../service/memberLogic";
+import { linkEmail, onAuthChange, signupEmail } from "../../service/authLogic";
+import { checkInfoDB, memberInsertDB, memberListDB } from "../../service/memberLogic";
 
 const SignUpPage = ({authLogic}) => {
   const auth = authLogic.getUserAuth();
@@ -178,6 +178,7 @@ const SignUpPage = ({authLogic}) => {
   },[nicknameInput])
 
   //회원 가입
+  const [googleEmail, setGoogleEmail] = useState('');
   const signup = async() => {
     console.log('회원가입 구현');
     try {
@@ -193,26 +194,14 @@ const SignUpPage = ({authLogic}) => {
       }
       console.log(uid);
       //const pwd = pwdEncrypt(memInfo.password);
-      const b = memInfo.birthday;
-      let birthday = ""; 
-      if(b!==""){
-        birthday = b.slice(0,4) + '-' + b.slice(4, 6) + '-' + b.slice(6,8);
-      }
-      console.log('입력받은 생일정보 '+birthday);
       const datas = {
         MEM_UID: uid,
         MEM_NAME: memInfo.name,
         MEM_PW: memInfo.password,
         MEM_EMAIL: memInfo.email,
-        MEM_BIRTHDAY: birthday,
         MEM_TEL: memInfo.hp,
         MEM_NICKNAME: memInfo.nickname,
-        MEM_ZIPCODE: post.zipcode,
-        MEM_ADDR: post.addr,
-        MEM_ADDR_DTL: post.addrDetail,
         MEM_STATUS : 0,
-        MEM_AUTH: (type==='member'?1:2),
-        MEM_GENDER: memInfo.gender
       }
       console.log(datas)
       const response = await memberInsertDB(datas);
