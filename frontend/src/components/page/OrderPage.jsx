@@ -13,41 +13,69 @@ import { Form } from 'react-bootstrap'
 
 const OrderPage = () => {
 
+  //주문 상품 정보 받아오기
   const location = useLocation();
   const [ orderItems ] = useState(location.state?.orderItems);
+
+  //주문 정보
+  //예약자 정보랑 배송정보는 여기에 추가해줘야할듯...
+  // const [ orderInfo, setOrderInfo ] = useState({
+  //                                       order_no: 0,
+  //                                       user_id: ,
+  //                                       reserve_name: ,
+  //                                       reserve_phone: ,
+  //                                       reserve_email: ,
+  //                                       shipping_name: ,
+  //                                       shipping_phone: ,
+  //                                       shipping_zipcode: ,
+  //                                       shipping_address: ,
+  //                                       shipping_address_detail: ,
+  //                                       coupon_no: ,
+  //                                       order_total: price,
+  //                                       order_discount: ,
+  //                                       order_payment: ,
+  //                                     });
+
+  //주문 상세 정보
+  //const [ orderDetailInfo, setOrderDetailInfo ] = useState({
+  //                                                  detail_no: 0,
+  //                                                  order_no: 0,
+  //                                                  market_no: marketNum,
+  //                                                  market_count: marketCnt,
+  //                                                  order_amount: marketPrice * marketCnt  
+  //                                                });
+
 
   //사용 가능한 쿠폰 리스트 관리
   let couponList = [];
   const [cList, setCList] = useState([]);
+
+  //로그인 유저 정보
   const [userInfo, setUserInfo] = useState({});
 
+  //약관 체크 박스 관리용
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
 
   //체크 박스 전체 선택시 처리
   const handleAllChecked = (e) => {
-    if(e.target.checked){
-      let list = [];
-      checkedItems.forEach((item, index) => {
-        list.push(index);
-      })
-      setCheckedItems(list);
-    } else setCheckedItems([]);
+    if(e.target.checked) setCheckedItems(["checkFirst", "checkSecond"]);
+    else setCheckedItems([]);
   }
 
   //체크 박스 개별 선택시 처리
-  const handleChecked = (index) => {
-    if(checkedItems.includes(index)){
-      setCheckedItems(checkedItems.filter(item => item !== index))
-    } else setCheckedItems([...checkedItems, index])
+  const handleChecked = (e) => {
+    if(e.target.checked) setCheckedItems([...checkedItems, e.target.id]);
+    else setCheckedItems(checkedItems.filter(item => item !== e.target.id));
   }
 
   //체크 박스 변경 읽어오기
   useEffect(() => {
-    if(cartList && cartList.length === checkedItems.length) setIsAllChecked(true);
+    if(checkedItems.length > 1) setIsAllChecked(true);
     else setIsAllChecked(false);
   }, [checkedItems])
 
+  //상품 가격 계산해서 보여주기
   const cartList = orderItems;
   let price = 0;
   if(orderItems !== undefined && orderItems.length > 0) {
@@ -56,10 +84,7 @@ const OrderPage = () => {
     });
   }
 
-  const handleReserveName = () => {
-
-  }
-
+  //주문 페이지 로딩 시 회원 정보 및 쿠폰 정보 읽어오기
   useEffect(() => {
     const getUserInfo = async () => {
       const user = { user_id: "test1" };
@@ -75,27 +100,30 @@ const OrderPage = () => {
     getUserInfo();
   }, [])
 
+  //주소 찾기용 / 구현 미정
   const getPostCode = () => {
   }
 
-  //결제 API 실행
+  //결제 함수
   const onClickPayment = () => {
     const { IMP } = window;
     IMP.init(process.env.REACT_APP_IMPORT_INIT_KEY);
     
+    //결제 정보 담기
     const data = {
-      pg: 'html5_inicis',                                                                                 // PG사
-      pay_method: 'card',                                                                                 // 결제수단
-      merchant_uid:  `mid_${new Date().getTime()}`,                                                       // 주문번호
-      amount: price,                                                                                      // 결제금액
-      name: cartList[0].marketName + cartList.length !== 1 ? "외 " + (cartList.length - 1) +  " 건" : '',  // 주문명
-      buyer_name: userInfo.user_name,                                                                     // 구매자 이름
-      buyer_tel: userInfo.user_phone,                                                                     // 구매자 전화번호
-      buyer_email: userInfo.user_email,                                                                   // 구매자 이메일
-      buyer_addr: userInfo.user_addr + " " + userInfo.user_addr_detail,                                   // 구매자 주소
-      buyer_postcode: userInfo.user_zipcode,                                                              // 구매자 우편번호
+      pg: 'html5_inicis',                                                                                     // PG사
+      pay_method: 'card',                                                                                     // 결제수단
+      merchant_uid:  `mid_${new Date().getTime()}`,                                                           // 주문번호
+      amount: price,                                                                                          // 결제금액
+      name: cartList[0].marketName + (cartList.length !== 1 ? "외 " + (cartList.length - 1) +  " 건" : ''),   // 주문명
+      buyer_name: userInfo.user_name,                                                                         // 구매자 이름
+      buyer_tel: userInfo.user_phone,                                                                         // 구매자 전화번호
+      buyer_email: userInfo.user_email,                                                                       // 구매자 이메일
+      buyer_addr: userInfo.user_addr + " " + userInfo.user_addr_detail,                                       // 구매자 주소
+      buyer_postcode: userInfo.user_zipcode,                                                                  // 구매자 우편번호
     };
 
+    //결제시 콜백 구현
     function callback(response) {
       const {
         success,
@@ -104,13 +132,15 @@ const OrderPage = () => {
       } = response;
     
       if (success) {
-        //결제 정보 DB에 넣기 처리
+        //결제 정보 DB에 넣고 성공 페이지 이동
         console.log(merchant_uid + ':: 결제 성공');
       } else {
-        //주문 정보 DB에서 삭제 처리
+        //주문 실패 정보 DB 업데이트 후 실패 페이지 이동 
         console.log(`${merchant_uid} :: 결제 실패: ${error_msg}`);
       }
     }
+
+    //결제 실행
     IMP.request_pay(data, callback);
   }
 
@@ -170,15 +200,15 @@ const OrderPage = () => {
             <tbody>
               <tr>
                 <OrdererTytd>예약자 이름</OrdererTytd>
-                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} onChange={handleReserveName} defaultValue={userInfo.user_name || ''} /></OrdererTyContentTd>
+                <OrdererTyContentTd><AddressInput type='text' id="reserve_name" style={{width:"300px"}} defaultValue={userInfo.user_name || ''} /></OrdererTyContentTd>
               </tr>
               <tr>
                 <OrdererTytd>예약자 연락처</OrdererTytd>
-                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} defaultValue={userInfo.user_phone || ''}/></OrdererTyContentTd> 
+                <OrdererTyContentTd><AddressInput type='text' id="reserve_phone" style={{width:"300px"}} defaultValue={userInfo.user_phone || ''}/></OrdererTyContentTd> 
               </tr>
               <tr>
                 <OrdererTytd>예약자 이메일</OrdererTytd>
-                <OrdererTyContentTd><AddressInput type='text' style={{width:"300px"}} defaultValue={userInfo.user_email || ''}/></OrdererTyContentTd> 
+                <OrdererTyContentTd><AddressInput type='text' id="reserve_email" style={{width:"300px"}} defaultValue={userInfo.user_email || ''}/></OrdererTyContentTd> 
               </tr>
             </tbody>
           </OrdererTable>
@@ -190,22 +220,22 @@ const OrderPage = () => {
             <tbody>
               <tr>
                 <AddressTitleTd>받는 사람</AddressTitleTd>
-                <td><AddressInput type='text' style={{width:"250px"}} defaultValue={userInfo.user_name || ''}/></td>
+                <td><AddressInput type='text' id="shipping_name" style={{width:"250px"}} defaultValue={userInfo.user_name || ''}/></td>
               </tr>
               <tr>
                 <AddressTitleTd>연락처</AddressTitleTd>
-                <td><AddressInput type='text' style={{width:"250px"}} defaultValue={userInfo.user_phone || ''}/></td>
+                <td><AddressInput type='text' id="shipping_phone" style={{width:"250px"}} defaultValue={userInfo.user_phone || ''}/></td>
               </tr>
               <tr>
                 <AddressTitleTd rowSpan={3}>주소</AddressTitleTd>
-                <td><AddressButton onClick={getPostCode}>주소찾기</AddressButton><AddressInput type="text" id='postCode' style={{width:"166px"}} defaultValue={userInfo.user_zipcode || ''} disabled/></td>
+                <td><AddressButton onClick={getPostCode}>주소찾기</AddressButton><AddressInput type="text" id="shipping_zipcode" style={{width:"166px"}} defaultValue={userInfo.user_zipcode || ''} disabled/></td>
               </tr>
               <tr>
-                <td><AddressInput type="text" style={{width:"400px"}} defaultValue={userInfo.user_address || ''} disabled/></td>
+                <td><AddressInput type="text" id="shipping_address" style={{width:"400px"}} defaultValue={userInfo.user_address || ''} disabled/></td>
               </tr>
               <tr>
                 <td width={'270px'}>
-                  <AddressInput type="text" placeholder='상세주소 입력' style={{width:"400px"}} defaultValue={userInfo.user_address_detail || ''} />
+                  <AddressInput type="text" id="shipping_address_detail" placeholder='상세주소 입력' style={{width:"400px"}} defaultValue={userInfo.user_address_detail || ''} />
                 </td>
               </tr>
             </tbody>
@@ -224,14 +254,14 @@ const OrderPage = () => {
         <OrderAgreeDiv>
           <OrderAgreeTyDiv>
             <AgreeAllCheckDiv>
-              <InputAllCheck type={'checkbox'} onChange={handleAllChecked} checked={isAllChecked}/>
+              <InputAllCheck type={'checkbox'} id={"checkAll"} onChange={e => handleAllChecked(e)} checked={isAllChecked}/>
               <span>아래 내용에 모두 동의합니다. (필수)</span>
               <LineHr/>
             </AgreeAllCheckDiv>
             <AgreeCheckDiv>
-              <InputAllCheck type={'checkbox'} onChange={handleChecked(1)} checked={checkedItems.includes(1)}/>
+              <InputAllCheck type={'checkbox'} id={"checkFirst"} onChange={e => handleChecked(e)} checked={checkedItems.includes("checkFirst")}/>
               <span>본인은 만 14세 이상이며, 주문 내용과 예약 취소 규정을 확인하였습니다.</span><br/>
-              <InputAllCheck type={'checkbox'} onChange={handleChecked(2)} checked={checkedItems.includes(2)}/>
+              <InputAllCheck type={'checkbox'} id={"checkSecond"} onChange={e => handleChecked(e)} checked={checkedItems.includes("checkSecond")}/>
               <span>(주)오늘의 여행은 원활한 서비스 제공을 위해 최소한의 범위 내에서 개인정보를 수집, 이용 및 제공합니다.</span><br/>
             </AgreeCheckDiv>
           </OrderAgreeTyDiv>
