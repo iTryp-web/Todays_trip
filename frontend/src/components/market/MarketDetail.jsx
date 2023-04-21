@@ -9,6 +9,7 @@ import MarketReview from './MarketReview';
 import MarketQna from './MarketQna';
 import { useCookies } from 'react-cookie';
 import { Button } from 'react-bootstrap';
+import ProductDetail from './ProductDetail';
 
 
 const MarketDetail = () => {
@@ -245,11 +246,7 @@ const MarketDetail = () => {
   return (
     <>
     <Header />
-     <h1>
-      마켓 상세보기
-      </h1>
-      <Button onClick={cookieAdd}>장바구니담기</Button>
-      <Button>결제하기</Button>
+      <ProductDetail cookieAdd={cookieAdd}/>
      <MarketReview />
      <MarketQna />
     <Footer />

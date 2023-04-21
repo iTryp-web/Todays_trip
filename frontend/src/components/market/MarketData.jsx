@@ -20,25 +20,25 @@ export const categories = [
   category: 'all',
   img: '/images/icon-all.png'},
   {
-  name: '인기글',
+  name: '패키지',
   category: 'hot',
-  img: '/images/icon-hot.png'},
+ },
   {
   name: '투어',
   category: 'free',
-  img: '/images/icon-free.png'},
+  },
   {
-  name: '한인택시',
+  name: '티켓',
   category: 'ask',
-  img: '/images/icon-qna.png'},
+  },
+  {
+  name: '교통',
+  category: 'review',
+  },
   {
   name: '숙소',
-  category: 'review',
-  img: '/images/icon-review.png'},
-  {
-  name: '렌트카',
   category: 'together',
-  img: '/images/icon-together2.png'},
+  },
 ]
 
 // ProductList 검색 조건

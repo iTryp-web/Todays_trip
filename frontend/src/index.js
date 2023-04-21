@@ -5,6 +5,7 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-datetime/css/react-datetime.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 import "react-quill/dist/quill.snow.css";
 import AuthLogic from "./service/authLogic";
