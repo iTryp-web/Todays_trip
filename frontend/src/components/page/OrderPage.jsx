@@ -17,41 +17,70 @@ const OrderPage = () => {
   const location = useLocation();
   const [ orderItems ] = useState(location.state?.orderItems);
 
-  //주문 정보
-  //예약자 정보랑 배송정보는 여기에 추가해줘야할듯...
-  // const [ orderInfo, setOrderInfo ] = useState({
-  //                                       order_no: 0,
-  //                                       user_id: ,
-  //                                       reserve_name: ,
-  //                                       reserve_phone: ,
-  //                                       reserve_email: ,
-  //                                       shipping_name: ,
-  //                                       shipping_phone: ,
-  //                                       shipping_zipcode: ,
-  //                                       shipping_address: ,
-  //                                       shipping_address_detail: ,
-  //                                       coupon_no: ,
-  //                                       order_total: price,
-  //                                       order_discount: ,
-  //                                       order_payment: ,
-  //                                     });
-
-  //주문 상세 정보
-  //const [ orderDetailInfo, setOrderDetailInfo ] = useState({
-  //                                                  detail_no: 0,
-  //                                                  order_no: 0,
-  //                                                  market_no: marketNum,
-  //                                                  market_count: marketCnt,
-  //                                                  order_amount: marketPrice * marketCnt  
-  //                                                });
-
-
   //사용 가능한 쿠폰 리스트 관리
   let couponList = [];
   const [cList, setCList] = useState([]);
 
   //로그인 유저 정보
   const [userInfo, setUserInfo] = useState({});
+  
+  //상품 가격 계산해서 보여주기
+  const cartList = orderItems;
+  let price = 0;
+  if(orderItems !== undefined && orderItems.length > 0) {
+    orderItems.forEach(cart => {
+      price += cart.marketPrice * cart.marketCnt;
+    });
+  }
+
+  //주문 정보
+  const [ orderInfo, setOrderInfo ] = useState({
+    order_no: 0,
+    user_id: "",
+    reserve_name: "",
+    reserve_phone: "",
+    reserve_email: "",
+    shipping_name: "",
+    shipping_phone: "",
+    shipping_zipcode: "",
+    shipping_address: "",
+    shipping_address_detail: "",
+    coupon_no: 0,
+    order_total: price,
+    order_discount: 0,
+    order_payment: "",
+  });
+
+  //주문 페이지 로딩 시 회원 정보 및 쿠폰 정보 읽어오기
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const user = { user_id: "test1" };
+      // const user = { user_id: sessionStorage.getItem('user_id') };
+      await getOrderPage(user).then((res) => {
+        if(res.data != null){
+          couponList = res.data.couponList;
+          setUserInfo(res.data.userInfo);
+          setCList(couponList);
+        }
+      })
+    }
+    getUserInfo();
+  }, [])
+
+  //orderInfo에 userInfo 값 초기화
+  useEffect(() => {
+    setOrderInfo(prevState => ({
+      ...prevState,
+      reserve_name: userInfo.user_name,
+      reserve_phone: userInfo.user_phone,
+      reserve_email: userInfo.user_email,
+      shipping_name: userInfo.user_name,
+      shipping_phone: userInfo.user_phone,
+      shipping_zipcode: userInfo.user_zipcode,
+      shipping_address: userInfo.user_address,
+      shipping_address_detail: userInfo.user_address_detail
+    }))
+  }, [userInfo])
 
   //약관 체크 박스 관리용
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -75,52 +104,56 @@ const OrderPage = () => {
     else setIsAllChecked(false);
   }, [checkedItems])
 
-  //상품 가격 계산해서 보여주기
-  const cartList = orderItems;
-  let price = 0;
-  if(orderItems !== undefined && orderItems.length > 0) {
-    orderItems.forEach(cart => {
-      price += cart.marketPrice * cart.marketCnt;
-    });
+//주문 상세 정보
+//const [ orderDetailInfo, setOrderDetailInfo ] = useState({
+//                                                  detail_no: 0,
+//                                                  order_no: 0,
+//                                                  market_no: marketNum,
+//                                                  market_count: marketCnt,
+//                                                  order_amount: marketPrice * marketCnt  
+//                                                });
+
+  //input 값 반영
+  const handleInput = (e) => {
+    setOrderInfo(prevState => ({
+      ...prevState,
+      [e.target.id]: e.target.value,
+    }))
   }
 
-  //주문 페이지 로딩 시 회원 정보 및 쿠폰 정보 읽어오기
+  //테스트용
   useEffect(() => {
-    const getUserInfo = async () => {
-      const user = { user_id: "test1" };
-      // const user = { user_id: sessionStorage.getItem('user_id') };
-      await getOrderPage(user).then((res) => {
-        if(res.data != null){
-          couponList = res.data.couponList;
-          setUserInfo(res.data.userInfo);
-          setCList(couponList);
-        }
-      })
-    }
-    getUserInfo();
-  }, [])
+    console.log(orderInfo)
+  }, [orderInfo])
 
   //주소 찾기용 / 구현 미정
   const getPostCode = () => {
   }
 
-  //결제 함수
+  //결제하기 버튼 클릭 후 처리
   const onClickPayment = () => {
+    //약관 동의 확인
+    //order 정보 DB 저장
+    payment();
+  }
+
+  //결제 구현
+  const payment = () => {
     const { IMP } = window;
     IMP.init(process.env.REACT_APP_IMPORT_INIT_KEY);
     
     //결제 정보 담기
-    const data = {
+    const paymentData = {
       pg: 'html5_inicis',                                                                                     // PG사
       pay_method: 'card',                                                                                     // 결제수단
       merchant_uid:  `mid_${new Date().getTime()}`,                                                           // 주문번호
       amount: price,                                                                                          // 결제금액
-      name: cartList[0].marketName + (cartList.length !== 1 ? "외 " + (cartList.length - 1) +  " 건" : ''),   // 주문명
-      buyer_name: userInfo.user_name,                                                                         // 구매자 이름
-      buyer_tel: userInfo.user_phone,                                                                         // 구매자 전화번호
-      buyer_email: userInfo.user_email,                                                                       // 구매자 이메일
-      buyer_addr: userInfo.user_addr + " " + userInfo.user_addr_detail,                                       // 구매자 주소
-      buyer_postcode: userInfo.user_zipcode,                                                                  // 구매자 우편번호
+      name: cartList[0].marketName + (cartList.length > 1 ? "외 " + (cartList.length - 1) +  " 건" : ''),   // 주문명
+      buyer_name: orderInfo.user_name,                                                                        // 구매자 이름
+      buyer_tel: orderInfo.user_phone,                                                                        // 구매자 전화번호
+      buyer_email: orderInfo.user_email,                                                                      // 구매자 이메일
+      buyer_addr: orderInfo.user_address + " " + orderInfo.user_address_detail,                               // 구매자 주소
+      buyer_postcode: orderInfo.user_zipcode,                                                                 // 구매자 우편번호
     };
 
     //결제시 콜백 구현
@@ -141,7 +174,7 @@ const OrderPage = () => {
     }
 
     //결제 실행
-    IMP.request_pay(data, callback);
+    IMP.request_pay(paymentData, callback);
   }
 
   return (
@@ -200,15 +233,15 @@ const OrderPage = () => {
             <tbody>
               <tr>
                 <OrdererTytd>예약자 이름</OrdererTytd>
-                <OrdererTyContentTd><AddressInput type='text' id="reserve_name" style={{width:"300px"}} defaultValue={userInfo.user_name || ''} /></OrdererTyContentTd>
+                <OrdererTyContentTd><AddressInput type='text' id="reserve_name" onChange={e => handleInput(e)} style={{width:"300px"}} defaultValue={userInfo.user_name || ''} /></OrdererTyContentTd>
               </tr>
               <tr>
                 <OrdererTytd>예약자 연락처</OrdererTytd>
-                <OrdererTyContentTd><AddressInput type='text' id="reserve_phone" style={{width:"300px"}} defaultValue={userInfo.user_phone || ''}/></OrdererTyContentTd> 
+                <OrdererTyContentTd><AddressInput type='text' id="reserve_phone" onChange={e => handleInput(e)} style={{width:"300px"}} defaultValue={userInfo.user_phone || ''}/></OrdererTyContentTd> 
               </tr>
               <tr>
                 <OrdererTytd>예약자 이메일</OrdererTytd>
-                <OrdererTyContentTd><AddressInput type='text' id="reserve_email" style={{width:"300px"}} defaultValue={userInfo.user_email || ''}/></OrdererTyContentTd> 
+                <OrdererTyContentTd><AddressInput type='text' id="reserve_email" onChange={e => handleInput(e)} style={{width:"300px"}} defaultValue={userInfo.user_email || ''}/></OrdererTyContentTd> 
               </tr>
             </tbody>
           </OrdererTable>
@@ -220,22 +253,22 @@ const OrderPage = () => {
             <tbody>
               <tr>
                 <AddressTitleTd>받는 사람</AddressTitleTd>
-                <td><AddressInput type='text' id="shipping_name" style={{width:"250px"}} defaultValue={userInfo.user_name || ''}/></td>
+                <td><AddressInput type='text' id="shipping_name" onChange={e => handleInput(e)} style={{width:"250px"}} defaultValue={userInfo.user_name || ''}/></td>
               </tr>
               <tr>
                 <AddressTitleTd>연락처</AddressTitleTd>
-                <td><AddressInput type='text' id="shipping_phone" style={{width:"250px"}} defaultValue={userInfo.user_phone || ''}/></td>
+                <td><AddressInput type='text' id="shipping_phone" onChange={e => handleInput(e)} style={{width:"250px"}} defaultValue={userInfo.user_phone || ''}/></td>
               </tr>
               <tr>
                 <AddressTitleTd rowSpan={3}>주소</AddressTitleTd>
-                <td><AddressButton onClick={getPostCode}>주소찾기</AddressButton><AddressInput type="text" id="shipping_zipcode" style={{width:"166px"}} defaultValue={userInfo.user_zipcode || ''} disabled/></td>
+                <td><AddressButton onClick={getPostCode}>주소찾기</AddressButton><AddressInput type="text" id="shipping_zipcode" onChange={e => handleInput(e)} style={{width:"166px"}} defaultValue={userInfo.user_zipcode || ''} disabled/></td>
               </tr>
               <tr>
-                <td><AddressInput type="text" id="shipping_address" style={{width:"400px"}} defaultValue={userInfo.user_address || ''} disabled/></td>
+                <td><AddressInput type="text" id="shipping_address" onChange={e => handleInput(e)} style={{width:"400px"}} defaultValue={userInfo.user_address || ''} disabled/></td>
               </tr>
               <tr>
                 <td width={'270px'}>
-                  <AddressInput type="text" id="shipping_address_detail" placeholder='상세주소 입력' style={{width:"400px"}} defaultValue={userInfo.user_address_detail || ''} />
+                  <AddressInput type="text" id="shipping_address_detail" onChange={e => handleInput(e)} placeholder='상세주소 입력' style={{width:"400px"}} defaultValue={userInfo.user_address_detail || ''} />
                 </td>
               </tr>
             </tbody>
