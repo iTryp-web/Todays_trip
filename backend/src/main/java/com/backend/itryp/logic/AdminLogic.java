@@ -81,14 +81,19 @@ public class AdminLogic {
 	 */
 	public int statusUpdate(Map<String, Object> pMap) {
 		logger.info("statusUpdate 호출");
+		logger.info(pMap);
 		int result = 0;
-		result = adminDao.reportUpdate(pMap); // 신고 상태 수정 - 처리완료1
-		int result0 = 0;
-		result = adminDao.userStatusUpdate(pMap); // 회원 상태 수정 - 기본0 차단2
-		int result1 = 0;
-		result = adminDao.boardStatusUpdate(pMap); // 글 상태 수정 - 기본0 차단1
-		int result2 = 0;
-		result = adminDao.commentStatusUpdate(pMap); // 댓글 상태 수정 - 기본0 차단2
+		result = adminDao.reportUpdate(pMap); // 신고 상태 수정 - 기본0 차단1 취소2
+		if(Integer.parseInt(pMap.get("report_type").toString()) == 0) {
+			int resultBoard = adminDao.boardStatusUpdate(pMap); // 글 상태 수정 - 기본0 차단1	
+			logger.info("resultBoard=> " + resultBoard);
+		} else if(Integer.parseInt(pMap.get("report_type").toString()) == 1) {
+			int resultComment = adminDao.commentStatusUpdate(pMap); // 댓글 상태 수정 - 기본0 차단2			
+			logger.info("resultComment=> " + resultComment);
+		} else if(Integer.parseInt(pMap.get("report_type").toString()) == 4) {
+			int resultUser = adminDao.userStatusUpdate(pMap); // 회원 상태 수정 - 기본0 차단2
+			logger.info("resultUser=> " + resultUser);
+		}
 		return result;
 	}
 	

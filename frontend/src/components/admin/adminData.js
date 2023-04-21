@@ -31,20 +31,42 @@ export const adminCategories = [
 export const aMarketCategories = [
   {
     name: '전체',
+    category: 'all',
   },
   {
     name: '패키지',
+    category: 'package',
   },
   {
     name: '레저',
+    category: 'activity',
   },
   {
     name: '티켓',
+    category: 'ticket',
   },
   {
     name: '교통',
+    category: 'transportation',
   },
   {
     name: '숙소',
+    category: 'accommodation',
+  },
+]
+
+// AdminReportRow 처리항목 카테고리
+export const reportResult = [
+  {
+    resultNo: 0,
+    resultText: '미처리',
+  },
+  {
+    resultNo: 1,
+    resultText: '차단',
+  },
+  {
+    resultNo: 2,
+    resultText: '취소',
   },
 ]

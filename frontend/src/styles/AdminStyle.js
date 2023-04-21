@@ -130,6 +130,9 @@ export const QnaLi = styled.li`
     color: #888;
     margin-left: 10px;
   }
+  .newQna {
+    cursor: pointer;
+  }
 `;
 
 export const QnaMarketStatus = styled.span`
@@ -190,4 +193,73 @@ export const QnaMarketContent = styled.div`
   word-break: break-all;
   color: #888;
   font-weight: 500;
+`;
+
+
+/* AdminReportRow */
+export const ReportUl = styled.ul`
+  padding-left: 0;
+  display: flex;
+  text-align: center;
+  .reportTd {
+    font-size: 15px;
+    font-weight: 700;
+    background-color: #DBEAFD;
+    border-right: 2px solid white;
+    border-radius: 5px;
+  }
+  .reportTdLast {
+    background-color: #DBEAFD;
+    border-radius: 5px;
+    }
+`
+
+  export const ReportTr = styled.tr`
+  background-color: ${({ result }) => (result == 0 ? "#EDF5FE" : "white")};;
+  font-size: 14px;
+  font-weight: 500;
+  color: ${({ result }) => (result > 0 ? "#979797" : "#4B4B4B")};
+  th{
+    padding: 10px 1px;
+    border-bottom: 1px solid #DBEAFD;
+  }
+  .reportItemTd{
+    cursor: pointer;
+  }
+  .btnApply {
+    cursor: pointer;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    background-color: #84B6F7;
+    margin: 0 auto;
+    width: 55px;
+  }
+`
+
+
+export const ReportRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #f4f4f4;
+  font-size: 14px;
+  &:last-child {
+    border: none;
+  }
+  .categoryDropdown {
+    margin-left: 0.8em;
+    border: 1px solid lightgray;
+    outline: none;
+    border-Radius:5px;
+    height:2.7em;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+  }
 `;

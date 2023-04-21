@@ -3,16 +3,29 @@ import { useNavigate } from 'react-router-dom'
 import { profileImg } from '../board/boardData'
 import { QnaContent, QnaDiv, QnaImg, QnaLi, QnaMarketContent, QnaMarketStatus, QnaMarketTitle } from '../../styles/AdminStyle'
 import { MdOutlineFiberNew } from 'react-icons/md';
+import { aMarketCategories } from './adminData';
+import { useState } from 'react';
 
 
 const AdminQnaRow = ({qna, selectedMarket}) => {
   const navigate = useNavigate()
 
+  const [category, setCategory] = useState('')
+  
+  const movePage = (category) => {
+    for(let i=0; i<aMarketCategories.length; i++) {
+      if(aMarketCategories[i].name === category) {
+        setCategory(aMarketCategories[i].category)
+        navigate('/market/'+aMarketCategories[i].category)
+      }
+    }
+  }
+
   // 출력할 리스트 - 카테고리 조건에따라 출력위해 함수사용
   const QnaList = () => {
     return (
     <QnaLi>
-      <p className='categoryQ' onClick={() => navigate(`/market/${qna.market_category}`)}>{qna.market_category}</p>
+      <p className='categoryQ' onClick={() => movePage(qna.market_category)}>{qna.market_category}</p>
       <span className='dateQ'>
         {new Date(qna.market_date).toLocaleDateString('ko-KR', {
         year: 'numeric',
@@ -22,7 +35,7 @@ const AdminQnaRow = ({qna, selectedMarket}) => {
       </span>
       <QnaMarketStatus>
         {qna.qna_count ? (
-          <span>
+          <span className='newQna' onClick={() => navigate(`/market/detail/${qna.market_no}`)}>
             <MdOutlineFiberNew className='newIcon' />
             문의 {qna.qna_count}건
           </span>
