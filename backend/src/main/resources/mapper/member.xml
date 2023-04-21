@@ -34,7 +34,6 @@
 	<select id="memberList" parameterType="map" resultType="map">
 		SELECT
 			user_id
-			,user_email
 			,user_nickname
 			,user_name
 			,user_phone

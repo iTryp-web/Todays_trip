@@ -229,7 +229,16 @@ const SignUpPage = ({ authLogic }) => {
           setTextIdColor("#f77");
           setIsButtonActive(false);
         } else if (idValidInput){
-          if(writeDomain==="manual"||selectDomain===undefined) {
+          if(writeDomain.length===0&&selectDomain==="manual"){
+            setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+            setEmailInputColor("#f77");
+            setEmailSelectColor("#f77");
+            setTextIdColor("#f77");
+            setEmailSelectShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+            setIdText("이메일 형식이 올바르지 않습니다.");
+            setIsButtonActive(false);
+          }
+          else if(selectDomain==="") {
           setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setEmailInputColor("#f77");
           setEmailSelectColor("#f77");
@@ -247,11 +256,16 @@ const SignUpPage = ({ authLogic }) => {
           setIsButtonActive(true);
           }
         }
-/*         //중복아니어서 사용가능할때
-        else {
-          
-        } */
-      }
+          else if(!idValidInput){
+            setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+            setEmailInputColor("#f77");
+            setEmailSelectColor("#f77");
+            setTextIdColor("#f77");
+            setEmailSelectShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+            setIdText("이메일 형식이 올바르지 않습니다.");
+            setIsButtonActive(false);
+          }
+        }
       idInputRef.current = idInput;
     };
     overlap();
@@ -279,6 +293,8 @@ const SignUpPage = ({ authLogic }) => {
       console.log(error + " 오류: 관리자에게 연락바랍니다.");
     }
   };
+
+
   //소셜 X 일반 이메일 이용자 회원가입
   const signup = async () => {
     console.log("이메일 회원가입 구현");
@@ -561,8 +577,11 @@ const SignUpPage = ({ authLogic }) => {
   };
   //==================focus, blur handler 끝 ====================//
 
-  const EmailButton = () => {
-    console.log("버튼클릭");
+
+
+  //이메일 인증 구현
+  const EmailButton = (e) => {
+    e.preventDefault()
   };
 
   const handleModal1 = (e) => {
@@ -745,6 +764,7 @@ const SignUpPage = ({ authLogic }) => {
                 ? "1px solid #4996f3"
                 : "1px solid lightgray",
               color: isButtonActive ? "#4996f3" : "lightgray",
+              
             }}
           >
             이메일 인증하기
