@@ -5,7 +5,7 @@ import {
   ModalWrapper,
   NamenPhoneBlock,
   PWnNickBlock,
-  RefferBlock,
+  ReferBlock,
   SignUpBlock,
   SignUpDiv,
   SocialBlock,
@@ -23,13 +23,17 @@ import Term3 from "../Term/Term3";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { linkEmail, onAuthChange, signupEmail } from "../../service/authLogic";
-import { checkInfoDB, memberInsertDB, memberListDB } from "../../service/memberLogic";
+import {
+  checkInfoDB,
+  memberInsertDB,
+  memberListDB,
+} from "../../service/memberLogic";
 
-const SignUpPage = ({authLogic}) => {
+const SignUpPage = ({ authLogic }) => {
   const auth = authLogic.getUserAuth();
-  const userAuth = useSelector(state => state.userAuth);
+  const userAuth = useSelector((state) => state.userAuth);
   const navigate = useNavigate();
-  const type = window.location.search.split('&')[0].split('=')[1];//member담김
+  const type = window.location.search.split("&")[0].split("=")[1]; //member담김
 
   const [memInfo, setMemInfo] = useState({
     email: "",
@@ -41,6 +45,8 @@ const SignUpPage = ({authLogic}) => {
 
   const [idInput, setIdInput] = useState("");
   const [isButtonActive, setIsButtonActive] = useState(false);
+  const [selectDomain, setSelectDomain] = useState("");
+  const [writeDomain, setWriteDomain] = useState("");
   const [pwInput, setPwInput] = useState("");
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
@@ -118,111 +124,189 @@ const SignUpPage = ({authLogic}) => {
 
   //입력값 저장하기
   const changeMemInfo = (e) => {
-    console.log('changeMemInfo');
+    console.log("changeMemInfo");
     const id = e.currentTarget.id;
     console.log(id);
     const value = e.target.value;
     console.log(value);
-    setMemInfo({...memInfo, [id]: value});
-  }
+    setMemInfo({ ...memInfo, [id]: value });
+  };
 
-  //중복확인
+  //닉네임 중복확인
   //useRef는 useEffect에서 이전상태나 프롭스를 비교하는 작업에 사용
   //처음 null값은 인식 안하고 다음 null값부터 처리하기위해 사용했음
   //nicknameInputRef에 이전 닉네임값을 저장
   const nicknameInputRef = useRef(null);
-  useEffect(()=> {
-    const overlap = async() => {
-      console.log('닉네임 중복확인')
+  useEffect(() => {
+    const overlap = async () => {
+      console.log("닉네임 중복확인");
       //이전닉네임값
       const prevNicknameInput = nicknameInputRef.current;
       let params;
-      params = {user_nickname : memInfo['nickname'], type :'overlap'}
-      console.log(params)
+      params = { user_nickname: memInfo["nickname"], type: "overlap" };
+      console.log(params);
 
-      let response = {data:0}
-      response = await checkInfoDB(params)
-      console.log(response.data)
-  
-      const data = JSON.stringify(response.data)
-      console.log(data)
-      const jsonDoc = JSON.parse(data)
+      let response = { data: 0 };
+      response = await checkInfoDB(params);
+      console.log(response.data);
+
+      const data = JSON.stringify(response.data);
+      console.log(data);
+      const jsonDoc = JSON.parse(data);
 
       //이전닉네임값이 null이아니고 nicknameInput이 null이 아닐때만 작동
       //닉네임 존재해서 사용불가능할때
-      if(nicknameInput!==null && prevNicknameInput!==null){
-        if(jsonDoc&&nicknameInput.length>0){
-          console.log(jsonDoc[0].USER_NICKNAME)
-          setNicknameText("사용 불가능한 닉네임 입니다")
-          setNicknameInputColor("#f77")
-          setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)")
-          setTextNickNameColor("#f77")
-        }
-        else if(nicknameInput.length==0){ 
-          setNicknameText("필수항목입니다.")
-          setNicknameInputColor("#f77")
-          setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)")
-          setTextNickNameColor("#f77")
+      if (nicknameInput !== null && prevNicknameInput !== null) {
+        if (jsonDoc && nicknameInput.length > 0) {
+          console.log(jsonDoc[0].USER_NICKNAME);
+          setNicknameText("사용 불가능한 닉네임 입니다");
+          setNicknameInputColor("#f77");
+          setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setTextNickNameColor("#f77");
+        } else if (nicknameInput.length == 0) {
+          setNicknameText("필수항목입니다.");
+          setNicknameInputColor("#f77");
+          setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setTextNickNameColor("#f77");
         }
         //닉네임 중복아니어서 사용가능할때
-        else{
-          setNicknameText("")
+        else {
+          setNicknameText("");
           setNicknameInputColor("#4996f3");
           setNicknameShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
-          setTextNickNameColor("black")
+          setTextNickNameColor("black");
         }
       }
       nicknameInputRef.current = nicknameInput;
-    }
-    overlap()
-  },[nicknameInput])
+    };
+    overlap();
+  }, [nicknameInput]);
 
-  //회원 가입
-  const [googleEmail, setGoogleEmail] = useState('');
-  const signup = async() => {
-    console.log('회원가입 구현');
+  //이메일(id) 중복확인 && 유효성 체크
+  const idInputRef = useRef(null);
+  useEffect(() => {
+    const overlap = async () => {
+      const regIdExp = new RegExp("^[a-zA-Z][0-9a-zA-Z]{1,15}$");
+      const idValidInput = regIdExp.test(idInput);
+
+      //이전닉네임값
+      const prevIdInput = idInputRef.current;
+      let params;
+      params = {
+        user_id: memInfo["writeEmail"]
+          ? memInfo["email"] + "@" + memInfo["writeEmail"]
+          : memInfo["email"] + "@" + memInfo["selectEmail"],
+        type: "overlap",
+      };
+      console.log(params);
+
+      let response = { data: 0 };
+      response = await checkInfoDB(params);
+      console.log(response.data);
+
+      const data = JSON.stringify(response.data);
+      console.log(data);
+      const jsonDoc = JSON.parse(data);
+
+      //이전아이디값이 null이아니고 idInput이 null이 아닐때만 작동
+      //아이디 존재해서 사용불가능할때
+      if (idInput !== null && prevIdInput !== null) {
+        if (jsonDoc && idInput.length > 0 && idValidInput) {
+          console.log(jsonDoc[0].USER_ID);
+          setIdText("이미 가입되어 있는 회원입니다");
+          setEmailInputColor("#f77");
+          setEmailSelectColor("#f77");
+          setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setEmailSelectShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setTextIdColor("#f77");
+          setIsButtonActive(false);
+        } else if (idInput.length == 0) {
+          setIdText("필수항목입니다.");
+          setEmailInputColor("#f77");
+          setEmailSelectColor("#f77");
+          setEmailSelectShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setTextIdColor("#f77");
+          setIsButtonActive(false);
+        } else if (idValidInput){
+          if(writeDomain==="manual"||selectDomain===undefined) {
+          setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setEmailInputColor("#f77");
+          setEmailSelectColor("#f77");
+          setTextIdColor("#f77");
+          setEmailSelectShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setIdText("이메일 형식이 올바르지 않습니다.");
+          setIsButtonActive(false);
+          }else{
+            setEmailInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+          setEmailSelectShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+          setEmailInputColor("#4996f3");
+          setEmailSelectColor("#4996f3");
+          setTextIdColor("black");
+          setIdText("");
+          setIsButtonActive(true);
+          }
+        }
+/*         //중복아니어서 사용가능할때
+        else {
+          
+        } */
+      }
+      idInputRef.current = idInput;
+    };
+    overlap();
+  }, [idInput, writeDomain, selectDomain]);
+
+  //이메일 회원 가입
+
+  //구글 회원 가입
+  const [googleEmail, setGoogleEmail] = useState("");
+
+  const googleSignUp = async () => {
     try {
       let uid;
       console.log(googleEmail);
-      if(googleEmail){
-        console.log(auth); 
-        console.log(memInfo); 
+      if (googleEmail) {
+        console.log(auth);
+        console.log(memInfo);
         uid = await linkEmail(auth, memInfo);
         console.log(uid);
       } else {
         uid = await signupEmail(auth, memInfo);
       }
       console.log(uid);
-      //const pwd = pwdEncrypt(memInfo.password);
+    } catch (error) {
+      console.log(error + " 오류: 관리자에게 연락바랍니다.");
+    }
+  };
+  //소셜 X 일반 이메일 이용자 회원가입
+  const signup = async () => {
+    console.log("이메일 회원가입 구현");
+    try {
+      const userEmail = memInfo.writeEmail
+        ? memInfo.email + "@" + memInfo.writeEmail
+        : memInfo.email + "@" + memInfo.selectEmail;
+      console.log(userEmail);
       const datas = {
-        MEM_UID: uid,
-        MEM_NAME: memInfo.name,
-        MEM_PW: memInfo.password,
-        MEM_EMAIL: memInfo.email,
-        MEM_TEL: memInfo.hp,
-        MEM_NICKNAME: memInfo.nickname,
-        MEM_STATUS : 0,
-      }
-      console.log(datas)
+        user_id: userEmail,
+        user_pw: memInfo.password,
+        user_nickname: memInfo.nickname,
+        user_name: memInfo.name,
+        user_phone: memInfo.phone,
+      };
+      console.log(datas);
       const response = await memberInsertDB(datas);
       console.log(response);
-      if(response.data!==1) {
-      return "DB 오류: 관리자에게 연락바랍니다.";
-    }
+      if (response.data !== 1) {
+        return "DB 오류: 관리자에게 연락바랍니다.";
+      }
       sessionStorage.clear();
-      navigate('/');
+      navigate("/");
       return "회원가입되었습니다. 감사합니다.";
-      
     } catch (error) {
-      console.log(error+" 오류: 관리자에게 연락바랍니다.");
+      console.log(error + " 오류: 관리자에게 연락바랍니다.");
     }
-  }//end of 회원가입 구현
-
-
-
-
-
-
+  }; //end of 회원가입 구현
 
   //개별 체크박스 handler
   const handleSingleCheck = (e) => {
@@ -273,6 +357,7 @@ const SignUpPage = ({authLogic}) => {
   //Domainselect박스 handler
   const handleDomainSelect = (e) => {
     const value = e.target.value;
+    setSelectDomain(value);
     console.log(value);
     //직접입력선택시 option에서 input박스로 바뀜
     if (value === "manual") {
@@ -290,7 +375,7 @@ const SignUpPage = ({authLogic}) => {
       setNameInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
       setTextNameColor("#f77");
       setNameText("필수 입력 항목입니다");
-    }else{
+    } else {
       setNameInputColor("#4996f3");
       setNameInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
       setTextNameColor("black");
@@ -300,7 +385,7 @@ const SignUpPage = ({authLogic}) => {
   //휴대전화번호 input handler
   const handlePhone = (e) => {
     const Phone = e.target.value;
-    const regPhExp = new RegExp("^01([0|1|6|7|8|9])[0-9]{7,8}$")
+    const regPhExp = new RegExp("^01([0|1|6|7|8|9])[0-9]{7,8}$");
     setPhoneInput(Phone);
     const phValidInput = regPhExp.test(Phone);
     if (Phone === "") {
@@ -308,13 +393,12 @@ const SignUpPage = ({authLogic}) => {
       setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
       setTextPhoneColor("#f77");
       setPhoneText("필수 입력 항목입니다");
-    } else if(!phValidInput){
+    } else if (!phValidInput) {
       setPhoneInputColor("#f77");
       setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
       setTextPhoneColor("#f77");
       setPhoneText("형식이 올바르지 않습니다");
-    }
-    else{
+    } else {
       setPhoneInputColor("#4996f3");
       setPhoneInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
       setTextPhoneColor("black");
@@ -327,37 +411,12 @@ const SignUpPage = ({authLogic}) => {
   };
   //직접입력했을때 입력값 가져오기
   const handleWriteEmail = (e) => {
+    setWriteDomain(e.target.value);
     console.log(e.target.value);
   };
   //이메일(아이디) input handler
   const handleIdInputChange = (e) => {
-    //아이디 정규식
-    const regIdExp = new RegExp("^[a-zA-Z][0-9a-zA-Z]{1,15}$");
-    const idValue = e.target.value;
     setIdInput(e.target.value);
-    const idValidInput = regIdExp.test(idValue);
-    setIsButtonActive(idValidInput && e.target.value !== "");
-
-    //정규식이 true일때
-    if (idValidInput) {
-      setEmailInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
-      setEmailInputColor("#4996f3");
-      setEmailSelectColor("#4996f3");
-      setTextIdColor("black");
-      setIdText("");
-    }
-    //정규식이 false일때
-    if (!idValidInput) {
-      setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
-      setEmailInputColor("#f77");
-      setEmailSelectColor("#f77");
-      setTextIdColor("#f77");
-      if (e.target.value === "") {
-        setIdText("필수 입력 항목입니다.");
-      } else {
-        setIdText("이메일 형식이 올바르지 않습니다.");
-      }
-    }
   };
   //비밀번호 유효성에 따라 style변경
   const handlePwInputChange = (e) => {
@@ -552,10 +611,10 @@ const SignUpPage = ({authLogic}) => {
     }
   }, [pwInput, pwCheckInput]);
 
-  useEffect(()=>{
-    const onAuth = async() => {
-      const user = await onAuthChange(userAuth.auth) ;
-      if(user){
+  useEffect(() => {
+    const onAuth = async () => {
+      const user = await onAuthChange(userAuth.auth);
+      if (user) {
         setMemInfo({
           email: user.email,
           password: "",
@@ -567,10 +626,7 @@ const SignUpPage = ({authLogic}) => {
       }
     };
     onAuth();
-  },[setMemInfo, userAuth.auth])
-
-
-
+  }, [setMemInfo, userAuth.auth]);
 
   return (
     <>
@@ -593,7 +649,10 @@ const SignUpPage = ({authLogic}) => {
               <input
                 id="email"
                 value={idInput}
-                onChange={(e)=>{handleIdInputChange(e); changeMemInfo(e)}}
+                onChange={(e) => {
+                  handleIdInputChange(e);
+                  changeMemInfo(e);
+                }}
                 onFocus={handleEmailFocus}
                 onBlur={handleEmailBlur}
                 type="text"
@@ -616,7 +675,10 @@ const SignUpPage = ({authLogic}) => {
                       border: "1px solid " + emailSelectColor,
                       boxShadow: emailSelectShadowColor,
                     }}
-                    onChange={(e)=>{handleWriteEmail(e); changeMemInfo(e)}}
+                    onChange={(e) => {
+                      handleWriteEmail(e);
+                      changeMemInfo(e);
+                    }}
                     onFocus={handleEmailSelectFocus}
                     onBlur={handleEmailSelectBlur}
                   />
@@ -630,7 +692,10 @@ const SignUpPage = ({authLogic}) => {
                     }}
                     onFocus={handleEmailSelectFocus}
                     onBlur={handleEmailSelectBlur}
-                    onChange={(e)=>{handleDomainSelect(e); changeMemInfo(e)}}
+                    onChange={(e) => {
+                      handleDomainSelect(e);
+                      changeMemInfo(e);
+                    }}
                   >
                     <option value selected disabled>
                       &nbsp;&nbsp;선택해주세요
@@ -695,7 +760,10 @@ const SignUpPage = ({authLogic}) => {
                 border: "1px solid " + nameInputColor,
                 boxShadow: nameInputShadowColor,
               }}
-              onChange={(e)=>{handleName(e); changeMemInfo(e)}}
+              onChange={(e) => {
+                handleName(e);
+                changeMemInfo(e);
+              }}
               onFocus={handleNameFocus}
               onBlur={handleNameBlur}
             ></input>
@@ -712,8 +780,10 @@ const SignUpPage = ({authLogic}) => {
                 {`${nametext}`}
               </p>
             )}
-            <h6 className ="phone6" style ={{ color : textPhoneColor }}>휴대전화번호</h6>
-            <input 
+            <h6 className="phone6" style={{ color: textPhoneColor }}>
+              휴대전화번호
+            </h6>
+            <input
               id="phone"
               className="phone"
               placeholder="ex)0161234567/01012345678"
@@ -722,10 +792,14 @@ const SignUpPage = ({authLogic}) => {
                 border: "1px solid " + phoneInputColor,
                 boxShadow: phoneInputShadowColor,
               }}
-              onChange={(e)=>{handlePhone(e); changeMemInfo(e)}}
+              onChange={(e) => {
+                handlePhone(e);
+                changeMemInfo(e);
+              }}
               onFocus={handlePhoneFocus}
-              onBlur={handlePhoneBlur}></input>
-              {phonetext !== "" && (
+              onBlur={handlePhoneBlur}
+            ></input>
+            {phonetext !== "" && (
               <p
                 style={{
                   marginLeft: "0.5%",
@@ -751,7 +825,10 @@ const SignUpPage = ({authLogic}) => {
                 border: "1px solid " + pwInputColor,
                 boxShadow: pwInputShadowColor,
               }}
-              onChange={(e)=>{handlePwInputChange(e);changeMemInfo(e)}}
+              onChange={(e) => {
+                handlePwInputChange(e);
+                changeMemInfo(e);
+              }}
               onFocus={handlePwInputFocus}
               onBlur={handlePwInputBlur}
             />
@@ -806,7 +883,10 @@ const SignUpPage = ({authLogic}) => {
                 border: "1px solid " + nicknameInputColor,
                 boxShadow: nicknameShadowColor,
               }}
-              onChange={(e)=>{handleNicknameInput(e); changeMemInfo(e); }}
+              onChange={(e) => {
+                handleNicknameInput(e);
+                changeMemInfo(e);
+              }}
               onFocus={handleNicknameFocus}
               onBlur={handleNicknameBlur}
             />
@@ -824,7 +904,7 @@ const SignUpPage = ({authLogic}) => {
               </p>
             )}
           </PWnNickBlock>
-          <RefferBlock>
+          <ReferBlock>
             <h6 style={{ color: textReferrerColor }}>추천인</h6>
             <label>
               <input
@@ -856,7 +936,7 @@ const SignUpPage = ({authLogic}) => {
                 {`${referrertext}`}
               </p>
             )}
-          </RefferBlock>
+          </ReferBlock>
           <h6 style={{ color: textTermColor }}>약관동의</h6>
           <TermsBlock
             style={{
