@@ -316,6 +316,7 @@ export const PWnNickBlock = styled.div`
     margin-top: 1.5rem;
     margin-left: 0.5%;
     margin-bottom: 0.8rem;
+    
   }
 
   input {
@@ -339,7 +340,15 @@ export const PWnNickBlock = styled.div`
   }
 `;
 
-export const RefferBlock = styled.div`
+export const ReferBlock = styled.div`
+  h6{
+    ::after {
+      padding-left: 3px;
+      font-size: 12px;
+      content: "(선택항목)";
+      color: gray;
+    }
+  }
   label {
     width: 98%;
     position: relative;

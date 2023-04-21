@@ -6,13 +6,9 @@
 		INSERT INTO TB_USER(
 		user_id
 		,user_pw
-		,user_email
 		,user_nickname
 		,user_name
 		,user_phone
-		,user_zipcode
-		,user_address
-		,user_address_detail
 		)
 		VALUES(
 		<if test='user_id!= null'>
@@ -20,10 +16,6 @@
 		</if>
 		<if test='user_pw!= null'>
 			,#{user_pw}
-		</if>
-		<if test='user_email!= null'>
-			,#{user_email}
-			
 		</if>
 		<if test='user_nickname!= null'>
 			,#{user_nickname}
@@ -33,15 +25,6 @@
 		</if>
 		<if test='user_phone!= null'>
 			,#{user_phone}
-		</if>
-		<if test='user_zipcode!= null'>
-			,#{user_zipcode}
-		</if>
-		<if test='user_address!= null'>
-			,#{user_address}
-		</if>
-		<if test='user_address_detail!= null'>
-			,#{user_address_detail}
 		</if>
 		)
 	</insert>
@@ -63,7 +46,7 @@
 			user_id=#{user_id} AND user_pw=#{user_pw} AND status = 0
 	</select>
 	
-	<!-- 중복검사(아이디, 닉네임, 이메일), 이메일 찾기용 쿼리문 -->
+	<!-- 중복검사(아이디, 닉네임, 핸드폰번호), 이메일 찾기용 쿼리문 -->
 	<select id ="checkInfo" parameterType="map" resultType="map">
 		SELECT
 		<if test='user_id!= null'>
@@ -72,30 +55,31 @@
 		<if test='user_nickname!= null'>
 			user_nickname
 		</if>
-		<if test='user_email!= null'>
-			user_email
+		<if test='user_phone!= null'>
+			user_phone
 		</if>
 		FROM TB_USER
 		<where>
 		<if test='user_id!= null and user_id.length()>0'>
 			user_id = #{user_id}
 		</if>
+		<!-- 닉네임 중복검사 -->
 		<if test='user_nickname!= null and user_nickname.length()>0'>
 			user_nickname = #{user_nickname}
 		</if>
-		<!-- 이메일 중복검사 -->
-		<if test='user_email!= null and user_email.length()>0'>
-			user_email = #{user_email}
+		<!-- 핸드폰 중복검사 -->
+		<if test='user_phone!= null and user_phone.length()>0'>
+			user_phone = #{user_phone}
 		</if>
-		<!-- 이메일 찾기 : 이메일 찾기 만들때 sort에 이메일찾기 넣어줘야함 -->
-		<if test ='sort!=null and sort.equals("이메일찾기")'>
+		<!-- 아이디(이메일) 찾기 : 이메일 찾기 만들때 sort에 이메일찾기 넣어줘야함 -->
+		<if test ='sort!=null and sort.equals("아이디찾기")'>
 			AND status = 0		
 		</if>
 		</where>
 	</select>
 	
 
-	<!-- 회원정보 수정 : 수정가능한 정보 : 닉네임, 비밀번호, 핸드폰번호(재인증), 주소 -->
+	<!-- 회원정보 수정 : 수정가능한 정보 : 닉네임, 비밀번호, 핸드폰번호, 주소 -->
 	<update id="memberUpdate" parameterType="map">
 		update TB_USER
 		<trim prefix="SET" prefixOverrides=",">
