@@ -72,7 +72,7 @@
 		  ORDER BY report_date DESC
 	</select>
 	
-	<!-- 신고 상태 수정 - 처리완료1 -->
+	<!-- 신고 상태 수정 - 미처리0 차단1 취소2 -->
 	<update id="reportUpdate" parameterType="map">
 		UPDATE TB_REPORT
 		SET report_result = #{report_result}

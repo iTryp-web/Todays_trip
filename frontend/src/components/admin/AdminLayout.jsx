@@ -1,5 +1,5 @@
 import React from 'react'
-import { AContentSection, AdminCategory, AdminCategoryLi, AdminCategoryUl, AdminPageUl, AdminSection, QnaCategory } from '../../styles/AdminStyle'
+import { AContentSection, AdminCategory, AdminCategoryLi, AdminCategoryUl, AdminPageUl, AdminSection, QnaCategory, ReportUl } from '../../styles/AdminStyle'
 import { aMarketCategories, adminCategories } from './adminData';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,11 +11,16 @@ import AdminReportRow from './AdminReportRow';
 import AdminResignRow from './AdminResignRow';
 import AdminBanRow from './AdminBanRow';
 import { AiFillPlusSquare } from 'react-icons/ai';
-import { Nav } from "react-bootstrap";
+import { Nav, Table } from "react-bootstrap";
 
 const AdminLayout = () => {
   // 화면전환
   const navigate = useNavigate()
+  // 새로고침용 변수
+  const [start, setStart] = useState()
+  const refresh = () => {
+    setStart(new Date())
+  }
   // 파라미터의 카테고리값
   let {category} = useParams()
   console.log(category);
@@ -257,7 +262,7 @@ const AdminLayout = () => {
       }
     }
     adminOverview()
-  }, [category])
+  }, [category, start])
   
   /* 왼쪽 카테고리 */
   // 선택한 카테고리 담기
@@ -341,11 +346,31 @@ const AdminLayout = () => {
             </ul>
           ) : null}
           {reportList.length > 0  && selected === '신고' ? (
-            <ul>
+            <ReportUl>
+              <Table>
+                <colgroup>
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "30%" }} />
+                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "10%" }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th className='reportTd'>유형</th>
+                    <th className='reportTd'>대상</th>
+                    <th className='reportTd'>신고이유</th>
+                    <th className='reportTd'>신고날짜</th>
+                    <th className='reportTd'>처리여부</th>
+                    <th className='reportTdLast'>적용</th>
+                  </tr>
+                </thead>
               {reportList.map((report) => {
-                return <AdminReportRow key={report.report_no} report={report} />
+                return <AdminReportRow key={report.report_no} report={report} refresh={refresh} />
               })}
-            </ul>
+              </Table>
+            </ReportUl>
           ) : null}
           {(userBanList.length || boardBanList.length || commentBanList.length) > 0 && selected === '차단' ? (
             <AdminBanRow userBanList={userBanList} boardBanList={boardBanList} commentBanList={commentBanList} />

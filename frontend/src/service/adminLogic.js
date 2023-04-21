@@ -14,3 +14,20 @@ export const adminOverviewDB = () => {
     }
   });
 };
+
+/* 어드민 신고 상태 수정 */
+export const adminStatusUpdateDB = (report) => {
+  console.log(report)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "admin/statusUpdate",
+        data: report,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
