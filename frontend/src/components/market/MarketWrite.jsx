@@ -2,7 +2,7 @@ import moment from 'moment';
 import React, { useCallback, useRef, useState } from 'react'
 import Header from '../include/Header';
 import Footer from '../include/Footer';
-import { BButton, Row, WriteSection } from '../../styles/BoardStyle';
+import {  Row, WriteSection } from '../../styles/BoardStyle';
 
 import { useNavigate } from 'react-router-dom';
 import { marketInsertDB } from '../../service/marketLogic';
@@ -13,6 +13,24 @@ import Datetime from 'react-datetime';
 
 import { database } from '../../service/firebase'
 import { off, onValue, ref, set} from 'firebase/database'
+import styled from 'styled-components';
+import { useEffect } from 'react';
+
+const DateContainer=styled.div`/* 일정등록버튼 */
+.btnInsert{
+  margin-left: 15%;
+  margin-right: 0.7em;
+  padding: 0 0.9rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.93rem;
+  font-weight: 600;
+  height:2.7em;
+  width: 8em;
+  background: #4996f3;
+  color: white;
+  }
+  `
 
 const MarketWrite = () => {
   const navigate = useNavigate()
@@ -85,9 +103,20 @@ const MarketWrite = () => {
       }
       console.log(fdata);
       //파이어베이스 실시간 디비넣기
-   /*    set(ref(database,'market/'+fdata.m_no), fdata); */
+     set(ref(database,'market/'+fdata.m_no), fdata);
       handleClose()
     }
+
+     //일정정보가져오기
+     const [fdatas,setFdatas]=useState({})
+     useEffect(()=>{
+       const startCountRef=ref(database,'fdata')
+       onValue(startCountRef,(snapshot)=>{
+         const data=snapshot.val()
+         setFdatas(data)
+         return()=>off(startCountRef)
+       })
+     },[])
   
   const handleCategory = useCallback((e) => {
     setSelected(e);
@@ -126,10 +155,16 @@ const MarketWrite = () => {
   return (
     <>
     <Header />
+    <hr></hr>
+    <DateContainer>
+       <button className='btnInsert' onClick={(e)=>{handleShow()}}>일정등록</button>
+    </DateContainer>
+         <hr/>
+   
         {/* ========================== [[  일정등록 Modal ]] ========================== */}
     <Modal show={show} onHide={handleClose} animation={true}>
         <Modal.Header closeButton>
-          <Modal.Title>새로운 일정</Modal.Title>
+          <Modal.Title>일정선택</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Form id="f_memo">         
@@ -140,9 +175,9 @@ const MarketWrite = () => {
             </div>
           </Form.Group>
           <Form.Group className="mb-3 row" controlId="boardWriter">
-            <Form.Label className="col-sm-2 col-form-label">예약가능수</Form.Label>
+            <Form.Label className="col-sm-2 col-form-label">가능수량</Form.Label>
             <div className='col-sm-10'>
-            <Form.Control type="text" name="m_writer" onChange={handleChangeForm} className='form-control form-control-sm' placeholder="Enter 작성자" />
+            <Form.Control type="text" name="m_writer" onChange={handleChangeForm} className='form-control form-control-sm' placeholder="Enter 가능수량" />
             </div>
           </Form.Group>
           <Form.Group className="mb-3 row" controlId="edit-start">
@@ -172,7 +207,7 @@ const MarketWrite = () => {
       </Modal>     
     {/* ========================== [[ 글등록 Modal ]] ========================== */}    
    
-        <WriteSection>
+    <WriteSection>
         <Row>
           <DropdownButton className='categoryDropdown' variant="" title={selected}>
             {category.map((item, index)=>(
@@ -198,6 +233,9 @@ const MarketWrite = () => {
         </Row>
         <MQuillEditor value={content} handleContent={handleContent} quillRef={quillRef} files={files} handleFiles={handleFiles}/>
         </WriteSection>
+
+        
+
     <Footer />
     </>
   )

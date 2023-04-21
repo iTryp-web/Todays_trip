@@ -18,6 +18,8 @@ import MarketDetail from './components/market/MarketDetail';
 import AdminPage from './components/page/AdminPage';
 import FindUserPage from './components/auth/FindUserPage';
 import InquiryWriteForm from './components/support/InquiryWriteForm';
+import MarketReview from './components/market/MarketReview';
+
 
 
 
@@ -38,6 +40,7 @@ function App({authLogic}) {
       <Route path='/signup' exact={true} element={<SignUpPage authLogic ={authLogic}/>} />
       <Route path='/signin' exact={true} element={<SignInPage authLogic ={authLogic}/>} />
       <Route path='/market' exact={true} element={<MarketPage />} />
+      <Route path='/market/review' exact={true} element={<MarketReview />} />
       <Route path='/market/write' exact={true} element={<MarketWrite />} />
       <Route path='/market/detail' element={<MarketDetail />} />
       <Route path='/support/:category' exact={true} element={<FaqPage />} />

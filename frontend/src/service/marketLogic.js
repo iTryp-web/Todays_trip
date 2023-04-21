@@ -108,7 +108,6 @@ export const marketDeleteDB = (market) => {
 
 /*리뷰 리스트 */
 export const reviewListDB = (market) => {
-  console.log(market)
   return new Promise((resolve, reject) => {
     try {
       // axios 비동기요청 처리(ajax - fetch[브라우저, 클라이언트사이드] - axios[NodeJS-오라클 서버연동, 서버사이드])

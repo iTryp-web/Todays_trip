@@ -5,7 +5,7 @@
 // import StarRatingComponent from 'react-star-rating-component';
 // import styled from 'styled-components';
 
-
+/* 별점 멋지게 주기... 시간남으면 */
 
 // const Star=styled.div`
 
