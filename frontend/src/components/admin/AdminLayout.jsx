@@ -12,10 +12,15 @@ import AdminResignRow from './AdminResignRow';
 import AdminBanRow from './AdminBanRow';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import { Nav, Table } from "react-bootstrap";
+import Pagination from '../include/Pagination';
 
 const AdminLayout = () => {
   // 화면전환
   const navigate = useNavigate()
+  // 페이지네이션
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * limit;
   // 새로고침용 변수
   const [start, setStart] = useState()
   const refresh = () => {
@@ -366,9 +371,14 @@ const AdminLayout = () => {
                     <th className='reportTdLast'>적용</th>
                   </tr>
                 </thead>
-              {reportList.map((report) => {
+              {reportList.slice(offset, offset + limit).map((report) => {
                 return <AdminReportRow key={report.report_no} report={report} refresh={refresh} />
               })}
+              <tr>
+                <td colSpan="6">
+              <Pagination total={reportList.length} limit={limit} page={page} setPage={setPage} />
+                </td>
+              </tr>
               </Table>
             </ReportUl>
           ) : null}
