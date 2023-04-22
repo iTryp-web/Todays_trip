@@ -12,6 +12,16 @@ const AdminReportRow = ({report, refresh}) => {
   // 글 누루면 페이지이동(글,댓글은 해당글로 | 회원은 작성글목록으로)
   const movePage = () => {
     console.log('movePage');
+    // 타입이 글0, 댓글1이면 해당 글로 이동
+    if(report.report_type < 2) {
+      console.log('글,댓글');
+      navigate('/board/detail/'+report.report_num)
+    }
+    // 타입이 회원4이면 해당 회원 작성글, 댓글목록으로 이동
+    else if (report.report_type === 4) {
+      console.log('회원');
+      navigate('/admin/userdetail/'+report.report_user)
+    }
   }
 
   // 처리상태 변수
@@ -63,7 +73,7 @@ const AdminReportRow = ({report, refresh}) => {
           {report.report_reason}
         </th>
         <th className='reportItemTd' onClick={() => movePage()}>
-          {new Date(report.report_date).toLocaleDateString('ko-KR')}
+          {report.report_date}
         </th>
         <th>
           <ReportRow>

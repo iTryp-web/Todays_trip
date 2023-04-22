@@ -46,28 +46,29 @@
 	
 	<!-- 신고 목록 조회(회원4, 글0, 댓글1) -->
 	<select id="reportList" parameterType="map" resultType="map">
-				SELECT report_no
-		     , user_id
-		     , report_type
-		     , report_num
-		     , report_group
-		     , report_step
-		     , report_user
-		     , report_reason
-		     , report_date
-		     , report_result
+				SELECT r.report_no
+             , r.user_id
+             , r.report_type
+             , r.report_num
+             , r.report_group
+             , r.report_step
+             , u.user_id report_user
+             , r.report_reason
+             , r.report_date
+             , r.report_result
          , (SELECT count(report_no)
             FROM TB_REPORT
             WHERE report_result = 0) report_new
-		  FROM TB_REPORT
+		  FROM TB_REPORT r, TB_USER u
+		  WHERE r.report_user = u.user_nickname
 		  <if test='report_type != null and report_type == 4'>
-		  	WHERE report_type = 4
+		  	AND r.report_type = 4
 		  </if>
 		  <if test='report_type != null and report_type == 0'>
-		  	WHERE report_type = 0
+		  	AND r.report_type = 0
 		  </if>
 		  <if test='report_type != null and report_type == 1'>
-		  	WHERE report_type = 1
+		  	AND r.report_type = 1
 		  </if>
 		  ORDER BY report_date DESC
 	</select>
@@ -137,19 +138,19 @@
 		WHERE comment_status = 2
 	</select>
 
-	<!-- 차단 글 삭제 -->
+	<!-- 차단 글 삭제== -->
 	<delete id="banBoardDelete" parameterType="map">
 		DELETE FROM TB_BOARD
 		WHERE board_no = #{board_no}
 		AND board_status = 1
 	</delete>
 	
-	<!-- 차단 댓글 삭제-->
+	<!-- 차단 댓글 삭제==-->
 	<delete id="banCommentDelete" parameterType="map">
 		DELETE FROM TB_B_COMMENT
 		WHERE comment_no = #{comment_no}
 		AND comment_step = #{comment_step}
-		AND comment_statue = 2
+		AND comment_status = 2
 	</delete>
 	
 	<!-- 탈퇴(신청) 회원 목록 조회 -->
@@ -160,6 +161,7 @@
 		     , u.user_phone
 		     , u.user_level
 		     , u.status
+		     , q.qna_no
 		     , q.qna_title
 		     , q.qna_content
 		     , q.qna_date
@@ -180,10 +182,56 @@
 		WHERE user_id = #{user_id}
 	</update>
 	
-	<!-- 탈퇴 회원 삭제  -->
+	<!-- 탈퇴문의 상태 수정 -->
+	<update id="resignQnaUpdate">
+		UPDATE TB_QNA
+		SET qna_step = #{qna_step}
+		WHERE qna_no = #{qna_no}
+		AND user_id = #{user_id}
+	</update>
+	
+	<!-- 탈퇴1, 차단2 회원 삭제==  -->
 	<delete id="resignDelete" parameterType="map">
 		DELETE FROM TB_USER
 		WHERE user_id = #{user_id}
-		AND status = 1
+		AND status > 0
 	</delete>
+	
+	<!-- 신고당한 회원 글 출력 -->
+	<select id="userBoardDetail" parameterType="map" resultType="map">
+		SELECT b.board_no
+		     , b.type_board
+		     , b.board_title
+		     , b.board_date
+		     , b.board_status
+		     , (SELECT COUNT(user_id)
+		        FROM TB_BOARD
+		        WHERE user_id = #{user_id}) board_count
+  		   , (SELECT COUNT(user_id)
+			     FROM TB_B_COMMENT
+			     WHERE user_id = #{user_id}) comment_count
+		FROM TB_USER u, TB_BOARD b
+		WHERE u.user_id = #{user_id}
+		AND u.user_id = b.user_id
+	</select>
+	
+	<!-- 신고당한 회원 댓글 출력 -->
+	<select id="userCommentDetail" parameterType="map" resultType="map">
+		SELECT c.board_no
+		     , c.comment_no
+		     , c.comment_step
+		     , c.type_comment
+		     , c.comment_content
+		     , c.comment_date
+		     , c.comment_status
+ 		     , (SELECT COUNT(user_id)
+				    FROM TB_BOARD
+				    WHERE user_id = #{user_id}) board_count
+  		   , (SELECT COUNT(user_id)
+			     FROM TB_B_COMMENT
+			     WHERE user_id = #{user_id}) comment_count
+		FROM TB_USER u, TB_B_COMMENT c
+		WHERE u.user_id = #{user_id}
+		AND u.user_id = c.user_id
+	</select>
 </mapper>

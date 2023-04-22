@@ -42,6 +42,7 @@ const BoardWriteForm = () => {
     console.log(files)
     const board = {
       user_id: sessionStorage.getItem('user_id'),
+      board_category: selected,
       board_title: title,
       board_content: content,
       imageNames: files

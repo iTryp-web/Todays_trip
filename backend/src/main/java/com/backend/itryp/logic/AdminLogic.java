@@ -45,34 +45,7 @@ public class AdminLogic {
 		oList.addAll(banCommentList);
 		return oList;
 	}
-
-	/**
-	 * 판매목록(+새로운 문의) 조회
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	public List<Map<String, Object>> marketQnaList(Map<String, Object> pMap) {
-		logger.info("marketQnaList 호출");
-		List<Map<String,Object>> rList = new ArrayList<>();
-		pMap.put("new", 0);
-		rList= adminDao.marketQnaList(pMap);
-		return rList;
-	}
-
-	/**
-	 * 신고 목록 조회(회원4, 글0, 댓글1)
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	public List<Map<String, Object>> reportList(Map<String, Object> pMap) {
-		logger.info("reportList 호출");
-		List<Map<String,Object>> rList = new ArrayList<>();
-		rList= adminDao.reportList(pMap);
-		return rList;
-	}
-
+	
 	/**
 	 * 회원, 글, 댓글 상태 수정
 	 * 
@@ -83,39 +56,27 @@ public class AdminLogic {
 		logger.info("statusUpdate 호출");
 		logger.info(pMap);
 		int result = 0;
-		result = adminDao.reportUpdate(pMap); // 신고 상태 수정 - 기본0 차단1 취소2
+		if(pMap.get("report_no") != null) {
+			result = adminDao.reportUpdate(pMap); // 신고 상태 수정 - 기본0 차단1 취소2			
+		}
 		if(Integer.parseInt(pMap.get("report_type").toString()) == 0) {
 			int resultBoard = adminDao.boardStatusUpdate(pMap); // 글 상태 수정 - 기본0 차단1	
 			logger.info("resultBoard=> " + resultBoard);
+			result++;
 		} else if(Integer.parseInt(pMap.get("report_type").toString()) == 1) {
 			int resultComment = adminDao.commentStatusUpdate(pMap); // 댓글 상태 수정 - 기본0 차단2			
 			logger.info("resultComment=> " + resultComment);
+			result++;
 		} else if(Integer.parseInt(pMap.get("report_type").toString()) == 4) {
 			int resultUser = adminDao.userStatusUpdate(pMap); // 회원 상태 수정 - 기본0 차단2
 			logger.info("resultUser=> " + resultUser);
+			result++;
 		}
 		return result;
 	}
-	
-	/**
-	 * 차단 회원, 글, 댓글 목록 조회
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	public List<Map<String, Object>> banList(Map<String, Object> pMap) {
-		logger.info("banList 호출");
-		List<Map<String,Object>> bUserList = new ArrayList<>();
-		bUserList= adminDao.banUserList(pMap); // 차단 회원
-		List<Map<String,Object>> bBoardList = new ArrayList<>();
-		bBoardList= adminDao.banBoardList(pMap); // 차단 글
-		List<Map<String,Object>> bCommentList = new ArrayList<>();
-		bCommentList= adminDao.banCommentList(pMap); // 차단 댓글
-		return bUserList;
-	}
 
 	/**
-	 * 차단 글, 댓글 삭제
+	 * 차단 글, 댓글 삭제==
 	 * 
 	 * @param pMap
 	 * @return
@@ -123,23 +84,20 @@ public class AdminLogic {
 	public int banDelete(Map<String, Object> pMap) {
 		logger.info("banDelete 호출");
 		int result = 0;
-		result = adminDao.banBoardDelete(pMap); // 글 삭제
-		int result1 = 0;
-		result = adminDao.banCommentDelete(pMap); // 댓글 삭제
+		if(Integer.parseInt(pMap.get("report_type").toString()) == 0) {
+			int resultBoard = adminDao.banBoardDelete(pMap); // 글 삭제	
+			logger.info("resultBoard=> " + resultBoard);
+			result++;
+		} else if(Integer.parseInt(pMap.get("report_type").toString()) == 1) {
+			int resultComment = adminDao.banCommentDelete(pMap); // 댓글 삭제			
+			logger.info("resultComment=> " + resultComment);
+			result++;
+		} else if(Integer.parseInt(pMap.get("report_type").toString()) == 4) {
+			int resultUser = adminDao.resignDelete(pMap); // 회원 삭제
+			logger.info("resultUser=> " + resultUser);
+			result++;
+		}
 		return result;
-	}
-
-	/**
-	 * 탈퇴(신청) 회원 목록 조회
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	public List<Map<String, Object>> resignList(Map<String, Object> pMap) {
-		logger.info("resignList 호출");
-		List<Map<String,Object>> rList = new ArrayList<>();
-		rList= adminDao.resignList(pMap);
-		return rList;
 	}
 
 	/**
@@ -152,11 +110,15 @@ public class AdminLogic {
 		logger.info("resignUpdate 호출");
 		int result = 0;
 		result = adminDao.resignUpdate(pMap);
+		if(pMap.get("qna_step") != null) {
+			int resultStep = adminDao.resignQnaUpdate(pMap);
+			logger.info("resultStep=> " + resultStep);
+		}
 		return result;
 	}
 
 	/**
-	 * 탈퇴 회원 삭제 
+	 * 탈퇴 회원 삭제 ==
 	 * 
 	 * @param pMap
 	 * @return
@@ -166,5 +128,21 @@ public class AdminLogic {
 		int result = 0;
 		result = adminDao.resignDelete(pMap);
 		return result;
+	}
+
+	/**
+	 * 신고당한 회원 글, 댓글 출력
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> userDetail(Map<String, Object> pMap) {
+		logger.info("userDetail 호출");
+		List<Map<String,Object>> uList = new ArrayList<>();
+		List<Map<String,Object>> btList = adminDao.userBoardDetail(pMap);
+		uList.addAll(btList);
+		List<Map<String,Object>> cList = adminDao.userCommentDetail(pMap);
+		uList.addAll(cList);
+		return uList;
 	}
 }

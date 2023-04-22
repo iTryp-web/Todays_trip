@@ -25,7 +25,7 @@ const Header = () => {
             마켓
           </NavLinkStyle>
           <NavLinkStyle
-            to="/board/all"
+            to="/board/all?page=1"
             className={({ isActive }) => isActive && "active"}
           >
             커뮤니티

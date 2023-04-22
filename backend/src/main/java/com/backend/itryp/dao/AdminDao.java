@@ -82,7 +82,7 @@ public class AdminDao {
 	}
 	
 	/**
-	 * 댓글 상태 수정 - 기본0 차단2
+	 * 댓글 상태 수정 - 기본0 차단2=
 	 * 
 	 * @param pMap
 	 * @return
@@ -134,7 +134,7 @@ public class AdminDao {
 	}
 
 	/**
-	 * 차단 글 삭제
+	 * 차단 글 삭제==
 	 * 
 	 * @param pMap
 	 * @return
@@ -147,7 +147,7 @@ public class AdminDao {
 	}
 	
 	/**
-	 * 차단 댓글 삭제
+	 * 차단 댓글 삭제==
 	 * 
 	 * @param pMap
 	 * @return
@@ -184,9 +184,22 @@ public class AdminDao {
 		result = sqlSessionTemplate.update("resignUpdate", pMap);
 		return result;
 	}
+	
+	/**
+	 * 탈퇴(신청) 문의글 상태 수정 처리완료2
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int resignQnaUpdate(Map<String, Object> pMap) {
+		logger.info("resignQnaUpdate 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("resignQnaUpdate", pMap);
+		return result;
+	}
 
 	/**
-	 * 탈퇴 회원 삭제 
+	 * 탈퇴 회원 삭제 ==
 	 * 
 	 * @param pMap
 	 * @return
@@ -196,5 +209,31 @@ public class AdminDao {
 		int result = 0;
 		result = sqlSessionTemplate.update("resignDelete", pMap);
 		return result;
+	}
+
+	/**
+	 * 신고당한 회원 글 출력
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> userBoardDetail(Map<String, Object> pMap) {
+		logger.info("userBoardDetail 호출");
+		logger.info(pMap);
+		List<Map<String,Object>> bList = sqlSessionTemplate.selectList("userBoardDetail", pMap);
+		return bList;
+	}
+	
+	/**
+	 * 신고당한 회원 댓글 출력
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> userCommentDetail(Map<String, Object> pMap) {
+		logger.info("userCommentDetail 호출");
+		logger.info(pMap);
+		List<Map<String,Object>> bList = sqlSessionTemplate.selectList("userCommentDetail", pMap);
+		return bList;
 	}
 }
