@@ -124,4 +124,40 @@ public class AdminController {
 		temp = g.toJson(bList);
 		return temp;
 	}
+	
+	/**
+	 * 주문 상태 수정 예약0, 취소1, 판매2
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("orderUpdate")
+	public String orderUpdate(@RequestBody Map<String, Object> pMap) {
+		logger.info("orderUpdate 호출");
+		logger.info(pMap);
+		int result = 0;
+		result = adminLogic.orderUpdate(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+	
+	
+	/**
+	 * 주문 상세보기
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@GetMapping("orderDetail")
+	public String orderDetail(@RequestParam Map<String, Object> pMap) {
+		logger.info("orderDetail 호출");
+		logger.info(pMap);
+		String temp = null;
+		List<Map<String, Object>> bList = null;
+		bList = adminLogic.orderDetail(pMap);
+		logger.info(bList);
+		Gson g = new Gson();
+		temp = g.toJson(bList);
+		return temp;
+	}
 }

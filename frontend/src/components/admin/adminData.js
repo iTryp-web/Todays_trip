@@ -38,8 +38,8 @@ export const aMarketCategories = [
     category: 'package',
   },
   {
-    name: '레저',
-    category: 'activity',
+    name: '투어',
+    category: 'tour',
   },
   {
     name: '티켓',
@@ -108,5 +108,21 @@ export const resignResult = [
   {
     resultNo: 1,
     resultText: '탈퇴',
+  },
+]
+
+// AdminOrderRow 처리항목 카테고리
+export const orderResult = [
+  {
+    resultNo: 0,
+    resultText: '예약중',
+  },
+  {
+    resultNo: 1,
+    resultText: '취소',
+  },
+  {
+    resultNo: 2,
+    resultText: '판매완료',
   },
 ]

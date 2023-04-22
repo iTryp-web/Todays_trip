@@ -44,16 +44,16 @@ const AdminResignRow = ({resign, refresh}) => {
   return (
     <>
       <ReportTr result={resign.status}>
-        <th className='reportItemTd'>
+        <th>
           {resign.user_id}
         </th>
-        <th className='reportItemTd'>
+        <th>
           {resign.qna_title}
         </th>
-        <th className='reportItemTd'>
+        <th>
           {resign.qna_content}
         </th>
-        <th className='reportItemTd'>
+        <th>
           {resign.qna_date}
         </th>
         <th>

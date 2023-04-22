@@ -33,7 +33,9 @@
            WHERE comment_status = 2) commentBan_count
          , (SELECT count(qna_no)
             FROM TB_QNA
-            WHERE qna_sort = 3) resign_count		
+            WHERE qna_sort = 3) resign_count
+         , (SELECT COUNT(order_no)
+						FROM TB_ORDER) order_count
 		FROM TB_MARKET m
 			, (SELECT COUNT(user_Id) qna_count, market_no
 			    FROM TB_QNA
@@ -233,5 +235,45 @@
 		FROM TB_USER u, TB_B_COMMENT c
 		WHERE u.user_id = #{user_id}
 		AND u.user_id = c.user_id
+	</select>
+	
+	<!-- 주문 목록 출력 -->
+	<select id="adminOrderList" parameterType="map" resultType="map">
+		SELECT order_no
+		     , user_id
+		     , REGEXP_REPLACE(REVERSE(REGEXP_REPLACE(REVERSE(TO_CHAR(order_payment)), '(\d{3})','\1,')), '^,','') order_payment
+		     , order_date
+		     , order_status
+		     , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		FROM TB_ORDER
+	</select>
+	
+	<!-- 주문 상태 수정 예약0, 취소1, 판매2 -->
+	<update id="orderUpdate">
+		UPDATE TB_ORDER
+		SET order_status = #{order_status}
+		WHERE order_no = #{order_no}
+		AND user_id = #{user_id}
+	</update>
+	
+		<!-- 주문 상세보기 출력 !!수정필요!! -->
+	<select id="orderDetail" parameterType="map" resultType="map">
+		SELECT d.detail_no
+		     , d.market_no
+		     , m.market_category
+		     , m.market_title
+		     , d.market_count
+		     , d.order_amount
+		     , o.order_payment
+		     , o.order_date
+		     , p.pay_method
+		     , o.order_status
+		FROM TB_ORDER o, TB_ORDER_DETAIL d, TB_MARKET m, TB_PAY p
+		WHERE o.order_no = d.order_no
+		AND m.market_no = d.market_no
+		AND p.order_no = d.order_no
+		AND o.order_no = #{order_no}
 	</select>
 </mapper>
