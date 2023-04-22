@@ -1,10 +1,21 @@
 import React, { useState } from 'react'
 import { Button, Modal,Form} from 'react-bootstrap'
-import Nav from 'react-bootstrap/Nav';
+
 import { BsFillCartCheckFill } from 'react-icons/bs'
 import { Link, useNavigate } from 'react-router-dom'
-import { Category, DetailBlock } from '../../styles/MarketStyle'
+import styled from 'styled-components';
+import { DetailBlock } from '../../styles/MarketStyle'
 
+const Btnwrap=styled.div`
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 20px 10px 20px;
+  gap: 10px;
+
+`
 
 const ProductDetail = ({cookieAdd}) => {
   const navigate=useNavigate();
@@ -16,34 +27,10 @@ const ProductDetail = ({cookieAdd}) => {
   const price=1000;
   /* 품절여부 */
   const isSoldOut=0;
+  
   return (
     <>
-    <Category>
-      <Nav
-          activeKey="/market"
-          onSelect={(selectedKey) => alert(`마켓홈 ${selectedKey}`)}
-          >
-          <Nav.Item>
-            <Nav.Link href="/market">마켓홈</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="link-1">패키지</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="link-2">투어</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="link-3">티켓</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-          <Nav.Link eventKey="link-4">교통</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-          <Nav.Link eventKey="link-5">숙소</Nav.Link>
-          </Nav.Item>
-        </Nav>
-
-        </Category>
+    
       
       <hr/>
       <DetailBlock>
@@ -59,14 +46,15 @@ const ProductDetail = ({cookieAdd}) => {
               <h5>장바구니에 추가되었습니다.</h5>
           </div>
           
-              <div className='btnwrap'>
+              <Btnwrap>
                 <Button onClick={(e) => handleClose()} >계속쇼핑하기</Button>
                 <Link to="/cart">
                   <Button>장바구니 보기</Button>
                 </Link>
-              </div>
+              </Btnwrap>
         </Modal.Body>
         </Modal>
+        
           <div className='container'>
             <div  className='imgarea'>
               {/* 썸네일 */}
@@ -133,7 +121,7 @@ const ProductDetail = ({cookieAdd}) => {
                     </div>
                   </div>
                   {/* 품절이면 0 아니면 다른거.... */}
-                  {isSoldOut===0 ? (
+                  {isSoldOut===1 ? (
                       <div className='button'>
                         <Button name={'품절'} className='soldout' disabled={true} >품절</Button>
                       </div>
@@ -142,7 +130,7 @@ const ProductDetail = ({cookieAdd}) => {
                         <Button
                           name={'장바구니'}
                           className='sale'
-                          onClick={(e) => {handleShow(); cookieAdd()
+                          onClick={(e) => {handleShow(); Object.entries(cookieAdd)
                           }}
                         >장바구니</Button>
                         <Button
