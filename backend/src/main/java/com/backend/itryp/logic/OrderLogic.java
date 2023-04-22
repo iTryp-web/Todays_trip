@@ -46,14 +46,37 @@ public class OrderLogic {
 	/**
 	 * orderUpdate
 	 * 
-	 * @param pmap
-	 * @return
+	 * @param pmap OrderInfo, OrderDetailInfo 주문자 정보, 주문 상품 정보
+	 * @return orderNo 주문 번호
 	 */
-	public List<Map<String, Object>> orderUpdate(Map<String, Object> pmap) {
+	public Map<String, Object> orderUpdate(Map<String, Object> pmap) {
 		log.info("orderUpdate 호출");
-		List<Map<String,Object>> list = new ArrayList<>();
-		list = odao.orderUpdate(pmap);
-		return list;
+		
+		Map<String,Object> rmap = new HashMap<>();
+		int result = 0;
+		ArrayList<Map> detailList;
+		
+		log.info((Map)pmap.get("orderInfo"));
+		
+		//주문 정보 테이블에 데이터 삽입
+		result = odao.orderInsert((Map)pmap.get("orderInfo"));
+		if(result == 0) return rmap;
+		
+		//주문 번호 가져오기
+		int orderNo = odao.getOrderNo((Map)pmap.get("orderInfo"));
+		
+		//주문 디테일 테이블에 데이터 삽입
+		detailList = (ArrayList) pmap.get("orderDetailInfo");
+		
+		for(int i = 0; i < detailList.size(); i++) {
+			if(detailList.get(i).size() > 0) {
+				Map<String, Object> dmap = (Map)detailList.get(i);
+				dmap.put("order_no", orderNo);
+				result = odao.orderDetailInsert(dmap);				
+			}
+		}
+		rmap.put("order_no", orderNo);
+		return rmap;
 	}
 	
 	

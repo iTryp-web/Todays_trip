@@ -73,7 +73,12 @@
 	
 	<!-- 주문 내역 DB에 저장한 후 저장한 주문 번호 읽어오기 -->
 	<select id="getOrderNo" parameterType="map" resultType="int">
-		 SELECT TB_ORDER_NO_SEQ.CURRVAL FROM DUAL;
+		SELECT * 
+		  FROM (SELECT order_no 
+	  			  FROM TB_ORDER 
+      			 WHERE user_id = #{user_id}
+      			 ORDER BY order_no DESC) 
+		 WHERE ROWNUM = 1
 	</select>
 	
 	<!-- 결제 완료 후 결제 내역 DB에 저장 -->
