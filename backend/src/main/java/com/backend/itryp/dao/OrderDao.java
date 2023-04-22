@@ -33,19 +33,43 @@ public class OrderDao {
 	}
 
 	/**
-	 * orderUpdate
+	 * orderInsert
 	 * 
-	 * @param pmap
-	 * @return
+	 * @param pmap orderInfo
+	 * @return result
 	 */
-	public List<Map<String, Object>> orderUpdate(Map<String, Object> pmap) {
-		log.info("orderUpdate 호출");
-		List<Map<String,Object>> list = null;
-		list = sst.selectList("orderUpdate", pmap);
-		return list;
+	public int orderInsert(Map<String, Object> pmap) {
+		log.info("orderInsert 호출");
+		int result = 0;
+		result = sst.update("InsertOrder", pmap);
+		return result;
 	}
 
+	/**
+	 * orderDetailInsert
+	 * 
+	 * @param pmap orderInfo
+	 * @return result
+	 */
+	public int orderDetailInsert(Map<String, Object> pmap) {
+		log.info("orderDetailInsert 호출");
+		int result = 0;
+		result = sst.update("InsertOrderDetail", pmap);
+		return result;
+	}
 
+	/**
+	 * getOrderNo
+	 * 
+	 * @return orderNo
+	 */
+	public int getOrderNo(Map<String, Object> pmap) {
+		log.info("getOrderNo 호출");
+		int orderNo = 0;
+		orderNo = sst.selectOne("getOrderNo", pmap);
+		return orderNo;
+	}
+	
 	/**
 	 * cancelOrder
 	 * 

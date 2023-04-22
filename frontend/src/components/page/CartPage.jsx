@@ -72,11 +72,13 @@ const CartPage = () => {
     if(cartList && cartList.length === checkedItems.length) setIsAllChecked(true);
     else setIsAllChecked(false);
     handleTotal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkedItems])
 
   //카트 바뀌면 총 결제금액 바꿔주기
   useEffect(() => {
     handleTotal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartList])
 
   //선택 삭제 처리

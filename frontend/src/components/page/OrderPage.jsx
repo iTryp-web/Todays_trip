@@ -8,7 +8,7 @@ import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCoupo
          InputAllCheck, AddressTable, AddressTitleTd, AddressButton, AddressInput, AgreeCheckDiv } from '../../styles/OrderStyle'
 import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
-import { getOrderPage } from '../../service/orderLogic'
+import { getOrderPage, setOrderTable } from '../../service/orderLogic'
 import { Form } from 'react-bootstrap'
 
 const OrderPage = () => {
@@ -16,9 +16,9 @@ const OrderPage = () => {
   //주문 상품 정보 받아오기
   const location = useLocation();
   const [ orderItems ] = useState(location.state?.orderItems);
+  const [ orderDetailInfo, setOrderDetailInfo ] = useState([]);
 
   //사용 가능한 쿠폰 리스트 관리
-  let couponList = [];
   const [cList, setCList] = useState([]);
 
   //로그인 유저 정보
@@ -36,7 +36,7 @@ const OrderPage = () => {
   //주문 정보
   const [ orderInfo, setOrderInfo ] = useState({
     order_no: 0,
-    user_id: "",
+    user_id: sessionStorage.getItem('user_id') || "test1",
     reserve_name: "",
     reserve_phone: "",
     reserve_email: "",
@@ -48,19 +48,17 @@ const OrderPage = () => {
     coupon_no: 0,
     order_total: price,
     order_discount: 0,
-    order_payment: "",
+    order_payment: price,
   });
 
   //주문 페이지 로딩 시 회원 정보 및 쿠폰 정보 읽어오기
   useEffect(() => {
     const getUserInfo = async () => {
-      const user = { user_id: "test1" };
-      // const user = { user_id: sessionStorage.getItem('user_id') };
+      const user = { user_id: sessionStorage.getItem('user_id') || "test1" };
       await getOrderPage(user).then((res) => {
         if(res.data != null){
-          couponList = res.data.couponList;
           setUserInfo(res.data.userInfo);
-          setCList(couponList);
+          setCList(res.data.couponList);
         }
       })
     }
@@ -104,15 +102,6 @@ const OrderPage = () => {
     else setIsAllChecked(false);
   }, [checkedItems])
 
-//주문 상세 정보
-//const [ orderDetailInfo, setOrderDetailInfo ] = useState({
-//                                                  detail_no: 0,
-//                                                  order_no: 0,
-//                                                  market_no: marketNum,
-//                                                  market_count: marketCnt,
-//                                                  order_amount: marketPrice * marketCnt  
-//                                                });
-
   //input 값 반영
   const handleInput = (e) => {
     setOrderInfo(prevState => ({
@@ -133,7 +122,50 @@ const OrderPage = () => {
   //결제하기 버튼 클릭 후 처리
   const onClickPayment = () => {
     //약관 동의 확인
-    //order 정보 DB 저장
+    if(!isAllChecked) {
+      alert("결제 약관 동의가 필요합니다.");
+      return;
+    }
+
+    //order detail 정보 Data 생성
+    let detailItem = [{}];
+    orderItems.forEach(item => {
+      console.log("first")
+      detailItem = [...detailItem,
+              {
+                detail_no: 0,
+                order_no: 0,
+                market_no: item.marketNum,
+                market_count: item.marketCnt,
+                order_amount: item.marketPrice * item.marketCnt,
+              }];
+          });
+    setOrderDetailInfo(detailItem);
+    console.log(orderDetailInfo);
+
+    //orderInfo 값 null 체크
+    for(let key in orderInfo){
+      if(orderInfo[key].length === 0 || orderInfo[key] === undefined){
+        alert(key + "에 값을 입력해주세요.");
+        return;
+      }
+    }
+
+    //DB에 값 저장하고 order_no 받아오기
+    const getOrderNo = async() => {
+      const orderData = {
+        orderInfo: orderInfo,
+        orderDetailInfo: orderDetailInfo,
+      };
+      await setOrderTable(orderData).then((res) => {
+        if(res.data !== null){
+            console.log(res.data);
+        }
+      })
+    }
+    getOrderNo();
+
+    //결제 함수 실행
     payment();
   }
 
@@ -148,7 +180,7 @@ const OrderPage = () => {
       pay_method: 'card',                                                                                     // 결제수단
       merchant_uid:  `mid_${new Date().getTime()}`,                                                           // 주문번호
       amount: price,                                                                                          // 결제금액
-      name: cartList[0].marketName + (cartList.length > 1 ? "외 " + (cartList.length - 1) +  " 건" : ''),   // 주문명
+      name: cartList[0].marketName + (cartList.length > 1 ? "외 " + (cartList.length - 1) +  " 건" : ''),     // 주문명
       buyer_name: orderInfo.user_name,                                                                        // 구매자 이름
       buyer_tel: orderInfo.user_phone,                                                                        // 구매자 전화번호
       buyer_email: orderInfo.user_email,                                                                      // 구매자 이메일
@@ -264,11 +296,11 @@ const OrderPage = () => {
                 <td><AddressButton onClick={getPostCode}>주소찾기</AddressButton><AddressInput type="text" id="shipping_zipcode" onChange={e => handleInput(e)} style={{width:"166px"}} defaultValue={userInfo.user_zipcode || ''} disabled/></td>
               </tr>
               <tr>
-                <td><AddressInput type="text" id="shipping_address" onChange={e => handleInput(e)} style={{width:"400px"}} defaultValue={userInfo.user_address || ''} disabled/></td>
+                <td><AddressInput type="text" id="shipping_address" onChange={e => handleInput(e)} style={{width:"100%", maxWidth:"400px"}} defaultValue={userInfo.user_address || ''} disabled/></td>
               </tr>
               <tr>
                 <td width={'270px'}>
-                  <AddressInput type="text" id="shipping_address_detail" onChange={e => handleInput(e)} placeholder='상세주소 입력' style={{width:"400px"}} defaultValue={userInfo.user_address_detail || ''} />
+                  <AddressInput type="text" id="shipping_address_detail" onChange={e => handleInput(e)} placeholder='상세주소 입력' style={{width:"100%", maxWidth:"400px"}} defaultValue={userInfo.user_address_detail || ''} />
                 </td>
               </tr>
             </tbody>

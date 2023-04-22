@@ -66,16 +66,16 @@ public class OrderController {
 	 * 주문 및 결제 정보 DB 등록
 	 * 
 	 * @param pmap 주문 및 결제 정보
-	 * @return 등록 성공 여부
+	 * @return rmap 등록된 주문 번호
 	 */
 	@PostMapping("orderUpdate")
 	public String orderUpdate(@RequestBody Map<String, Object> pmap) {
 		log.info("orderUpdate 호출");
 		String temp = null;
-		List<Map<String,Object>> list = null;
-		list = odrLogic.orderUpdate(pmap);
+		Map<String,Object> rmap = null;
+		rmap = odrLogic.orderUpdate(pmap);
 		Gson g = new Gson();
-		temp = g.toJson(list);
+		temp = g.toJson(rmap);
 		return temp;
 	}
 	
