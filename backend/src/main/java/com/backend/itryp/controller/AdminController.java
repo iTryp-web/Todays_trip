@@ -43,44 +43,6 @@ public class AdminController {
 	}
 	
 	/**
-	 * 판매목록(새로운 문의) 조회
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	@GetMapping("marketQnaList")
-	public String marketQnaList(@RequestParam Map<String, Object> pMap) {
-		logger.info("marketQnaList 호출");
-		logger.info(pMap);
-		String temp = null;
-		List<Map<String, Object>> bList = null;
-		bList = adminLogic.marketQnaList(pMap);
-		logger.info(bList);
-		Gson g = new Gson();
-		temp = g.toJson(bList);
-		return temp;
-	}
-	
-	/**
-	 * 신고 목록 조회(회원4, 글0, 댓글1
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	@GetMapping("reportList")
-	public String reportList(@RequestParam Map<String, Object> pMap) {
-		logger.info("reportList 호출");
-		logger.info(pMap);
-		String temp = null;
-		List<Map<String, Object>> bList = null;
-		bList = adminLogic.reportList(pMap);
-		logger.info(bList);
-		Gson g = new Gson();
-		temp = g.toJson(bList);
-		return temp;
-	}
-	
-	/**
 	 * 회원, 글, 댓글 상태 수정
 	 * 
 	 * @param pMap
@@ -97,25 +59,7 @@ public class AdminController {
 	}
 	
 	/**
-	 * 차단 회원, 글, 댓글 목록 조회
-	 * @param pMap
-	 * @return
-	 */
-	@GetMapping("banList")
-	public String banList(@RequestParam Map<String, Object> pMap) {
-		logger.info("banList 호출");
-		logger.info(pMap);
-		String temp = null;
-		List<Map<String, Object>> bList = null;
-		bList = adminLogic.banList(pMap);
-		logger.info(bList);
-		Gson g = new Gson();
-		temp = g.toJson(bList);
-		return temp;
-	}
-	
-	/**
-	 * 차단 글, 댓글 삭제
+	 * 차단 회원, 글, 댓글 삭제==
 	 * 
 	 * @param pMap
 	 * @return
@@ -128,25 +72,6 @@ public class AdminController {
 		result = adminLogic.banDelete(pMap);
 		logger.info(result);
 		return String.valueOf(result);
-	}
-	
-	/**
-	 * 탈퇴(신청) 회원 목록 조회
-	 * 
-	 * @param pMap
-	 * @return
-	 */
-	@GetMapping("resignList")
-	public String resignList(@RequestParam Map<String, Object> pMap) {
-		logger.info("resignList 호출");
-		logger.info(pMap);
-		String temp = null;
-		List<Map<String, Object>> bList = null;
-		bList = adminLogic.resignList(pMap);
-		logger.info(bList);
-		Gson g = new Gson();
-		temp = g.toJson(bList);
-		return temp;
 	}
 	
 	/**
@@ -166,7 +91,7 @@ public class AdminController {
 	}
 	
 	/**
-	 * 탈퇴 회원 삭제 
+	 * 탈퇴 회원 삭제 ==
 	 * 
 	 * @param pMap
 	 * @return
@@ -179,5 +104,24 @@ public class AdminController {
 		result = adminLogic.resignDelete(pMap);
 		logger.info(result);
 		return String.valueOf(result);
+	}
+	
+	/**
+	 * 신고당한 회원 글, 댓글 출력
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@GetMapping("userDetail")
+	public String userDetail(@RequestParam Map<String, Object> pMap) {
+		logger.info("userDetail 호출");
+		logger.info(pMap);
+		String temp = null;
+		List<Map<String, Object>> bList = null;
+		bList = adminLogic.userDetail(pMap);
+		logger.info(bList);
+		Gson g = new Gson();
+		temp = g.toJson(bList);
+		return temp;
 	}
 }

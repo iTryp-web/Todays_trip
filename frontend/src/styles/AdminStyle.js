@@ -34,6 +34,10 @@ export const AdminPageUl = styled.ul`
   font-size: 18px;
   font-weight: 800;
   height: 36px;
+  cursor: pointer;
+  :hover{
+  color: #4996F3;
+  }
 `;
 
 export const AdminCategoryUl = styled.ul`

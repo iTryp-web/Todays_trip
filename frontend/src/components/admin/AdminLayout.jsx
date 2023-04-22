@@ -1,6 +1,6 @@
 import React from 'react'
 import { AContentSection, AdminCategory, AdminCategoryLi, AdminCategoryUl, AdminPageUl, AdminSection, QnaCategory, ReportUl } from '../../styles/AdminStyle'
-import { aMarketCategories, adminCategories } from './adminData';
+import { aBanCategories, aMarketCategories, adminCategories } from './adminData';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCallback } from 'react';
@@ -9,10 +9,10 @@ import { adminOverviewDB } from "../../service/adminLogic";
 import AdminQnaRow from './AdminQnaRow';
 import AdminReportRow from './AdminReportRow';
 import AdminResignRow from './AdminResignRow';
-import AdminBanRow from './AdminBanRow';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import { Nav, Table } from "react-bootstrap";
 import Pagination from '../include/Pagination';
+import AdminBanList from './AdminBanList';
 
 const AdminLayout = () => {
   // 화면전환
@@ -24,6 +24,7 @@ const AdminLayout = () => {
   // 새로고침용 변수
   const [start, setStart] = useState()
   const refresh = () => {
+    console.log('refresh');
     setStart(new Date())
   }
   // 파라미터의 카테고리값
@@ -118,6 +119,7 @@ const AdminLayout = () => {
               user_phone: jsonDoc[i].USER_PHONE,
               user_level: jsonDoc[i].USER_LEVEL,
               status: jsonDoc[i].STATUS,
+              qna_no: jsonDoc[i].QNA_NO,
               qna_title: jsonDoc[i].QNA_TITLE,
               qna_content: jsonDoc[i].QNA_CONTENT,
               qna_date: jsonDoc[i].QNA_DATE,
@@ -135,7 +137,7 @@ const AdminLayout = () => {
         const list6 = []
         if(jsonDoc.length > (market_count + report_count + resign_count)) {
           // +유저 밴 목록 있는 경우
-          if(userBan_count != 0) {
+          if(userBan_count > 0) {
             for(let i=(market_count + report_count + resign_count);
             i<(market_count + report_count + resign_count + userBan_count); i++) {
               const obj = {
@@ -151,7 +153,7 @@ const AdminLayout = () => {
             }
             setUserBanList(list4)
             // ++글 밴 목록 있는 경우
-            if(boardBan_count != 0) {
+            if(boardBan_count > 0) {
               for(let i=(market_count + report_count + resign_count + userBan_count);
               i<(market_count + report_count + resign_count + userBan_count + boardBan_count); i++) {
                 const obj = {
@@ -167,7 +169,7 @@ const AdminLayout = () => {
               }
               setBoardBanList(list5)
               // +++댓글 밴 목록 있는 경우
-              if(commentBan_count != 0) {
+              if(commentBan_count > 0) {
                 for(let i=(market_count + report_count + resign_count + userBan_count + boardBan_count);
                 i<(market_count + report_count + resign_count + userBan_count + boardBan_count + commentBan_count); i++) {
                   const obj = {
@@ -187,7 +189,7 @@ const AdminLayout = () => {
             // --글 밴 목록 없는 경우
             else {
               // +++댓글 밴 목록 있는 경우
-              if(commentBan_count != 0) {
+              if(commentBan_count > 0) {
                 for(let i=(market_count + report_count + resign_count + userBan_count);
                 i<(market_count + report_count + resign_count + userBan_count + commentBan_count); i++) {
                   const obj = {
@@ -209,7 +211,7 @@ const AdminLayout = () => {
           // -유저밴 없는 경우
           else {
             // ++글 밴 목록 있는 경우
-            if(boardBan_count != 0) {
+            if(boardBan_count > 0) {
               for(let i=(market_count + report_count + resign_count);
               i<(market_count + report_count + resign_count + boardBan_count); i++) {
                 const obj = {
@@ -225,7 +227,7 @@ const AdminLayout = () => {
               }
               setBoardBanList(list5)
               // +++댓글 밴 목록 있는 경우
-              if(commentBan_count != 0) {
+              if(commentBan_count > 0) {
                 for(let i=(market_count + report_count + resign_count + boardBan_count);
                 i<(market_count + report_count + resign_count + boardBan_count + commentBan_count); i++) {
                   const obj = {
@@ -245,7 +247,7 @@ const AdminLayout = () => {
             // --글 밴 목록 없는 경우
             else {
               // +++댓글 밴 목록 있는 경우
-              if(commentBan_count != 0) {
+              if(commentBan_count > 0) {
                 for(let i=(market_count + report_count + resign_count);
                 i<(market_count + report_count + resign_count + commentBan_count); i++) {
                   const obj = {
@@ -292,15 +294,17 @@ const AdminLayout = () => {
     setSelected(name)
   }, [category])
 
-  /* 상단 카테고리*/
+  /* 마켓 상단 카테고리*/
   const [selectedMarket, setSelectedMarket] = useState('전체')
+  /* 차단 상단 카테고리 */
+  const [selectedBan, setSelectedBan] = useState('회원')
   
   return (
     <>
       <AdminSection>
         {/* 왼쪽 카테고리 */}
         <AdminCategory>
-          <AdminPageUl>
+          <AdminPageUl onClick={() => navigate('/admin/market')}>
             관리자 페이지
           </AdminPageUl>
           <AdminCategoryUl>
@@ -329,9 +333,9 @@ const AdminLayout = () => {
           </AdminCategoryUl>
         </AdminCategory>
 
-        {/* 오른쪽 커뮤 내용 */}
+        {/* 오른쪽 글 내용 */}
         <AContentSection className='content'>
-          {/* 글 목록 */}
+          {/* 마켓 목록 */}
           {qnaList.length > 0 && selected === '마켓' ? (
             <ul>
               <Nav className='qnaNav' fill variant="tabs">
@@ -350,13 +354,18 @@ const AdminLayout = () => {
               })}
             </ul>
           ) : null}
+
+          {/* 주문 목록 */}
+
+
+          {/* 신고 목록 */}
           {reportList.length > 0  && selected === '신고' ? (
             <ReportUl>
               <Table>
                 <colgroup>
                   <col style={{ width: "10%" }} />
                   <col style={{ width: "15%" }} />
-                  <col style={{ width: "30%" }} />
+                  <col style={{ width: "35%" }} />
                   <col style={{ width: "15%" }} />
                   <col style={{ width: "15%" }} />
                   <col style={{ width: "10%" }} />
@@ -376,21 +385,62 @@ const AdminLayout = () => {
               })}
               <tr>
                 <td colSpan="6">
-              <Pagination total={reportList.length} limit={limit} page={page} setPage={setPage} />
+              {reportList.length > limit ? (<Pagination total={reportList.length} limit={limit} page={page} setPage={setPage} />) : null}
                 </td>
               </tr>
               </Table>
             </ReportUl>
           ) : null}
-          {(userBanList.length || boardBanList.length || commentBanList.length) > 0 && selected === '차단' ? (
-            <AdminBanRow userBanList={userBanList} boardBanList={boardBanList} commentBanList={commentBanList} />
-          ) : null}
-          {resignList.length > 0 && selected === '탈퇴' ? (
+
+          {/* 차단 목록 */}
+          {(userBanList.length > 0 || boardBanList.length > 0 || commentBanList.length > 0) && selected === '차단' ? (
             <ul>
-              {resignList.map((resign) => {
-                return <AdminResignRow key={resign.qna_date} resign={resign} />
-              })}
+              <Nav className='qnaNav' fill variant="tabs">
+                {aBanCategories && aBanCategories.map((banCategory) => (
+                    <Nav.Item>
+                      <Nav.Link
+                        onClick={() => setSelectedBan(banCategory.name)}>
+                        <QnaCategory active={banCategory.name === selectedBan}>{banCategory.name}</QnaCategory>
+                      </Nav.Link>
+                    </Nav.Item>
+                ))}
+              </Nav>
+              <AdminBanList userBanList={userBanList} boardBanList={boardBanList} commentBanList={commentBanList} selectedBan={selectedBan} />
             </ul>
+          ) : null}
+
+          {/* 탈퇴 목록 */}
+          {resignList.length > 0 && selected === '탈퇴' ? (
+            <ReportUl>
+            <Table>
+              <colgroup>
+                <col style={{ width: "15%" }} />
+                <col style={{ width: "15%" }} />
+                <col style={{ width: "30%" }} />
+                <col style={{ width: "15%" }} />
+                <col style={{ width: "15%" }} />
+                <col style={{ width: "10%" }} />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th className='reportTd'>아이디</th>
+                  <th className='reportTd'>제목</th>
+                  <th className='reportTd'>내용</th>
+                  <th className='reportTd'>등록일</th>
+                  <th className='reportTd'>처리여부</th>
+                  <th className='reportTdLast'>적용</th>
+                </tr>
+              </thead>
+            {resignList.slice(offset, offset + limit).map((resign) => {
+              return <AdminResignRow key={resign.qna_date} resign={resign} refresh={refresh} />
+            })}
+            <tr>
+              <td colSpan="6">
+            {resignList.length > limit ? (<Pagination total={resignList.length} limit={limit} page={page} setPage={setPage} />) : null}
+              </td>
+            </tr>
+            </Table>
+            </ReportUl>
           ) : null}
         </AContentSection>
       </AdminSection>

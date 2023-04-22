@@ -16,9 +16,10 @@ export const PageButton = styled.button`
   margin: 8px;
   width: 30px;
   height: 30px;
-  background: #EDF5FE;
   color: #253D5E;
-  font-size: 18px;
+  background: #EDF5FE;
+  cursor: pointer;
+  font-size: 17px;
   font-weight: 600;
   line-height: 5px;
   &:hover {
@@ -28,7 +29,7 @@ export const PageButton = styled.button`
   }
   &[aria-current] {
     color: white;
-    background: #4996F3;
+    background: #84B6F7;
     cursor: revert;
   }
 `;

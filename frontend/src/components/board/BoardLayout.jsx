@@ -1,17 +1,28 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import {BoardSection, BoardCategory, CategoryLi, BContentSection, SearchInput, Wrap, StyledSlider, SliderListF, CommunityH3, CategoryUl, BtnSearch, SearchDiv, SearchSelect, SearchInputText, SliderDiv, SliderDivCategory, SliderDivTitle, SliderDivWriter, SliderMain, SliderSub} from '../../styles/BoardStyle'
-import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import BoardRow from './BoardRow';
 import BoardTopPost from './BoardTopPost';
 import { DropdownButton } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
 import { categories, search } from './boardData';
 import { boardListDB } from "../../service/boardLogic";
-
+import Pagination from '../include/Pagination';
 
 const BoardLayout = () => {
   // 화면전환
   const navigate = useNavigate()
+  // 뒤로가기용 url 페이지번호 저장
+  const urlSearch = new URLSearchParams(window.location.search);
+  // 페이지네이션
+  const [limit, setLimit] = useState(7);
+  const [page, setPage] = useState(urlSearch.get('page'));
+  const offset = (page - 1) * limit;
+  useEffect(() => {
+    navigate('?page='+page)
+    console.log('page=> ' + page);
+  }, [page])
+
   // 파라미터의 카테고리값
   let {category} = useParams()
   console.log(category);
@@ -26,7 +37,8 @@ const BoardLayout = () => {
         category = item.category
       }
     })}
-    navigate('/board/'+category)
+    setPage(1)
+    navigate('/board/'+category+'?page='+1)
   }, [])
   useEffect(() => {
     let name = ''
@@ -109,7 +121,6 @@ useEffect(() => {
   boardList()
 }, [selected, searchStart])
 
-
   return (
     <>
       <BoardSection>
@@ -150,10 +161,11 @@ useEffect(() => {
 
           {/* 글 목록 */}
           <ul className='contentUl'>
-            {posts && posts.map((post) => {
+            {posts && posts.slice(offset, offset + limit).map((post) => {
               return <BoardRow key={post.board_no} post={post} />
             })}
           </ul>
+            {posts.length > limit ? (<Pagination total={posts.length} limit={limit} page={page} setPage={setPage} />) : null}
 
           {/* 검색 */}
           <SearchDiv className='searchDiv'>

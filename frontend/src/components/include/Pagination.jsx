@@ -15,6 +15,10 @@ const Pagination = ({total, limit, page, setPage}) => {
       
     3. 아래와같이 컴포넌트 호출
       <Pagination total={reportList.length} limit={limit} page={page} setPage={setPage} />
+      
+      만약 limit보다 작을경우 안보이게 하려면
+      {posts.length > limit ? (<Pagination total={posts.length} limit={limit} page={page} setPage={setPage} />) : null}
+
    */
   const numPages = Math.ceil(total / limit)
 

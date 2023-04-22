@@ -1,12 +1,12 @@
 import React from 'react'
 import { PostContent, PostFooter, PostLi } from '../../styles/BoardStyle'
 import { Link } from 'react-router-dom'
-import { AiFillLike, AiFillStar, AiOutlineStar } from 'react-icons/ai';
-import { FaCommentDots, FaHotjar } from 'react-icons/fa';
+import { AiFillLike } from 'react-icons/ai';
+import { FaCommentDots } from 'react-icons/fa';
 import { BsBookmarkStar, BsBookmarkStarFill, BsFillEyeFill, BsFillImageFill } from 'react-icons/bs';
 
 const BoardRow = ({post}) => {
-  const test = (content) => {
+  const removeTag = (content) => {
     if(content) {
       const newText = content.replace(/(<([^>]+)>)/gi,'');
       console.log(newText)
@@ -31,7 +31,7 @@ const BoardRow = ({post}) => {
                   <BsFillImageFill  id='fileI' />
                 )}
               </p>
-              <p className='contentP'>{test(post.board_content)}</p>
+              <p className='contentP'>{removeTag(post.board_content)}</p>
             </div>
           </PostContent>
           <PostFooter>

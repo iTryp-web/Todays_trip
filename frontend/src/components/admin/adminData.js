@@ -70,3 +70,43 @@ export const reportResult = [
     resultText: '취소',
   },
 ]
+
+// AdminUserDetail 카테고리
+export const userDetail = [
+  {
+    userNo: 0,
+    userType: '글',
+  },
+  {
+    userNo: 1,
+    userType: '댓글',
+  },
+]
+
+// AdminLayout 차단 카테고리
+export const aBanCategories = [
+  {
+    name: '회원',
+    category: 'user',
+  },
+  {
+    name: '글',
+    category: 'board',
+  },
+  {
+    name: '댓글',
+    category: 'comment',
+  },
+]
+
+// AdminResignRow 처리항목 카테고리
+export const resignResult = [
+  {
+    resultNo: 0,
+    resultText: '미처리',
+  },
+  {
+    resultNo: 1,
+    resultText: '탈퇴',
+  },
+]
