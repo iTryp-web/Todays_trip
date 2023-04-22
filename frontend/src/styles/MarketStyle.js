@@ -331,23 +331,70 @@ export const Cartmodal=styled.div `
 }
 `
 export const Category=styled.div`
-font-size: 20px;
+  font-size: 20px;
   font-weight: 600;
   line-height: 1.3;
   padding-top: 20px;
-  padding-left: 20%;
+  padding-left: 15%;
   text-align:center;
   color:#4996F3;
   margin 0 auto;
- 
-
-
  
   @media only screen and (max-width: 1024px) {
     font-size: 20px;
   }
   @media only screen and (max-width: 768px) {
     font-size: 15px;
-    padding-left: 30%;
+    padding-left: 20%;
   }
+`
+export const ReviewUI=styled.div`
+
+height: auto;
+-webkit-box-pack: justify;
+justify-content: space-between;
+padding-top: 30px;
+padding-bottom: 150px;
+padding-left: 250px;
+padding-right: 150px;
+
+.reviewheader{
+  display:flex;
+}
+.reviewAdd{
+  .review{
+    
+  }
+}
+`
+
+export const Star=styled.div`
+
+.star_rating {
+  color: #4996F3;
+  position: relative;
+  unicode-bidi: bidi-override;
+  width: max-content;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-width: 1.3px;
+  -webkit-text-stroke-color: #4996F3;/* 테두리 */
+  margin: 0px 10px 0px 0px;
+}
+
+.star_rating_fill {
+  color: #4996F3;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  -webkit-text-fill-color: #4996F3;/* 별색깔 */
+}
+
+.star_rating_base {
+  z-index: 0;
+  padding: 0;
+}
 `

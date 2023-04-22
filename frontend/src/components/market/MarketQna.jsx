@@ -1,10 +1,14 @@
 import React from 'react'
+import { ReviewUI } from '../../styles/MarketStyle'
 
 const MarketQna = () => {
   return (
-    <div>
+    <>
       마켓 문의글
-    </div>
+      <ReviewUI>
+      
+      </ReviewUI>
+    </>
   )
 }
 

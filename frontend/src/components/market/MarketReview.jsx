@@ -2,44 +2,20 @@ import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap'
-import styled from 'styled-components';
+import { MdRateReview } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 import { reviewListDB } from '../../service/marketLogic';
+import {  ReviewUI, Star } from '../../styles/MarketStyle';
+import Pagination from '../include/Pagination';
+import { reviewData } from './MarketData';
 import ReviewRow from './ReviewRow';
 
-const Star=styled.div`
-
-.star_rating {
-  color: #4996F3;
-  position: relative;
-  unicode-bidi: bidi-override;
-  width: max-content;
-  -webkit-text-fill-color: transparent;
-  -webkit-text-stroke-width: 1.3px;
-  -webkit-text-stroke-color: #4996F3;/* 테두리 */
-  margin: 0px 10px 0px 0px;
-}
-
-.star_rating_fill {
-  color: #4996F3;
-  padding: 0;
-  position: absolute;
-  z-index: 1;
-  display: flex;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  -webkit-text-fill-color: #4996F3;/* 별색깔 */
-}
-
-.star_rating_base {
-  z-index: 0;
-  padding: 0;
-}
-`
-
-const MarketReview = () => {
+const MarketReview = ({mno}) => {
+  const navigate=useNavigate()
+  
   //마켓글의 리뷰갯수
-  const rcount=0;
+  const [rcount,setRcount]=useState(0);
+
   //리뷰하나의 별점
   const star=0;
   // 별 스타일
@@ -54,7 +30,7 @@ const MarketReview = () => {
       let market = {}
       // DB로 보내는 조건 
       market = {
-        market_no: 0 ,
+        market_no: mno ,
         sort:"like"
       }
       const res = await reviewListDB(market)
@@ -77,31 +53,11 @@ const MarketReview = () => {
       console.log(list);
     })
     setReviews(list)
+    // setRcount(item.review_count)리뷰테이ㅡㄹ 로우 갯수 어캐가져오냐
   }
   reviewList()
 },[])
 console.log(reviews);
-/*
-  SELECT u.user_id
-		     , u.user_nickname
-	       , m.review_no
-	       , m.market_no
-	       , m.type_review
-	       , m.review_star
-	       , m.review_content
-	       , m.review_date  
-	       , l.like_count
-		  FROM TB_M_REVIEW m
-		  		, TB_USER u
-		  		, (SELECT COUNT(user_id) like_count, like_group
-				    FROM TB_LIKE
-				    WHERE like_type = 2
-				    GROUP BY like_group) l
-  	  WHERE m.user_id = u.user_id(+)
-  	  AND m.market_no = #{market_no}
-  	  AND m.review_no = l.like_group(+)
-*/
-
 
   //마켓글 평균별점
   let starAvg=5;
@@ -111,64 +67,77 @@ console.log(reviews);
     width: `${(starAvg / 5) * 100}%`,
   };
 
+  // 페이지넘기기
+  const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * limit;
+
 
   return (
     <>
-    <h5>리뷰{rcount}</h5>
-    {/* 리뷰 리스트 */}
-    <ul>{reviews&&//데이터가 한건도 없는 경우를 고려
-           reviews.map((review)=>(
-            <ReviewRow key={review.review_no} review={review}/>
-           ))
-            }</ul>
-
-    <Star>
-        <div className="star_rating">
-          <div className="star_rating_fill" style={ratingToPercentAvg}>
-            
-            <span>★</span>
-            <span>★</span>
-            <span>★</span>
-            <span>★</span>
-            <span>★</span>
-          </div>
-          <div className="star_rating_base">
-            <span>★</span>
-            <span>★</span>
-            <span>★</span>
-            <span>★</span>
-            <span>★</span>
-          </div>
+      <ReviewUI>
+        <div className='reviewheader'>
+          <h5 >
+            <MdRateReview size='30' color='#4996F3'/>
+            &nbsp;&nbsp;리뷰&nbsp;{rcount}</h5>
+          &nbsp;&nbsp;
+          {/* 평균별점 */}
+          <Star>
+              <div className="star_rating">
+                <div className="star_rating_fill" style={ratingToPercentAvg}>
+                  
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                </div>
+                <div className="star_rating_base">
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                </div>
+              </div>
+          </Star>
         </div>
-    </Star>
-      {/*  <!-- Add review --> */}
-    <form >
-											<h5 className="mtext-108 cl2 p-b-7">
-												리뷰쓰기
-											</h5>
+          
+        {/* 리뷰 리스트 */}
+        {/* <ul>{reviews&&//데이터가 한건도 없는 경우를 고려
+              reviews.map((review)=>(
+                <ReviewRow key={review.review_no} review={review}/>
+              ))
+                }</ul> */}
+                {/* 테스트 가데이터 */}
+                <ul>
+                  {reviewData.slice(offset, offset + limit).map((review)=>(
+                    <ReviewRow key={reviewData.review_no} review={review}/>
+                  ))}
+                </ul>
 
-											
-											<div className="flex-w flex-m p-t-50 p-b-23">
-												<span className="stext-102 cl3 m-r-16">
-													별점
-												</span>
-                        
+        
+           {/* <!-- Add review --> 마이페이지로 가야될듯
+        <form className='reviewAdd'>
+          <h5>리뷰쓰기</h5>            
+          <div >
+            <span>별점</span>           
+              <input className="dis-none" type="number" name="rating"/>
+                          
+            </div>
 
-											
-					<input className="dis-none" type="number" name="rating"/>
-											
-				</div>
-
-					<div className="row p-b-25">
-						<div className="col-12 p-b-5">
-							<label>리뷰</label>
-							<textarea className="review"></textarea>
-						</div>
-          </div>
-		</form>
-      <Button >
-				리뷰좋아요
-			</Button>
+              <div className="row p-b-25">
+                <div className="col-12 p-b-5">
+                  <label>리뷰</label>
+                  <textarea className="review"></textarea>
+                </div>
+              </div>
+        </form>
+          <Button >
+            리뷰등록
+          </Button> */}
+        <Pagination total={reviewData.length} limit={limit} page={page} setPage={setPage} />
+      </ReviewUI>
     </>
   )
 }

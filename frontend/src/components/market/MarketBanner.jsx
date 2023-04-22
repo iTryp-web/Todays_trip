@@ -62,7 +62,7 @@ const MarketBanner = () => {
 
   return (
     <BannerBlock close={close}>
-      {auth===1?
+      {auth===0?
       <Coupon onClick={() => navigate('/signin')}>
         <Image src="/images/voucher.png" />&nbsp;
         오늘의 여행 첫구매 쿠폰받기!
