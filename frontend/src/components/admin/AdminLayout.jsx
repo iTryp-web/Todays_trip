@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCallback } from 'react';
 import { useEffect } from 'react';
-import { adminOverviewDB } from "../../service/adminLogic";
+import { adminOrderListDB, adminOverviewDB } from "../../service/adminLogic";
 import AdminQnaRow from './AdminQnaRow';
 import AdminReportRow from './AdminReportRow';
 import AdminResignRow from './AdminResignRow';
@@ -13,6 +13,7 @@ import { AiFillPlusSquare } from 'react-icons/ai';
 import { Nav, Table } from "react-bootstrap";
 import Pagination from '../include/Pagination';
 import AdminBanList from './AdminBanList';
+import AdminOrderRow from './AdminOrderRow';
 
 const AdminLayout = () => {
   // 화면전환
@@ -37,6 +38,8 @@ const AdminLayout = () => {
   const [reportList, setReportList] = useState([{}])
   // 탈퇴 목록(새로운 신청) 변수
   const [resignList, setResignList] = useState([{}])
+  // 주문 목록(새로운 주문) 변수
+  const [orderList, setOrderList] = useState([{}])
   // 차단 목록변수
   const [userBanList, setUserBanList] = useState([{}])
   const [boardBanList, setBoardBanList] = useState([{}])
@@ -53,6 +56,7 @@ const AdminLayout = () => {
       let market_count = 0
       let report_count = 0
       let resign_count = 0
+      let order_count = 0
       let userBan_count = 0
       let boardBan_count = 0
       let commentBan_count = 0
@@ -62,6 +66,7 @@ const AdminLayout = () => {
         market_count = jsonDoc[0].MARKET_COUNT
         report_count = jsonDoc[0].REPORT_COUNT
         resign_count = jsonDoc[0].RESIGN_COUNT
+        order_count = jsonDoc[0].ORDER_COUNT
         userBan_count = jsonDoc[0].USERBAN_COUNT
         boardBan_count = jsonDoc[0].BOARDBAN_COUNT
         commentBan_count = jsonDoc[0].COMMENTBAN_COUNT
@@ -91,6 +96,7 @@ const AdminLayout = () => {
       // 신고 db 담기 - 새로운 신고 report_new
       const list2 = []
       const list3 = []
+      const list31 = []
       if(jsonDoc.length > market_count) {
         for(let i=market_count; i<(market_count + report_count); i++) {
           const obj = {
@@ -131,15 +137,31 @@ const AdminLayout = () => {
         }
         setReportList(list2)
         setResignList(list3)
+        // 주문 목록 db 담기
+        if(jsonDoc.length > (market_count + report_count + resign_count)) {
+          for(let i=(market_count + report_count + resign_count); i<(market_count + report_count + resign_count + order_count); i++) {
+            const obj = {
+              order_no: jsonDoc[i].ORDER_NO,
+              user_id: jsonDoc[i].USER_ID,
+              order_payment: jsonDoc[i].ORDER_PAYMENT,
+              order_date: jsonDoc[i].ORDER_DATE,
+              order_status: jsonDoc[i].ORDER_STATUS,
+              order_new: jsonDoc[i].ORDER_NEW,
+            }
+            console.log(obj);
+            list31.push(obj)
+          }
+        }
+        setOrderList(list31)
         // 차단 목록 담기 - 유저, 글, 댓글(각각 조건 걸기)
         const list4 = []
         const list5 = []
         const list6 = []
-        if(jsonDoc.length > (market_count + report_count + resign_count)) {
+        if(jsonDoc.length > (market_count + report_count + resign_count + order_count)) {
           // +유저 밴 목록 있는 경우
           if(userBan_count > 0) {
-            for(let i=(market_count + report_count + resign_count);
-            i<(market_count + report_count + resign_count + userBan_count); i++) {
+            for(let i=(market_count + report_count + resign_count + order_count);
+            i<(market_count + report_count + resign_count + order_count + userBan_count); i++) {
               const obj = {
                 user_id: jsonDoc[i].USER_ID,
                 user_nickname: jsonDoc[i].USER_NICKNAME,
@@ -154,8 +176,8 @@ const AdminLayout = () => {
             setUserBanList(list4)
             // ++글 밴 목록 있는 경우
             if(boardBan_count > 0) {
-              for(let i=(market_count + report_count + resign_count + userBan_count);
-              i<(market_count + report_count + resign_count + userBan_count + boardBan_count); i++) {
+              for(let i=(market_count + report_count + resign_count + order_count + userBan_count);
+              i<(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count); i++) {
                 const obj = {
                   board_no: jsonDoc[i].BOARD_NO,
                   user_id: jsonDoc[i].USER_ID,
@@ -170,8 +192,8 @@ const AdminLayout = () => {
               setBoardBanList(list5)
               // +++댓글 밴 목록 있는 경우
               if(commentBan_count > 0) {
-                for(let i=(market_count + report_count + resign_count + userBan_count + boardBan_count);
-                i<(market_count + report_count + resign_count + userBan_count + boardBan_count + commentBan_count); i++) {
+                for(let i=(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count);
+                i<(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count + commentBan_count); i++) {
                   const obj = {
                     board_no: jsonDoc[i].BOARD_NO,
                     user_id: jsonDoc[i].USER_ID,
@@ -190,8 +212,8 @@ const AdminLayout = () => {
             else {
               // +++댓글 밴 목록 있는 경우
               if(commentBan_count > 0) {
-                for(let i=(market_count + report_count + resign_count + userBan_count);
-                i<(market_count + report_count + resign_count + userBan_count + commentBan_count); i++) {
+                for(let i=(market_count + report_count + resign_count + order_count + userBan_count);
+                i<(market_count + report_count + resign_count + order_count + userBan_count + commentBan_count); i++) {
                   const obj = {
                     board_no: jsonDoc[i].BOARD_NO,
                     user_id: jsonDoc[i].USER_ID,
@@ -212,8 +234,8 @@ const AdminLayout = () => {
           else {
             // ++글 밴 목록 있는 경우
             if(boardBan_count > 0) {
-              for(let i=(market_count + report_count + resign_count);
-              i<(market_count + report_count + resign_count + boardBan_count); i++) {
+              for(let i=(market_count + report_count + resign_count + order_count);
+              i<(market_count + report_count + resign_count + order_count + boardBan_count); i++) {
                 const obj = {
                   board_no: jsonDoc[i].BOARD_NO,
                   user_id: jsonDoc[i].USER_ID,
@@ -228,8 +250,8 @@ const AdminLayout = () => {
               setBoardBanList(list5)
               // +++댓글 밴 목록 있는 경우
               if(commentBan_count > 0) {
-                for(let i=(market_count + report_count + resign_count + boardBan_count);
-                i<(market_count + report_count + resign_count + boardBan_count + commentBan_count); i++) {
+                for(let i=(market_count + report_count + resign_count + order_count + boardBan_count);
+                i<(market_count + report_count + resign_count + order_count + boardBan_count + commentBan_count); i++) {
                   const obj = {
                     board_no: jsonDoc[i].BOARD_NO,
                     user_id: jsonDoc[i].USER_ID,
@@ -248,8 +270,8 @@ const AdminLayout = () => {
             else {
               // +++댓글 밴 목록 있는 경우
               if(commentBan_count > 0) {
-                for(let i=(market_count + report_count + resign_count);
-                i<(market_count + report_count + resign_count + commentBan_count); i++) {
+                for(let i=(market_count + report_count + resign_count + order_count);
+                i<(market_count + report_count + resign_count + order_count + commentBan_count); i++) {
                   const obj = {
                     board_no: jsonDoc[i].BOARD_NO,
                     user_id: jsonDoc[i].USER_ID,
@@ -327,6 +349,9 @@ const AdminLayout = () => {
                     {resignList.length > 0 && category.name === '탈퇴' && resignList[0].resign_new > 0 ? (
                       <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
                     ) : null}
+                    {orderList.length > 0 && category.name === '주문' && orderList[0].order_new > 0 ? (
+                      <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
+                    ) : null}
                   </AdminCategoryLi>
                 );
               })}
@@ -356,7 +381,38 @@ const AdminLayout = () => {
           ) : null}
 
           {/* 주문 목록 */}
-
+          {orderList.length > 0  && selected === '주문' ? (
+            <ReportUl>
+              <Table>
+                <colgroup>
+                  <col style={{ width: "18%" }} />
+                  <col style={{ width: "18%" }} />
+                  <col style={{ width: "18%" }} />
+                  <col style={{ width: "18%" }} />
+                  <col style={{ width: "18%" }} />
+                  <col style={{ width: "10%" }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th className='reportTd'>주문번호</th>
+                    <th className='reportTd'>아이디</th>
+                    <th className='reportTd'>결제액</th>
+                    <th className='reportTd'>결제일</th>
+                    <th className='reportTd'>주문상태</th>
+                    <th className='reportTdLast'>적용</th>
+                  </tr>
+                </thead>
+              {orderList.slice(offset, offset + limit).map((order) => {
+                return <AdminOrderRow key={order.order_no} order={order} refresh={refresh} />
+              })}
+              <tr>
+                <td colSpan="6">
+              {orderList.length > limit ? (<Pagination total={orderList.length} limit={limit} page={page} setPage={setPage} />) : null}
+                </td>
+              </tr>
+              </Table>
+            </ReportUl>
+          ) : null}
 
           {/* 신고 목록 */}
           {reportList.length > 0  && selected === '신고' ? (

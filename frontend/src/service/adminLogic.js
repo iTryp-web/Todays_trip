@@ -1,6 +1,6 @@
 import axios from "axios";
 
-/* 어드민 새로운 문의, 신고, 신청 조회 */
+/* 어드민 새로운 문의, 신고, 신청, 주문 조회 */
 export const adminOverviewDB = () => {
   return new Promise((resolve, reject) => {
     try {
@@ -49,7 +49,6 @@ export const adminUserDetailDB = (detail) => {
   });
 };
 
-
 /* 어드민 탈퇴 상태 수정 */
 export const adminResignUpdateDB = (resign) => {
   console.log(resign)
@@ -59,6 +58,40 @@ export const adminResignUpdateDB = (resign) => {
         method: "post",
         url: process.env.REACT_APP_SPRING_IP + "admin/resignUpdate",
         data: resign,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/* 어드민 주문 상태 수정 */
+export const adminOrderUpdateDB = (order) => {
+  console.log(order)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "admin/orderUpdate",
+        data: order,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/* 어드민 주문 조회 */
+export const adminOrderDetailDB = (detail) => {
+  console.log(detail);
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "admin/orderDetail",
+        params: detail,
       });
       resolve(response);
     } catch (error) {

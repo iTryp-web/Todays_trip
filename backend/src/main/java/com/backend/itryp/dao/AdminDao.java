@@ -236,4 +236,43 @@ public class AdminDao {
 		List<Map<String,Object>> bList = sqlSessionTemplate.selectList("userCommentDetail", pMap);
 		return bList;
 	}
+
+	/**
+	 * 주문 목록 출력
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> adminOrderList(Map<String, Object> pMap) {
+		logger.info("adminOrderList 호출");
+		logger.info(pMap);
+		List<Map<String,Object>> bList = sqlSessionTemplate.selectList("adminOrderList", pMap);
+		return bList;
+	}
+
+	/**
+	 * 주문 상태 수정 예약0, 취소1, 판매2
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int orderUpdate(Map<String, Object> pMap) {
+		logger.info("orderUpdate 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("orderUpdate", pMap);
+		return result;
+	}
+
+	/**
+	 * 주문 상세보기
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> orderDetail(Map<String, Object> pMap) {
+		logger.info("orderDetail 호출");
+		logger.info(pMap);
+		List<Map<String,Object>> bList = sqlSessionTemplate.selectList("orderDetail", pMap);
+		return bList;
+	}
 }

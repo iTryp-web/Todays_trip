@@ -29,20 +29,37 @@ public class AdminLogic {
 		List<Map<String,Object>> oList = new ArrayList<>();
 		// 새로운 문의
 		List<Map<String,Object>> marketQnaList= adminDao.marketQnaList(pMap);
-		oList.addAll(marketQnaList);
+		if(marketQnaList.size() > 0) {
+			oList.addAll(marketQnaList);			
+		}
 		// 새로운 신고
 		List<Map<String,Object>> reportList = adminDao.reportList(pMap);
-		oList.addAll(reportList);
+		if(reportList.size() > 0) {
+			oList.addAll(reportList);			
+		}
 		// 새로운 신청
 		List<Map<String,Object>> resignList = adminDao.resignList(pMap);
-		oList.addAll(resignList);
+		if(resignList.size() > 0) {
+			oList.addAll(resignList);			
+		}
+		// 주문 목록
+		List<Map<String,Object>> adminOrderList = adminDao.adminOrderList(pMap);
+		if(adminOrderList.size() > 0) {
+			oList.addAll(adminOrderList);			
+		}
 		// 차단 목록
 		List<Map<String,Object>> banUserList = adminDao.banUserList(pMap);
-		oList.addAll(banUserList);
+		if(banUserList.size() > 0) {
+			oList.addAll(banUserList);			
+		}
 		List<Map<String,Object>> banBoardList = adminDao.banBoardList(pMap);
-		oList.addAll(banBoardList);
+		if(banBoardList.size() > 0) {
+			oList.addAll(banBoardList);			
+		}
 		List<Map<String,Object>> banCommentList = adminDao.banCommentList(pMap);
-		oList.addAll(banCommentList);
+		if(banCommentList.size() > 0) {
+			oList.addAll(banCommentList);			
+		}
 		return oList;
 	}
 	
@@ -144,5 +161,31 @@ public class AdminLogic {
 		List<Map<String,Object>> cList = adminDao.userCommentDetail(pMap);
 		uList.addAll(cList);
 		return uList;
+	}
+
+	/**
+	 * 주문 상태 수정 예약0, 취소1, 판매2
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int orderUpdate(Map<String, Object> pMap) {
+		logger.info("orderUpdate 호출");
+		int result = 0;
+		result = adminDao.orderUpdate(pMap);
+		return result;
+	}
+
+	/**
+	 * 주문 상세보기
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> orderDetail(Map<String, Object> pMap) {
+		logger.info("orderDetail 호출");
+		List<Map<String,Object>> oList = new ArrayList<>();
+		oList = adminDao.orderDetail(pMap);
+		return oList;
 	}
 }

@@ -20,6 +20,7 @@ import FindUserPage from './components/auth/FindUserPage';
 import InquiryWriteForm from './components/support/InquiryWriteForm';
 import MarketReview from './components/market/MarketReview';
 import AdminUserDetail from './components/admin/AdminUserDetail';
+import AdminOrderDetail from './components/admin/AdminOrderDetail';
 
 
 
@@ -35,6 +36,7 @@ function App({authLogic}) {
       <Route path='/board/update/:bno' element={<BoardUpdateForm />} />
       <Route path='/admin/:category' element={<AdminPage />} />
       <Route path='/admin/userdetail/:user' element={<AdminUserDetail />} />
+      <Route path='/admin/orderdetail/:ono' element={<AdminOrderDetail />} />
       <Route path='/cart' exact={true} element={<CartPage />} />
       <Route path='/order' exact={true} element={<OrderPage />} />
       <Route path='/order/success' exact={true} element={<OrderSuccess />} />
