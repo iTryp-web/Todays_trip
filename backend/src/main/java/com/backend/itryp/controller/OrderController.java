@@ -63,7 +63,7 @@ public class OrderController {
 	
 	
 	/**
-	 * 주문 및 결제 정보 DB 등록
+	 * 주문 정보 DB 등록
 	 * 
 	 * @param pmap 주문 및 결제 정보
 	 * @return rmap 등록된 주문 번호
@@ -77,6 +77,22 @@ public class OrderController {
 		Gson g = new Gson();
 		temp = g.toJson(rmap);
 		return temp;
+	}
+	
+	
+	/**
+	 * 결제 정보 DB 등록
+	 * 
+	 * @param pmap 주문 및 결제 정보
+	 * @return rmap 등록된 주문 번호
+	 */
+	@PostMapping("payment")
+	public String paymentUpdate(@RequestBody Map<String, Object> pmap) {
+		log.info("paymentUpdate 호출");
+		String temp = null;
+		int result = 0;
+		result = odrLogic.paymentUpdate(pmap);
+		return result + "";
 	}
 	
 	

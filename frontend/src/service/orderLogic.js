@@ -31,3 +31,19 @@ export const setOrderTable = (orderData) => {
     }
   });
 };
+
+export const updatePaymentInfo = (paymentData) => {
+  console.log("updatePaymentInfo => " + paymentData);
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "shop/payment",
+        data: paymentData,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

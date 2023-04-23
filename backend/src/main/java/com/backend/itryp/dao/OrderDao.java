@@ -21,9 +21,10 @@ public class OrderDao {
 	private SqlSessionTemplate sst = null;
 	
 	/**
+	 * getOrderPage
 	 * 
 	 * @param pmap
-	 * @return
+	 * @return list
 	 */
 	public List<Map<String, Object>> getOrderPage(Map<String, Object> pmap) {
 		log.info("getOrderPage 호출");
@@ -69,19 +70,6 @@ public class OrderDao {
 		orderNo = sst.selectOne("getOrderNo", pmap);
 		return orderNo;
 	}
-	
-	/**
-	 * cancelOrder
-	 * 
-	 * @param pmap
-	 * @return
-	 */
-	public List<Map<String, Object>> cancelOrder(Map<String, Object> pmap) {
-		log.info("cancelOrder 호출");
-		List<Map<String,Object>> list = null;
-		list = sst.selectList("cancelOrder", pmap);
-		return list;
-	}
 
 	/**
 	 * 유저 정보 조회하기
@@ -94,6 +82,33 @@ public class OrderDao {
 		TbUserVO user = new TbUserVO();
 		user = (TbUserVO) sst.selectOne("getUserInfo", pmap);
 		return user;
+	}
+
+	/**
+	 * paymentUpdate
+	 * 결제 정보 테이블에 삽입
+	 * 
+	 * @param pmap
+	 * @return
+	 */
+	public int paymentUpdate(Map<String, Object> pmap) {
+		log.info("paymentUpdate 호출");
+		int result = 0;
+		result = sst.update("InsertPay", pmap);
+		return result;
+	}
+	
+	/**
+	 * cancelOrder
+	 * 
+	 * @param pmap
+	 * @return
+	 */
+	public List<Map<String, Object>> cancelOrder(Map<String, Object> pmap) {
+		log.info("cancelOrder 호출");
+		List<Map<String,Object>> list = null;
+		list = sst.selectList("cancelOrder", pmap);
+		return list;
 	}
 
 }
