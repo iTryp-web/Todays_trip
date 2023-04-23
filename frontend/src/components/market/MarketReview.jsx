@@ -14,7 +14,8 @@ const MarketReview = ({mno}) => {
   const navigate=useNavigate()
   
   //마켓글의 리뷰갯수
-  const [rcount,setRcount]=useState(0);
+  // const [rcount,setRcount]=useState(0);
+  const rcount=reviewData.length;
 
   //리뷰하나의 별점
   const star=0;

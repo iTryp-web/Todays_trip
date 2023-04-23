@@ -6,12 +6,15 @@ const MarketCategory = () => {
   return (
     <>
       <Category >
-      <Nav>
+      <Nav 
+          activeKey="/market"
+          onSelect={(selectedKey) => alert(`마켓홈 ${selectedKey}`)}
+          >
           <Nav.Item >
             <Nav.Link href="/market" >마켓홈</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link href="/market/write">패키지</Nav.Link>
+            <Nav.Link eventKey="/market/write">패키지</Nav.Link>
           </Nav.Item>
           <Nav.Item>
             <Nav.Link eventKey="link-2">투어</Nav.Link>
