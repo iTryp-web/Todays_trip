@@ -88,7 +88,7 @@ export const CustomerService = styled.div`
     margin-bottom: 6px;
   }
   .time {
-    color: #4996F3;
+    color: #4996f3;
   }
   .desc {
     font-size: 14px;
@@ -101,13 +101,13 @@ export const CustomerService = styled.div`
   .tel {
     font-size: 20px;
     line-height: 28px;
-    color: #4996F3;
+    color: #4996f3;
     margin-bottom: 14px;
   }
   .btnContact {
     margin: 0px;
     border: none;
-    background: none #4996F3;
+    background: none #4996f3;
     font-style: inherit;
     font-variant: inherit;
     font-stretch: inherit;
@@ -209,7 +209,6 @@ export const FnNavbar = styled.nav`
   }
 `;
 
-
 export const FnLink = styled(Link)`
   padding: 5px 14px;
   margin-right: 8px;
@@ -288,7 +287,7 @@ export const AnswerText = styled.div`
   overflow: hidden;
   align-items: center;
   &.show {
-    .answerTextP{
+    .answerTextP {
       margin-bottom: 0px;
     }
     padding: 16px;
@@ -301,11 +300,11 @@ export const AnswerText = styled.div`
 
 /*================ 1대1문의 글 ================*/
 export const InquirySection = styled.section`
-max-width: 1344px;
-padding: 0 5rem;
-margin: 0 auto;
-margin-top: 2.5em;
-margin-bottom: 6em;
+  max-width: 1344px;
+  padding: 0 5rem;
+  margin: 0 auto;
+  margin-top: 2.5em;
+  margin-bottom: 6em;
 `;
 
 export const InqDiv = styled.div`
@@ -353,7 +352,7 @@ font-size: 14px;
     color: #888;
   }
 }
-`
+`;
 
 export const InquiryH3 = styled.h3`
   margin: 10px 0;
@@ -363,7 +362,28 @@ export const InquiryH3 = styled.h3`
 `;
 
 export const InquiryP = styled.p`
-border-radius: 15px;
-background-color : #F7F9FA;
-padding: 14px 20px;
-`
+  border-radius: 15px;
+  background-color: #f7f9fa;
+  padding: 14px 20px;
+`;
+
+/* 글쓰기 버튼을 담을 컨테이너 스타일 */
+export const WriteButtonContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  right: 2rem;
+  background-color: blue;
+  padding: 1rem;
+  border-radius: 5px;
+  transform: translateY(-50%);
+  z-index: 10;
+`;
+
+/* 글쓰기 버튼을 담을 스타일 */
+export const WriteButton = styled.button`
+  color: white;
+  font-size: 1.2rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
