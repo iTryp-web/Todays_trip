@@ -134,6 +134,7 @@
 		     , user_id
 		     , comment_no
 		     , comment_step
+		     , comment_content
 		     , comment_date
 		     , comment_status
 		FROM TB_B_COMMENT 

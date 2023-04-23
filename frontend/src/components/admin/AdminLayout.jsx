@@ -199,6 +199,7 @@ const AdminLayout = () => {
                     user_id: jsonDoc[i].USER_ID,
                     comment_no: jsonDoc[i].COMMENT_NO,
                     comment_step: jsonDoc[i].COMMENT_STEP,
+                    comment_content: jsonDoc[i].COMMENT_CONTENT,
                     comment_date: jsonDoc[i].COMMENT_DATE,
                     comment_status: jsonDoc[i].COMMENT_STATUS,
                   }
@@ -219,6 +220,7 @@ const AdminLayout = () => {
                     user_id: jsonDoc[i].USER_ID,
                     comment_no: jsonDoc[i].COMMENT_NO,
                     comment_step: jsonDoc[i].COMMENT_STEP,
+                    comment_content: jsonDoc[i].COMMENT_CONTENT,
                     comment_date: jsonDoc[i].COMMENT_DATE,
                     comment_status: jsonDoc[i].COMMENT_STATUS,
                   }
@@ -257,6 +259,7 @@ const AdminLayout = () => {
                     user_id: jsonDoc[i].USER_ID,
                     comment_no: jsonDoc[i].COMMENT_NO,
                     comment_step: jsonDoc[i].COMMENT_STEP,
+                    comment_content: jsonDoc[i].COMMENT_CONTENT,
                     comment_date: jsonDoc[i].COMMENT_DATE,
                     comment_status: jsonDoc[i].COMMENT_STATUS,
                   }
@@ -277,6 +280,7 @@ const AdminLayout = () => {
                     user_id: jsonDoc[i].USER_ID,
                     comment_no: jsonDoc[i].COMMENT_NO,
                     comment_step: jsonDoc[i].COMMENT_STEP,
+                    comment_content: jsonDoc[i].COMMENT_CONTENT,
                     comment_date: jsonDoc[i].COMMENT_DATE,
                     comment_status: jsonDoc[i].COMMENT_STATUS,
                   }

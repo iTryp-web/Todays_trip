@@ -123,7 +123,7 @@ const BoardDetail = () => {
     }
     const res = await boardDeleteDB(board)
     console.log('deletePost=> ' + res.data);
-    navigate('/board/all')
+    navigate('/board/all?page=1')
   }
   // 글 수정 버튼
   const editPost = () => {
@@ -286,13 +286,14 @@ const BoardDetail = () => {
     }
   };
   // Dot 모달 삭제
-  const deleteComment = async (cno, cstep) => {
+  const deleteComment = async (cno, cstep, cstatus) => {
     console.log('deleteComment' + bno, cno, cstep);
     const board = {
       user_id: userId,
       board_no: bno,
       comment_no: cno,
       comment_step: cstep,
+      comment_status: cstatus,
     }
     const res = await replyDeleteDB(board)
     console.log('deleteComment=> ' + res.data);
@@ -414,7 +415,7 @@ const BoardDetail = () => {
           <DetialContainer>
             <TitleContainer>
               <CategoryDiv>
-                <Link className='detailLink' to="/board/all">커뮤니티</Link> &gt;{' '}
+                <Link className='detailLink' to="/board/all?page=1">커뮤니티</Link> &gt;{' '}
                 <Link className='detailLink' to={`/board/${category}`}>{detailPost.board_category}</Link>
               </CategoryDiv>
               <DetailTitle>{detailPost.board_title}</DetailTitle>
@@ -671,7 +672,7 @@ const BoardDetail = () => {
                         수정하기
                       </CommentModalUl>
                       <CommentModalUl onClick={() => 
-                        {deleteComment(item.comment_no, item.comment_step)}}>
+                        {deleteComment(item.comment_no, item.comment_step, item.comment_status)}}>
                         삭제하기
                       </CommentModalUl>
                     </CommentModal>

@@ -260,6 +260,11 @@ public class BoardLogic {
 			pMap.put("delete_all", 0); // 0이면 특정글 , 1이면 댓글,대댓글 전부 삭제
 			result = boardDao.replyDelete(pMap);
 		}
+		int delete_comment = 0;
+		// 댓글을 삭제하는 경우
+		if(Integer.parseInt(pMap.get("comment_step").toString()) == 0) {
+			delete_comment = 1;
+		}
 		// 판단용 변수 추가
 		pMap.put("judge", comment_no);
 		List<Map<String, Object>> judge = boardDao.replyList(pMap);
@@ -281,6 +286,7 @@ public class BoardLogic {
 			}
 		}
 		logger.info("삭제 comment_status => " + comment_status);
+		logger.info("삭제 delete_comment => " + delete_comment);
 		// result값 저장
 		int fResult = result;
 		logger.info("c_step의 크기 => " + c_step);
@@ -295,7 +301,7 @@ public class BoardLogic {
 			}
 		}
 		// 대댓글이 모두 삭제된 댓글 삭제 -> 바로 삭제(댓글, 대댓글 모두)
-		else if((comment_status == 1 || comment_status == 2) && (c_step == 0 || c_step == c_status)) {
+		else if((comment_status == 1 || delete_comment == 1) && (c_step == 0 || c_step == c_status)) {
 			pMap.put("delete_all", 1); // 0이면 특정글 , 1이면 댓글,대댓글 전부 삭제
 			result = boardDao.replyDelete(pMap);			
 		}

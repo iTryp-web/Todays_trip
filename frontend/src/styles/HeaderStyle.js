@@ -12,7 +12,7 @@ export const HeaderBlock = styled.div`
   justify-content: space-between;
   background: white;
   margin: 0 auto;
-
+  margin-top: 7px;
   .menu-icon {
     display: none;
     font-size: 1.5rem;

@@ -38,7 +38,7 @@ const BoardLayout = () => {
       }
     })}
     setPage(1)
-    navigate('/board/'+category+'?page='+1)
+    navigate('/board/'+category+'?page=1')
   }, [])
   useEffect(() => {
     let name = ''
