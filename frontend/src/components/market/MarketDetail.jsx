@@ -11,6 +11,7 @@ import { useCookies } from 'react-cookie';
 import { Button } from 'react-bootstrap';
 import ProductDetail from './ProductDetail';
 import MarketCategory from './MarketCategory';
+import DetailNav from './DetailNav';
 
 
 const MarketDetail = () => {
@@ -125,8 +126,9 @@ const MarketDetail = () => {
     <Header />
       <MarketCategory />
       <ProductDetail cookieAdd={cookieAdd}/>
-      <MarketReview mno={mno}/>
-      <MarketQna />
+      <DetailNav mno={mno}/>
+      {/* <MarketReview mno={mno}/>
+      <MarketQna mno={mno} /> */}
     <Footer />
     </>
   )

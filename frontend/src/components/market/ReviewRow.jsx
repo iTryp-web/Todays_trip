@@ -5,109 +5,10 @@ import { FaCommentDots } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { dislikeDB, likeDB, reviewDeleteDB } from '../../service/marketLogic';
-import { FontContent, Like, ModalDiv, ModalUl} from '../../styles/BoardStyle';
-import { Star } from '../../styles/MarketStyle';
+import { FontContent, Like, ModalDiv, ModalUl, } from '../../styles/BoardStyle';
+import { PostContent, PostLi, Star, PostFooter, BtnDot} from '../../styles/MarketStyle';
 
-const PostLi = styled.li`
-  list-style: none;
-  padding: 16px 8px;
-  margin-right: 3em;
-  border-bottom: 1px solid #f4f4f4;
-  font-size: 14px;
-  .categoryP {
-    display: inline-block;
-    margin-bottom: 12px;
-    padding: 2px 8px;
-    border-radius: 4px;
-    background: #dbeafd;
-    color: #4a71a4;
-    font-size: 12px;
-    font-weight: 600;
-  }
-  .postLink {
-    text-decoration-line: none;
-  }
-  .star-icon{
-    margin-bottom: 3px;
-    margin-left: 3px;
-    margin-right: 3px;
-    font-size:15px;
-  }
-`;
 
- const PostContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  .titleP {
-    color: black;
-    overflow: hidden;
-    display: -webkit-box;
-    padding-right: 5px;
-    margin-bottom: 4px;
-    font-weight: 600;
-    text-overflow: ellipsis;
-    word-break: break-all;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-  
-  .contentP {
-    overflow: hidden;
-    display: -webkit-box;
-    margin: 8px 0 5px 0;
-    padding-right: 16px;
-    color: #888;
-    text-overflow: ellipsis;
-    word-break: break-all;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-`;
-
-const PostFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 14px;
-  ul.list-count {
-    list-style: none;
-    display: flex;
-    gap: 10px;
-    padding-left: 0;
-    svg {
-      width: 20px;
-      height: 17px;
-      margin-right: 2px;
-      padding-bottom: 3px;
-      fill: #c5c5c5;
-      &:last-child {
-        transform: rotateY(180deg);
-      }
-    }
-    li {
-      color: #c5c5c5;
-      font-size: 18px;
-    }
-  }
-  small {
-    font-size: 12px;
-    letter-spacing: -0.2px;
-    color: #c5c5c5;
-  }
-`;
-const BtnDot = styled.button`
-  position: absolute;
-  right: 200px;
-  padding: 2px;
-  font-size: 20px;
-  border-radius: 50%;
-  background: transparent;
-  color: #464646;
-  border: none;
-  &:hover {
-    color: #4996f3;
-    outline: none;
-  }
-`;
 
 const ReviewRow = ({review}) => {
   const navigate=useNavigate();
@@ -194,14 +95,14 @@ const ReviewRow = ({review}) => {
       <PostContent >
         <div>
           <p className='titleP'>
-            {review.review_no}
+            {review.review_no}&nbsp;
             {review.like_count >= 5 ? (review.like_count >= 10 ? (
                   <BsBookmarkStarFill className='star-icon' color={'#4996F3'} />
                 
                 ): (
                   <BsBookmarkStar className='star-icon' color={'#4996F3'} />
                 )) : null}
-                  {review.user_nickname}
+                  &nbsp;{review.user_nickname}
           </p>
           <p>
             <Star>
@@ -263,8 +164,15 @@ const ReviewRow = ({review}) => {
               
       </ul>
       <li>
-        {review.review_date}
+        {/* {review.review_date} */}
       </li>
+      <small>
+              {new Date(review.review_date).toLocaleDateString('ko-KR', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              })}
+        </small>
       </PostFooter>
     </PostLi>
 
