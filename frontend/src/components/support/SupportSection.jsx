@@ -69,7 +69,7 @@ const SupportSection = () => {
               <div>
                 <button
                   onClick={() => {
-                    navigate("/support/helpLine");
+                    navigate("/support/inquiryBoard");
                   }}
                   className="btnContact"
                 >

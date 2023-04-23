@@ -20,6 +20,7 @@ import MarketReview from './components/market/MarketReview';
 import AdminUserDetail from './components/admin/AdminUserDetail';
 import AdminOrderDetail from './components/admin/AdminOrderDetail';
 import PaymentResult from './components/order/PaymentResult';
+import InquiryList from './components/support/InquiryList';
 
 
 
@@ -46,7 +47,8 @@ function App({authLogic}) {
       <Route path='/market/write' exact={true} element={<MarketWrite />} />
       <Route path='/market/detail' element={<MarketDetail />} />
       <Route path='/support/:category' exact={true} element={<FaqPage />} />
-      <Route path='/support/helpLine' exact={true} element={<InquiryWriteForm />} />
+      <Route path='/support/inquiryBoard' exact={true} element={<InquiryList />} />
+      <Route path='/support/write' exact={true} element={<InquiryWriteForm />} />
       <Route path='/findEmail' exact ={true} element={<FindUserPage/>} />
     </Routes>
     </> 
