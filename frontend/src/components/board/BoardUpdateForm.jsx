@@ -65,7 +65,7 @@ const BoardUpdateForm = () => {
       setContent(jsonDoc[0].BOARD_CONTENT)
       if(jsonDoc[0].USER_NICKNAME !== userNickname) {
         alert('작성자가 아닙니다');
-        navigate('/board/all')
+        navigate('/board/all?page=1')
       }
     }
     boardDetail()
@@ -81,7 +81,7 @@ const BoardUpdateForm = () => {
     }
     const res = await boardUpdateDB(board)
     if(!res.data) return console.log('게시판 수정 실패');
-    navigate('/board/all')
+    navigate('/board/all?page=1')
   }
 
   return (

@@ -49,7 +49,7 @@ const BoardWriteForm = () => {
     }
     const res = await boardInsertDB(board)
     console.log(res.data)
-    navigate('/board/all')
+    navigate('/board/all?page=1')
   }
 
   return (

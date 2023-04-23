@@ -49,6 +49,7 @@ const AdminBanList = ({userBanList, boardBanList, commentBanList, selectedBan}) 
     <>
       <ReportUl>
         <Table>
+          {selectedBan === '회원' ? (
           <colgroup>
             <col style={{ width: "18%" }} />
             <col style={{ width: "18%" }} />
@@ -57,6 +58,17 @@ const AdminBanList = ({userBanList, boardBanList, commentBanList, selectedBan}) 
             <col style={{ width: "18%" }} />
             <col style={{ width: "10%" }} />
           </colgroup>
+            ) : (
+          <colgroup>
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "30%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "10%" }} />
+          </colgroup>
+            )}
+            
           <thead>
             <tr>
               <th className='reportTd'>아이디</th>
@@ -70,7 +82,7 @@ const AdminBanList = ({userBanList, boardBanList, commentBanList, selectedBan}) 
               </th>
               <th className='reportTd'>
                 {selectedBan === '회원' ? '전화번호' : (
-                  selectedBan === '글' ? '제목' : '대댓번호'
+                  selectedBan === '글' ? '제목' : '내용'
                 )}
                 </th>
               <th className='reportTd'>
@@ -85,19 +97,19 @@ const AdminBanList = ({userBanList, boardBanList, commentBanList, selectedBan}) 
               return (
                 (user.status == 2 ? (
                   <ReportTr result={user.status}>
-                    <th className='reportItemTd'>
+                    <th>
                       {user.user_id}
                     </th>
-                    <th className='reportItemTd'>
+                    <th>
                       {user.user_nickname}
                     </th>
-                    <th className='reportItemTd'>
+                    <th>
                       {user.user_name}
                     </th>
-                    <th className='reportItemTd'>
+                    <th>
                       {user.user_phone}
                     </th>
-                    <th className='reportItemTd'>
+                    <th>
                       {user.user_level}
                     </th>
                     {/* type, uId, bno, cno, cstep */}
@@ -114,19 +126,19 @@ const AdminBanList = ({userBanList, boardBanList, commentBanList, selectedBan}) 
               return (
                 (board.board_status == 1 ? (
                   <ReportTr result={board.board_status}>
-                    <th className='reportItemTd'>
+                    <th>
                       {board.user_id}
                     </th>
-                    <th className='reportItemTd'>
+                    <th>
                       {board.board_no}
                     </th>
-                    <th className='reportItemTd'>
+                    <th>
                       {board.board_category}
                     </th>
-                    <th className='reportItemTd'>
+                    <th>
                       {board.board_title}
                     </th>
-                    <th className='reportItemTd'>
+                    <th>
                       {board.board_date}
                     </th>
                     {/* type, uId, bno, cno, cstep */}
@@ -143,19 +155,19 @@ const AdminBanList = ({userBanList, boardBanList, commentBanList, selectedBan}) 
               return (
                 (comment.comment_status == 2 ? (
                   <ReportTr result={1}>
-                    <th className='reportItemTd'>
+                    <th>
                       {comment.user_id}
                     </th>
-                    <th className='reportItemTd'>
+                    <th>
                       {comment.board_no}
                     </th>
-                    <th className='reportItemTd'>
-                      {comment.comment_no}
+                    <th>
+                      {comment.comment_no} / {comment.comment_step}
                     </th>
-                    <th className='reportItemTd'>
-                      {comment.comment_step}
+                    <th>
+                      {comment.comment_content}
                     </th>
-                    <th className='reportItemTd'>
+                    <th>
                       {comment.comment_date}
                     </th>
                     {/* type, uId, bno, cno, cstep */}
