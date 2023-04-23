@@ -273,11 +273,11 @@ export const NamenPhoneBlock = styled.div`
     margin-left: 0.5%;
     margin-bottom: 0.8rem;
     ::after {
-        padding-left: 3px;
-        font-size: 12px;
-        content: "(-를 제외하고 입력해주세요)";
-        color: gray;
-      }
+      padding-left: 3px;
+      font-size: 12px;
+      content: "(-를 제외하고 입력해주세요)";
+      color: gray;
+    }
   }
 
   input {
@@ -299,9 +299,7 @@ export const NamenPhoneBlock = styled.div`
       color: lightgray;
     }
   }
-
-`
-
+`;
 
 export const PWnNickBlock = styled.div`
   p {
@@ -316,7 +314,6 @@ export const PWnNickBlock = styled.div`
     margin-top: 1.5rem;
     margin-left: 0.5%;
     margin-bottom: 0.8rem;
-    
   }
 
   input {
@@ -341,7 +338,7 @@ export const PWnNickBlock = styled.div`
 `;
 
 export const ReferBlock = styled.div`
-  h6{
+  h6 {
     ::after {
       padding-left: 3px;
       font-size: 12px;
@@ -471,6 +468,58 @@ export const TermsBlock = styled.div`
   }
 `;
 
+export const ModalCode = styled(Modal)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #4996f3;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  height: 200px;
+  overflow: auto;
+  h4{
+    text-align : center;
+  }
+  input {
+    margin : 8px;
+    &:focus {
+      outline: none;
+    }
+    &::placeholder {
+      font-weight: 550;
+      font-size: 14px;
+      color: lightgray;
+    }
+  }
+  .confirm {
+    margin : 5px;
+    font-size: 15px;
+    border-radius: 5px;
+    outline: none;
+    background-color: #4996f3;
+    border: 1px solid #4996f3;
+    color: white;
+    font-size: 14px;
+    font-weight: 550;
+    &:hover {
+      background-color: #537fe7;
+      border: 1px solid #537fe7;
+    }
+  }
+  .mbutton4 {
+    margin-left: 92%;
+    width: 10%;
+    font-size: 20px;
+    outline: none;
+    background-color: white;
+    border: none;
+    color: black;
+  }
+`;
+
 export const ModalWrapper = styled(Modal)`
   position: absolute;
   top: 50%;
@@ -579,25 +628,23 @@ export const ConfirmButton = styled.button`
 
 export const Div = styled.div`
   display: flex;
-  justify-content : center;;
+  justify-content: center;
   align-items: center;
 `;
 
 export const IfBox = styled.div`
   margin-top: 2rem;
-  text-align : center;
-  background-color : #f7f8fa;
-  .p1{
-    font-size : 11px;
-    padding-top : 15px;
-    margin : 0;
-
+  text-align: center;
+  background-color: #f7f8fa;
+  .p1 {
+    font-size: 11px;
+    padding-top: 15px;
+    margin: 0;
   }
 
-  .p2{
-    font-size : 11px;
-    color : #4996f3;
-    padding-bottom : 15px;
-    ;
+  .p2 {
+    font-size: 11px;
+    color: #4996f3;
+    padding-bottom: 15px;
   }
-`
+`;
