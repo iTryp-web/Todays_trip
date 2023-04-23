@@ -4,8 +4,6 @@ import HomePage from './components/page/HomePage';
 import BoardPage from './components/page/BoardPage';
 import OrderPage from './components/page/OrderPage';
 import CartPage from './components/page/CartPage';
-import OrderSuccess from './components/order/PaymentSuccess';
-import OrderFail from './components/order/PaymentFail';
 import MarketPage from './components/page/MarketPage';
 import BoardWriteForm from './components/board/BoardWriteForm';
 import BoardDetail from './components/board/BoardDetail';
@@ -21,6 +19,7 @@ import InquiryWriteForm from './components/support/InquiryWriteForm';
 import MarketReview from './components/market/MarketReview';
 import AdminUserDetail from './components/admin/AdminUserDetail';
 import AdminOrderDetail from './components/admin/AdminOrderDetail';
+import PaymentResult from './components/order/PaymentResult';
 
 
 
@@ -39,8 +38,7 @@ function App({authLogic}) {
       <Route path='/admin/orderdetail/:ono' element={<AdminOrderDetail />} />
       <Route path='/cart' exact={true} element={<CartPage />} />
       <Route path='/order' exact={true} element={<OrderPage />} />
-      <Route path='/order/success' exact={true} element={<OrderSuccess />} />
-      <Route path='/order/fail' exact={true} element={<OrderFail />} />
+      <Route path='/payResult' exact={true} element={<PaymentResult />} />
       <Route path='/signup' exact={true} element={<SignUpPage authLogic ={authLogic}/>} />
       <Route path='/signin' exact={true} element={<SignInPage authLogic ={authLogic}/>} />
       <Route path='/market' exact={true} element={<MarketPage />} />

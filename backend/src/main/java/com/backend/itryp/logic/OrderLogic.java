@@ -65,7 +65,7 @@ public class OrderLogic {
 		//주문 번호 가져오기
 		int orderNo = odao.getOrderNo((Map)pmap.get("orderInfo"));
 		
-		//주문 디테일 테이블에 데이터 삽입
+		//주문 상세 테이블에 데이터 삽입
 		detailList = (ArrayList) pmap.get("orderDetailInfo");
 		
 		for(int i = 0; i < detailList.size(); i++) {
@@ -81,6 +81,20 @@ public class OrderLogic {
 	
 	
 	/**
+	 * paymentUpdate
+	 * 
+	 * @param pmap 결제 정보
+	 * @return result 결과값
+	 */
+	public int paymentUpdate(Map<String, Object> pmap) {
+		log.info("paymentUpdate 호출");
+		int result = 0;
+		result = odao.paymentUpdate(pmap);
+		return result;
+	}
+	
+	
+	/**
 	 * cancelOrder
 	 * 
 	 * @param pmap
@@ -92,6 +106,6 @@ public class OrderLogic {
 		list = odao.cancelOrder(pmap);
 		return list;
 	}
-	
+
 
 }

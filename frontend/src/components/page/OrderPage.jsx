@@ -6,12 +6,14 @@ import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCoupo
          OrdererTable, ConfirmButton, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, 
          PointUseDiv, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP, OrdererTyContentTd, AgreeAllCheckDiv, 
          InputAllCheck, AddressTable, AddressTitleTd, AddressButton, AddressInput, AgreeCheckDiv } from '../../styles/OrderStyle'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { getOrderPage, setOrderTable } from '../../service/orderLogic'
+import { getOrderPage, setOrderTable, updatePaymentInfo } from '../../service/orderLogic'
 import { Form } from 'react-bootstrap'
 
 const OrderPage = () => {
+
+  const navigate = useNavigate();
 
   //주문 상품 정보 받아오기
   const location = useLocation();
@@ -20,6 +22,7 @@ const OrderPage = () => {
 
   //사용 가능한 쿠폰 리스트 관리
   const [cList, setCList] = useState([]);
+  const [discount, setDiscount] = useState(0);
 
   //로그인 유저 정보
   const [userInfo, setUserInfo] = useState({});
@@ -47,8 +50,8 @@ const OrderPage = () => {
     shipping_address_detail: "",
     coupon_no: 0,
     order_total: price,
-    order_discount: 0,
-    order_payment: price,
+    order_discount: discount,
+    order_payment: price - discount,
   });
 
   //주문 페이지 로딩 시 회원 정보 및 쿠폰 정보 읽어오기
@@ -130,7 +133,6 @@ const OrderPage = () => {
     //order detail 정보 Data 생성
     let detailItem = [{}];
     orderItems.forEach(item => {
-      console.log("first")
       detailItem = [...detailItem,
               {
                 detail_no: 0,
@@ -141,7 +143,6 @@ const OrderPage = () => {
               }];
           });
     setOrderDetailInfo(detailItem);
-    console.log(orderDetailInfo);
 
     //orderInfo 값 null 체크
     for(let key in orderInfo){
@@ -151,7 +152,7 @@ const OrderPage = () => {
       }
     }
 
-    //DB에 값 저장하고 order_no 받아오기
+    //DB에 orderInfo값 저장하고 order_no 받아오기
     const getOrderNo = async() => {
       const orderData = {
         orderInfo: orderInfo,
@@ -159,18 +160,16 @@ const OrderPage = () => {
       };
       await setOrderTable(orderData).then((res) => {
         if(res.data !== null){
-            console.log(res.data);
+            //결제 함수 실행
+            payment(res.data);
         }
       })
     }
     getOrderNo();
-
-    //결제 함수 실행
-    payment();
   }
 
   //결제 구현
-  const payment = () => {
+  const payment = ({order_no}) => {
     const { IMP } = window;
     IMP.init(process.env.REACT_APP_IMPORT_INIT_KEY);
     
@@ -178,9 +177,9 @@ const OrderPage = () => {
     const paymentData = {
       pg: 'html5_inicis',                                                                                     // PG사
       pay_method: 'card',                                                                                     // 결제수단
-      merchant_uid:  `mid_${new Date().getTime()}`,                                                           // 주문번호
-      amount: price,                                                                                          // 결제금액
-      name: cartList[0].marketName + (cartList.length > 1 ? "외 " + (cartList.length - 1) +  " 건" : ''),     // 주문명
+      merchant_uid:  `${order_no}`,                                                                           // 주문번호
+      amount: price - discount,                                                                               // 결제금액
+      name: cartList[0].marketName + (cartList.length > 1 ? " 외 " + (cartList.length - 1) +  " 건" : ''),    // 주문명
       buyer_name: orderInfo.user_name,                                                                        // 구매자 이름
       buyer_tel: orderInfo.user_phone,                                                                        // 구매자 전화번호
       buyer_email: orderInfo.user_email,                                                                      // 구매자 이메일
@@ -190,6 +189,7 @@ const OrderPage = () => {
 
     //결제시 콜백 구현
     function callback(response) {
+      console.log(response);
       const {
         success,
         merchant_uid,
@@ -199,9 +199,24 @@ const OrderPage = () => {
       if (success) {
         //결제 정보 DB에 넣고 성공 페이지 이동
         console.log(merchant_uid + ':: 결제 성공');
+        
+        const updatePayInfo = async() => {
+          const paymentData = {
+            
+          };
+          await updatePaymentInfo(paymentData).then((res) => {
+            if(res.data !== null){
+
+            }
+          })
+        }
+        updatePayInfo();
+        navigate("/payResult", { state: { result: success, merchant_uid: merchant_uid } });
       } else {
         //주문 실패 정보 DB 업데이트 후 실패 페이지 이동 
         console.log(`${merchant_uid} :: 결제 실패: ${error_msg}`);
+
+        navigate("/payResult", { state: { result: success, merchant_uid: merchant_uid, error_msg: error_msg } });
       }
     }
 
