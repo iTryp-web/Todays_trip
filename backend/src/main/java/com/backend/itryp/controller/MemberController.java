@@ -116,4 +116,6 @@ public class MemberController {
 		result = memberLogic.memberDelete(pMap);
 		return String.valueOf(result);
 	}
+	
+	
 }

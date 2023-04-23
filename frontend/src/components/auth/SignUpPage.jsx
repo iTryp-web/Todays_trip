@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import {
   AuthButton,
   EmailBlock,
+  ModalCode,
   ModalWrapper,
   NamenPhoneBlock,
   PWnNickBlock,
@@ -28,6 +29,8 @@ import {
   memberInsertDB,
   memberListDB,
 } from "../../service/memberLogic";
+import axios from "axios";
+import EmailVerifyCode from "./EmailVerifyCode";
 
 const SignUpPage = ({ authLogic }) => {
   const auth = authLogic.getUserAuth();
@@ -39,7 +42,7 @@ const SignUpPage = ({ authLogic }) => {
     email: "",
     password: "",
     name: "",
-    hp: "",
+    phone: "",
     nickname: "",
   });
 
@@ -107,6 +110,7 @@ const SignUpPage = ({ authLogic }) => {
   //
   const [termBoxColor, setTermBoxColor] = useState("lightgray");
   //
+  const [modalAuthIsOpen, setModalAuthIsOpen] = useState(false);
   const [modal1IsOpen, setModal1IsOpen] = useState(false);
   const [modal2IsOpen, setModal2IsOpen] = useState(false);
   const [modal3IsOpen, setModal3IsOpen] = useState(false);
@@ -228,8 +232,8 @@ const SignUpPage = ({ authLogic }) => {
           setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setTextIdColor("#f77");
           setIsButtonActive(false);
-        } else if (idValidInput){
-          if(writeDomain.length===0&&selectDomain==="manual"){
+        } else if (idValidInput) {
+          if (writeDomain.length === 0 && selectDomain === "manual") {
             setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
             setEmailInputColor("#f77");
             setEmailSelectColor("#f77");
@@ -237,8 +241,24 @@ const SignUpPage = ({ authLogic }) => {
             setEmailSelectShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
             setIdText("이메일 형식이 올바르지 않습니다.");
             setIsButtonActive(false);
+          } else if (selectDomain === "") {
+            setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+            setEmailInputColor("#f77");
+            setEmailSelectColor("#f77");
+            setTextIdColor("#f77");
+            setEmailSelectShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+            setIdText("이메일 형식이 올바르지 않습니다.");
+            setIsButtonActive(false);
+          } else {
+            setEmailInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+            setEmailSelectShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+            setEmailInputColor("#4996f3");
+            setEmailSelectColor("#4996f3");
+            setTextIdColor("black");
+            setIdText("");
+            setIsButtonActive(true);
           }
-          else if(selectDomain==="") {
+        } else if (!idValidInput) {
           setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setEmailInputColor("#f77");
           setEmailSelectColor("#f77");
@@ -246,30 +266,64 @@ const SignUpPage = ({ authLogic }) => {
           setEmailSelectShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setIdText("이메일 형식이 올바르지 않습니다.");
           setIsButtonActive(false);
-          }else{
-            setEmailInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
-          setEmailSelectShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
-          setEmailInputColor("#4996f3");
-          setEmailSelectColor("#4996f3");
-          setTextIdColor("black");
-          setIdText("");
-          setIsButtonActive(true);
-          }
         }
-          else if(!idValidInput){
-            setEmailInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
-            setEmailInputColor("#f77");
-            setEmailSelectColor("#f77");
-            setTextIdColor("#f77");
-            setEmailSelectShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
-            setIdText("이메일 형식이 올바르지 않습니다.");
-            setIsButtonActive(false);
-          }
-        }
+      }
       idInputRef.current = idInput;
     };
     overlap();
   }, [idInput, writeDomain, selectDomain]);
+
+  //휴대전화번호 중복검사 && 유효성 검사
+  const phoneInputRef = useRef(null);
+  useEffect(() => {
+    const overlap = async () => {
+      const regPhExp = new RegExp("^01([0|1|6|7|8|9])[0-9]{7,8}$");
+      const phValidInput = regPhExp.test(phoneInput);
+
+      const prevPhoneInput = phoneInputRef.current;
+      let params;
+      params = {
+        user_phone: memInfo["phone"],
+        type: "overlap",
+      };
+      console.log(params);
+
+      let response = { data: 0 };
+      response = await checkInfoDB(params);
+      console.log(response.data);
+
+      const data = JSON.stringify(response.data);
+      console.log(data);
+      const jsonDoc = JSON.parse(data);
+
+      if (phoneInput !== null && prevPhoneInput !== null) {
+        if (jsonDoc && phoneInput.length > 0 && phValidInput) {
+          console.log(jsonDoc[0].USER_PHONE);
+          setPhoneText("이미 가입되어 있는 번호입니다");
+          setPhoneInputColor("#f77");
+          setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setTextPhoneColor("#f77");
+        } else if (phoneInput.length == 0) {
+          setPhoneText("필수항목입니다.");
+          setPhoneInputColor("#f77");
+          setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setTextPhoneColor("#f77");
+        } else if (!phValidInput) {
+          setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setPhoneInputColor("#f77");
+          setTextPhoneColor("#f77");
+          setPhoneText("형식이 올바르지 않습니다.");
+        } else {
+          setPhoneInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+          setPhoneInputColor("#4996f3");
+          setTextPhoneColor("black");
+          setPhoneText("");
+        }
+      }
+      phoneInputRef.current = phoneInput;
+    };
+    overlap();
+  }, [phoneInput]);
 
   //이메일 회원 가입
 
@@ -293,7 +347,6 @@ const SignUpPage = ({ authLogic }) => {
       console.log(error + " 오류: 관리자에게 연락바랍니다.");
     }
   };
-
 
   //소셜 X 일반 이메일 이용자 회원가입
   const signup = async () => {
@@ -401,25 +454,7 @@ const SignUpPage = ({ authLogic }) => {
   //휴대전화번호 input handler
   const handlePhone = (e) => {
     const Phone = e.target.value;
-    const regPhExp = new RegExp("^01([0|1|6|7|8|9])[0-9]{7,8}$");
     setPhoneInput(Phone);
-    const phValidInput = regPhExp.test(Phone);
-    if (Phone === "") {
-      setPhoneInputColor("#f77");
-      setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
-      setTextPhoneColor("#f77");
-      setPhoneText("필수 입력 항목입니다");
-    } else if (!phValidInput) {
-      setPhoneInputColor("#f77");
-      setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
-      setTextPhoneColor("#f77");
-      setPhoneText("형식이 올바르지 않습니다");
-    } else {
-      setPhoneInputColor("#4996f3");
-      setPhoneInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
-      setTextPhoneColor("black");
-      setPhoneText("");
-    }
   };
   //직접입력 선택시 생기는 x버튼 클릭시 발생 이벤트
   const xButtonClick = () => {
@@ -577,13 +612,30 @@ const SignUpPage = ({ authLogic }) => {
   };
   //==================focus, blur handler 끝 ====================//
 
-
-
   //이메일 인증 구현
-  const EmailButton = (e) => {
-    e.preventDefault()
+  const EmailButton = async (e) => {
+    e.preventDefault();
+    const userEmail = memInfo.writeEmail
+      ? memInfo.email + "@" + memInfo.writeEmail
+      : memInfo.email + "@" + memInfo.selectEmail;
+
+    await axios
+      .post("http://localhost:8000/service/mail", { email: userEmail })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
+  const handleModal0 = (e) => {
+    e.preventDefault();
+    setModalAuthIsOpen(true);
+    if (modalAuthIsOpen) {
+      setModalAuthIsOpen(false);
+    }
+  };
   const handleModal1 = (e) => {
     e.preventDefault();
     setModal1IsOpen(true);
@@ -757,18 +809,23 @@ const SignUpPage = ({ authLogic }) => {
           </EmailBlock>
           <AuthButton
             disabled={!isButtonActive}
-            onClick={EmailButton}
+            onClick={(e) => {
+              EmailButton(e);
+              handleModal0(e);
+            }}
             style={{
               backgroundColor: isButtonActive ? "white" : "#f7f8fa",
               border: isButtonActive
                 ? "1px solid #4996f3"
                 : "1px solid lightgray",
               color: isButtonActive ? "#4996f3" : "lightgray",
-              
             }}
           >
             이메일 인증하기
           </AuthButton>
+          <ModalCode isOpen={modalAuthIsOpen} ariaHideApp={false}>
+            <EmailVerifyCode setModalAuthIsOpen={setModalAuthIsOpen} />
+          </ModalCode>
           <NamenPhoneBlock>
             <h6 style={{ color: textNameColor }}>이름</h6>
             <input
