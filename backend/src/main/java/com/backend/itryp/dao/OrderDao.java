@@ -93,6 +93,7 @@ public class OrderDao {
 	 */
 	public int paymentUpdate(Map<String, Object> pmap) {
 		log.info("paymentUpdate 호출");
+		log.info(pmap);
 		int result = 0;
 		result = sst.update("InsertPay", pmap);
 		return result;

@@ -18,7 +18,11 @@ const OrderPage = () => {
   //주문 상품 정보 받아오기
   const location = useLocation();
   const [ orderItems ] = useState(location.state?.orderItems);
+
+  console.log(orderItems)
+
   const [ orderDetailInfo, setOrderDetailInfo ] = useState([]);
+  let order_no;
 
   //사용 가능한 쿠폰 리스트 관리
   const [cList, setCList] = useState([]);
@@ -55,7 +59,10 @@ const OrderPage = () => {
   });
 
   //주문 페이지 로딩 시 회원 정보 및 쿠폰 정보 읽어오기
-  useEffect(() => {
+  useEffect(() => { 
+    if(orderItems === undefined || orderItems.length < 1) {
+      navigate("/signin");
+    }
     const getUserInfo = async () => {
       const user = { user_id: sessionStorage.getItem('user_id') || "test1" };
       await getOrderPage(user).then((res) => {
@@ -160,8 +167,9 @@ const OrderPage = () => {
       };
       await setOrderTable(orderData).then((res) => {
         if(res.data !== null){
+          order_no = res.data;
             //결제 함수 실행
-            payment(res.data);
+            payment(order_no);
         }
       })
     }
@@ -177,7 +185,7 @@ const OrderPage = () => {
     const paymentData = {
       pg: 'html5_inicis',                                                                                     // PG사
       pay_method: 'card',                                                                                     // 결제수단
-      merchant_uid:  `${order_no}`,                                                                           // 주문번호
+      merchant_uid:  `mid_${new Date().getTime()}`,                                                           // 주문번호
       amount: price - discount,                                                                               // 결제금액
       name: cartList[0].marketName + (cartList.length > 1 ? " 외 " + (cartList.length - 1) +  " 건" : ''),    // 주문명
       buyer_name: orderInfo.user_name,                                                                        // 구매자 이름
@@ -186,6 +194,8 @@ const OrderPage = () => {
       buyer_addr: orderInfo.user_address + " " + orderInfo.user_address_detail,                               // 구매자 주소
       buyer_postcode: orderInfo.user_zipcode,                                                                 // 구매자 우편번호
     };
+
+    console.log(paymentData);
 
     //결제시 콜백 구현
     function callback(response) {
@@ -198,28 +208,33 @@ const OrderPage = () => {
     
       if (success) {
         //결제 정보 DB에 넣고 성공 페이지 이동
-        console.log(merchant_uid + ':: 결제 성공');
-        
-        const updatePayInfo = async() => {
-          const paymentData = {
-            
-          };
-          await updatePaymentInfo(paymentData).then((res) => {
-            if(res.data !== null){
+        console.log(merchant_uid + order_no + ':: 결제 성공');
 
+        const updatePayInfo = async() => {
+          const payData = {
+            user_id: sessionStorage.getItem('user_id') || "test1",
+            order_no: order_no,
+            pay_method: 0,
+            pay_total: price - discount,
+            pay_check: 1
+          };
+          console.log(payData);
+          await updatePaymentInfo(payData).then((res) => {
+            if(res.data !== null){
+              //장바구니에서 해당 상품 삭제 처리
+              console.log(res.data)
             }
           })
         }
         updatePayInfo();
-        navigate("/payResult", { state: { result: success, merchant_uid: merchant_uid } });
+        navigate("/payResult", { state: { result: success, merchant_uid: order_no }});
       } else {
         //주문 실패 정보 DB 업데이트 후 실패 페이지 이동 
-        console.log(`${merchant_uid} :: 결제 실패: ${error_msg}`);
+        console.log(`${order_no} :: 결제 실패: ${error_msg}`);
 
-        navigate("/payResult", { state: { result: success, merchant_uid: merchant_uid, error_msg: error_msg } });
+        navigate("/payResult", { state: { result : success, merchant_uid: order_no , error_msg: error_msg}});
       }
     }
-
     //결제 실행
     IMP.request_pay(paymentData, callback);
   }
