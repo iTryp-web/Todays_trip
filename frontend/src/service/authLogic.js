@@ -74,6 +74,7 @@ export const loginEmail = (auth,user) => {//user ->
 //구글인증인 경우 - Google
 //깃허브 인증인 경우 - Github
 export const loginGoogle = (auth, googleProvider) => {
+  console.log("구글 로그인시도")
   return new Promise((resolve, reject) => {
     signInWithPopup(auth, googleProvider)//팝업 열림
       .then((result) => {

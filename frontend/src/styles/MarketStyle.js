@@ -349,7 +349,6 @@ export const Category=styled.div`
   }
 `
 export const ReviewUI=styled.div`
-
 height: auto;
 -webkit-box-pack: justify;
 justify-content: space-between;
@@ -405,6 +404,7 @@ export const PostLi = styled.li`
   margin-right: 3em;
   border-bottom: 1px solid #f4f4f4;
   font-size: 14px;
+  position: relative;
   .categoryP {
     display: inline-block;
     margin-bottom: 12px;
@@ -526,7 +526,8 @@ export const PostFooter = styled.div`
 `;
 export const BtnDot = styled.button`
   position: absolute;
-  right: 200px;
+  right: 10px;
+  top: 10px;
   padding: 2px;
   font-size: 20px;
   border-radius: 50%;
