@@ -101,6 +101,10 @@ const CartPage = () => {
 
   //주문하기 처리
   const handleOrder = () => {
+    if(checkedItems === undefined || checkedItems.length < 1) {
+      alert('주문하실 상품을 선택해주세요');
+      return;
+    }
     //체크된 상품 아이디 정보 -> 새 배열에 담아서 orderPage로 넘겨주기
     let orderItems = [];
     cartList.forEach((cart, index) => {
