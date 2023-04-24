@@ -39,10 +39,14 @@ const BoardDetail = () => {
   /* db에서 상세보기 정보 가져오기 */
   useEffect(() => {
     const boardDetail = async() => {
+      let tempNick = ''
+      if(userNickname != null) {
+        tempNick = window.sessionStorage.getItem('user_nickname')
+      }
       const board = {
         board_no: bno,
         board_update: '상세보기',
-        user_nickname: userNickname
+        user_nickname: tempNick
       }
       const res = await boardDetailDB(board)
       console.log(res.data)
