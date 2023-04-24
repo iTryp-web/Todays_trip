@@ -1,14 +1,23 @@
 import React, { useState } from 'react'
-import { BsBookmarkStar, BsBookmarkStarFill, BsThreeDotsVertical } from 'react-icons/bs';
+import { BsArrowReturnRight, BsBookmarkStar, BsBookmarkStarFill, BsThreeDotsVertical } from 'react-icons/bs';
 import { RiQuestionAnswerFill, RiQuestionAnswerLine } from 'react-icons/ri';
 import { TbLetterA, TbLetterQ } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { qnaDeleteDB } from '../../service/marketLogic';
 import { ModalDiv, ModalUl } from '../../styles/BoardStyle';
 import { BtnDot, PostContent, PostFooter, PostLi } from '../../styles/MarketStyle';
 import { qnaData } from './MarketData';
 
-
+ const ReplyIcon = styled.div`
+  display: flex;
+  font-size: 17px;
+  margin: 10px;
+  color: #4996F3;
+`
+const Arrow=styled.span`
+  // display :flex;
+`
 const QnaRow = ({qna}) => {
   const navigate=useNavigate();
   // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
@@ -47,13 +56,24 @@ const QnaRow = ({qna}) => {
     <div>
 
       <PostLi>
-      <PostContent >
-        <div>
+      <PostContent>
+        {qna.qna_step === 1 ? (
+
+                    <ReplyIcon>
+                    <BsArrowReturnRight/>
+                    </ReplyIcon>
+                 
+                  ) : (
+                    null
+                    )}
+        <div className='qna2'>
+        
           <div className='qnaTspace'>
             {qna.qna_step === 0 ? (
                 <TbLetterQ className='letterIcon' color={'#4996F3'}/>
                   
                 ) : qna.qna_step === 1 ? (
+
                   <TbLetterA className='letterIcon' color={'#4996F3'} />
                   ) : (
                     null

@@ -249,14 +249,14 @@ export const DetailBlock=styled.div`
               display: flex;
               align-items: center;
               gap: 10px;
-              button {
-                width: 22px;
-                height: 22px;
-                border-radius: 30px;
-                border: 1px solid $color-black;
-                background-color: $color-white;
+              img {
+                margin-bottom:15px;
+                margin-top:10px;
                 cursor: pointer;
               }
+            }
+            p{
+              margin-top:10px;
             }
           }
           .totalprice {
@@ -358,10 +358,19 @@ padding-left: 250px;
 padding-right: 150px;
 
 .reviewheader{
+  font-weight: bold;
   display:flex;
-}
-.reviewAdd{
-  .review{
+  button{
+    position:relative;
+    left: 70%;
+    margin-bottom:5px;
+    border-radius:5px;
+    border:none;
+    background-color: #4996F3;
+    color: #fff;
+  
+    // max-height:30px; 
+    // max-width: 80px;
     
   }
 }
@@ -443,7 +452,9 @@ export const PostLi = styled.li`
   }
   
   .contentP {
-    overflow: hidden;
+    word-break: break-all;
+    // height: 100%;
+    // overflow: hidden;
     display: -webkit-box;
     margin: 8px 0 5px 0;
     padding-right: 16px;
@@ -457,7 +468,7 @@ export const PostLi = styled.li`
   /* QnARow 애니메이션을 위한 contentP */
   .contentP2 {
     opacity: 0;
-    height: 0px;
+    height: 0;
     overflow: hidden;
     transition: all 0.2s ease 0s;
     display: -webkit-box;
@@ -491,6 +502,13 @@ export const PostLi = styled.li`
   .qnaTspace{
     margin-bottom:10px;
     font-weight: 600;
+  }
+
+  .qna2{
+    display:block;
+    width:100%;
+    // border: 1px solid red;
+    // white-space: nowrap;
   }
 `;
 
@@ -539,3 +557,17 @@ export const BtnDot = styled.button`
     outline: none;
   }
 `;
+
+export const Navblock=styled.div`
+  padding: 5% 10%;
+
+  @media only screen and (max-width: 1256px) {
+    padding: 3% 5%;
+  }
+  @media only screen and (max-width: 1024px) {
+    padding: 0 1.5px;
+  }
+  @media only screen and (max-width: 768px) {
+    padding: 0 0;
+  }
+`

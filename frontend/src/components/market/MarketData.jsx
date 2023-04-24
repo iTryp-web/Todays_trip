@@ -150,7 +150,7 @@ market_no:1,
 user_id:'123@gmaim.com',
 user_nickname:'숙자',
 review_star:2,
-review_content:'정말구려요',
+review_content:'정말구려요. 제 이름을 걸고 보증합니다.',
 review_date:'23-04-10',
 like_count:20
 
@@ -160,7 +160,7 @@ market_no:1,
 user_id:'123@gmaim.com',
 user_nickname:'제갈명숙',
 review_star:4,
-review_content:'쏘리질러~!asljnghlajnefrgh;jaenr;bgjknae;bkvinga;ldejkbn;gaejnbfr;ajnfb;lkjan;fbjknr;b머ㅏ루;ㅠ러ㅜㅠ;ㅏㅓㄴ우류ㅓㅜ;ㄴ이러ㅏㅠㅜ;ㅣㅁ더ㅏㅜ류',
+review_content:'쏘리질러~!ㅂㅈㄷㅂㅈㄷㅂㅈㄷㅂㅈㄷㅂㄷㅂㄷㅂㅈㄷㅂㅈㄷㅂㅈㄷㅂㅈㄷㅂㅈㄷㅂㅈㄷㅂㅈㄷㅈㅂㄷㅈasljnghlaㄴㅇ.ㅋ라ㅣ후/마어류ㅗ니ㅏㅗ;ㅣㄴ거ㅗ;ㅓㅇ러ㅗㄱ니ㅏㅗㅓㅏㅣㅓㅗㅣㅏ어ㅗ나ㅓ오jnefrgh;jaenr;bgjknae;bkvinga;ldejkbn;gaejnbfr;ajnfb;lkjan;fbjknr;b머ㅏ루;ㅠ러ㅜㅠ;ㅏㅓㄴ우류ㅓㅜ;ㄴ이러ㅏㅠㅜ;ㅣㅁ온ㅇ롤호ㅗ니나어리마ㅓㅇㅎ리ㅏㅓ몰;ㅓㅗㅁㄴㅇ;러ㅗ마이ㅏㄴ머ㅗㅎ라머노리ㅏㅓ뫼ㅏㅓㅁ노히ㅏㅓㅁ뇌ㅏㅓㅗㅁㄹ더ㅏㅜ류',
 review_date:'23-04-10',
 like_count:50
 
@@ -185,7 +185,7 @@ export const qnaData=[
     market_no:1,
     qna_title:'할인안됨?응 안돼 답글',
     qna_step:1,
-    qna_content:'다른곳에서 구매하셔요.',
+    qna_content:'다른곳에서 구매하셔요. 아니면 말구용. 아니면 말구용.아니면 말구용.',
     qna_date:'23-04-10'
   },
   {
