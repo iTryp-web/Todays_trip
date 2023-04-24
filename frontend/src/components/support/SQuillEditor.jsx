@@ -2,7 +2,7 @@ import React from 'react';
 import { useCallback, useEffect, useMemo } from 'react';
 import ReactQuill, { Quill } from 'react-quill'; 
 import { QuillDiv } from '../../styles/BoardStyle';
-import { uploadImageDB } from '../../service/boardLogic';
+import { qUploadImageDB } from '../../service/supportLogic';
 
 const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
     console.log(files);
@@ -39,13 +39,13 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
                 console.log(pair[0], pair[1]); 
             }
             // 폼데이터를 서버에 넘겨 multer로 이미지 URL 받아오기
-            const res = await uploadImageDB(formData)
+            const res = await qUploadImageDB(formData)
             files.push(res.data)
             console.log(res.data); // 리턴받는 파일명
             if (!res.data) {
                 console.log("이미지 업로드에 실패하였습니다.");
             }
-            const url = process.env.REACT_APP_SPRING_IP+`board/getImage?imageName=${res.data}`;
+            const url = process.env.REACT_APP_SPRING_IP+`support/getImage?imageName=${res.data}`;
             const quill = quillRef.current.getEditor();
             /* ReactQuill 노드에 대한 Ref가 있어야 메서드들을 호출할 수 있으므로
             useRef()로 ReactQuill에 ref를 걸어주자.

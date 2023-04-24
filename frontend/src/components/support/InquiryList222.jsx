@@ -1,28 +1,3 @@
-import React, { useEffect, useState } from "react";
-import Footer from "../include/Footer";
-import Header from "../include/Header";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@material-ui/core";
-import { useNavigate, useParams } from "react-router-dom";
-import { BsChevronDown } from "react-icons/bs";
-import {
-  AnswerText,
-  InquiryH3,
-  InquiryHeader,
-  InquiryP,
-  InquirySection,
-  QMark,
-  WriteButton,
-} from "../../styles/SupportStyle";
-import { InquiryListDB } from "../../service/supportLogic";
-import { useCallback } from "react";
-import { AiFillLock } from "react-icons/ai";
-
 const InquiryList = () => {
   const user_id = sessionStorage.getItem("user_id")
   const navigate = useNavigate();
@@ -116,9 +91,7 @@ const InquiryList = () => {
                   <TableCell align="center">{item.qna_no}</TableCell>
                   <TableCell align="left">
                     <div className="questionContainer">
-                      <span>
-                        {item.qna_sort === 4 ? AiFillLock : ""}
-                      </span>
+                      <AiFillLock />
                       <span className="questionText">{item.qna_title}</span>
                     </div>
                   </TableCell>

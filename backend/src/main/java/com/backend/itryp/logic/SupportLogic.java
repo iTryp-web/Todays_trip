@@ -103,9 +103,9 @@ public class SupportLogic {
 		int result = 0;
 		result = supportDao.inquiryInsert(pMap);
 		// 로직 단계에서 1대1문의에 글 작성중인 사람이 유저인지 관리자인지 판별
-		if (pMap.get("reply").equals("답변하기")) {
+		if (pMap.get("qna_sort").equals("4")) {
 			pMap.put("qna_step", 1);
-		} else {
+		} else if (pMap.get("qna_sort").equals("2")){
 			pMap.put("qna_step", 0);
 		}
 		return result;
