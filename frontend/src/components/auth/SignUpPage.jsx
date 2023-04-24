@@ -23,7 +23,7 @@ import Term2 from "../Term/Term2";
 import Term3 from "../Term/Term3";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { linkEmail, onAuthChange, signupEmail } from "../../service/authLogic";
+import { linkEmail, loginGoogle, onAuthChange, signupEmail } from "../../service/authLogic";
 import {
   checkInfoDB,
   memberInsertDB,
@@ -36,7 +36,6 @@ const SignUpPage = ({ authLogic }) => {
   const auth = authLogic.getUserAuth();
   const userAuth = useSelector((state) => state.userAuth);
   const navigate = useNavigate();
-  const type = window.location.search.split("&")[0].split("=")[1]; //member담김
 
   const [memInfo, setMemInfo] = useState({
     email: "",
@@ -330,6 +329,24 @@ const SignUpPage = ({ authLogic }) => {
 
   //구글 회원 가입
   const [googleEmail, setGoogleEmail] = useState("");
+
+  useEffect(() => {
+    const onAuth = async () => {
+      const user = await onAuthChange(userAuth.auth);
+      if (user) {
+        setGoogleEmail(user.email)
+        setMemInfo({
+          email: user.email,
+          password: "",
+          password2: "",
+          name: "",
+          phone: "",
+          nickname: null,
+        });
+      }
+    };
+    onAuth();
+  }, [setGoogleEmail,setMemInfo, userAuth.auth]);
 
   const googleSignUp = async () => {
     try {
@@ -701,22 +718,18 @@ const SignUpPage = ({ authLogic }) => {
     }
   }, [pwInput, pwCheckInput]);
 
-  useEffect(() => {
-    const onAuth = async () => {
-      const user = await onAuthChange(userAuth.auth);
-      if (user) {
-        setMemInfo({
-          email: user.email,
-          password: "",
-          password2: "",
-          name: "",
-          hp: "",
-          nickname: null,
-        });
-      }
-    };
-    onAuth();
-  }, [setMemInfo, userAuth.auth]);
+  const loginG = async() =>{
+    //구글 로그인
+    try {
+      const result = await loginGoogle(authLogic.getUserAuth(),authLogic.getGoogleAuthProvider())
+      console.log(result.data)
+      window.sessionStorage.setItem('userId',result.uid)
+      navigate("/")
+      window.location.reload()
+   } catch (error) {
+      console.log("로그인 오류입니다")
+   }
+  }
 
   return (
     <>
@@ -727,7 +740,7 @@ const SignUpPage = ({ authLogic }) => {
           <SocialBlock>
             <span>SNS계정으로 간편하게 회원가입</span>
             <div className="socialButton">
-              <img src="images/google-icon.png" alt="구글" />
+              <img src="images/google-icon.png" alt="구글" onClick={()=>{loginG();}}/>
               <img src="images/kakao-icon.png" alt="네이버" />
               <img src="images/naver-icon.png" alt="카카오" />
             </div>
