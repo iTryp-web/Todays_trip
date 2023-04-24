@@ -64,7 +64,7 @@ const OrderPage = () => {
 
   //주문 페이지 로딩 시 회원 정보 및 쿠폰 정보 읽어오기
   useEffect(() => { 
-    if(orderItems === undefined || orderItems.length < 1) {
+    if(sessionStorage.getItem('user_id') === undefined || sessionStorage.getItem('user_id') === '') {
       navigate("/signin");
     }
     const getUserInfo = async () => {
@@ -228,7 +228,24 @@ const OrderPage = () => {
           await updatePaymentInfo(payData).then((res) => {
             if(res.data !== null){
               //장바구니에서 해당 상품 삭제 처리
-              setCookies()
+              let numList = [];
+              orderItems.forEach((cart) => {
+                numList = [...numList, cart.marketNum];
+              })
+
+              let cookieList = cookies.cart;
+              let newCartList = [];
+              cookieList.forEach((cart) => {
+                if(!numList.includes(cart.marketNum)) newCartList = [...newCartList, cart];
+              })
+              //newCartList에 값이 들어있을 경우 쿠키에 추가
+              if(newCartList.length > 0) {
+                removeCookies("cart");
+                setCookies("cart", newCartList, {expires: new Date(Date.now() + 259200000)});
+              } else {
+                //newCartList에 값이 없을 경우 기존 쿠키 삭제
+                removeCookies("cart");
+              }
             }
           })
         }
