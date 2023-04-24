@@ -46,6 +46,7 @@ const SignUpPage = ({ authLogic }) => {
     nickname: "",
   });
 
+  const [verifyEmail, setVerifyEmail] = useState(false);
   const [idInput, setIdInput] = useState("");
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [selectDomain, setSelectDomain] = useState("");
@@ -629,6 +630,8 @@ const SignUpPage = ({ authLogic }) => {
       });
   };
 
+
+  //모달창 handler
   const handleModal0 = (e) => {
     e.preventDefault();
     setModalAuthIsOpen(true);
@@ -661,7 +664,23 @@ const SignUpPage = ({ authLogic }) => {
   //회원가입 버튼 핸들러
   const handleSubmit = (e) => {
     e.preventDefault();
-    signup();
+    if (
+      idInput !== null &&
+      pwInput !== null &&
+      phoneInput !== null &&
+      pwInput !== null &&
+      pwCheckInput !== null &&
+      nameInput !== null &&
+      isRequiredChecked == true &&
+      verifyEmail == true
+    ) {
+      signup();
+      alert("회원가입이 완료되었습니다.");
+    } else if (verifyEmail == false) {
+      alert("이메일 인증을 완료해주세요.");
+    } else {
+      alert("필수항목을 채워주세요.");
+    }
   };
 
   //비밀번호 같은값인지 체크
@@ -824,7 +843,10 @@ const SignUpPage = ({ authLogic }) => {
             이메일 인증하기
           </AuthButton>
           <ModalCode isOpen={modalAuthIsOpen} ariaHideApp={false}>
-            <EmailVerifyCode setModalAuthIsOpen={setModalAuthIsOpen} />
+            <EmailVerifyCode
+              setModalAuthIsOpen={setModalAuthIsOpen}
+              setVerifyEmail={setVerifyEmail}
+            />
           </ModalCode>
           <NamenPhoneBlock>
             <h6 style={{ color: textNameColor }}>이름</h6>
