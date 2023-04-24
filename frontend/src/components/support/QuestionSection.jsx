@@ -39,7 +39,7 @@ const QuestionSection = () => {
 
 /* Li요소들에 title과 content를 삽입해주기 위한 컴포넌트 Map을 돌며 값 삽입 */
 const Question = ({ post }) => {
-  /* 버튼이 열리고 닫히는 상태에 대한 kuseState 기본값 false */
+  /* 버튼이 열리고 닫히는 상태에 대한 useState 기본값 false */
   const [isOpen, setIsOpen] = useState(false);
 
   /* handleClick이 호출되면 isOpen의 상태가 true:false로 스위칭 */
