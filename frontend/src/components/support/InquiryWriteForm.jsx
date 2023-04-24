@@ -21,6 +21,7 @@ const InquiryWriteForm = () => {
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
   const [isProtected, setIsProtected] = useState(0);
+  const [sort, setSort] = useState(0);
   const quillRef = useRef();
 
   const handleTitle = useCallback((e) => {
@@ -28,14 +29,14 @@ const InquiryWriteForm = () => {
     setTitle(e);
   }, []);
 
-  const handleProtected = useCallback((event) => {
-    const isProtected = event.target.checked;
-    setIsProtected(isProtected);
-  }, []);
-
   const handleContent = useCallback((value) => {
     console.log(value);
     setContent(value);
+  }, []);
+
+  const handleProtected = useCallback((event) => {
+    const isProtected = event.target.checked;
+    setIsProtected(isProtected);
   }, []);
 
   const handleFiles = useCallback(
@@ -50,10 +51,12 @@ const InquiryWriteForm = () => {
     console.log("inquiryInsert");
     console.log(files);
     const board = {
-      qna_step: 0,
       user_id: sessionStorage.getItem("user_id"),
       qna_title: title,
       qna_content: content,
+      qna_sort:2,
+      qna_step: 0,
+      imageNames: files,
     };
     const res = await inquiryInsertDB(board);
     console.log(res.data);
