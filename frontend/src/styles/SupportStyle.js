@@ -311,6 +311,7 @@ export const InqDiv = styled.div`
 display: flex;
 justify-content: space-between;
 align-items: center;
+margin-top : 25px;
 padding: 16px 0;
 border-bottom: 1px solid #f4f4f4;
 font-size: 14px;
@@ -340,7 +341,11 @@ font-size: 14px;
   color: white;
   }
 }
-#board_title {
+.inqInnerDiv{
+  display: flex;
+  justify-content: center;
+}
+#inquiry_title {
   width: 100%;
   padding: 4px 14px;
   border: none;
@@ -367,23 +372,47 @@ export const InquiryP = styled.p`
   padding: 14px 20px;
 `;
 
-/* 글쓰기 버튼을 담을 컨테이너 스타일 */
-export const WriteButtonContainer = styled.div`
-  position: fixed;
-  top: 50%;
-  right: 2rem;
-  background-color: blue;
-  padding: 1rem;
-  border-radius: 5px;
-  transform: translateY(-50%);
-  z-index: 10;
+export const InquiryHeader = styled.header`
+  width: 100%;
+  padding: 0px 4rem;
+  max-width: 1344px;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  background: white;
+  margin: 4em auto 0px;
 `;
 
-/* 글쓰기 버튼을 담을 스타일 */
 export const WriteButton = styled.button`
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  width: 7.5em;
+  height: 2.7em;
+  padding: 10px 0px;
+  border-radius: 6px;
+  font-weight: 600;
+  background-color: rgb(73, 150, 243);
   color: white;
-  font-size: 1.2rem;
+  font-size: 1em;
   border: none;
-  background-color: transparent;
-  cursor: pointer;
+`;
+
+export const InqCheckDiv = styled.div`
+  font-size: 0.93rem;
+  font-weight: 600;
+  display: inline-block;
+  justify-content: center;
+  text-align: center;
+  color: rgb(73, 150, 243);
+  width: 7.5em;
+  height: 2.7em;
+  padding: 10px 0px;
+  border-radius: 6px;
+  background-color: #f7f9fa;
+  margin: 0px 15px;
 `;

@@ -5,6 +5,7 @@ import { Dropdown, DropdownButton } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import SQuillEditor from "./SQuillEditor";
 import {
+  InqCheckDiv,
   InqDiv,
   InquiryH3,
   InquiryP,
@@ -12,17 +13,24 @@ import {
 } from "../../styles/SupportStyle";
 import { BsDot } from "react-icons/bs";
 import { inquiryInsertDB } from "../../service/supportLogic";
+import QCheckbox from "./QCheckbox";
 
 const InquiryWriteForm = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
+  const [isProtected, setIsProtected] = useState(0);
   const quillRef = useRef();
 
   const handleTitle = useCallback((e) => {
     console.log(e);
     setTitle(e);
+  }, []);
+
+  const handleProtected = useCallback((event) => {
+    const isProtected = event.target.checked;
+    setIsProtected(isProtected);
   }, []);
 
   const handleContent = useCallback((value) => {
@@ -49,7 +57,7 @@ const InquiryWriteForm = () => {
     };
     const res = await inquiryInsertDB(board);
     console.log(res.data);
-    navigate("/support/all");
+    navigate("/support/inquiryBoard");
   };
 
   return (
@@ -60,7 +68,7 @@ const InquiryWriteForm = () => {
         <InquiryP>
           <BsDot /> 문의 답변은 최대 3일까지 소요될 수 있습니다.
           <br />
-          <BsDot /> 1대1 문의로 작성된 글은 관리자와 작성자 이외에는 열람할 수
+          <BsDot /> 비밀글로 작성된 문의는 관리자와 작성자 이외에는 열람할 수
           없습니다.
           <br />
           <BsDot /> 작성한 글은 마이페이지에서 작성한 글 목록에서 확인하실 수
@@ -77,14 +85,26 @@ const InquiryWriteForm = () => {
               handleTitle(e.target.value);
             }}
           />
-          <button
-            className="btnInsert"
-            onClick={(e) => {
-              inquiryInsert();
-            }}
-          >
-            등록
-          </button>
+          <div className="inqInnerDiv">
+            <InqCheckDiv>
+              <label>
+                <input
+                  type="checkbox"
+                  // checked={checked}
+                  onChange={handleProtected}
+                />
+                비밀글
+              </label>
+            </InqCheckDiv>
+            <button
+              className="btnInsert"
+              onClick={(e) => {
+                inquiryInsert();
+              }}
+            >
+              등록
+            </button>
+          </div>
         </InqDiv>
         <SQuillEditor
           value={content}

@@ -73,7 +73,7 @@ const SupportSection = () => {
                   }}
                   className="btnContact"
                 >
-                  1:1 상담하기
+                  1:1 문의하기
                 </button>
                 <a href="/"></a>
               </div>

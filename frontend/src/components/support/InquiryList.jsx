@@ -13,11 +13,11 @@ import { BsChevronDown } from "react-icons/bs";
 import {
   AnswerText,
   InquiryH3,
+  InquiryHeader,
   InquiryP,
   InquirySection,
   QMark,
   WriteButton,
-  WriteButtonContainer,
 } from "../../styles/SupportStyle";
 
 const InquiryList = () => {
@@ -50,18 +50,16 @@ const InquiryList = () => {
     <>
       <Header />
       <InquirySection>
-        <InquiryH3>Q&A</InquiryH3>
-        <InquiryP>
-          게시판 성격과 맞지 않는 게시글 혹은 부적절한 내용이 포함된 게시글은
-          경고없이 삭제될 수 있습니다.
-        </InquiryP>
-        <WriteButton
-          onClick={() => {
-            navigate("/support/write");
-          }}
-        >
-          글쓰기
-        </WriteButton>
+        <InquiryHeader>
+          <InquiryH3>Q&A</InquiryH3>
+          <WriteButton
+            onClick={() => {
+              navigate("/support/write");
+            }}
+          >
+            문의하기
+          </WriteButton>
+        </InquiryHeader>
         <Table>
           <TableHead>
             <TableRow>
