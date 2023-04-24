@@ -20,45 +20,40 @@ const InquiryWriteForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
-  const [isProtected, setIsProtected] = useState(2);
+  const [isProtected, setIsProtected] = useState(false);
   const quillRef = useRef();
 
   const handleTitle = useCallback((e) => {
-    console.log(e);
     setTitle(e);
   }, []);
 
   const handleContent = useCallback((value) => {
-    console.log(value);
     setContent(value);
   }, []);
 
   const handleProtected = useCallback((event) => {
     const isProtected = event.target.checked;
-    setIsProtected(isProtected);
+    setIsProtected(isProtected ? 4 : 2);
   }, []);
+  
 
   const handleFiles = useCallback(
     (value) => {
-      console.log(value);
       setFiles([...files, value]); // 깊은복사
     },
     [files]
   );
 
   const inquiryInsert = async () => {
-    console.log("inquiryInsert");
-    console.log(files);
     const board = {
       user_id: sessionStorage.getItem("user_id"),
       qna_title: title,
       qna_content: content,
-      qna_sort:2,
+      qna_sort: isProtected,
       qna_step: 0,
       imageNames: files,
     };
     const res = await inquiryInsertDB(board);
-    console.log(res.data);
     navigate("/support/inquiryBoard");
   };
 
@@ -92,7 +87,7 @@ const InquiryWriteForm = () => {
               <label>
                 <input
                   type="checkbox"
-                  // checked={checked}
+                  checked={isProtected}
                   onChange={handleProtected}
                 />
                 비밀글
