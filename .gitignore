@@ -1,5 +1,8 @@
 /.metadata/
 
+# 이메일설정 제외
+email.properties
+
 # 환경키제외
 .env
 
