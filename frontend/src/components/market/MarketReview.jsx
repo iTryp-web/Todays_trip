@@ -61,7 +61,7 @@ const MarketReview = ({mno}) => {
 console.log(reviews);
 
   //마켓글 평균별점
-  let starAvg=5;
+  let starAvg=3.5;
 
   //평균 star rating percentage 계산 후 style로 반영
   const ratingToPercentAvg = {
@@ -78,7 +78,7 @@ console.log(reviews);
     <>
       <ReviewUI>
         <div className='reviewheader'>
-          <h5 >
+          <h5 style={{fontWeight:'bold'}}>
             <MdRateReview size='30' color='#4996F3'/>
             &nbsp;&nbsp;리뷰&nbsp;{rcount}</h5>
           &nbsp;&nbsp;
@@ -110,7 +110,8 @@ console.log(reviews);
                 <ReviewRow key={review.review_no} review={review}/>
               ))
                 }</ul> */}
-                {/* 테스트 가데이터 */}
+
+        {/* 테스트 가데이터 */}
                 <ul>
                   {reviewData.slice(offset, offset + limit).map((review)=>(
                     <ReviewRow key={reviewData.review_no} review={review}/>

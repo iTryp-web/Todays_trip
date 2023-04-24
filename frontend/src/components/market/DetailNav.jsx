@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import Nav from 'react-bootstrap/Nav';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { Navblock } from '../../styles/MarketStyle';
 import MarketQna from './MarketQna';
 import MarketReview from './MarketReview';
+
 
 const DetailNav = ({mno}) => {
   const navigate = useNavigate();
@@ -26,8 +29,10 @@ const DetailNav = ({mno}) => {
           </Nav.Link>
         </Nav.Item>
       </Nav>
-      {activeTab === 'review' && <MarketReview mno={mno} />}
-      {activeTab === 'qna' && <MarketQna />}
+      <Navblock>
+        {activeTab === 'review' && <MarketReview mno={mno} />}
+        {activeTab === 'qna' && <MarketQna mno={mno} />}
+      </Navblock>
     </>
   );
 };

@@ -126,9 +126,12 @@ const MarketDetail = () => {
     <Header />
       <MarketCategory />
       <ProductDetail cookieAdd={cookieAdd}/>
-      <DetailNav mno={mno}/>
-      {/* <MarketReview mno={mno}/>
-      <MarketQna mno={mno} /> */}
+  
+        <DetailNav  mno={mno}/>
+
+
+    
+     
     <Footer />
     </>
   )
