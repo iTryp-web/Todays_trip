@@ -24,7 +24,7 @@
 			, (SELECT market_no, SUM(market_count) market_count
 		    FROM TB_ORDER_DETAIL
 		    GROUP BY market_no) d
-		WHERE m.market_no = d.market_no
+		WHERE m.market_no = d.market_no(+)
 		AND ROWNUM <![CDATA[<=]]> 5
 		ORDER BY d.market_count DESC
 	</select>
@@ -40,7 +40,7 @@
 			, (SELECT market_no, SUM(market_count) market_count
 		    FROM TB_ORDER_DETAIL
 		    GROUP BY market_no) d
-		WHERE m.market_no = d.market_no
+		WHERE m.market_no = d.market_no(+)
 		AND ROWNUM <![CDATA[<=]]> 5
 		ORDER BY m.market_date DESC
 	</select>
@@ -74,18 +74,12 @@
 	       , b.board_title
 	       , b.board_hit
 	       , b.board_date
-	       , l.like_count
 	       , c.comment_count
 		 FROM TB_BOARD b
-			 , (SELECT COUNT(user_Id) like_count, like_no
-					FROM TB_LIKE
-					WHERE like_type = 0
-					GROUP BY like_no) l
 			 , (SELECT COUNT(user_id) comment_count, board_no
 		     FROM TB_B_COMMENT
 		     GROUP BY board_no) c
-	 WHERE b.board_no = l.like_no(+)
-		 AND b.board_no = c.board_no(+)
+	 WHERE b.board_no = c.board_no(+)
 		 AND ROWNUM <![CDATA[<=]]> 5
 		ORDER BY b.board_date DESC
 	</select>

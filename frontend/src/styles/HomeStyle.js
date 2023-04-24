@@ -16,20 +16,26 @@ export const MainCategoryList = styled.ul`
   margin: 32px 0 64px;
   padding: 16px;
   li {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 96px;
-    height: 96px;
+    width: 100px;
+    height: 100px;
     border-radius: 20px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 600;
     transition: all 0.2s ease;
+    color: #ABABAB;
     img {
-      margin-bottom: 4px;
+      margin-bottom: 10px;
+      width: 50px;
+      height: 50px;
     }
     &:hover {
-      background: #fafafa;
+      color: #4996F3;
+      background: #EDF5FE;
       transform: translateY(-4px);
     }
   }
@@ -48,10 +54,13 @@ export const CurationSection = styled.section`
   a.view-all {
     display: flex;
     align-items: center;
-    color: #00c7ae;
+    color: #4996F3;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
     svg {
       padding-top: 1px;
-      fill: #00c7ae;
+      fill: #4996F3;
     }
   }
 `;
@@ -108,7 +117,7 @@ export const CurationContent = styled(Link)`
   }
 `;
 
-export const KnowhowList = styled.ul`
+export const MarketList = styled.ul`
   display: flex;
   justify-content: space-between;
   gap: 8px;
