@@ -27,6 +27,9 @@ const ProductDetail = ({cookieAdd}) => {
   const price=1000;
   /* 품절여부 */
   const isSoldOut=0;
+  //아이콘 이미지
+  const plus_img = "/images/plus.png";
+  const minus_img = "/images/minus2.png";
   
   return (
     <>
@@ -80,24 +83,21 @@ const ProductDetail = ({cookieAdd}) => {
                       {/* 카운트 버튼 */}
                         <div className='count'>
 
-                          <button
+                        <img src={ minus_img} alt="minus" 
                             onClick={() => {
                               if (count === 1) {
                                 return 1;
                               }
                               setCount(count - 1);
                             }}
-                          >
-                            -
-                          </button>
+                          />
+                          
                           <p>{count}</p>
-                          <button
+                          <img src={plus_img} alt="plus" 
                             onClick={() => {
                               setCount(count + 1);
                             }}
-                          >
-                            +
-                          </button>
+                          />
                         </div>
                         
                     </div>
