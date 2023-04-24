@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 
-const EmailVerifyCode = ({ setModalAuthIsOpen }) => {
+const EmailVerifyCode = ({ setModalAuthIsOpen, setVerifyEmail }) => {
   const [codeInput, setCodeInput] = useState("");
   const [codetext, setCodeText] = useState("");
 
@@ -23,6 +23,8 @@ const EmailVerifyCode = ({ setModalAuthIsOpen }) => {
           alert("인증성공");
           setCodeText("");
           setModalAuthIsOpen(false);
+          setVerifyEmail(true);
+          
         } else {
           setCodeText("인증 번호가 일치하지 않습니다.");
         }
