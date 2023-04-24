@@ -149,7 +149,7 @@ export const KnowhowList = styled.ul`
 /* ImageSlider 스타일 */
 export const SliderBlock = styled(Slider)`
   text-align: center;
-  overflow-x: hidden;
+  overflow: hidden;
   height: 470px;
   .slick-dots {
     position: absolute;
@@ -162,7 +162,7 @@ export const SliderBlock = styled(Slider)`
 
 export const ImageBlock = styled.img`
   margin-top: 15px;
-  height: 470px;
+  height: 450px;
   object-fit: cover;
   max-width: 1920px;
 `;
