@@ -21,13 +21,21 @@ import {
 } from "../../styles/SupportStyle";
 import { InquiryListDB } from "../../service/supportLogic";
 import { useCallback } from "react";
+import { AiFillLock } from "react-icons/ai";
 
 const InquiryList = () => {
+  const user_id = sessionStorage.getItem("user_id")
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClick = () => {
-    setIsOpen(!isOpen);
+  const handleClick = (id) => {
+    if (selected === id) {
+      setSelected(null);
+      setIsOpen(false);
+    } else {
+      setSelected(id);
+      setIsOpen(true);
+    }
   };
 
   const [selected, setSelected] = useState("전체");
@@ -65,12 +73,12 @@ const InquiryList = () => {
   const [posts, setPosts] = useState([{}]);
   //선택한 카테고리에따라 글목록 출력
   const removeTag = (content) => {
-    if(content) {
-      const newText = content.replace(/(<([^>]+)>)/gi,'');
-      console.log(newText)
-      return newText
+    if (content) {
+      const newText = content.replace(/(<([^>]+)>)/gi, "");
+      console.log(newText);
+      return newText;
     }
-  }
+  };
   useEffect(() => {
     console.log(searchStart);
     const inquiryList = async () => {
@@ -93,6 +101,7 @@ const InquiryList = () => {
           qna_title: item.QNA_TITLE,
           qna_content: item.QNA_CONTENT,
           qna_date: item.QNA_DATE,
+          qna_sort: item.QNA_SORT,
           file_exist: item.FILE_EXIST,
         };
         console.log(obj.file_exist);
@@ -132,10 +141,14 @@ const InquiryList = () => {
           <TableBody>
             {posts.map((item) => (
               <React.Fragment key={item.qna_no}>
-                <TableRow onClick={handleClick} style={{ cursor: "pointer" }}>
+                <TableRow
+                  onClick={() => handleClick(item.qna_no)}
+                  style={{ cursor: "pointer" }}
+                >
                   <TableCell align="center">{item.qna_no}</TableCell>
                   <TableCell align="left">
                     <div className="questionContainer">
+                      <AiFillLock />
                       <span className="questionText">{item.qna_title}</span>
                     </div>
                   </TableCell>
@@ -144,8 +157,18 @@ const InquiryList = () => {
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={4}>
-                    <AnswerText className={isOpen ? "show" : ""}>
-                      <p className="answerTextP">{removeTag(item.qna_content)}</p>
+                    <AnswerText
+                      className={
+                        isOpen
+                          ? user_id == item.user_id
+                            ? "show"
+                            : console.log("잘못된 유저 접근")
+                          : ""
+                      }
+                    >
+                      <p className="answerTextP">
+                        {removeTag(item.qna_content)}
+                      </p>
                     </AnswerText>
                   </TableCell>
                 </TableRow>
