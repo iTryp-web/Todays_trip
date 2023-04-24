@@ -1,5 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.itryp">
+	
+	<!-- 사용자가 작성한 글 목록 불러오기 -->
+	<select id="getMyBoardList" parameterType="map" resultType="map">
+		SELECT b.board_no,
+				u.user_nickname,
+				b.board_category,
+				b.board_title,
+				b.board_content,
+				b.board_date,
+				b.board_hit,
+				b.type_board,
+         		c.comment_count
+		  FROM TB_BOARD b,
+		  		TB_USER u,
+				(SELECT COUNT(user_id) comment_count, board_no FROM TB_B_COMMENT GROUP BY board_no) c
+		 WHERE b.user_id = u.user_id
+				AND b.board_no = c.board_no(+)
+				AND b.board_status = 0
+				AND b.board_category != '공지사항'
+		 ORDER BY b.board_no DESC
+	</select>
+	
+	<!-- 사용자가 작성한 댓글 목록 불러오기 -->
+	<select id="getMyRepleList" parameterType="map" resultType="map">
+		SELECT u.user_nickname,
+				c.comment_no,
+				c.comment_step,
+				c.comment_content,
+				c.comment_date,
+				c.type_comment,
+				c.comment_status,
+				l.like_count
+		  FROM TB_B_COMMENT c,
+				TB_USER u,
+				(SELECT COUNT(user_Id) like_count, like_step, like_group FROM tb_like WHERE like_type = 1 GROUP BY like_step, like_group) l
+		 WHERE c.user_id = u.user_id
+		   AND c.comment_no = l.like_group(+)
+		   AND c.comment_step = l.like_step(+)
+		   AND c.board_no = #{board_no}
+		<if test="judge != null">
+			AND c.comment_no = #{judge}
+		</if>
+		 ORDER BY c.comment_no ASC, c.comment_step ASC
+	</select>
+	
+	<!-- 사용자가 작성한 리뷰 목록 불러오기 -->
+	<select id="getMyReviewList" parameterType="map" resultType="map">
+		SELECT u.user_id,
+				u.user_nickname,
+				m.review_no,
+				m.market_no,
+				m.type_review,
+				m.review_star,
+				m.review_content,
+				m.review_date,
+				l.like_count
+		  FROM TB_M_REVIEW m,
+				TB_USER u,
+				(SELECT COUNT(user_id) like_count, like_group FROM TB_LIKE WHERE like_type = 2 GROUP BY like_group) l
+		 WHERE m.user_id = u.user_id(+)
+		   AND m.market_no = #{market_no}
+		   AND m.review_no = l.like_group(+)
+		<if test='sort != null and sort.equals("new")'>
+			ORDER BY m.review_date DESC
+		</if>
+		<if test='sort != null and sort.equals("old")'>
+			ORDER BY m.review_date ASC
+		</if>
+	</select>
+	
+	<!-- 사용자가 좋아요한 글 목록 불러오기 -->
+	<select id="getMyLikeList" parameterType="map" resultType="map">
+		SELECT l.like_type,
+				l.like_no,
+				l.like_group,
+				l.like_step
+		  FROM TB_USER u, TB_LIKE l
+		 WHERE u.user_id = l.user_id
+		   AND u.user_nickname = #{user_nickname}
+		   AND (l.like_type = 0 OR l.like_type = 1)
+		   AND l.like_no = #{board_no}
+	</select>
+	
+	<!-- 사용자 문의글 목록 불러오기 -->
+	<select id="getMyQNAList" parameterType="map" resultType="map">
+		SELECT q.qna_no,
+				u.user_id,
+				u.user_nickname,
+				q.market_no,
+				q.qna_title,
+				q.qna_content,
+				q.qna_date
+		  FROM TB_QNA q, TB_USER u
+		 WHERE q.user_id = u.user_id
+		<if test='sort != null and sort.equals("new")'>
+			ORDER BY q.qna_no DESC
+		</if>
+		<if test='sort != null and sort.equals("old")'>
+			ORDER BY q.qna_no ASC
+		</if>
+	</select>
 
 </mapper>
