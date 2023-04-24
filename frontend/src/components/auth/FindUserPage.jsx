@@ -3,9 +3,6 @@ import Header from "../include/Header";
 import { ConfirmButton, Div, EmailInputBox, FindEmailBlock, IfBox } from "../../styles/SignStyle";
 import { useState } from "react";
 
-
-
-
 const FindUserPage = () => {
   const [findInput, setFindInput] = useState("");
 

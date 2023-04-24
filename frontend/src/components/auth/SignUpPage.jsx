@@ -27,7 +27,6 @@ import { linkEmail, loginGoogle, onAuthChange, signupEmail } from "../../service
 import {
   checkInfoDB,
   memberInsertDB,
-  memberListDB,
 } from "../../service/memberLogic";
 import axios from "axios";
 import EmailVerifyCode from "./EmailVerifyCode";
@@ -317,7 +316,7 @@ const SignUpPage = ({ authLogic }) => {
           setPhoneInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
           setPhoneInputColor("#4996f3");
           setTextPhoneColor("black");
-          setPhoneText("");
+          alert("사용 가능합니다.")
         }
       }
       phoneInputRef.current = phoneInput;
@@ -380,6 +379,7 @@ const SignUpPage = ({ authLogic }) => {
         user_nickname: memInfo.nickname,
         user_name: memInfo.name,
         user_phone: memInfo.phone,
+        user_email : userEmail  
       };
       console.log(datas);
       const response = await memberInsertDB(datas);

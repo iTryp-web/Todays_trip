@@ -9,6 +9,8 @@
 		,user_nickname
 		,user_name
 		,user_phone
+		,user_email
+		,salt
 		)
 		VALUES(
 		<if test='user_id!= null'>
@@ -26,6 +28,10 @@
 		<if test='user_phone!= null'>
 			,#{user_phone}
 		</if>
+		<if test='user_email!= null'>
+			,#{user_id}
+		</if>
+		,123
 		)
 	</insert>
 
