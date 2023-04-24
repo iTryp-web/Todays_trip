@@ -8,7 +8,7 @@ const PaymentResult = () => {
 
   const location = useLocation();
   const result = useState(location.state?.result)[0];
-  let order_no = useState(location.state?.order_no);
+  let order_no = useState(location.state?.order_no)
   let error_msg = useState(location.state?.error_msg);
   
   return (
@@ -19,7 +19,7 @@ const PaymentResult = () => {
           <div className='img'><img src={ result ? "/images/check.png" : "/images/failed.png" } alt="result_icon" className='fail icon'/></div>
           <div className='num'>{ result ? "주문 번호 : " + order_no[0] || "" : "실패 사유 : " + error_msg[0] ||"" }</div>
           <hr/>
-          <Link to={ result ? '../' : '/order' }><button className='order button'>{result ? "주문 목록" : "이전으로" }</button></Link>
+          <Link to={ result ? '../' : '/cart' }><button className='order button'>{result ? "주문 목록" : "이전으로" }</button></Link>
           <Link to={'/'}><button className='order button home'>메인으로</button></Link>
           <hr/>
         </div>

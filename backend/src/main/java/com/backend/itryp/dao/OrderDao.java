@@ -112,4 +112,17 @@ public class OrderDao {
 		return list;
 	}
 
+	/**
+	 * failPayment
+	 * 
+	 * @param pmap 
+	 * @return result 결과값
+	 */
+	public int failPayment(Map<String, Object> pmap) {
+		log.info("failPayment 호출");
+		int result = 0;
+		result = sst.update("failPayment", pmap);
+		return result;
+	}
+
 }

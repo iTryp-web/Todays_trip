@@ -108,4 +108,18 @@ public class OrderLogic {
 	}
 
 
+	/**
+	 * failPayment
+	 * 
+	 * @param pmap
+	 * @return
+	 */
+	public int failPayment(Map<String, Object> pmap) {
+		log.info("failPayment 호출");
+		int result = 0;
+		result = odao.failPayment(pmap);
+		return result;
+	}
+
+
 }

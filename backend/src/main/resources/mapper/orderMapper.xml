@@ -38,7 +38,8 @@
 							</if>
 								order_total,
 								order_discount,
-								order_payment)
+								order_payment,
+								order_date)
 					VALUES (
 								TB_ORDER_NO_SEQ.NEXTVAL, 
 								#{user_id},
@@ -47,7 +48,8 @@
 							</if>
 								#{order_total},
 								#{order_discount},
-								#{order_payment})
+								#{order_payment},
+								TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS'))
 	</insert>
 	
 	<!-- 주문 상세 내역 DB에 저장 -->
@@ -69,6 +71,11 @@
 	<!-- 주문시 사용한 쿠폰 정보 업데이트 -->	
 	<update id="updateCouponInfo" parameterType="map">
 		UPDATE TB_U_COUPON SET coupon_exp = 1 WHERE coupon_no = #{coupon_no}
+	</update>
+	
+	<!-- 결제 실패시 주문 정보 업데이트 -->
+	<update id="failPayment" parameterType="map">
+		UPDATE TB_ORDER SET order_status = #{order_status} WHERE order_no = #{order_no}		
 	</update>
 	
 	<!-- 주문 내역 DB에 저장한 후 저장한 주문 번호 읽어오기 -->
