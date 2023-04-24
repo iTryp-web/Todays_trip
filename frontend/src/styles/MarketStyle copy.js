@@ -454,35 +454,6 @@ export const PostLi = styled.li`
     -webkit-box-orient: vertical;
   }
 
-  /* QnARow 애니메이션을 위한 contentP */
-  .contentP2 {
-    opacity: 0;
-    height: 0px;
-    overflow: hidden;
-    transition: all 0.2s ease 0s;
-    display: -webkit-box;
-    margin: 0 0 0 0;
-    padding-right: 16px;
-    color: #888;
-    text-overflow: ellipsis;
-    word-break: break-all;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-
-    /* 열렸을 때 스타일(질문이 클릭 되면 작동) */
-    &.show {
-      margin: 15px 0 5px 0;
-      opacity: 1;
-      height: auto;
-      overflow: visible;
-      transition: all 0.1s ease-in-out;
-    }
-    &.visible {
-      opacity: 1;
-      overflow: visible;
-    }
-  }
-
   .letterIcon{
     color: #4a71a4;
     font-size:20px;
