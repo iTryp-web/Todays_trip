@@ -480,11 +480,11 @@ export const ModalCode = styled(Modal)`
   width: 300px;
   height: 200px;
   overflow: auto;
-  h4{
-    text-align : center;
+  h4 {
+    text-align: center;
   }
   input {
-    margin : 8px;
+    margin: 8px;
     &:focus {
       outline: none;
     }
@@ -495,7 +495,7 @@ export const ModalCode = styled(Modal)`
     }
   }
   .confirm {
-    margin : 5px;
+    margin: 5px;
     font-size: 15px;
     border-radius: 5px;
     outline: none;
@@ -646,5 +646,78 @@ export const IfBox = styled.div`
     font-size: 11px;
     color: #4996f3;
     padding-bottom: 15px;
+  }
+`;
+
+export const GoogleBlock = styled.section`
+  max-width: 500px;
+  padding: 10rem;
+  display: flex;
+  justify-content: center;
+  position: relative;
+`;
+
+export const InputBox = styled.div`
+  p {
+    font-size: 12px;
+    margin-top : 5%;
+  }
+  label {
+    width: 300px;
+    position: relative;
+    
+    input {
+      width: 100%;
+      height: 38px;
+      font-size: 14px;
+      border: 1px solid lightgray;
+      padding-left: 15px;
+      border-radius: 5px;
+      &:focus {
+        outline: none;
+      }
+      &::placeholder {
+        font-weight: 550;
+        font-size: 14px;
+        color: lightgray;
+      }
+    }
+    button {
+      position: absolute;
+      width: 25%;
+      height : 30px;
+      top: 4px;
+      right: 5px;
+      font-size: 15px;
+      border-radius: 5px;
+      outline: none;
+      background-color: #4996f3;
+      border: 1px solid #4996f3;
+      color: white;
+      font-size: 14px;
+      font-weight: 550;
+      &:hover {
+        background-color: #537fe7;
+        border: 1px solid #537fe7;
+      }
+    }
+  }
+`;
+
+export const JoinButton = styled.button`
+  margin-top: 1rem;
+  margin-left: 0.5%;
+  border-radius: 5px;
+  height: 45px;
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  background-color: #4996f3;
+  color: white;
+  &:hover {
+    background-color: #537fe7;
+    border: none;
   }
 `;
