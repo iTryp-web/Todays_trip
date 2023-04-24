@@ -20,8 +20,7 @@ const InquiryWriteForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
-  const [isProtected, setIsProtected] = useState(0);
-  const [sort, setSort] = useState(0);
+  const [isProtected, setIsProtected] = useState(2);
   const quillRef = useRef();
 
   const handleTitle = useCallback((e) => {
