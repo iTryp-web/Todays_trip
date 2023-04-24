@@ -84,7 +84,7 @@ public class OrderController {
 	 * 결제 정보 DB 등록
 	 * 
 	 * @param pmap 주문 및 결제 정보
-	 * @return rmap 등록된 주문 번호
+	 * @return result 등록된 주문 번호
 	 */
 	@PostMapping("payment")
 	public String paymentUpdate(@RequestBody Map<String, Object> pmap) {
@@ -92,6 +92,22 @@ public class OrderController {
 		String temp = null;
 		int result = 0;
 		result = odrLogic.paymentUpdate(pmap);
+		return result + "";
+	}
+	
+	
+	/**
+	 * 결제 실패시 DB 업데이트
+	 * 
+	 * @param pmap 주문 번호
+	 * @return result 결과값
+	 */
+	@PostMapping("failPayment")
+	public String failPayment(@RequestBody Map<String, Object> pmap) {
+		log.info("failPayment 호출");
+		String temp = null;
+		int result = 0;
+		result = odrLogic.failPayment(pmap);
 		return result + "";
 	}
 	

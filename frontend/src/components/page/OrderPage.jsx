@@ -8,12 +8,15 @@ import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCoupo
          InputAllCheck, AddressTable, AddressTitleTd, AddressButton, AddressInput, AgreeCheckDiv } from '../../styles/OrderStyle'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { getOrderPage, setOrderTable, updatePaymentInfo } from '../../service/orderLogic'
+import { useCookies } from 'react-cookie'
+import { getOrderPage, setOrderTable, updatePayFail, updatePaymentInfo } from '../../service/orderLogic'
 import { Form } from 'react-bootstrap'
+import { cancelMsg, failValue } from '../order/constants'
 
 const OrderPage = () => {
 
   const navigate = useNavigate();
+  const [ cookies, setCookies, removeCookies ] = useCookies(['cart']);
 
   //주문 상품 정보 받아오기
   const location = useLocation();
@@ -23,6 +26,7 @@ const OrderPage = () => {
 
   const [ orderDetailInfo, setOrderDetailInfo ] = useState([]);
   let order_no;
+  let paymentData = {};
 
   //사용 가능한 쿠폰 리스트 관리
   const [cList, setCList] = useState([]);
@@ -88,6 +92,8 @@ const OrderPage = () => {
       shipping_address: userInfo.user_address,
       shipping_address_detail: userInfo.user_address_detail
     }))
+    console.log(userInfo)
+    console.log(orderInfo);
   }, [userInfo])
 
   //약관 체크 박스 관리용
@@ -153,7 +159,7 @@ const OrderPage = () => {
 
     //orderInfo 값 null 체크
     for(let key in orderInfo){
-      if(orderInfo[key].length === 0 || orderInfo[key] === undefined){
+      if(orderInfo[key] === undefined || orderInfo[key].length === 0){
         alert(key + "에 값을 입력해주세요.");
         return;
       }
@@ -182,19 +188,19 @@ const OrderPage = () => {
     IMP.init(process.env.REACT_APP_IMPORT_INIT_KEY);
     
     //결제 정보 담기
-    const paymentData = {
+    paymentData = {
       pg: 'html5_inicis',                                                                                     // PG사
       pay_method: 'card',                                                                                     // 결제수단
-      merchant_uid:  `mid_${new Date().getTime()}`,                                                           // 주문번호
+      merchant_uid:  `oh_${new Date().getTime()}`,                                                            // 주문번호
       amount: price - discount,                                                                               // 결제금액
       name: cartList[0].marketName + (cartList.length > 1 ? " 외 " + (cartList.length - 1) +  " 건" : ''),    // 주문명
-      buyer_name: orderInfo.user_name,                                                                        // 구매자 이름
-      buyer_tel: orderInfo.user_phone,                                                                        // 구매자 전화번호
-      buyer_email: orderInfo.user_email,                                                                      // 구매자 이메일
-      buyer_addr: orderInfo.user_address + " " + orderInfo.user_address_detail,                               // 구매자 주소
-      buyer_postcode: orderInfo.user_zipcode,                                                                 // 구매자 우편번호
+      buyer_name: userInfo.user_name,                                                                        // 구매자 이름
+      buyer_tel: userInfo.user_phone,                                                                        // 구매자 전화번호
+      buyer_email: userInfo.user_email,                                                                      // 구매자 이메일
+      buyer_addr: userInfo.user_address + " " + userInfo.user_address_detail,                               // 구매자 주소
+      buyer_postcode: userInfo.user_zipcode,                                                                 // 구매자 우편번호
     };
-
+    console.log(orderInfo);
     console.log(paymentData);
 
     //결제시 콜백 구현
@@ -208,7 +214,7 @@ const OrderPage = () => {
     
       if (success) {
         //결제 정보 DB에 넣고 성공 페이지 이동
-        console.log(merchant_uid + order_no + ':: 결제 성공');
+        console.log(merchant_uid + "-" + order_no + ':: 결제 성공');
 
         const updatePayInfo = async() => {
           const payData = {
@@ -222,19 +228,36 @@ const OrderPage = () => {
           await updatePaymentInfo(payData).then((res) => {
             if(res.data !== null){
               //장바구니에서 해당 상품 삭제 처리
-              console.log(res.data)
+              setCookies()
             }
           })
         }
         updatePayInfo();
-        navigate("/payResult", { state: { result: success, merchant_uid: order_no }});
+        navigate("/payResult", { state: { result: success, order_no: merchant_uid + "-" + order_no }});
       } else {
         //주문 실패 정보 DB 업데이트 후 실패 페이지 이동 
         console.log(`${order_no} :: 결제 실패: ${error_msg}`);
-
-        navigate("/payResult", { state: { result : success, merchant_uid: order_no , error_msg: error_msg}});
+        const updatePayFailInfo = async() => {
+          const ordFailData = {
+            order_no: order_no,
+            order_status: failValue
+          }
+          console.log(ordFailData)
+          await updatePayFail(ordFailData).then((res) => {
+            if(res.data !== null){
+              console.log("updatePayFail 성공")
+            }
+          })
+        }
+        updatePayFailInfo();
+        if(cancelMsg === error_msg) return;
+        else navigate("/payResult", { state: { result : success, order_no: merchant_uid + "-" + order_no , error_msg: error_msg }});
       }
+
     }
+
+    console.log(paymentData);
+
     //결제 실행
     IMP.request_pay(paymentData, callback);
   }
