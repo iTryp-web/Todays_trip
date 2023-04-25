@@ -8,26 +8,26 @@ import ProductItem from './ProductItem';
 
 const ProductList = () => {
   /* 판매글 목록 */
+  // 판매글 담을 객체배열
+  const [items, setItems]=useState([{}]);
   //화면위한 테스트 이미지
-  const [items, setItems]=useState([
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-162303132447303472.jpeg/640/640",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166141476368385159.jpg/640/640",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
-    "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
-  ]);
-
-// 판매글 담을 객체배열
-const [posts, setPosts] = useState([{}])
+  // const [items, setItems]=useState([
+  //   "https://d2ur7st6jjikze.cloudfront.net/offer_photos/40529/256554_large_1535278177.jpg?1535278177",
+  //   "https://d2ur7st6jjikze.cloudfront.net/offer_photos/110343/791143_medium_1680161600.jpg?1680161600",
+  //   "https://d2ur7st6jjikze.cloudfront.net/offer_photos/115381/624924_medium_1669801773.jpg?1669801773",
+  //   "https://d2ur7st6jjikze.cloudfront.net/offer_photos/53690/336353_medium_1553197206.jpg?1553197206",
+  //   "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
+  //   "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-168024507895767045.jpg/640/640",
+  //   "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-162303132447303472.jpeg/640/640",
+  //   "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166141476368385159.jpg/640/640",
+  //   "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
+  //   "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
+  //   "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
+  //   "https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166356638082651494.png/2560/2560",
+  // ]);
 
 // 선택한 카테고리 담기
-const [selected, setSelected] = useState('전체')
+const [selected, setSelected] = useState('')
 const handleCategory =  useCallback((name) => {
   console.log('handleCategory => ' + name);
   setSelected(name)
@@ -35,7 +35,7 @@ const handleCategory =  useCallback((name) => {
 
   /* 검색 */
 // 선택한 검색 조건
-const [searchVal, setSearchVal] = useState('작성자')
+const [searchVal, setSearchVal] = useState('전체')
 // 입력한 검색값
 const [keyword, setKeyword] = useState('')
 // 검색조건 입력
@@ -59,9 +59,6 @@ const btnSearch =  useCallback((e) => {
 
 //선택한 카테고리에따라 글목록 출력
 useEffect(() => {
-
-   
-
 
   const marketList = async() => {
     let market = {}
@@ -87,21 +84,22 @@ useEffect(() => {
         market_content: item.MARKET_CONTENT,
         market_price: item.MARKET_PRICE,
         market_date: item.MARKET_DATE,
+        review_count:item.REVIEW_COUNT,
+        star_avg:item.STAR_AVG,
+        file_url:item.FILE_URL,
+        file_step:item.FILE_STEP,
       }
+      
       list.push(obj)
+      
     })
-    setPosts(list)
+    setItems(list)
     setKeyword('')
     const keywordInput = document.getElementById('keyword')
     keywordInput.value = '' // 키워드 input창 초기화
   }
   marketList()
 }, [selected, searchStart])
-
-const content=posts.map((post) => {
-  return <marketRow key={post.market_no} post={post} />
-})
-
 
   return (
     <>

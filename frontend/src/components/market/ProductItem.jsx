@@ -3,109 +3,53 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { ContentsBlock, ItemBlock, Star } from '../../styles/MarketStyle';
 
-const ContentsBlock = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  @media only screen and (max-width: 768px) {
-    width: 100%;
-  }
-`;
 
-const ItemBlock = styled.div`
-  width: 25%;
-  padding: 1rem 0.5rem;
-  cursor: pointer;
-  span {
-    color: var(--gray);
-  }
-  
-  .image {
-    max-height: 270px;
-    overflow: hidden;
-    margin-bottom: 0.3rem;
-    border-radius: 5px;
-    position: relative;
-    img {
-      width: 100%;
-      height: 100%;
-      &:hover {
-        transform: scale(1.1);
-        transition: transform 0.5s;
-      }
-    }
-    .mark {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      font-size: 1.5rem;
-      color: #ffffff84;
-    }
-  }
-
-  .body {
-    padding: 0 0.5rem;
-    font-size: 0.8rem;
-    .brand {
-      display: inline-block;
-      margin-bottom: 0.3rem;
-      font-size: 0.7rem;
-    }
-    .special-price {
-      display: block;
-      color: var(--red);
-      font-weight: 800;
-    }
-    .discount {
-      color: var(--blue);
-      font-weight: 600;
-      font-size: 1.2rem;
-      margin-right: 0.5rem;
-    }
-    .price {
-      color: var(--black);
-      font-weight: 600;
-      font-size: 1.2rem;
-    }
-    .star {
-      margin-right: 0.3rem;
-      color: var(--black);
-      font-weight: 600;
-      span {
-        color: var(--blue);
-      }
-    }
-    .review_count {
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-  }
-  @media only screen and (max-width: 768px) {
-    .image {
-      width: 100%;
-      max-height: 100%;
-    }
-  }
-`;
 
 const ProductItem = ({items}) => {
+
   
   const navigate=useNavigate()
-  
+ 
+
+
   return (
     <>
       <ContentsBlock>
         {items && items.map((item,index)=>(
           <ItemBlock onClick={() => navigate('/market/detail')}>
-            <img className='image' src={item} />
+            <img className='image' src={item.file_url} />
             <div className="body">
-            <span className="brand">오행</span>
-            <span className="title">비침없는 도톰레이스</span>
-            <span className="star">
-            <span>★</span> 
-          </span>
-          <span className="review_count">리뷰 123</span>
+              <span className="category">{item.market_category}</span>
+              <span className="title">{item.market_title}</span>
+           
+              <span className="discount">20%</span>
+              <span className="price">{item.market_price}</span>
+
+
+            
+              <Star>
+              <div className="star_rating">
+                <div className="star_rating_fill" style={{width:`${(item.star_avg / 5) * 100}%`}} >
+      
+                  
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                </div>
+                <div className="star_rating_base">
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                </div>
+              </div>
+            </Star>
+              <span className="review_count">리뷰 {item.review_count}</span>
             </div>
           </ItemBlock>
 ))}

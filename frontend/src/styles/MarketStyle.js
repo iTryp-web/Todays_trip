@@ -1,85 +1,96 @@
 import styled from "styled-components";
 
 export const ContentsBlock = styled.div`
-width: 25%;
-@media only screen and (max-width: 768px) {
-  width: 50%;
-}
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const ItemBlock = styled.div`
-padding: 1rem 0.5rem;
-cursor: pointer;
-span {
-  color: var(--gray);
-}
-.image {
-  max-height: 270px;
-  overflow: hidden;
-  margin-bottom: 0.3rem;
-  border-radius: 5px;
-  position: relative;
-  img {
-    width: 100%;
-    height: 100%;
-    &:hover {
-      transform: scale(1.1);
-      transition: transform 0.5s;
-    }
+  width: 25%;
+  padding: 1rem 0.5rem;
+  cursor: pointer;
+  span {
+    color: var(--gray);
   }
-  .mark {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    font-size: 1.5rem;
-    color: #ffffff84;
-  }
-}
-
-.body {
-  padding: 0 0.5rem;
-  font-size: 0.8rem;
-  .brand {
-    display: inline-block;
-    margin-bottom: 0.3rem;
-    font-size: 0.7rem;
-  }
-  .special-price {
-    display: block;
-    color: var(--red);
-    font-weight: 800;
-  }
-  .discount {
-    color: var(--blue);
-    font-weight: 600;
-    font-size: 1.2rem;
-    margin-right: 0.5rem;
-  }
-  .price {
-    color: var(--black);
-    font-weight: 600;
-    font-size: 1.2rem;
-  }
-  .star {
-    margin-right: 0.3rem;
-    color: var(--black);
-    font-weight: 600;
-    span {
-      color: var(--blue);
-    }
-  }
-  .review_count {
-    font-size: 0.8rem;
-    font-weight: 600;
-  }
-}
-@media only screen and (max-width: 768px) {
+  
   .image {
-    width: 100%;
-    max-height: 100%;
+    height: 270px;
+    width: 270px;
+    overflow: hidden;
+    margin-bottom: 0.3rem;
+    border-radius: 5px;
+    position: relative;
+    img {
+      background-size:cover;
+      width: 100%;
+      height: 100%;
+      &:hover {
+        transform: scale(1.1);
+        transition: transform 0.5s;
+      }
+    }
+    .mark {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 1.5rem;
+      color: #ffffff84;
+    }
   }
-}
+
+  .body {
+    padding: 0 0.5rem;
+    
+    .title{
+    font-size: 1rem;
+    font-weight:bold;
+    margin-bottom: 0.5rem;
+    }
+    
+    .category {
+      display: inline-block;
+      margin-bottom: 0.3rem;
+      font-size: 0.8rem;
+      font-weight:300;
+    }
+    
+    .discount {
+      color: var(--blue);
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-right: 0.5rem;
+    }
+    .price {
+      margin-top:50%;
+      color: var(--black);
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .star {
+      margin-right: 0.3rem;
+      color: var(--black);
+      font-weight: 600;
+      span {
+        color: var(--blue);
+      }
+    }
+    .review_count {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    .image {
+      width: 100%;
+      max-height: 100%;
+    }
+  }
 `;
+
 
 export const ProductListBlock = styled.div`
 padding: 0 4rem;
@@ -453,17 +464,15 @@ export const PostLi = styled.li`
   
   .contentP {
     word-break: break-all;
-    // height: 100%;
-    // overflow: hidden;
-    display: -webkit-box;
-    margin: 8px 0 5px 0;
+    display: inline-block;
+    margin: 4px 0 5px 0;
     padding-right: 16px;
     color: #888;
     text-overflow: ellipsis;
     word-break: break-all;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-  }
+}
 
   /* QnARow 애니메이션을 위한 contentP */
   .contentP2 {

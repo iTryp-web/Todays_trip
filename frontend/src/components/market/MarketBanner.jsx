@@ -53,6 +53,12 @@ const Button=styled.button`
   font-size:20px;
   color:white;
 `
+const Banner=styled.div`
+  display:flex;
+p{
+  margin-top: 15px;
+}
+`
 
 const MarketBanner = () => {
   const [close, setClose] = useState(false);
@@ -62,10 +68,12 @@ const MarketBanner = () => {
 
   return (
     <BannerBlock close={close}>
-      {auth===0?
+      {auth===1?
       <Coupon onClick={() => navigate('/signin')}>
-        <Image src="/images/voucher.png" />&nbsp;
-        오늘의 여행 첫구매 쿠폰받기!
+        <Banner>
+          <Image src="/images/voucher.png" />&nbsp;
+          <p>오늘의 여행 첫구매 쿠폰받기!</p>
+        </Banner>
         </Coupon>:
         <Button onClick={() => navigate('/market/write')} >
           지금 판매자 글쓰기!

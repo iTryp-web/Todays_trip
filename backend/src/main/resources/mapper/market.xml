@@ -11,13 +11,27 @@
 					,m.market_content
 					,m.market_price
 					,m.market_date
-		  FROM TB_MARKET m, TB_USER u
-  	  WHERE m.user_id = u.user_id
-  	  AND m.MARKET_CATEGORY != '공지사항'
-			<if test='market_category!=null and !market_catetory.equals("전체")'>
-				AND m.market_category = #{market_category}
-			</if>
-			<if test='search != null and search.equals("작성자")'>
+					,r.REVIEW_COUNT
+					,r.star_avg
+					,f.file_url
+					
+		  FROM TB_MARKET m, TB_USER u,
+		   (SELECT 
+                    market_no, 
+                    count(review_no) review_count, 
+                    avg(review_star) star_avg
+                FROM TB_M_REVIEW 
+            group by market_no) r,
+           (SELECT 
+           			file_url, market_no
+           	FROM TB_M_FILE
+           	WHERE file_step=1
+           	) f 
+			  	  WHERE m.user_id = u.user_id
+			  	  and m.market_no=r.market_no
+			  	  and m.market_no=f.market_no 
+			  	   AND m.market_category != '공지사항'
+			<!-- <if test='search != null and search.equals("작성자")'>
 				AND u.user_nickname LIKE '%'||#{keyword}||'%'
 			</if>
 			<if test='search != null and search.equals("제목")'>
@@ -28,23 +42,39 @@
 			</if>
 			<if test='market_price != null'>
     		AND m.MARKET_PRICE BETWEEN #{min_price} AND #{max_price}
-			</if>
+			</if> -->
 		ORDER BY m.market_no ASC
 	</select>
 	
 	<!-- 마켓글 상세조회 -->
 	<select id="marketDetail" parameterType="map" resultType="map">
-		SELECT  m.market_no     
-  				 ,u.USER_NICKNAME         
-					 ,m.TYPE_MARKET    
-					 ,m.MARKET_CATEGORY  
-					 ,m.MARKET_TITLE     
-					 ,m.MARKET_CONTENT  
-					 ,m.MARKET_PRICE    
-					 ,m.MARKET_DATE 
-		  FROM TB_MARKET m, TB_USER u
-  	  WHERE m.user_id = u.user_id
-  	  	AND m.market_no = #{market_no}
+		SELECT m.market_no
+					,u.user_nickname
+					,m.type_market
+					,m.market_category
+					,m.market_title
+					,m.market_content
+					,m.market_price
+					,m.market_date
+					,r.REVIEW_COUNT
+					,r.star_avg
+					,f.file_url
+					,f.file_step
+		  FROM TB_MARKET m, TB_USER u,
+		   (SELECT 
+                    market_no, 
+                    count(review_no) review_count, 
+                    avg(review_star) star_avg
+                FROM TB_M_REVIEW 
+            group by market_no) r,
+           (SELECT 
+           			file_url, market_no, file_step 
+           	FROM TB_M_FILE) f 
+			  	  WHERE m.user_id = u.user_id
+			  	  and m.market_no=r.market_no
+			  	  and m.market_no=f.market_no 
+			  	   AND m.market_no = #{market_no}
+		
 	</select>
 	
 

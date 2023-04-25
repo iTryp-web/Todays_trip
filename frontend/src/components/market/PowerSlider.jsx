@@ -67,12 +67,27 @@ const PowerSlider = () => {
     autoplaySpeed: 4000,
   };
 
+  const imageURL=[
+    // "https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2022/11/11/IejJ/JmRG21Gso2.jpg?width=3180&quality=70",
+    "https://d2ur7st6jjikze.cloudfront.net/cms/1836_original_1681562977.jpg?1681562977",
+    "https://d2ur7st6jjikze.cloudfront.net/cms/1680_original_1678940770.jpg?1678940770",
+    "https://d2ur7st6jjikze.cloudfront.net/cms/3624_original_1678357942.jpg?1678357942",
+    "https://d2ur7st6jjikze.cloudfront.net/cms/1784_original_1677772299.jpg?1677772299",
+    "https://d2ur7st6jjikze.cloudfront.net/cms/1406_original_1672796353.jpg?1672796353"
+  ]
+  
+  
+
   return (
     <div>
         <SliderBlock {...settings}>
-          <img src="https://bucketplace-v2-development.s3.amazonaws.com/uploads/store/banners/store_home_banners/168129173474630474.png" alt="캠핑" tabindex="-1" class="sc-jfSnVq hlFoNI" style="width: 100%; display: inline-block;"></img>
-          <img src="https://bucketplace-v2-development.s3.amazonaws.com/uploads/store/banners/store_home_banners/168085278916058540.jpg" alt="SK매직" tabindex="-1" class="sc-jfSnVq hlFoNI" style="width: 100%; display: inline-block;"></img>
-          <img src="https://bucketplace-v2-development.s3.amazonaws.com/uploads/store/banners/store_home_banners/168085193624933812.png" alt="가구" tabindex="-1" class="sc-jfSnVq hlFoNI" style="width: 100%; display: inline-block;"></img>
+       
+            {imageURL.map((image)=>(
+             <img src={image}/>
+          ))}
+          
+          {/* <img src="https://bucketplace-v2-development.s3.amazonaws.com/uploads/store/banners/store_home_banners/168129173474630474.png" alt="캠핑" tabindex="-1" class="sc-jfSnVq hlFoNI" style="width: 100%; display: inline-block;"></img> */}
+          
         </SliderBlock>
     
     </div>
