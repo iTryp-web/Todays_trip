@@ -2,6 +2,8 @@ import { LoginBlock, LoginFormBlock, LogoBlock, SignDiv, SocialBlock } from "../
 import { Logo } from "../../styles/FormStyle";
 import { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { checkInfoDB } from "../../service/memberLogic";
+import { loginGoogle } from "../../service/authLogic";
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -10,8 +12,32 @@ const GlobalStyle = createGlobalStyle`
 `
 
 
-const SignIn = () => {
+const SignIn = ({authLogic}) => {
   const navigate = useNavigate()
+  const loginG = async() =>{
+    //구글 로그인
+    try {
+      console.log('로그인시도')
+      const result = await loginGoogle(authLogic.getUserAuth(),authLogic.getGoogleAuthProvider())
+      window.sessionStorage.setItem('userId',result.uid)
+      let params;
+      params = {
+        user_id : result.uid
+      }
+      let response = {data : 0};
+      response = await checkInfoDB(params);
+      const data = JSON.stringify(response.data);
+      const jsonDoc = JSON.parse(data);
+      if(!jsonDoc){
+        navigate("/auth/GoogleSignUp")
+      }else{
+        navigate("/")
+        window.location.reload()
+      }
+   } catch (error) {
+      console.log("로그인 오류입니다")
+   }
+  }
   return (
     <>
     <GlobalStyle/ >
@@ -32,7 +58,7 @@ const SignIn = () => {
         <SocialBlock>
           <span>SNS계정으로 간편 로그인/회원가입</span>
           <div className="socialButton">
-          <img src="images/google-icon.png" alt="구글" />
+          <img src="images/google-icon.png" alt="구글" onClick={()=>{loginG();}}/>
           <img src="images/kakao-icon.png" alt="네이버" />
           <img src="images/naver-icon.png" alt="카카오" />
           </div>

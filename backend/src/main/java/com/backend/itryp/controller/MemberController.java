@@ -50,6 +50,29 @@ public class MemberController {
 		}
 		return temp;
 	}
+	/******************
+	 * 세션저장
+	 * @param pMap
+	 * @return
+	 ******************/
+	@GetMapping("sessionList")
+	public String sessionList(@RequestParam Map<String, Object> pMap) {
+		logger.info("sessionList 호출");
+		logger.info(pMap);
+		String temp = null;
+		List<Map<String,Object>> mList = new ArrayList<>();
+		mList = memberLogic.sessionList(pMap);
+		logger.info(mList);
+		
+		if(mList.size()>0) {
+			Gson g = new Gson();
+			temp = g.toJson(mList);
+		}
+		else {
+			temp = "0";
+		}
+		return temp;
+	}
 	
 	/******************
 	 * 중복 검사, 이메일 찾기

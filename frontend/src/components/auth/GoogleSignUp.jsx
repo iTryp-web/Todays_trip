@@ -168,6 +168,7 @@ const GoogleSignUp = ({ authLogic }) => {
     console.log("구글 회원가입 구현");
     console.log(user.uid);
     console.log(user.email);
+    console.log(user.emailVerified);
     try {
       const datas = {
         user_id: user.uid,

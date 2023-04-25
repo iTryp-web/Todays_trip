@@ -32,6 +32,22 @@ export const checkInfoDB = (member) => {
   });
 };
 
+//세션 저장용
+export const sessionListDB = (member) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "member/sessionList",
+        params: member,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 //회원가입
 export const memberInsertDB = (member) => {
   return new Promise((resolve, reject) => {

@@ -24,8 +24,9 @@ import InquiryList from './components/support/InquiryList';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { onAuthChange } from './service/authLogic';
-import { checkInfoDB } from './service/memberLogic';
 import GoogleSignUp from './components/auth/GoogleSignUp';
+import { sessionListDB } from './service/memberLogic';
+import KakaoLogin from './components/auth/KakaoLogin';
 
 
 function App({authLogic}) {
@@ -48,29 +49,23 @@ function App({authLogic}) {
       if(user){
         console.log('user정보가 있을때')
         //세션스토리지에 이메일 주소가 등록됨 - 단 구글로그인이 되어있는 상태일때만
-        ssg.setItem('email',user.email)
-        const res = await checkInfoDB({user_id:user.uid})
-        console.log(user.uid)
-        console.log(user.email)
+        //ssg.setItem('email',user.email)
+        const res = await sessionListDB({user_id:user.uid})
         console.log(res.data)
         //오라클서버의 회원집합에 uid가 존재하면 - 세션 스토리지에 값을 담자
         if(res.data!==0){//스프링 부트 - RestMemberController - memberList에서 넘어오는 정보
           const temp = JSON.stringify(res.data)
           const jsonDoc = JSON.parse(temp)
+          ssg.setItem('name',jsonDoc[0].USER_NAME)
           ssg.setItem('nickname',jsonDoc[0].USER_NICKNAME)
           ssg.setItem('email',jsonDoc[0].USER_EMAIL)
           ssg.setItem('id',jsonDoc[0].USER_ID)
-          //navigate("/") //이것때문에 계속 home으로 이동
           return //렌더링이 종료됨
-        }
-        //구글계정이 아닌 다른 계정으로 로그인을 시도했을 땐 user.emailVerified가 없다 - 그렇다면 undefined이겠지! 
-        if(!user.emailVerified){
-          navigate('./auth/emailVerified')
+         
         }
         //오라클서버의 회원집합에 uid가 존재하지 않으면
         else{
           console.log("해당 구글 계정은 회원가입 대상입니다. 회원가입 부탁드립니다.")
-          navigate("/auth/GoogleSignUp")
         }
       }
       //사용자 정보가 없을 때
@@ -109,7 +104,8 @@ function App({authLogic}) {
       <Route path='/support/inquiryBoard' exact={true} element={<InquiryList />} />
       <Route path='/support/write' exact={true} element={<InquiryWriteForm />} />
       <Route path='/findEmail' exact ={true} element={<FindUserPage/>} />
-      <Route path='/auth/GoogleSignUp' exact={true} element={<GoogleSignUp authLogic ={authLogic}/>}/>
+      <Route path='/auth/googleSignUp' exact={true} element={<GoogleSignUp authLogic ={authLogic}/>}/>
+      <Route path='/auth/kakao' exact={true} element={<KakaoLogin />}/>
     </Routes>
     </> 
   );

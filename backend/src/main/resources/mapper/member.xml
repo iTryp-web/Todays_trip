@@ -28,8 +28,11 @@
 		<if test='user_phone!= null'>
 			,#{user_phone}
 		</if>
-		<if test='user_email!= null'>
-			,#{user_id}
+		<if test='user_email != null and user_email.indexOf("@") != -1'>
+			, #{user_email}
+		</if>
+		<if test='user_email != null and user_email.indexOf("@") == -1'>
+			, #{user_id}
 		</if>
 		,123
 		)
@@ -39,20 +42,33 @@
 	<!-- 로그인, 회원정보 조회용 쿼리문 -->
 	<select id="memberList" parameterType="map" resultType="map">
 		SELECT
-			user_id
-			,user_nickname
-			,user_name
-			,user_phone
-			,user_zipcode
-			,user_address
-			,user_address_detail
+		user_id
+		,user_nickname
+		,user_name
+		,user_phone
+		,user_zipcode
+		,user_address
+		,user_address_detail
 		from TB_USER
 		WHERE
-			user_id=#{user_id} AND user_pw=#{user_pw} AND status = 0
+		user_id=#{user_id} AND
+		user_pw=#{user_pw} AND status = 0
 	</select>
 	
+	<!-- 로그인시 세션 정보 저장용(아이디, 이메일, 닉네임, 이름) -->
+	<select id="sessionList" parameterType="map" resultType="map">
+		SELECT
+		user_id
+		,user_nickname
+		,user_name
+		,user_email
+		from TB_USER
+		WHERE
+		user_id=#{user_id}
+	</select>
+
 	<!-- 중복검사(아이디, 닉네임, 핸드폰번호), 이메일 찾기용 쿼리문 -->
-	<select id ="checkInfo" parameterType="map" resultType="map">
+	<select id="checkInfo" parameterType="map" resultType="map">
 		SELECT
 		<if test='user_id!= null'>
 			user_id
@@ -65,24 +81,26 @@
 		</if>
 		FROM TB_USER
 		<where>
-		<if test='user_id!= null and user_id.length()>0'>
-			user_id = #{user_id}
-		</if>
-		<!-- 닉네임 중복검사 -->
-		<if test='user_nickname!= null and user_nickname.length()>0'>
-			user_nickname = #{user_nickname}
-		</if>
-		<!-- 핸드폰 중복검사 -->
-		<if test='user_phone!= null and user_phone.length()>0'>
-			user_phone = #{user_phone}
-		</if>
-		<!-- 아이디(이메일) 찾기 : 이메일 찾기 만들때 sort에 이메일찾기 넣어줘야함 -->
-		<if test ='sort!=null and sort.equals("아이디찾기")'>
-			AND status = 0		
-		</if>
+			<if test='user_id!= null and user_id.length()>0'>
+				user_id = #{user_id}
+			</if>
+			<!-- 닉네임 중복검사 -->
+			<if test='user_nickname!= null and user_nickname.length()>0'>
+				user_nickname = #{user_nickname}
+			</if>
+			<!-- 핸드폰 중복검사 -->
+			<if test='user_phone!= null and user_phone.length()>0'>
+				user_phone = #{user_phone}
+			</if>
+			<!-- 아이디(이메일) 찾기 : 이메일 찾기 만들때 sort에 이메일찾기 넣어줘야함 -->
+			<if test='sort!=null and sort.equals("아이디찾기")'>
+				AND status = 0
+			</if>
 		</where>
 	</select>
 	
+	
+
 
 	<!-- 회원정보 수정 : 수정가능한 정보 : 닉네임, 비밀번호, 핸드폰번호, 주소 -->
 	<update id="memberUpdate" parameterType="map">

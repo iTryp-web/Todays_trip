@@ -32,6 +32,13 @@ public class MemberLogic {
 		mList = memberDao.checkInfo(pMap);
 		return mList;
 	}
+	//세션 정보 
+	public List<Map<String, Object>> sessionList(Map<String, Object> pMap) {
+		logger.info("sessionList 호출");
+		List<Map<String,Object>> mList = new ArrayList<>();
+		mList = memberDao.sessionList(pMap);
+		return mList;
+	}
 	
 	//회원가입
 	public int memberInsert(Map<String, Object> pMap) {

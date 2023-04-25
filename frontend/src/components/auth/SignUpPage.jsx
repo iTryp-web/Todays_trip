@@ -316,7 +316,7 @@ const SignUpPage = ({ authLogic }) => {
           setPhoneInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
           setPhoneInputColor("#4996f3");
           setTextPhoneColor("black");
-          alert("사용 가능합니다.")
+          setPhoneText("");
         }
       }
       phoneInputRef.current = phoneInput;
@@ -325,46 +325,6 @@ const SignUpPage = ({ authLogic }) => {
   }, [phoneInput]);
 
   //이메일 회원 가입
-
-  //구글 회원 가입
-  const [googleEmail, setGoogleEmail] = useState("");
-
-  useEffect(() => {
-    const onAuth = async () => {
-      const user = await onAuthChange(userAuth.auth);
-      if (user) {
-        setGoogleEmail(user.email)
-        setMemInfo({
-          email: user.email,
-          password: "",
-          password2: "",
-          name: "",
-          phone: "",
-          nickname: null,
-        });
-      }
-    };
-    onAuth();
-  }, [setGoogleEmail,setMemInfo, userAuth.auth]);
-
-  const googleSignUp = async () => {
-    try {
-      let uid;
-      console.log(googleEmail);
-      if (googleEmail) {
-        console.log(auth);
-        console.log(memInfo);
-        uid = await linkEmail(auth, memInfo);
-        console.log(uid);
-      } else {
-        uid = await signupEmail(auth, memInfo);
-      }
-      console.log(uid);
-    } catch (error) {
-      console.log(error + " 오류: 관리자에게 연락바랍니다.");
-    }
-  };
-
   //소셜 X 일반 이메일 이용자 회원가입
   const signup = async () => {
     console.log("이메일 회원가입 구현");
@@ -718,18 +678,38 @@ const SignUpPage = ({ authLogic }) => {
     }
   }, [pwInput, pwCheckInput]);
 
+  //구글 로그인(정보 없으면 회원가입)
   const loginG = async() =>{
-    //구글 로그인
     try {
+      console.log('로그인시도')
       const result = await loginGoogle(authLogic.getUserAuth(),authLogic.getGoogleAuthProvider())
-      console.log(result.data)
       window.sessionStorage.setItem('userId',result.uid)
-      navigate("/")
-      window.location.reload()
+      let params;
+      params = {
+        user_id : result.uid
+      }
+      let response = {data : 0};
+      response = await checkInfoDB(params);
+      const data = JSON.stringify(response.data);
+      const jsonDoc = JSON.parse(data);
+      if(!jsonDoc){
+        navigate("/auth/GoogleSignUp")
+
+      }else{
+        navigate("/")
+      }
    } catch (error) {
       console.log("로그인 오류입니다")
    }
   }
+
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`
+
+  //카카오 로그인
+  const loginK = () =>{
+    window.location.href  = KAKAO_AUTH_URL;
+  }
+
 
   return (
     <>
@@ -741,7 +721,7 @@ const SignUpPage = ({ authLogic }) => {
             <span>SNS계정으로 간편하게 회원가입</span>
             <div className="socialButton">
               <img src="images/google-icon.png" alt="구글" onClick={()=>{loginG();}}/>
-              <img src="images/kakao-icon.png" alt="네이버" />
+              <img src="images/kakao-icon.png" alt="네이버" onClick={()=>{loginK();}} />
               <img src="images/naver-icon.png" alt="카카오" />
             </div>
           </SocialBlock>

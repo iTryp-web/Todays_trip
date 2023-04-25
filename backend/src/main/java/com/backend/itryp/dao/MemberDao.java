@@ -29,6 +29,13 @@ public class MemberDao {
 		
 		return mList;
 	}
+	//세션 정보
+	public List<Map<String, Object>> sessionList(Map<String, Object> pMap) {
+		logger.info("sessionList 호출");
+		List<Map<String, Object>> mList = sqlSessionTemplate.selectList("sessionList",pMap);
+		
+		return mList;
+	}
 	//회원가입
 	public int memberInsert(Map<String, Object> pMap) {
 		logger.info("memberInsert 호출");
