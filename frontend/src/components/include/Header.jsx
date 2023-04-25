@@ -45,6 +45,7 @@ const Header = () => {
           <Link to="/cart" className="cart">
             <BsCart className="cart-icon" />
           </Link>
+          { sessionStorage.getItem("user_id") === undefined || sessionStorage.getItem("user_id") === null ? 
           <div className="buttons">
             <Link to="/signin" className="signin button">
               로그인
@@ -54,6 +55,11 @@ const Header = () => {
             </Link>
             <button className="seller-button">판매자 가입</button>
           </div>
+          :
+          <div className="buttons">
+            {sessionStorage.getItem("user_nickname")} 님 환영합니다.
+          </div>
+          }
         </div>
       </HeaderBlock>
     </>

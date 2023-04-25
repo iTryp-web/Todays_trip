@@ -6,7 +6,7 @@ import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCoupo
          OrdererTable, ConfirmButton, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, 
          PointUseDiv, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP, OrdererTyContentTd, AgreeAllCheckDiv, 
          InputAllCheck, AddressTable, AddressTitleTd, AddressButton, AddressInput, AgreeCheckDiv } from '../../styles/OrderStyle'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { defer, useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { getOrderPage, setOrderTable, updatePayFail, updatePaymentInfo } from '../../service/orderLogic'
@@ -17,6 +17,9 @@ const OrderPage = () => {
 
   const navigate = useNavigate();
   const [ cookies, setCookies, removeCookies ] = useCookies(['cart']);
+
+  if(sessionStorage.getItem("user_id") === undefined || sessionStorage.getItem("user_id") === null || sessionStorage.getItem("user_id").length < 1)
+    navigate("/");
 
   //주문 상품 정보 받아오기
   const location = useLocation();
@@ -279,7 +282,7 @@ const OrderPage = () => {
     IMP.request_pay(paymentData, callback);
   }
 
-  return (
+  return defer(
     <>
       <Header/>
       <OrderDiv>
@@ -298,7 +301,7 @@ const OrderPage = () => {
               </tr>
             </thead>
             <tbody>
-              {cartList.map((cart, index) => (
+              {cartList && cartList.map((cart, index) => (
                 <OrderRow key={index} cart={cart}/>
               ))}
             </tbody>

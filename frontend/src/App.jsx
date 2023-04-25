@@ -26,6 +26,7 @@ import { useEffect } from 'react';
 import { onAuthChange } from './service/authLogic';
 import { checkInfoDB } from './service/memberLogic';
 import GoogleSignUp from './components/auth/GoogleSignUp';
+import MyPagePage from './components/page/MyPagePage';
 
 
 function App({authLogic}) {
@@ -99,6 +100,7 @@ function App({authLogic}) {
       <Route path='/cart' exact={true} element={<CartPage />} />
       <Route path='/order' exact={true} element={<OrderPage />} />
       <Route path='/payResult' exact={true} element={<PaymentResult />} />
+      <Route path='/myPage' element={<MyPagePage />} />
       <Route path='/signup' exact={true} element={<SignUpPage authLogic ={authLogic}/>} />
       <Route path='/signin' exact={true} element={<SignInPage authLogic ={authLogic}/>} />
       <Route path='/market' exact={true} element={<MarketPage />} />
