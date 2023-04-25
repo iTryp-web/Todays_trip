@@ -22,6 +22,8 @@ public class MarketDao {
 	 */
 	public List<Map<String, Object>> marketList(Map<String, Object> pMap) {
 		logger.info("marketList 호출");
+		logger.info("pmap"+pMap);
+		
 		List<Map<String,Object>> mList = null;
 		mList = sqlSessionTemplate.selectList("marketList",pMap);
 		return mList;

@@ -126,7 +126,6 @@ const ReviewRow = ({review}) => {
             </Star>
           </p>
           
-          <p className='contentP'>
             {userNickname && (
               <BtnDot onClick={() => onClickBtnDot()}>
                 <BsThreeDotsVertical />
@@ -140,7 +139,7 @@ const ReviewRow = ({review}) => {
                 </ModalDiv>
               ) : null
             ) : null}
-          </p>
+       
           <p className='contentP'>{review.review_content}</p>
         </div>
       </PostContent>
