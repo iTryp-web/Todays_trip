@@ -30,6 +30,7 @@ import {
 } from "../../service/memberLogic";
 import axios from "axios";
 import EmailVerifyCode from "./EmailVerifyCode";
+import { KAKAO_AUTH_URL } from "./KakaoLogin";
 
 const SignUpPage = ({ authLogic }) => {
   const auth = authLogic.getUserAuth();
@@ -703,7 +704,6 @@ const SignUpPage = ({ authLogic }) => {
    }
   }
 
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`
 
   //카카오 로그인
   const loginK = () =>{
