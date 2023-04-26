@@ -145,9 +145,6 @@ export const BoardList = styled.ul`
     cursor: pointer;
     width: 100%;
     height: 50px;
-    &:hover {
-      color: #4996F3;
-    }
   }
   .star-icon{
     margin-bottom: 3px;
@@ -168,6 +165,7 @@ export const BoardList = styled.ul`
     margin: 0 3px 2px 15px;
   }
   li {
+    cursor: pointer;
     padding: 10px 10px 0px;
     background-color: #F9F9F9;
     flex: 1;
@@ -175,6 +173,11 @@ export const BoardList = styled.ul`
     border-radius: 8px;
     margin-bottom: 5px;
     position: relative;
+    &:hover {
+      background-color: #EDF5FE;
+      transform: scale(103%);
+      transition: 0.3s all cubic-bezier(0.4, 0, 0.2, 1);
+    }
   }
   strong {
     display: flex;

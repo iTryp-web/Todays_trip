@@ -116,21 +116,6 @@ const HomeLayout = () => {
     mainList()
   }, [])
 
-  // 커뮤니티 페이지이동처리
-  const movePage = (item) => {
-    let page = ''
-    boardcategories.map(board => {
-      if(item === board.name) {
-        page = board.category
-      }
-    })
-    if(page === '') {
-      navigate('/board/detail/'+item)
-    } else {
-      navigate('board/'+page+'?page=1')
-    }
-  }
-
   return (
     <>
       <ImageSlider />
@@ -205,9 +190,9 @@ const HomeLayout = () => {
           <BoardList>
           {boardHot &&
               boardHot.map((post) => (
-                <li key={post.board_no}>
-                  <div className='categoryP' onClick={() => movePage(post.board_category)}>{post.board_category}</div>
-                    <div className='user' onClick={() => movePage(post.board_no)}>
+                <li key={post.board_no} onClick={() => navigate('/board/detail/'+post.board_no)}>
+                  <div className='categoryP'>{post.board_category}</div>
+                    <div className='user'>
                       <UserImg>
                         <img className='userImg' src={profileImg[Math.floor(((new Date(post.board_date).getSeconds())%10))]} alt="" />
                       </UserImg>
@@ -248,9 +233,9 @@ const HomeLayout = () => {
           <BoardList>
           {boardNew &&
               boardNew.map((post) => (
-                <li key={post.board_no}>
-                  <div className='categoryP' onClick={() => movePage(post.board_category)}>{post.board_category}</div>
-                    <div className='user' onClick={() => movePage(post.board_no)}>
+                <li key={post.board_no} onClick={() => navigate('/board/detail/'+post.board_no)}>
+                  <div className='categoryP'>{post.board_category}</div>
+                    <div className='user'>
                       <UserImg>
                         <img className='userImg' src={profileImg[Math.floor(((new Date(post.board_date).getSeconds())%10))]} alt="" />
                       </UserImg>

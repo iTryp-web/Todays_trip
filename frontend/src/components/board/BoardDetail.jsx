@@ -420,7 +420,7 @@ const BoardDetail = () => {
             <TitleContainer>
               <CategoryDiv>
                 <Link className='detailLink' to="/board/all?page=1">커뮤니티</Link> &gt;{' '}
-                <Link className='detailLink' to={`/board/${category}`}>{detailPost.board_category}</Link>
+                <Link className='detailLink' to={`/board/${category}?page=1`}>{detailPost.board_category}</Link>
               </CategoryDiv>
               <DetailTitle>{detailPost.board_title}</DetailTitle>
               <Profile>
