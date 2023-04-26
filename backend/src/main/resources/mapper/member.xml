@@ -82,7 +82,7 @@
 		FROM TB_USER
 		<where>
 			<if test='user_id!= null and user_id.length()>0'>
-				user_id = #{user_id}
+				user_id = #{user_id} or user_email = #{user_id}
 			</if>
 			<!-- 닉네임 중복검사 -->
 			<if test='user_nickname!= null and user_nickname.length()>0'>
