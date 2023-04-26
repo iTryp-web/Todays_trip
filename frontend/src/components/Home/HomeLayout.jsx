@@ -1,12 +1,14 @@
 import React from 'react'
-import { BoardList, CurationContent, CurationList, CurationSection, Main, MainCategoryList, MarketList, SliderBlock, SliderDiv } from '../../styles/HomeStyle'
+import { BoardList, CurationContent, CurationList, Main, MainCategoryList, MainSection, MarketList, UserImg } from '../../styles/HomeStyle'
 import { Link, useNavigate } from 'react-router-dom'
-import { AiOutlineRight } from 'react-icons/ai'
+import { AiFillLike, AiOutlineRight } from 'react-icons/ai'
 import ImageSlider from './ImageSlider'
-import { HomeCategories, boardcategories } from './homeData'
+import { HomeCategories, boardcategories, } from './homeData'
 import { useEffect } from 'react'
 import { mainListDB } from '../../service/homeLogic'
 import { useState } from 'react'
+import { BsBookmarkStar, BsBookmarkStarFill, BsFillEyeFill } from 'react-icons/bs'
+import { profileImg } from '../board/boardData'
 
 const HomeLayout = () => {
   const navigate = useNavigate()
@@ -35,11 +37,11 @@ const HomeLayout = () => {
         if(m_count > 5) { 
           m_count = 5
         }
-        if(bHot_count > 5) { 
-          bHot_count = 5
+        if(bHot_count > 4) { 
+          bHot_count = 4
         }
-        if(bNew_count > 5) { 
-          bNew_count = 5
+        if(bNew_count > 4) { 
+          bNew_count = 4
         }
         console.log(m_count)
         console.log(bHot_count)
@@ -114,6 +116,21 @@ const HomeLayout = () => {
     mainList()
   }, [])
 
+  // 커뮤니티 페이지이동처리
+  const movePage = (item) => {
+    let page = ''
+    boardcategories.map(board => {
+      if(item === board.name) {
+        page = board.category
+      }
+    })
+    if(page === '') {
+      navigate('/board/detail/'+item)
+    } else {
+      navigate('board/'+page+'?page=1')
+    }
+  }
+
   return (
     <>
       <ImageSlider />
@@ -127,7 +144,7 @@ const HomeLayout = () => {
         ))}
       </MainCategoryList>
 
-        <CurationSection>
+        <MainSection>
           <header>
             <h2>지금 뜨는 상품</h2>
             <Link to="/market/all" className="view-all">
@@ -147,9 +164,9 @@ const HomeLayout = () => {
                 </li>
               ))}
           </MarketList>
-        </CurationSection>
+        </MainSection>
 
-        <CurationSection>
+        <MainSection>
           <header>
             <h2>새로 나온 상품</h2>
             <Link to="/market/all" className="view-all">
@@ -175,9 +192,9 @@ const HomeLayout = () => {
                 </li>
               ))}
           </MarketList>
-        </CurationSection>
+        </MainSection>
 
-        <CurationSection>
+        <MainSection>
           <header>
             <h2>커뮤니티 인기글</h2>
             <Link to="/board/all?page=1" className="view-all">
@@ -189,21 +206,81 @@ const HomeLayout = () => {
           {boardHot &&
               boardHot.map((post) => (
                 <li key={post.board_no}>
-                  <CurationContent
-                    to={`/board/${''}/all?page=1`}
-                  >
-                    <div>
-                      <strong>{post.board_category}</strong>
-                      <strong>{post.board_title}</strong>
-                      <p>{post.board_hit}</p>
-                      <p>{post.like_count}</p>
-                      <em>{post.board_date}</em>
+                  <div className='categoryP' onClick={() => movePage(post.board_category)}>{post.board_category}</div>
+                    <div className='user' onClick={() => movePage(post.board_no)}>
+                      <UserImg>
+                        <img className='userImg' src={profileImg[Math.floor(((new Date(post.board_date).getSeconds())%10))]} alt="" />
+                      </UserImg>
+                      <p className='titleP'>
+                        {post.like_count >= 5 ? (post.like_count >= 10 ? (
+                          <BsBookmarkStarFill className='star-icon' color={'#4996F3'} />
+                          ): (
+                            <BsBookmarkStar className='star-icon' color={'#4996F3'} />
+                            )) : null}
+                        {post.board_title}
+                      </p>
                     </div>
-                  </CurationContent>
+                      <p className='icons'>
+                        <BsFillEyeFill className='icon-hit' />
+                        {post.board_hit ? post.board_hit : 0}
+                        <AiFillLike className='icon-like' />
+                        {post.like_count ? post.like_count : 0}
+                      </p>
+                      <em>{new Date(post.board_date).toLocaleDateString('ko-KR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                      </em>
                 </li>
               ))}
           </BoardList>
-        </CurationSection>
+        </MainSection>
+
+        <MainSection>
+          <header>
+            <h2>새로 올라온 글</h2>
+            <Link to="/board/all?page=1" className="view-all">
+              전체보기
+              <AiOutlineRight />
+            </Link>
+          </header>
+          <BoardList>
+          {boardNew &&
+              boardNew.map((post) => (
+                <li key={post.board_no}>
+                  <div className='categoryP' onClick={() => movePage(post.board_category)}>{post.board_category}</div>
+                    <div className='user' onClick={() => movePage(post.board_no)}>
+                      <UserImg>
+                        <img className='userImg' src={profileImg[Math.floor(((new Date(post.board_date).getSeconds())%10))]} alt="" />
+                      </UserImg>
+                      <p className='titleP'>
+                        {post.like_count >= 5 ? (post.like_count >= 10 ? (
+                          <BsBookmarkStarFill className='star-icon' color={'#4996F3'} />
+                          ): (
+                            <BsBookmarkStar className='star-icon' color={'#4996F3'} />
+                            )) : null}
+                        {post.board_title}
+                      </p>
+                    </div>
+                      <p className='icons'>
+                        <BsFillEyeFill className='icon-hit' />
+                        {post.board_hit ? post.board_hit : 0}
+                        <AiFillLike className='icon-like' />
+                        {post.like_count ? post.like_count : 0}
+                      </p>
+                      <em>{new Date(post.board_date).toLocaleDateString('ko-KR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                      </em>
+                </li>
+              ))}
+          </BoardList>
+        </MainSection>
+
+
       </Main>
     </>
   )

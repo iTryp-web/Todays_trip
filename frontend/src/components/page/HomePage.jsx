@@ -1,8 +1,7 @@
 import React from 'react'
 import Header from '../include/Header'
 import Footer from '../include/Footer'
-import { Main } from '../../styles/HomeStyle'
-import HomeLayout from '../Home/HomeLayout'
+import HomeLayout from '../home/HomeLayout'
 
 const HomePage = ({authLogic}) => {
   return (

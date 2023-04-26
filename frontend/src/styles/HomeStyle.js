@@ -41,13 +41,14 @@ export const MainCategoryList = styled.ul`
   }
 `;
 
-export const CurationSection = styled.section`
+export const MainSection = styled.section`
   header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 16px;
   }
   h2 {
+    margin-bottom: 0;
     font-size: 24px;
     font-weight: 700;
   }
@@ -55,7 +56,7 @@ export const CurationSection = styled.section`
     display: flex;
     align-items: center;
     color: #4996F3;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     text-decoration: none;
     svg {
@@ -65,63 +66,13 @@ export const CurationSection = styled.section`
   }
 `;
 
-export const CurationList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  gap: 0 40px;
-  height: 309px;
-  margin-bottom: 80px;
-  li {
-    display: flex;
-    width: calc(50% - 40px);
-  }
-`;
-
-export const CurationContent = styled(Link)`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  padding: 14px 2px 16px;
-  border-bottom: 1px solid #f4f4f4;
-  div {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex: 1;
-    font-size: 14px;
-    white-space: nowrap;
-    em {
-      font-weight: 500;
-      font-style: normal;
-    }
-    strong {
-      overflow: hidden;
-      margin: 5px 0 4px;
-      font-weight: 500;
-      text-overflow: ellipsis;
-    }
-    p {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: #737373;
-    }
-  }
-  img {
-    display: block;
-    width: 64px;
-    height: 64px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-`;
-
 export const MarketList = styled.ul`
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  margin: 30px 0 80px;
+  margin: 30px 0 100px;
+  padding: 0px 5px;
+
   list-style: none;
   font-size: 15px;
   li {
@@ -162,25 +113,68 @@ export const MarketList = styled.ul`
 
 export const BoardList = styled.ul`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  padding: 0px 5px;
   gap: 8px;
-  margin: 30px 0 80px;
+  margin: 30px 0 100px;
   list-style: none;
   text-decoration: none;
-  li {
-    flex: 1;
+  .categoryP {
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #dbeafd;
+    color: #4a71a4;
+    font-size: 12px;
+    font-weight: 600;
   }
-  li a {
-    div {
-      overflow: hidden;
-      border-radius: 8px;
-      margin-bottom: 5px;
-    }
+  .titleP {
+    overflow: hidden;
+    display: -webkit-box;
+    padding-right: 5px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .user {
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
     &:hover {
-      img {
-        transform: scale(110%);
-      }
+      color: #4996F3;
     }
+  }
+  .star-icon{
+    margin-bottom: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    font-size:15px;
+  }
+  .icons {
+    display: inline-block;
+    font-size: 13px;
+    margin-top: 5px;
+    color: #979797;
+  }
+  .icon-hit {
+    margin: 0 4px 2px 4px;
+  }
+  .icon-like {
+    margin: 0 3px 2px 15px;
+  }
+  li {
+    padding: 10px 10px 0px;
+    background-color: #F9F9F9;
+    flex: 1;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    position: relative;
   }
   strong {
     display: flex;
@@ -190,7 +184,30 @@ export const BoardList = styled.ul`
   }
   em {
     color: #737373;
-    font-size: 14px;
+    font-size: 12px;
+    position: absolute;
+    right: 10px;
+    margin-top: 5px;
+  }
+`;
+
+export const UserImg = styled.div`
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  margin-right: 10px;
+  svg {
+    width: 36px;
+    height: 36px;
+  }
+  .userImg {
+    width: 34px;
+    height: 34px;
   }
 `;
 

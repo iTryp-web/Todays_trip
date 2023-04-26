@@ -54,25 +54,25 @@ export const boardcategories = [
   {
   name: '전체',
   category: 'all',
-  img: '/images/icon-all.png'},
+  },
   {
   name: '인기글',
   category: 'hot',
-  img: '/images/icon-hot.png'},
+  },
   {
   name: '자유',
   category: 'free',
-  img: '/images/icon-free.png'},
+  },
   {
   name: '질문',
   category: 'ask',
-  img: '/images/icon-qna.png'},
+  },
   {
   name: '여행후기',
   category: 'review',
-  img: '/images/icon-review.png'},
+  },
   {
   name: '동행찾기',
   category: 'together',
-  img: '/images/icon-together2.png'},
+  },
 ]

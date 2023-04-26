@@ -73,7 +73,7 @@
 		WHERE b.board_no = l.like_no(+)
 		AND b.board_no = c.board_no(+)
 		AND (l.like_count >= 5 OR b.board_hit >= 30)
-		AND ROWNUM <![CDATA[<=]]>  5
+		AND ROWNUM <![CDATA[<=]]>  4
 		ORDER BY l.like_count DESC, b.board_hit DESC
 	</select>
 	
@@ -90,7 +90,7 @@
 		     FROM TB_B_COMMENT
 		     GROUP BY board_no) c
 	 WHERE b.board_no = c.board_no(+)
-		 AND ROWNUM <![CDATA[<=]]> 5
+		 AND ROWNUM <![CDATA[<=]]> 4
 		ORDER BY b.board_date DESC
 	</select>
 </mapper>
