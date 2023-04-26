@@ -27,7 +27,7 @@ const QnaRow = ({qna}) => {
   const userNickname = '물음표살인마'
 
   /* qna Dot버튼 */
-  const [is_ClickBtnDot, setClickBtnDot] = useState(false);
+  const [is_ClickBtnDot, setClickBtnDot] = useState(null);
   const onClickBtnDot = () => {
     setClickBtnDot((is_ClickBtnDot) => !is_ClickBtnDot);
   };
@@ -44,7 +44,6 @@ const QnaRow = ({qna}) => {
   }
   
   /* 버튼이 열리고 닫히는 상태에 대한 useState 기본값 false */
-  /* 기본적으로 유저가 누르기전에는 닫혀있으므로 false값을 줌 */
   const [isOpen, setIsOpen] = useState(false);
 
   /* handleClick이 호출되면 isOpen의 상태가 true <-> false로 왔다갔다함 */
@@ -66,15 +65,15 @@ const QnaRow = ({qna}) => {
                   ) : (
                     null
                     )}
-        <div className='qna2'>
+        <div className='QNA'>
         
           <div className='qnaTspace'>
             {qna.qna_step === 0 ? (
-                <TbLetterQ className='letterIcon' color={'#4996F3'}/>
+                <TbLetterQ className='letterIcon' />
                   
                 ) : qna.qna_step === 1 ? (
 
-                  <TbLetterA className='letterIcon' color={'#4996F3'} />
+                  <TbLetterA className='letterIcon'  />
                   ) : (
                     null
                     )}
@@ -86,12 +85,8 @@ const QnaRow = ({qna}) => {
           <p className='titleP'onClick={handleClick} >
             {qna.qna_title}
           </p>
-       
-          
-          {/* 수정된 부분 */}
-          {/* contentP2를 선언 */}
-          {/* isOpen이 true일 때 contentP2가 펼쳐짐(show) */}
-          <p className={`contentP2 ${isOpen ? "show" : ""}`}>
+    
+          <p >
             {userNickname && (
               <BtnDot onClick={() => onClickBtnDot()}>
                 <BsThreeDotsVertical />
@@ -106,24 +101,25 @@ const QnaRow = ({qna}) => {
             ) : null}
           </p>
           {/* isOpen이 true일 때 qna_content를 볼 수 있음(visible) */}
-          <p className={`contentP2 ${isOpen ? "visible" : ""}`}>
+          <p className={`contentP2 ${isOpen ? "visible" : "invisible"}`}>
             {qna.qna_content}
           </p>
         </div>
+    
       </PostContent>
       <PostFooter>
-        
       <li>
-        
+
       </li>
-      <small>
-              {new Date(qna.qna_date).toLocaleDateString('ko-KR', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              })}
-        </small>
-      </PostFooter>
+          <small>
+                {new Date(qna.qna_date).toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+          </small>
+      
+                </PostFooter>
     </PostLi>
     </div>
   )

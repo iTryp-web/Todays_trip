@@ -36,7 +36,7 @@ const Header = ({authLogic}) => {
         </Link>
         <nav>
           <NavLinkStyle 
-            to="/market"
+            to="/market/all"
             className={({ isActive }) => isActive && "active"}
           >
             마켓

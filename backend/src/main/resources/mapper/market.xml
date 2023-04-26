@@ -9,9 +9,9 @@
 					,m.market_category
 					,m.market_title
 					,m.market_content
-					,m.market_price
+					,REGEXP_REPLACE(REVERSE(REGEXP_REPLACE(REVERSE(TO_CHAR(m.market_price)), '(\d{3})','\1,')), '^,','') market_price
 					,m.market_date
-					,r.REVIEW_COUNT
+					,r.review_count
 					,r.star_avg
 					,f.file_url
 					
@@ -28,11 +28,11 @@
            	WHERE file_step=1
            	) f 
 			  	  WHERE m.user_id = u.user_id
-			  	  and m.market_no=r.market_no
+			  	  and m.market_no=r.market_no(+)
 			  	  and m.market_no=f.market_no 
 			  	   AND m.market_category != '공지사항'
-			<!-- <if test='search != null and search.equals("작성자")'>
-				AND u.user_nickname LIKE '%'||#{keyword}||'%'
+			<if test='market_category!=null and !market_category.equals("전체")' >
+				AND m.market_category = #{market_category}
 			</if>
 			<if test='search != null and search.equals("제목")'>
 				AND m.market_title LIKE '%'||#{keyword}||'%'
@@ -40,10 +40,28 @@
 			<if test='search != null and search.equals("내용")'>
 				AND m.market_content LIKE '%'||#{keyword}||'%'
 			</if>
-			<if test='market_price != null'>
-    		AND m.MARKET_PRICE BETWEEN #{min_price} AND #{max_price}
-			</if> -->
-		ORDER BY m.market_no ASC
+			<if test='search != null and search.equals("제목+내용")'>
+				AND (m.market_content LIKE '%'||#{keyword}||'%'
+             or m.market_content LIKE '%'||#{keyword}||'%')
+			</if>
+			<if test='filter != null and filter.equals("리뷰")'>
+				ORDER BY r.review_count DESC
+			</if>
+			<if test='filter != null and filter.equals("별점")'>
+				ORDER BY r.star_avg DESC
+			</if>
+			<if test='filter != null and filter.equals("최신")'>
+				ORDER BY m.market_no DESC
+			</if>
+			<if test='filter != null and filter.equals("높은가격")'>
+				ORDER BY m.market_price DESC
+			</if>
+			<if test='filter != null and filter.equals("낮은가격")'>
+				ORDER BY m.market_price ASC
+			</if>
+			<if test='filter == null'>
+				ORDER BY m.market_no DESC
+			</if>
 	</select>
 	
 	<!-- 마켓글 상세조회 -->
@@ -54,7 +72,7 @@
 					,m.market_category
 					,m.market_title
 					,m.market_content
-					,m.market_price
+					,REGEXP_REPLACE(REVERSE(REGEXP_REPLACE(REVERSE(TO_CHAR(m.market_price)), '(\d{3})','\1,')), '^,','') market_price
 					,m.market_date
 					,r.REVIEW_COUNT
 					,r.star_avg
@@ -71,7 +89,7 @@
            			file_url, market_no, file_step 
            	FROM TB_M_FILE) f 
 			  	  WHERE m.user_id = u.user_id
-			  	  and m.market_no=r.market_no
+			  	  and m.market_no(+)=r.market_no
 			  	  and m.market_no=f.market_no 
 			  	   AND m.market_no = #{market_no}
 		

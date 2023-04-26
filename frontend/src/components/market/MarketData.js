@@ -18,31 +18,31 @@ export const categories = [
   {
   name: '전체',
   category: 'all',
-  img: '/images/icon-all.png'},
+  },
   {
   name: '패키지',
-  category: 'hot',
+  category: 'package',
  },
   {
   name: '투어',
-  category: 'free',
+  category: 'tour',
   },
   {
   name: '티켓',
-  category: 'ask',
+  category: 'ticket',
   },
   {
   name: '교통',
-  category: 'review',
+  category: 'transportation',
   },
   {
   name: '숙소',
-  category: 'together',
+  category: 'accommodation',
   },
 ]
 
 // ProductList 검색 조건
-export const search = ['작성자', '제목', '내용', '제목+내용']
+export const search = ['제목', '내용', '제목+내용']
 
 //리뷰 가데이터
 export const reviewData=[
@@ -255,7 +255,7 @@ export const qnaData=[
     market_no:1,
     qna_title:'릴렉스^^',
     qna_step:1,
-    qna_content:'고객님. 일단 진정하세용;;',
+    qna_content:'고객님. 일단 진정하세용;;일단 진정하세용;;일단 진정하세용;;일단 진정하세용;;일단 진정하세용;;일단 진정하세용;;일단 진정하세용;;일단 진정하세용;;일단 진정하세용;;일단 진정하세용;;일단 진정하세용;;일단 진정하세용;;',
     qna_date:'23-04-10'
   },
 ]

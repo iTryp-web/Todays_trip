@@ -45,9 +45,11 @@ function App({authLogic}) {
       <Route path='/signup' exact={true} element={<SignUpPage authLogic ={authLogic}/>} />
       <Route path='/signin' exact={true} element={<SignInPage authLogic ={authLogic}/>}/>
       <Route path='/market' exact={true} element={<MarketPage />} />
+      <Route path='/signin' exact={true} element={<SignInPage authLogic ={authLogic}/>} />
+      <Route path='/market/:category' exact={true} element={<MarketPage />} />
       <Route path='/market/review' exact={true} element={<MarketReview />} />
       <Route path='/market/write' exact={true} element={<MarketWrite />} />
-      <Route path='/market/detail' element={<MarketDetail />} />
+      <Route path='/market/detail/:mno' element={<MarketDetail />} />
       <Route path='/support/:category' exact={true} element={<FaqPage />} />
       <Route path='/support/inquiryBoard' exact={true} element={<InquiryList />} />
       <Route path='/support/write' exact={true} element={<InquiryWriteForm />} />

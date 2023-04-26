@@ -131,7 +131,7 @@ height:100vh;
 export const SelectBlock = styled.select`
 border: none;
 outline: none;
-width: 100px;
+width: 110px;
 `;
 export const SearchDiv = styled.div`
 position: absoulte;
@@ -474,51 +474,70 @@ export const PostLi = styled.li`
     -webkit-box-orient: vertical;
 }
 
-  /* QnARow 애니메이션을 위한 contentP */
+
+  .QNA{
+    display:block;
+    width:100%;
+    // border: 1px solid red;
+    // white-space: nowrap;
+
+    .qnaTspace{
+      margin-bottom:10px;
+      font-weight: 600;
+      
+      .letterIcon{
+        color: #4996F3;
+        font-size:20px;
+        font-weight: 600;
+      }
+    
+    }
+
+    /* QnARow 애니메이션을 위한 contentP */
   .contentP2 {
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-    transition: all 0.2s ease 0s;
-    display: -webkit-box;
-    margin: 0 0 0 0;
+    word-break: break-all;
+    display: inline-block;
+    margin: 8px 0 5px 0;
     padding-right: 16px;
     color: #888;
     text-overflow: ellipsis;
     word-break: break-all;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    height: auto; /* 높이 자동으로 설정 */
+    overflow: hidden; /* 기존 스타일 유지 */
+    transition: height 0.3s ease-out; /* 높이 변경 시 부드러운 애니메이션 적용 */
+    // opacity: 0;
 
-    /* 열렸을 때 스타일(질문이 클릭 되면 작동) */
-    &.show {
-      margin: 15px 0 5px 0;
-      opacity: 1;
-      height: auto;
-      overflow: visible;
-      transition: all 0.1s ease-in-out;
-    }
+
+    // /* 열렸을 때 스타일(질문이 클릭 되면 작동) */
+
     &.visible {
       opacity: 1;
       overflow: visible;
     }
+    &.invisible {
+      opacity: 0;
+      overflow: hidden;
+      height: 0;
+      
+    }
+
   }
 
-  .letterIcon{
-    color: #4a71a4;
-    font-size:20px;
-    font-weight: 600;
-  }
-  .qnaTspace{
-    margin-bottom:10px;
-    font-weight: 600;
-  }
+  
+//   /* isOpen이 true일 때, 높이를 변경하여 contentP2를 펼치도록 함 */
+// .contentP2.visible {
+//   overflow: visible;
+// }
 
-  .qna2{
-    display:block;
-    width:100%;
-    // border: 1px solid red;
-    // white-space: nowrap;
-  }
+// /* is_ClickBtnDot이 true일 때, contentP2의 높이를 변경하지 않고 화면에서 숨김 */
+// .contentP2.show {
+//   height: 0;
+//   overflow: hidden;
+// }
+
+  }/* end of QNA */
 `;
 
 export const PostFooter = styled.div`

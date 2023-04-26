@@ -153,13 +153,18 @@ const ReviewRow = ({review}) => {
                     }
                   }}
                 >
-               
-                    <AiTwotoneHeart color={isLiked ? '#4996F3' : 'gray'} />
+                    <lord-icon
+                      src="https://cdn.lordicon.com/xryjrepg.json"
+                      trigger="click"
+                      color={isLiked ? '#4996F3' : 'light-gray'}
+                      style={{width:'20px', height:'20px'}}>
+                  </lord-icon>
+                  {/* <AiTwotoneHeart color={isLiked ? '#4996F3' : 'gray'} /> */}
                  
                   <FontContent liked={isLiked}>
                     좋아요 {review.like_count ? review.like_count : 0}
                   </FontContent>
-                </Like>
+            </Like>
               
       </ul>
       <li>

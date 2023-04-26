@@ -18,7 +18,7 @@ const ProductItem = ({items}) => {
     <>
       <ContentsBlock>
         {items && items.map((item,index)=>(
-          <ItemBlock onClick={() => navigate('/market/detail')}>
+          <ItemBlock onClick={() => navigate('/market/detail/'+item.market_no)}>
             <img className='image' src={item.file_url} />
             <div className="body">
               <span className="category">{item.market_category}</span>

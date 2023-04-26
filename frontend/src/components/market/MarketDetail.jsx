@@ -17,6 +17,7 @@ import DetailNav from './DetailNav';
 const MarketDetail = () => {
   
   const navigate = useNavigate()
+  /* 장바구니 */
   const [cookies, setCookies] = useCookies(['cart']);
   let cartList=[];
   const [cartAdd, setCartAdd]=useState({});
@@ -40,14 +41,15 @@ const MarketDetail = () => {
 
   }
 
-   // 해시값으로 글번호 가져오기????????????????
+   // 해시값으로 글번호 가져오기
   const {mno} = useParams()
   console.log("mno => " + mno);
 
   // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
-  // 아이디, 닉네임 담을 변수 - 단위테스트용!
-  const [userId, setUserId] = useState('test1')
-  const [userNickname, setUserNickname] = useState('테스트1')
+  // 아이디, 닉네임 담을 변수
+  const [userId] = useState(window.sessionStorage.getItem('user_id'))
+  const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+
 
   // 상세보기 정보  변수 - file_exist(파일존재여부), liked(좋아요 누른 게시물인지 아닌지 판별) 고려하기!!
   const [detailPost, setDetailPost] = useState({})
@@ -90,6 +92,10 @@ const MarketDetail = () => {
         market_content: jsonDoc[0].MARKET_CONTENT,
         market_price: jsonDoc[0].MARKET_PRICE,
         market_date: jsonDoc[0].MARKET_DATE,
+        review_count:jsonDoc[0].REVIEW_COUNT,
+        star_avg:jsonDoc[0].STAR_AVG,
+        file_url:jsonDoc[0].FILE_URL,
+        file_step:jsonDoc[0].FILE_STEP,
       })
      
       // 카테고리 담기
@@ -114,7 +120,7 @@ const MarketDetail = () => {
     }
     const res = await marketDeleteDB(market)
     console.log('deletePost=> ' + res.data);
-    navigate('/market')//마켓페이지로 돌아가기
+    navigate('/market/all')//마켓페이지로 돌아가기
   }
   // 글 수정 버튼
   const editPost = () => {
@@ -125,7 +131,7 @@ const MarketDetail = () => {
     <>
     <Header />
       <MarketCategory />
-      <ProductDetail cookieAdd={cookieAdd}/>
+      <ProductDetail detailPost={detailPost} cookieAdd={cookieAdd}/>
   
         <DetailNav  mno={mno}/>
 
