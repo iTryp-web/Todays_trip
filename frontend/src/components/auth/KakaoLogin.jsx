@@ -1,10 +1,12 @@
 import axios from "axios";
 import React from "react";
-import { useEffect } from "react";
+import { checkInfoDB } from "../../service/memberLogic";
+import { useNavigate } from "react-router-dom";
 
 export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
 
 const KakaoLogin = () => {
+  const navigate = useNavigate();
   let kcode = new URL(window.location.href).searchParams.get("code");
   console.log(kcode);
   const getToken = async (kcode) => {
@@ -30,10 +32,32 @@ const KakaoLogin = () => {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    const kakaoData = kakaoUser.data;
+    console.log(kakaoUser);
     console.log(kakaoUser.data);
-    return await kakaoUser.data;
+    console.log(kakaoUser.data.id);
+    console.log(kakaoUser.data.kakao_account.email);
+
+    try {
+      console.log("회원정보 비교");
+      let params;
+      params = {
+        user_id: kakaoUser.data.id,
+      };
+      console.log(params);
+      let response = { data: 0 };
+      response = await checkInfoDB(params);
+      console.log(response);
+      const data = JSON.stringify(response.data);
+      console.log(data);
+      const jsonDoc = JSON.parse(data);
+      console.log(jsonDoc);
+      if (!jsonDoc) {
+        navigate("/auth/SNSSignUp", { kakaoData: kakaoData });
+      }
+    } catch (error) {}
   };
-  
 
   if (kcode) {
     getToken(kcode);

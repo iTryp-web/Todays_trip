@@ -11,7 +11,7 @@ import {
 import Header from "../include/Header";
 import { useNavigate } from "react-router-dom";
 
-const GoogleSignUp = ({ authLogic }) => {
+const SNSSignUp = ({ authLogic, kakaoData }) => {
   const navigate = useNavigate();
   const [nameInput, setNameInput] = useState("");
   const [nickNameInput, setNickNameInput] = useState("");
@@ -36,20 +36,20 @@ const GoogleSignUp = ({ authLogic }) => {
     setPhoneInput(e.target.value);
   };
 
-  const handleNameChange = (e) =>{
-   setNameInput(e.target.value);
-   const name = e.target.value
-   if(name.length==0){
-      setNameText("필수항목입니다.")
+  const handleNameChange = (e) => {
+    setNameInput(e.target.value);
+    const name = e.target.value;
+    if (name.length == 0) {
+      setNameText("필수항목입니다.");
       setNameInputColor("#f77");
       setNameInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
-   }else{
+    } else {
       setCheckNm(true);
       setNameInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
-      setNameInputColor("#4996f3")
-      setNameText("")
-   }
-  }
+      setNameInputColor("#4996f3");
+      setNameText("");
+    }
+  };
 
   //닉네임 중복검사
   const checkNickName = async () => {
@@ -149,34 +149,33 @@ const GoogleSignUp = ({ authLogic }) => {
     }
   };
   const handleNameFocus = () => {
-   setNameInputColor("#4996f3");
-   setNameInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
- };
- //이름 shadow handler
- const handleNameBlur = () => {
-   if (nameInputColor !== "#f77") {
-     setNameInputColor("lightgray");
-     setNameInputShadowColor("");
-   }
- };
+    setNameInputColor("#4996f3");
+    setNameInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+  };
+  //이름 shadow handler
+  const handleNameBlur = () => {
+    if (nameInputColor !== "#f77") {
+      setNameInputColor("lightgray");
+      setNameInputShadowColor("");
+    }
+  };
 
-
- //구글 회원가입 
-  const signup = async () => {
+  //구글 회원가입
+  const signup = async ({ kakaoData }) => {
     const auth = authLogic.getUserAuth();
     const user = await onAuthChange(auth);
-    console.log("구글 회원가입 구현");
+    console.log("SNS 회원가입 구현");
     console.log(user.uid);
     console.log(user.email);
-    console.log(user.emailVerified);
+    console.log(kakaoData);
     try {
       const datas = {
-        user_id: user.uid,
-        user_pw : "",
+        user_id: user.uid ? user.uid : kakaoData.id,
+        user_pw: "",
         user_nickname: nickNameInput,
-        user_name : nameInput,
+        user_name: nameInput,
         user_phone: phoneInput,
-        user_email: user.email,
+        user_email: user.email ? user.email : kakaoData.kakao_account.email,
       };
       console.log(datas);
       const response = await memberInsertDB(datas);
@@ -203,9 +202,9 @@ const GoogleSignUp = ({ authLogic }) => {
       checkPh == true &&
       checkNm == true
     ) {
-      signup();
+      signup({ kakaoData });
       alert("회원가입이 완료되었습니다.");
-    } else if (checkNick == false || checkPh == false || checkNm ==false) {
+    } else if (checkNick == false || checkPh == false || checkNm == false) {
       alert("중복 검사를 완료해주세요.");
     } else {
       alert("필수항목을 채워주세요.");
@@ -318,4 +317,4 @@ const GoogleSignUp = ({ authLogic }) => {
   );
 };
 
-export default GoogleSignUp;
+export default SNSSignUp;

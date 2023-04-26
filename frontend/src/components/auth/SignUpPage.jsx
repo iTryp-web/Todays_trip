@@ -694,7 +694,7 @@ const SignUpPage = ({ authLogic }) => {
       const data = JSON.stringify(response.data);
       const jsonDoc = JSON.parse(data);
       if(!jsonDoc){
-        navigate("/auth/GoogleSignUp")
+        navigate("/auth/SNSSignUp")
 
       }else{
         navigate("/")

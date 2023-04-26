@@ -24,10 +24,10 @@ import InquiryList from './components/support/InquiryList';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { onAuthChange } from './service/authLogic';
-import GoogleSignUp from './components/auth/GoogleSignUp';
 import { sessionListDB } from './service/memberLogic';
 import KakaoLogin from './components/auth/KakaoLogin';
 import MyPagePage from './components/page/MyPagePage';
+import SNSSignUp from './components/auth/SNSSignUp';
 
 
 function App({authLogic}) {
@@ -106,7 +106,7 @@ function App({authLogic}) {
       <Route path='/support/inquiryBoard' exact={true} element={<InquiryList />} />
       <Route path='/support/write' exact={true} element={<InquiryWriteForm />} />
       <Route path='/findEmail' exact ={true} element={<FindUserPage/>} />
-      <Route path='/auth/googleSignUp' exact={true} element={<GoogleSignUp authLogic ={authLogic}/>}/>
+      <Route path='/auth/snsSignUp' exact={true} element={<SNSSignUp authLogic ={authLogic}/>}/>
       <Route path='/auth/kakao' exact={true} element={<KakaoLogin />}/>
     </Routes>
     </> 
