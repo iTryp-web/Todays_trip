@@ -76,28 +76,27 @@ export const HeaderBlock = styled.div`
       align-items: center;
       font-size: 0.8rem;
       .signin{
-        text-decoration: none;
-        color: darkgray;
-        margin-left: 1rem;
-        margin-right: -0.7rem;
-        padding-right: 0.3rem;
-      }
-      .signout{
         cursor: pointer;
         text-decoration: none;
         color: darkgray;
         margin-left: 1rem;
         margin-right: -0.7rem;
         padding-right: 0.3rem;
+        &:hover {
+          color: #4996F3;
+        }
       }
-      .signup {
+      .signout {
         margin-left: -0.7rem;
         text-decoration: none;
         color: darkgray;
         margin-right: -0.7rem;
         padding-right: 0.3rem;
+        &:hover {
+          color: #4996F3;
+        }
       }
-      .seller-button {
+      .signup-button {
         width: 100%;
         max-width: 100px;
         letter-spacing: -1px;

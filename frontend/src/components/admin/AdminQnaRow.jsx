@@ -43,17 +43,18 @@ const AdminQnaRow = ({qna, selectedMarket}) => {
       </QnaMarketStatus>
       <QnaContent onClick={() => navigate(`/market/detail/${qna.market_no}`)}>
         <QnaImg>
-          <img className='qnaImg' src={profileImg[0]} />
+          <img className='qnaImg' src={qna.file_url} />
         </QnaImg>
         <QnaDiv>
           <QnaMarketTitle>
             상품명: {qna.market_title}
           </QnaMarketTitle>
           <QnaMarketContent>
-            가격: {qna.market_price}원
+            가격: {qna.market_price ? (qna.market_price).toLocaleString('ko-KR') : 0}원
           </QnaMarketContent>
           <QnaMarketContent>
-            판매량: {qna.sales_count}개 [매출액: {qna.sales_count ? (qna.market_price * qna.sales_count).toLocaleString('ko-KR') :  0}원]
+            {}
+            판매량: {qna.sales_count ? qna.sales_count : 0}개 [매출액: {qna.sales_count ? (qna.market_price * qna.sales_count).toLocaleString('ko-KR') :  0}원]
           </QnaMarketContent>
         </QnaDiv>
       </QnaContent>

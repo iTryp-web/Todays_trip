@@ -169,6 +169,7 @@ export const QnaImg = styled.div`
   .qnaImg {
     width: 85px;
     height: 85px;
+    border-radius: 5px;
   }
 `;
 

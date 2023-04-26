@@ -64,7 +64,7 @@ const Header = ({authLogic}) => {
           </Link>
           <div className="buttons">
             {userId ? (
-              <div className="signout" onClick={() => logout()}>
+              <div className="signin button" onClick={() => logout()}>
                 로그아웃
               </div>
             ) : (
@@ -72,9 +72,15 @@ const Header = ({authLogic}) => {
                 로그인
               </Link>
             )}
-            <Link to="/signup" className="signup button">
+            {userId ? (
+            <Link to="/mypage" className="signout button">
+              마이페이지
+            </Link>
+            ) : (
+            <Link to="/signup" className="signout button">
               회원가입
             </Link>
+            )}
 {/*             <button className="seller-button">판매자 가입</button> */}
           </div>
         </div>

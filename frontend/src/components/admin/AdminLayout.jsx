@@ -84,6 +84,7 @@ const AdminLayout = () => {
             market_title: jsonDoc[i].MARKET_TITLE,
             market_price: jsonDoc[i].MARKET_PRICE,
             market_date: jsonDoc[i].MARKET_DATE,
+            file_url: jsonDoc[i].FILE_URL,
             sales_count: jsonDoc[i].SALES_COUNT,
             qna_new: jsonDoc[i].QNA_NEW, // 새로운 문의 수
             qna_count: jsonDoc[i].QNA_COUNT, // 해당글 문의 수

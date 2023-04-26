@@ -3,7 +3,7 @@ import { BoardList, CurationContent, CurationList, CurationSection, Main, MainCa
 import { Link, useNavigate } from 'react-router-dom'
 import { AiOutlineRight } from 'react-icons/ai'
 import ImageSlider from './ImageSlider'
-import { HomeCategories } from './homeData'
+import { HomeCategories, boardcategories } from './homeData'
 import { useEffect } from 'react'
 import { mainListDB } from '../../service/homeLogic'
 import { useState } from 'react'
@@ -190,7 +190,7 @@ const HomeLayout = () => {
               boardHot.map((post) => (
                 <li key={post.board_no}>
                   <CurationContent
-                    to={`/board/${post.board_category}/all?page=1`}
+                    to={`/board/${''}/all?page=1`}
                   >
                     <div>
                       <strong>{post.board_category}</strong>

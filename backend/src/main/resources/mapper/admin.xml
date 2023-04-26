@@ -7,15 +7,16 @@
 		     , m.user_id
 		     , m.market_category
 		     , m.market_title
-		     , REGEXP_REPLACE(REVERSE(REGEXP_REPLACE(REVERSE(TO_CHAR(m.market_price)), '(\d{3})','\1,')), '^,','') market_price
+		     , m.market_price
          , m.market_date
+         , f.file_url
 		     , NVL(q.qna_count, 0) qna_count
 		     , (SELECT COUNT(qna_no) qna_new
 		        FROM TB_QNA
 		        WHERE qna_step = 0
 		        AND qna_sort = 0
 		        ) qna_new
-		     , (SELECT COUNT(detail_no)
+		     , (SELECT SUM(market_count)
 	          FROM TB_ORDER_DETAIL
 	          WHERE market_no = m.market_no) sales_count
 		     , (SELECT COUNT(market_no)
@@ -41,9 +42,12 @@
 			    FROM TB_QNA
 			    WHERE qna_step = 0
 			    GROUP BY market_no) q
+			, TB_M_FILE f
 		WHERE m.market_no = q.market_no(+)
 			AND (q.market_no IS NOT NULL OR q.market_no IS NULL)
-	ORDER BY qna_count DESC, m.market_date DESC
+      AND m.market_no = f.market_no
+      AND f.file_step = 1
+	ORDER BY qna_count DESC, sales_count DESC
 	</select>
 	
 	<!-- 신고 목록 조회(회원4, 글0, 댓글1) -->

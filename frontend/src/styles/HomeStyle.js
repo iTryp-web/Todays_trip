@@ -121,17 +121,19 @@ export const MarketList = styled.ul`
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  margin: 30px 0 50px;
+  margin: 30px 0 80px;
   list-style: none;
+  font-size: 15px;
   li {
     cursor: pointer;
     flex: 1;
     position: relative;
-    color: #4996F3;
-  }
-  &:hover {
-    img {
-      transform: scale(110%);
+    color: #2C5790;
+    &:hover {
+      color: #4996F3;
+      img {
+        transform: scale(103%);
+      }
     }
   }
   img {
@@ -140,17 +142,19 @@ export const MarketList = styled.ul`
     aspect-ratio: 4 / 3;
     transition: 0.4s all cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 5px;
+    border-radius: 10px;
+    margin-bottom: 10px;
   }
   strong {
     display: flex;
     height: 2.3em;
-    line-height: 1em;
-    padding: 2px;
+    line-height: 20px;
+    padding: 3px;
   }
   em {
     position: absolute;
-    right: 2px;
-    bottom: 2px;
+    right: 5px;
+    bottom: -17px;
     color: #737373;
     font-size: 12px;
   }
@@ -160,7 +164,7 @@ export const BoardList = styled.ul`
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  margin: 30px 0 50px;
+  margin: 30px 0 80px;
   list-style: none;
   text-decoration: none;
   li {

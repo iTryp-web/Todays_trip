@@ -48,6 +48,7 @@
 	    , TB_M_FILE f
 		WHERE m.market_no = d.market_no(+)
       AND m.market_no = f.market_no
+      AND f.file_step = 1
 		AND ROWNUM <![CDATA[<=]]> 5
 		ORDER BY m.market_date DESC
 	</select>
