@@ -8,6 +8,7 @@
 		     , m.market_title
 		     , m.market_date
 		     , d.market_count
+		     , f.file_url
 		     , (SELECT COUNT(market_no)
             FROM TB_MARKET) m_count
          , (SELECT COUNT(board_no)
@@ -24,7 +25,10 @@
 			, (SELECT market_no, SUM(market_count) market_count
 		    FROM TB_ORDER_DETAIL
 		    GROUP BY market_no) d
+	    , TB_M_FILE f
 		WHERE m.market_no = d.market_no(+)
+      AND m.market_no = f.market_no
+      AND f.file_step = 1
 		AND ROWNUM <![CDATA[<=]]> 5
 		ORDER BY d.market_count DESC
 	</select>
@@ -36,11 +40,14 @@
 		     , m.market_title
 		     , m.market_date
 		     , d.market_count
+ 		     , f.file_url
 		FROM TB_MARKET m
 			, (SELECT market_no, SUM(market_count) market_count
 		    FROM TB_ORDER_DETAIL
 		    GROUP BY market_no) d
+	    , TB_M_FILE f
 		WHERE m.market_no = d.market_no(+)
+      AND m.market_no = f.market_no
 		AND ROWNUM <![CDATA[<=]]> 5
 		ORDER BY m.market_date DESC
 	</select>
@@ -48,6 +55,7 @@
 	<!-- 커뮤 인기글(좋아요 5개이상 혹은 조회수 30이상) -->
 	<select id="mainBoardHot" parameterType="map" resultType="map">
 		SELECT b.board_no
+		     , b.board_category
 		     , b.board_title
 		     , b.board_hit
 		     , b.board_date
@@ -71,6 +79,7 @@
 	<!-- 커뮤 신규글 -->
 	<select id="mainBoardNew" parameterType="map" resultType="map">
 	  SELECT b.board_no
+ 		     , b.board_category
 	       , b.board_title
 	       , b.board_hit
 	       , b.board_date

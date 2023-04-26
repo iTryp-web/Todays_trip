@@ -1,5 +1,5 @@
 import React from 'react'
-import { CurationContent, CurationList, CurationSection, Main, MainCategoryList, MarketList, SliderBlock, SliderDiv } from '../../styles/HomeStyle'
+import { BoardList, CurationContent, CurationList, CurationSection, Main, MainCategoryList, MarketList, SliderBlock, SliderDiv } from '../../styles/HomeStyle'
 import { Link, useNavigate } from 'react-router-dom'
 import { AiOutlineRight } from 'react-icons/ai'
 import ImageSlider from './ImageSlider'
@@ -59,6 +59,7 @@ const HomeLayout = () => {
               market_title: jsonDoc[i].MARKET_TITLE,
               market_date: jsonDoc[i].MARKET_DATE,
               market_count: jsonDoc[i].MARKET_COUNT,
+              file_url: jsonDoc[i].FILE_URL,
             }
             console.log(obj);
             list1.push(obj)
@@ -72,6 +73,7 @@ const HomeLayout = () => {
               market_title: jsonDoc[i].MARKET_TITLE,
               market_date: jsonDoc[i].MARKET_DATE,
               market_count: jsonDoc[i].MARKET_COUNT,
+              file_url: jsonDoc[i].FILE_URL,
             }
             console.log(obj);
             list2.push(obj)
@@ -81,6 +83,7 @@ const HomeLayout = () => {
           for(let i=m_count+m_count; i<m_count+m_count+bHot_count; i++) {
             const obj = {
               board_no: jsonDoc[i].BOARD_NO,
+              board_category: jsonDoc[i].BOARD_CATEGORY,
               board_title: jsonDoc[i].BOARD_TITLE,
               board_hit: jsonDoc[i].BOARD_HIT,
               board_date: jsonDoc[i].BOARD_DATE,
@@ -95,6 +98,7 @@ const HomeLayout = () => {
           for(let i=m_count+m_count+bHot_count; i<m_count+m_count+bHot_count+bNew_count; i++) {
             const obj = {
               board_no: jsonDoc[i].BOARD_NO,
+              board_category: jsonDoc[i].BOARD_CATEGORY,
               board_title: jsonDoc[i].BOARD_TITLE,
               board_hit: jsonDoc[i].BOARD_HIT,
               board_date: jsonDoc[i].BOARD_DATE,
@@ -117,11 +121,12 @@ const HomeLayout = () => {
       <MainCategoryList>
         {HomeCategories.map((item) => (
           <li key={item.category} onClick={() => navigate('/market/'+item.category)}>
-            <img src={item.img} alt="" />
+            <img src={item.img} />
             {item.name}
           </li>
         ))}
       </MainCategoryList>
+
         <CurationSection>
           <header>
             <h2>지금 뜨는 상품</h2>
@@ -133,19 +138,40 @@ const HomeLayout = () => {
           <MarketList>
             {marketHot &&
               marketHot.map((post) => (
-                <li key={post.market_no}>
-                  <Link to={`/market/${post.market_category}`}>
+                <li key={post.market_no} onClick={() => navigate('/market/detail/'+post.market_no)}>
+                  <div>
+                    <img src={post.file_url} />
+                  </div>
+                  <strong>{post.market_title}</strong>
+                  <em>{post.market_count > 0 ? post.market_count : 0}개 판매</em>
+                </li>
+              ))}
+          </MarketList>
+        </CurationSection>
+
+        <CurationSection>
+          <header>
+            <h2>새로 나온 상품</h2>
+            <Link to="/market/all" className="view-all">
+              전체보기
+              <AiOutlineRight />
+            </Link>
+          </header>
+          <MarketList>
+            {marketNew &&
+              marketNew.map((post) => (
+                <li key={post.market_no} onClick={() => navigate('/market/detail/'+post.market_no)}>
                     <div>
-                      <img
-                        src={
-                          ''
-                        }
-                        alt=""
-                      />
+                      <img src={post.file_url} />
                     </div>
                     <strong>{post.market_title}</strong>
-                    <em>{post.market_date}</em>
-                  </Link>
+                    <em>
+                      {new Date(post.market_date).toLocaleDateString('ko-KR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        })}
+                    </em>
                 </li>
               ))}
           </MarketList>
@@ -159,7 +185,7 @@ const HomeLayout = () => {
               <AiOutlineRight />
             </Link>
           </header>
-          <CurationList>
+          <BoardList>
           {boardHot &&
               boardHot.map((post) => (
                 <li key={post.board_no}>
@@ -167,15 +193,16 @@ const HomeLayout = () => {
                     to={`/board/${post.board_category}/all?page=1`}
                   >
                     <div>
-                      <em>{post.board_category}</em>
+                      <strong>{post.board_category}</strong>
                       <strong>{post.board_title}</strong>
-                      <p>{post.board_content}</p>
+                      <p>{post.board_hit}</p>
+                      <p>{post.like_count}</p>
+                      <em>{post.board_date}</em>
                     </div>
-                      <img src='' alt="" />
                   </CurationContent>
                 </li>
               ))}
-          </CurationList>
+          </BoardList>
         </CurationSection>
       </Main>
     </>

@@ -82,6 +82,14 @@ export const HeaderBlock = styled.div`
         margin-right: -0.7rem;
         padding-right: 0.3rem;
       }
+      .signout{
+        cursor: pointer;
+        text-decoration: none;
+        color: darkgray;
+        margin-left: 1rem;
+        margin-right: -0.7rem;
+        padding-right: 0.3rem;
+      }
       .signup {
         margin-left: -0.7rem;
         text-decoration: none;

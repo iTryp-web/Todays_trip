@@ -122,6 +122,47 @@ export const MarketList = styled.ul`
   justify-content: space-between;
   gap: 8px;
   margin: 30px 0 50px;
+  list-style: none;
+  li {
+    cursor: pointer;
+    flex: 1;
+    position: relative;
+    color: #4996F3;
+  }
+  &:hover {
+    img {
+      transform: scale(110%);
+    }
+  }
+  img {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+    transition: 0.4s all cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 5px;
+  }
+  strong {
+    display: flex;
+    height: 2.3em;
+    line-height: 1em;
+    padding: 2px;
+  }
+  em {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    color: #737373;
+    font-size: 12px;
+  }
+`;
+
+export const BoardList = styled.ul`
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 30px 0 50px;
+  list-style: none;
+  text-decoration: none;
   li {
     flex: 1;
   }
@@ -136,12 +177,6 @@ export const MarketList = styled.ul`
         transform: scale(110%);
       }
     }
-  }
-  img {
-    width: 100%;
-    object-fit: cover;
-    aspect-ratio: 4 / 3;
-    transition: 0.4s all cubic-bezier(0.4, 0, 0.2, 1);
   }
   strong {
     display: flex;

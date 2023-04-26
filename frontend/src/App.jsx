@@ -30,7 +30,7 @@ function App({authLogic}) {
   return (
     <>
     <Routes>
-      <Route path='/' exact={true} element={<HomePage />} />
+      <Route path='/' exact={true} element={<HomePage authLogic={authLogic} />} />
       <Route path='/board/:category'  element={<BoardPage />} />
       <Route path='/board/detail/:bno' element={<BoardDetail />} />
       <Route path='/board/write' exact={true} element={<BoardWriteForm />} />

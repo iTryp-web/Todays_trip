@@ -1,13 +1,27 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import { NavLinkStyle, HeaderBlock } from '../../styles/HeaderStyle';
 import { MdSearch } from "react-icons/md";
 import { BsCart } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
+import { useEffect } from 'react';
 
-const Header = () => {
+const Header = ({authLogic}) => {
+  const navigate = useNavigate()
+  // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
+  // 아이디, 닉네임 담을 변수
+  const [userId] = useState(window.sessionStorage.getItem('user_id'))
+  const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+
   const menuClick = () => {
 
+  }
+
+  const logout = () => {
+    // logout(authLogic.getUserAuth())
+    console.log('logout')
+    window.sessionStorage.clear();
+    window.location.reload()
   }
   
   return (
@@ -45,21 +59,21 @@ const Header = () => {
           <Link to="/cart" className="cart">
             <BsCart className="cart-icon" />
           </Link>
-          { sessionStorage.getItem("user_id") === undefined || sessionStorage.getItem("user_id") === null ? 
           <div className="buttons">
-            <Link to="/signin" className="signin button">
-              로그인
-            </Link>
+            {userId ? (
+              <div className="signout" onClick={() => logout()}>
+                로그아웃
+              </div>
+            ) : (
+              <Link to="/signin" className="signin button">
+                로그인
+              </Link>
+            )}
             <Link to="/signup" className="signup button">
               회원가입
             </Link>
-            <button className="seller-button">판매자 가입</button>
+{/*             <button className="seller-button">판매자 가입</button> */}
           </div>
-          :
-          <div className="buttons">
-            {sessionStorage.getItem("user_nickname")} 님 환영합니다.
-          </div>
-          }
         </div>
       </HeaderBlock>
     </>
