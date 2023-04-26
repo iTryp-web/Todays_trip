@@ -5,6 +5,7 @@ import { MdSearch } from "react-icons/md";
 import { BsCart } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useEffect } from 'react';
+import { KAKAO_AUTH_LOGOUT_URL } from '../auth/KakaoLogin';
 
 const Header = ({authLogic}) => {
   const navigate = useNavigate()
@@ -18,10 +19,12 @@ const Header = ({authLogic}) => {
   }
 
   const logout = () => {
-    // logout(authLogic.getUserAuth())
+
+    authLogic.getUserAuth().signOut();
     console.log('logout')
     window.sessionStorage.clear();
     window.location.reload()
+    window.location.href = KAKAO_AUTH_LOGOUT_URL;
   }
   
   return (

@@ -701,14 +701,13 @@ const SignUpPage = ({ authLogic }) => {
         if(res.data!==0){//스프링 부트 - RestMemberController - memberList에서 넘어오는 정보
           const temp = JSON.stringify(res.data)
           const jsonDoc = JSON.parse(temp)
-          ssg.setItem('name',jsonDoc[0].USER_NAME)
-          ssg.setItem('nickname',jsonDoc[0].USER_NICKNAME)
-          ssg.setItem('email',jsonDoc[0].USER_EMAIL)
-          ssg.setItem('id',jsonDoc[0].USER_ID)
+          ssg.setItem('user_name',jsonDoc[0].USER_NAME)
+          ssg.setItem('user_nickname',jsonDoc[0].USER_NICKNAME)
+          ssg.setItem('user_email',jsonDoc[0].USER_EMAIL)
+          ssg.setItem('user_id',jsonDoc[0].USER_ID)
         }
         //오라클서버의 회원집합에 uid가 존재하지 않으면
       const result = await loginGoogle(authLogic.getUserAuth(),authLogic.getGoogleAuthProvider())
-      window.sessionStorage.setItem('userId',result.uid)
       let params;
       params = {
         user_id : result.uid
