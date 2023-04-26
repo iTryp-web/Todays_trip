@@ -70,11 +70,9 @@ export const loginEmail = (auth,user) => {//user ->
   })
 }
 
-//로그인 시도시 구글인증인지 아닌지 깃허브 인증인지 문자열로 넘겨받음
+//로그인 시도시 구글인증인지 아닌지 문자열로 넘겨받음
 //구글인증인 경우 - Google
-//깃허브 인증인 경우 - Github
 export const loginGoogle = (auth, googleProvider) => {
-  console.log("구글 로그인시도")
   console.log(auth)
   console.log(googleProvider)
   return new Promise((resolve, reject) => {

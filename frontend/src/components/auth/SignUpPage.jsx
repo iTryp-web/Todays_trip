@@ -27,6 +27,7 @@ import { linkEmail, loginGoogle, onAuthChange, signupEmail } from "../../service
 import {
   checkInfoDB,
   memberInsertDB,
+  sessionListDB,
 } from "../../service/memberLogic";
 import axios from "axios";
 import EmailVerifyCode from "./EmailVerifyCode";
@@ -679,10 +680,33 @@ const SignUpPage = ({ authLogic }) => {
     }
   }, [pwInput, pwCheckInput]);
 
+  const ssg = sessionStorage;
+
   //구글 로그인(정보 없으면 회원가입)
   const loginG = async() =>{
     try {
       console.log('로그인시도')
+      const user = await onAuthChange(auth)
+      console.log(user)
+      //사용자가 있으면 - userId가 있다
+      //구글 로그인으로 사용자 정보를 가지고 있을 때
+      //user정보가 있으면 sessionStorage에 담는다 - email
+      if(user){
+        console.log('user정보가 있을때')
+        //세션스토리지에 이메일 주소가 등록됨 - 단 구글로그인이 되어있는 상태일때만
+        //ssg.setItem('email',user.email)
+        const res = await sessionListDB({user_id:user.uid})
+        console.log(res.data)
+        //오라클서버의 회원집합에 uid가 존재하면 - 세션 스토리지에 값을 담자
+        if(res.data!==0){//스프링 부트 - RestMemberController - memberList에서 넘어오는 정보
+          const temp = JSON.stringify(res.data)
+          const jsonDoc = JSON.parse(temp)
+          ssg.setItem('name',jsonDoc[0].USER_NAME)
+          ssg.setItem('nickname',jsonDoc[0].USER_NICKNAME)
+          ssg.setItem('email',jsonDoc[0].USER_EMAIL)
+          ssg.setItem('id',jsonDoc[0].USER_ID)
+        }
+        //오라클서버의 회원집합에 uid가 존재하지 않으면
       const result = await loginGoogle(authLogic.getUserAuth(),authLogic.getGoogleAuthProvider())
       window.sessionStorage.setItem('userId',result.uid)
       let params;
@@ -699,6 +723,7 @@ const SignUpPage = ({ authLogic }) => {
       }else{
         navigate("/")
       }
+    }
    } catch (error) {
       console.log("로그인 오류입니다")
    }

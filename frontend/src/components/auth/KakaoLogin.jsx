@@ -54,7 +54,7 @@ const KakaoLogin = () => {
       const jsonDoc = JSON.parse(data);
       console.log(jsonDoc);
       if (!jsonDoc) {
-        navigate("/auth/SNSSignUp", { kakaoData: kakaoData });
+        navigate("/auth/SNSSignUp", { state:{kakaoData: kakaoData }});
       }
     } catch (error) {}
   };

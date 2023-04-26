@@ -9,7 +9,7 @@ import {
   JoinButton,
 } from "../../styles/SignStyle";
 import Header from "../include/Header";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SNSSignUp = ({ authLogic, kakaoData }) => {
   const navigate = useNavigate();
@@ -161,6 +161,8 @@ const SNSSignUp = ({ authLogic, kakaoData }) => {
   };
 
   //구글 회원가입
+  const location = useLocation();
+  [ kakaoData ] = useState(location.state?.kakaoData);
   const signup = async ({ kakaoData }) => {
     const auth = authLogic.getUserAuth();
     const user = await onAuthChange(auth);
