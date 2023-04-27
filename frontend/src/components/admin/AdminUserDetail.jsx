@@ -14,15 +14,22 @@ import AdminCommentRow from './AdminCommentRow'
 
 const AdminUserDetail = () => {
   const navigate = useNavigate()
-  // 페이지네이션
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(1);
-  const offset = (page - 1) * limit;
+
   // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
   // 아이디, 닉네임 담을 변수
   const [userId] = useState(window.sessionStorage.getItem('user_id'))
   const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
   const [userRole] = useState(window.sessionStorage.getItem('user_role'))
+  useEffect(() => {
+    if(userRole != 2) {
+      navigate('/')
+    }
+  }, [userId, userRole])
+  
+  // 페이지네이션
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * limit;
   // 파라미터의 유저값
   let {user} = useParams()
   console.log(user);
@@ -39,13 +46,6 @@ const AdminUserDetail = () => {
   const refresh = () => {
     setStart(new Date())
   }
-
-  useEffect(() => {
-    if(userRole != 2) {
-      alert('접근 권한이 없습니다.')
-      navigate('/')
-    }
-  }, [userId])
 
 useEffect(() => {
   const userDetail = async() => {

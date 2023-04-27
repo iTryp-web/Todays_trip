@@ -23,11 +23,11 @@ const Header = () => {
   }
 
   const logout = () => {
-    auth.signOut();
     console.log('logout')
+    auth.signOut();
+    window.location.href = KAKAO_AUTH_LOGOUT_URL;
     window.sessionStorage.clear();
     window.location.reload()
-    window.location.href = KAKAO_AUTH_LOGOUT_URL;
   }
   
   return (

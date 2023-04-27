@@ -7,21 +7,22 @@ import { OrderDiv } from '../../styles/OrderStyle'
 
 const AdminOrderDetail = () => {
   const navigate = useNavigate()
-  // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
+
+   // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
   // 아이디, 닉네임 담을 변수
   const [userId] = useState(window.sessionStorage.getItem('user_id'))
   const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
   const [userRole] = useState(window.sessionStorage.getItem('user_role'))
+  
+  useEffect(() => {
+    if(userRole != 2) {
+      navigate('/')
+    }
+  }, [userId, userRole])
+
   // 파라미터의 주문번호
   let {orderNo} = useParams()
   console.log(orderNo);
-  // 관리자외 접근 차단
-  useEffect(() => {
-    if(userRole != 2) {
-      alert('접근 권한이 없습니다.')
-      navigate('/')
-    }
-  }, [userId])
   // 디테일 담을 변수
   const [orders, setOrders] = useState([{}])
   // 정보 불러오기

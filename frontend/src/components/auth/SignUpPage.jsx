@@ -713,10 +713,9 @@ const SignUpPage = () => {
       }
       //오라클서버의 회원집합에 uid가 존재하지 않으면
       // const result = await loginGoogle(authLogic.getUserAuth(), authLogic.getGoogleAuthProvider()) 변경
-      const result = await loginGoogle(userAuth.auth, userAuth.googleProvider)
       let params;
       params = {
-        user_id: result.uid
+        user_id: user.uid
       }
       let response = { data: 0 };
       response = await checkInfoDB(params);

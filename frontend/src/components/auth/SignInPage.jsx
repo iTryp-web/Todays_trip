@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { checkInfoDB, sessionListDB } from "../../service/memberLogic";
 import { loginGoogle, onAuthChange } from "../../service/authLogic";
 import { KAKAO_AUTH_URL } from "./KakaoLogin";
+import { useSelector } from "react-redux";
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -18,10 +19,12 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const SignInPage = ({ authLogic }) => {
+const SignInPage = () => {
   const navigate = useNavigate();
   const ssg = sessionStorage;
-  const auth = authLogic.getUserAuth();
+  const userAuth = useSelector((state) => state.userAuth);
+  // const auth = authLogic.getUserAuth(); 변경
+  const auth = userAuth.auth;
 
   
   //구글 로그인(정보 없으면 회원가입)
@@ -29,8 +32,10 @@ const SignInPage = ({ authLogic }) => {
     try {
       let user = await onAuthChange(auth)
       if (!user) {
-        await loginGoogle(authLogic.getUserAuth(), authLogic.getGoogleAuthProvider())
-        const auth1 = authLogic.getUserAuth();
+        // await loginGoogle(authLogic.getUserAuth(), authLogic.getGoogleAuthProvider()) 변경
+        await loginGoogle(userAuth.auth, userAuth.googleProvider)
+        // const auth1 = authLogic.getUserAuth(); 변경
+        const auth1 = userAuth.auth;
         const user1 = await onAuthChange(auth1)
         user = user1
       }
@@ -49,12 +54,13 @@ const SignInPage = ({ authLogic }) => {
         ssg.setItem('user_nickname', jsonDoc[0].USER_NICKNAME)
         ssg.setItem('user_email', jsonDoc[0].USER_EMAIL)
         ssg.setItem('user_id', jsonDoc[0].USER_ID)
+        ssg.setItem('user_role', jsonDoc[0].ROLE)
       }
       //오라클서버의 회원집합에 uid가 존재하지 않으면
-      const result = await loginGoogle(authLogic.getUserAuth(), authLogic.getGoogleAuthProvider())
+      //const result = await loginGoogle(authLogic.getUserAuth(), authLogic.getGoogleAuthProvider()) 변경
       let params;
       params = {
-        user_id: result.uid
+        user_id: user.uid
       }
       let response = { data: 0 };
       response = await checkInfoDB(params);

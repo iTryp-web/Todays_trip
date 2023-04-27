@@ -62,6 +62,7 @@
 		,user_nickname
 		,user_name
 		,user_email
+		,role
 		from TB_USER
 		WHERE
 		user_id=#{user_id}
