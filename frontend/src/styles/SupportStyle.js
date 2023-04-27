@@ -296,6 +296,9 @@ export const AnswerText = styled.div`
     overflow: visible;
     transition: all 0.1s ease-in-out;
   }
+  .answerContent{
+    padding: 0px;
+  }
 `;
 
 /*================ 1대1문의 글 ================*/
@@ -416,3 +419,9 @@ export const InqCheckDiv = styled.div`
   background-color: #f7f9fa;
   margin: 0px 15px;
 `;
+
+export const AnswerComplete = styled.span`
+  font-weight: 600;
+  color:#4996F3;
+  padding-right: 10px;
+`

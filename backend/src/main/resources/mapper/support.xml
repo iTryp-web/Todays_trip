@@ -83,6 +83,7 @@
 	<select id="inquiryList" parameterType="map" resultType="map">
 		SELECT q.qna_no
 		, u.user_id
+		, q.qna_step
 		, u.user_nickname
 		, q.qna_title
 		, q.qna_sort
@@ -128,8 +129,9 @@
 		#{user_id},
 		#{qna_title},
 		#{qna_content},
-		2,
-		TO_CHAR(sysdate, 'YYYY-MM-DD
+		#{qna_sort},
+		TO_CHAR(sysdate,
+		'YYYY-MM-DD
 		HH24:MI:SS')
 		)
 	</insert>
@@ -158,12 +160,13 @@
 		<foreach collection="list" item="item" separator=";"
 			open="DECLARE BEGIN" close="; END;">
 			UPDATE TB_Q_FILE
-			SET qna_no = #{item.qna_no}
+			SET qna_no =
+			#{item.qna_no}
 			WHERE file_name =
 			LTRIM(#{item.file_name})
 		</foreach>
 	</update>
-	
+
 	<!-- Quill image 삭제 -->
 	<delete id="qImageDelete" parameterType="map">
 		DELETE FROM TB_Q_FILE

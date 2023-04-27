@@ -11,6 +11,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
 import {
+  AnswerComplete,
   AnswerText,
   InquiryH3,
   InquiryHeader,
@@ -22,12 +23,17 @@ import {
 import { InquiryListDB } from "../../service/supportLogic";
 import { useCallback } from "react";
 import { AiFillLock } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import Toast from "../include/Toast";
+import { setToastMsg } from "../../redux/toastStatus/action";
 
 const InquiryList = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
-
+  const status = useSelector((store) => store.toastStatus.status);
+  console.log(status);
+  const dispatch = useDispatch();
   const managerChecker = (thisUserRole) => {
     if (thisUserRole === 4) {
       return true;
@@ -46,7 +52,7 @@ const InquiryList = () => {
           return newState;
         });
       } else {
-        alert("비밀글입니다.");
+        dispatch(setToastMsg("비밀글입니다."));
       }
     } else {
       setIsOpen((prevState) => {
@@ -54,14 +60,6 @@ const InquiryList = () => {
         newState[qna_no] = !newState[qna_no];
         return newState;
       });
-    }
-  };
-
-  const handleComment = (qna_no) => {
-    if (sessionStorage.getItem("user_role")) {
-      console.log(qna_no + "문의답변 호출");
-    } else {
-      console.log("잘못된 접근입니다. 관리자계정으로 접근할 것.");
     }
   };
 
@@ -91,6 +89,7 @@ const InquiryList = () => {
         const obj = {
           qna_no: item.QNA_NO,
           user_id: item.USER_ID,
+          qna_step: item.QNA_STEP,
           qna_title: item.QNA_TITLE,
           qna_content: item.QNA_CONTENT,
           qna_date: item.QNA_DATE,
@@ -99,6 +98,8 @@ const InquiryList = () => {
         };
         console.log(obj.file_exist);
         list.push(obj);
+        console.log("=================================")
+        console.log(obj.qna_step)
       });
       setPosts(list);
     };
@@ -108,6 +109,7 @@ const InquiryList = () => {
   return (
     <>
       <Header />
+      {status && <Toast />}
       <InquirySection>
         <InquiryHeader>
           <InquiryH3>Q&A</InquiryH3>
@@ -129,59 +131,60 @@ const InquiryList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {posts.map((item) => (
-              <React.Fragment key={item.qna_no}>
-                <TableRow>
-                  <TableCell align="center">{item.qna_no}</TableCell>
-                  <TableCell align="left">
-                    <div className="questionContainer">
-                      <span
-                        className="questionText"
-                        onClick={() =>
-                          handleClick(
-                            item.user_id,
-                            item.qna_no,
-                            item.qna_sort == 4
-                          )
-                        }
-                        style={{ cursor: "pointer" }}
-                      >
-                        {item.qna_sort == 4 ? <AiFillLock /> : null}
-                        {item.qna_title}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell align="center">{item.user_id}</TableCell>
-                  <TableCell align="center">{item.qna_date}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell colSpan={4}>
-                    <AnswerText
-                      className={isOpen[item.qna_no] ? "show" : ""}
-                      onClick={
-                        item.qna_sort !== 4 &&
-                        sessionStorage.getItem("user_id") === item.user_id
-                          ? handleComment(item.qna_no)
-                          : null
-                      }
-                    >
-                      <p
-                        className="answerTextP"
-                        style={{
-                          cursor:
-                            item.qna_sort !== 4 &&
-                            sessionStorage.getItem("user_id") === item.user_id
-                              ? "pointer"
-                              : "default",
-                        }}
-                      >
-                        {removeTag(item.qna_content)}
-                      </p>
-                    </AnswerText>
-                  </TableCell>
-                </TableRow>
-              </React.Fragment>
-            ))}
+            {posts
+              .filter((item) => item.qna_step === 0 || item.qna_step === 2)
+              .map((item) => (
+                <React.Fragment key={item.qna_no}>
+                  <TableRow>
+                    <TableCell align="center">{item.qna_no}</TableCell>
+                    <TableCell  align="left">
+                      <div className="questionContainer">
+                        <span 
+                          className="questionText"
+                          onClick={() =>
+                            handleClick(
+                              item.user_id,
+                              item.qna_no,
+                              item.qna_sort == 4
+                            )
+                          }
+                          style={{ cursor: "pointer" }}
+                        >
+                          {item.qna_sort == 4 ? <AiFillLock /> : null}
+                          {item.qna_step == 2 ? <AnswerComplete>답변완료</AnswerComplete> : null}
+                          {item.qna_title}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell align="center">{item.user_id}</TableCell>
+                    <TableCell align="center">{item.qna_date}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={4}>
+                      <AnswerText className={isOpen[item.qna_no] ? "show" : ""}>
+                        <p
+                          className="answerTextP"
+                          style={{
+                            cursor:
+                              sessionStorage.getItem("user_role") === 2
+                                ? "pointer"
+                                : "default",
+                          }}
+                        >
+                          {removeTag(item.qna_content)}
+                        </p>
+                      </AnswerText>
+                    </TableCell>
+                  </TableRow>
+                  {item.qna_step === 1 ? (
+                    <TableRow>
+                      <TableCell colSpan={4}>
+                        <commentWindow />
+                      </TableCell>
+                    </TableRow>
+                  ) : null}
+                </React.Fragment>
+              ))}
           </TableBody>
         </Table>
       </InquirySection>
