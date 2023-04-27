@@ -503,17 +503,37 @@ const BoardDetail = () => {
                 </DetailContent>
               </section>
               <CountDiv>
-                <Like
+                <Like>
+                  {isLiked ? (
+                  <lord-icon
                   onClick={() => {
                     {
                       /* type, group, step */
                       isLiked ? likeOff(0, -1, 0) : likeOn(0, -1, 0);
                     }
                   }}
-                >
-                  <ReactIcon>
-                    <AiFillLike color={isLiked ? '#4996F3' : 'gray'} />
-                  </ReactIcon>
+                  className='heart-icon'
+                  src="https://cdn.lordicon.com/xryjrepg.json"
+                  trigger="click"
+                  colors="primary:#4996F3"
+                  style={{width:"20px", height:"20px"}}>
+                </lord-icon>
+                  ) : (
+                  <lord-icon
+                    onClick={() => {
+                      {
+                        /* type, group, step */
+                        isLiked ? likeOff(0, -1, 0) : likeOn(0, -1, 0);
+                      }
+                    }}
+                    className='heart-icon'
+                    src="https://cdn.lordicon.com/xryjrepg.json"
+                    trigger="click"
+                    colors="primary:#808080"
+                    style={{width:"20px", height:"20px"}}>
+                  </lord-icon>
+                  )}
+                  {/*  <AiFillLike color={isLiked ? '#4996F3' : 'gray'} /> */}
                   <FontContent liked={isLiked}>
                     좋아요 {detailPost.like_count ? detailPost.like_count : 0}
                   </FontContent>
@@ -620,11 +640,32 @@ const BoardDetail = () => {
                         {new Date(item.comment_date).toLocaleString()}
                       </CommentDate>
                       {item.comment_status === 0 || item.comment_status === 3 ? (
-                        <CommentLike iconColor={commentColor(item.comment_no, item.comment_step)}
-                          onClick={() => {
-                            btnCommentLike(item.comment_no, item.comment_step
-                            )}}>
-                          <AiFillLike className='like-icon' />
+                        <CommentLike iconColor={commentColor(item.comment_no, item.comment_step)}>
+                          {/* <AiFillLike className='like-icon' /> */}
+                          {commentColor(item.comment_no, item.comment_step) ? (
+                            <lord-icon
+                              onClick={() => {
+                                btnCommentLike(item.comment_no, item.comment_step
+                                )}}
+                            className='heart-icon'
+                            src="https://cdn.lordicon.com/xryjrepg.json"
+                            trigger="click"
+                            colors="primary:#4996F3"
+                            style={{width:"15px", height:"15px"}}>
+                          </lord-icon>
+                            ) : (
+                            <lord-icon
+                              onClick={() => {
+                                btnCommentLike(item.comment_no, item.comment_step
+                                )}}
+                              className='heart-icon'
+                              src="https://cdn.lordicon.com/xryjrepg.json"
+                              trigger="click"
+                              colors="primary:#808080"
+                              style={{width:"15px", height:"15px"}}>
+                            </lord-icon>
+                            )}
+
                           <span className='like-count'>{item.like_count ? item.like_count : 0}</span>
                         </CommentLike>
                       ) : null}

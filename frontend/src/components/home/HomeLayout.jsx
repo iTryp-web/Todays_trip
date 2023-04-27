@@ -3,7 +3,7 @@ import { BoardList, CurationContent, CurationList, Main, MainCategoryList, MainS
 import { Link, useNavigate } from 'react-router-dom'
 import { AiFillLike, AiOutlineRight } from 'react-icons/ai'
 import ImageSlider from './ImageSlider'
-import { HomeCategories, boardcategories, } from './homeData'
+import { HomeCategories } from './homeData'
 import { useEffect } from 'react'
 import { mainListDB } from '../../service/homeLogic'
 import { useState } from 'react'
@@ -211,7 +211,8 @@ const HomeLayout = () => {
                         <AiFillLike className='icon-like' />
                         {post.like_count ? post.like_count : 0}
                       </p>
-                      <em>{new Date(post.board_date).toLocaleDateString('ko-KR', {
+                      <em>
+                        {new Date(post.board_date).toLocaleDateString('ko-KR', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',

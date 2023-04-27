@@ -49,30 +49,3 @@ export const HomeCategories = [
     img: '/images/home/icon-hotel.png'
   },
 ]
-
-export const boardcategories = [
-  {
-  name: '전체',
-  category: 'all',
-  },
-  {
-  name: '인기글',
-  category: 'hot',
-  },
-  {
-  name: '자유',
-  category: 'free',
-  },
-  {
-  name: '질문',
-  category: 'ask',
-  },
-  {
-  name: '여행후기',
-  category: 'review',
-  },
-  {
-  name: '동행찾기',
-  category: 'together',
-  },
-]

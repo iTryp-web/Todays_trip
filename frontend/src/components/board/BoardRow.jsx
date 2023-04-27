@@ -36,8 +36,15 @@ const BoardRow = ({post}) => {
           </PostContent>
           <PostFooter>
             <ul className="list-count">
-              <li>
-                <AiFillLike />
+              <li className='heart-icon'>
+                <lord-icon
+                  src="https://cdn.lordicon.com/xryjrepg.json"
+                  trigger="hover"
+                  colors="primary:#c5c5c5"
+                  state="hover"
+                  style={{width:"20px", height:"20px"}}>
+                </lord-icon>
+                {/*  <AiFillLike /> */}
                 {post.like_count ? post.like_count : 0}
               </li>
               <li>

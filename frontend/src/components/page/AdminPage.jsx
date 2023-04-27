@@ -6,6 +6,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 import AdminLayout from "../admin/AdminLayout";
 import { AdminH3, AdminHeader } from "../../styles/AdminStyle";
+import { useDispatch, useSelector } from "react-redux";
+import { setToastMsg } from "../../redux/toastStatus/action";
+import Toast from "../include/Toast";
 
 const AdminPage = () => {
   const navigate = useNavigate();

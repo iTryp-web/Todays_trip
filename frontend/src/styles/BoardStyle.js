@@ -374,6 +374,9 @@ export const PostFooter = styled.div`
       color: #c5c5c5;
       font-size: 12px;
     }
+    .heart-icon{
+      display: flex;
+    }
   }
   small {
     font-size: 12px;
@@ -743,12 +746,16 @@ export const ReactIcon = styled.div`
   color: gray;
   margin-top: 0;
   margin-right: 3px;
-  
+  .heart-icon {
+    display: flex;
+    flex-direction: row;
+  }
 `;
 
 export const FontContent = styled.div`
   color: ${({ liked }) => (liked ? "#4996F3" : "gray")};
   font-weight: 600;
+  cursor: default;
 `;
 
 export const Comment = styled.div`
@@ -883,13 +890,14 @@ export const CommentLike = styled.span`
   margin-left: 15px;
   font-size: 12px;
   color: ${({ iconColor }) => (iconColor ? "#4996F3" : "gray")};
-
   font-weight: 500;
-  .like-icon {
-    margin-bottom: 3px;
+  .heart-icon{
+    display: flex;
+    margin-bottom: 0;
   }
   .like-count {
     margin-left: 4px;
+    cursor: default;
   }
 `;
 

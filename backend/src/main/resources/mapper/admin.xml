@@ -16,9 +16,9 @@
 		        WHERE qna_step = 0
 		        AND qna_sort = 0
 		        ) qna_new
-		     , (SELECT SUM(market_count)
-	          FROM TB_ORDER_DETAIL
-	          WHERE market_no = m.market_no) sales_count
+				 , NVL((SELECT SUM(market_count)
+            FROM TB_ORDER_DETAIL
+            WHERE market_no = m.market_no), 0) sales_count
 		     , (SELECT COUNT(market_no)
          		FROM TB_MARKET) market_count
          , (SELECT COUNT(report_no)
