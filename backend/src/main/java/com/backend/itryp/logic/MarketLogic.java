@@ -66,6 +66,9 @@ public class MarketLogic {
 			// -> 이미지 개수만큼, 3개에대한 업데이트가 n번 일어나야한다
 			// -> xml에서 forEach list로 받기에 해당 부분 처리가 필요함
 			result = marketDao.mImageUpdate(mImageNames(pMap));
+		}else {pMap.put("mImageNames","\\images\\market\\taj-mahal-g09f47c5ef_1280.jpg" );
+			result=marketDao.mImageUpdate(mImageNames(pMap));
+			
 		}
 		return result;
 	}
