@@ -375,7 +375,6 @@ export const PostFooter = styled.div`
       font-size: 12px;
     }
     .heart-icon{
-      display: flex;
     }
   }
   small {
@@ -891,12 +890,14 @@ export const CommentLike = styled.span`
   font-size: 12px;
   color: ${({ iconColor }) => (iconColor ? "#4996F3" : "gray")};
   font-weight: 500;
+  lord-icon{
+    padding-top: 3px;
+  }
   .heart-icon{
     display: flex;
-    margin-bottom: 0;
   }
   .like-count {
-    margin-left: 4px;
+    margin-left: 2px;
     cursor: default;
   }
 `;

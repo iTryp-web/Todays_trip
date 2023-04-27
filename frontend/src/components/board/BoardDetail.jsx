@@ -651,7 +651,7 @@ const BoardDetail = () => {
                             src="https://cdn.lordicon.com/xryjrepg.json"
                             trigger="click"
                             colors="primary:#4996F3"
-                            style={{width:"15px", height:"15px"}}>
+                            style={{width:"16px", height:"16px"}}>
                           </lord-icon>
                             ) : (
                             <lord-icon
@@ -662,10 +662,9 @@ const BoardDetail = () => {
                               src="https://cdn.lordicon.com/xryjrepg.json"
                               trigger="click"
                               colors="primary:#808080"
-                              style={{width:"15px", height:"15px"}}>
+                              style={{width:"16px", height:"16px"}}>
                             </lord-icon>
                             )}
-
                           <span className='like-count'>{item.like_count ? item.like_count : 0}</span>
                         </CommentLike>
                       ) : null}

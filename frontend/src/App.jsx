@@ -31,31 +31,37 @@ function App({authLogic}) {
     <>
     <Routes>
       <Route path='/' exact={true} element={<HomePage />} />
+      
       <Route path='/board/:category'  element={<BoardPage />} />
       <Route path='/board/detail/:bno' element={<BoardDetail />} />
       <Route path='/board/write' exact={true} element={<BoardWriteForm />} />
       <Route path='/board/update/:bno' element={<BoardUpdateForm />} />
+
       <Route path='/admin/:category' element={<AdminPage />} />
       <Route path='/admin/userdetail/:user' element={<AdminUserDetail />} />
       <Route path='/admin/orderdetail/:ono' element={<AdminOrderDetail />} />
+
       <Route path='/cart' exact={true} element={<CartPage />} />
       <Route path='/order' exact={true} element={<OrderPage />} />
       <Route path='/payResult' exact={true} element={<PaymentResult />} />
+
       <Route path='/myPage' element={<MyPagePage />} />
+
       <Route path='/signup' exact={true} element={<SignUpPage/>} />
-      <Route path='/signin' exact={true} element={<SignInPage authLogic ={authLogic}/>}/>
+      <Route path='/signin' exact={true} element={<SignInPage/>}/>
+      <Route path='/findEmail' exact ={true} element={<FindUserPage/>} />
+      <Route path='/auth/snsSignUp' exact={true} element={<SNSSignUp authLogic ={authLogic}/>}/>
+      <Route path='/auth/kakao' exact={true} element={<KakaoLogin />}/>
+
       <Route path='/market' exact={true} element={<MarketPage />} />
-      <Route path='/signin' exact={true} element={<SignInPage authLogic ={authLogic}/>} />
       <Route path='/market/:category' exact={true} element={<MarketPage />} />
       <Route path='/market/review' exact={true} element={<MarketReview />} />
       <Route path='/market/write' exact={true} element={<MarketWrite />} />
       <Route path='/market/detail/:mno' element={<MarketDetail />} />
+
       <Route path='/support/:category' exact={true} element={<FaqPage />} />
       <Route path='/support/inquiryBoard' exact={true} element={<InquiryList />} />
       <Route path='/support/write' exact={true} element={<InquiryWriteForm />} />
-      <Route path='/findEmail' exact ={true} element={<FindUserPage/>} />
-      <Route path='/auth/snsSignUp' exact={true} element={<SNSSignUp authLogic ={authLogic}/>}/>
-      <Route path='/auth/kakao' exact={true} element={<KakaoLogin />}/>
     </Routes>
     </> 
   );

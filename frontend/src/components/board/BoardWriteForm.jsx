@@ -79,7 +79,7 @@ const BoardWriteForm = () => {
           />
           <button className='btnInsert' onClick={(e)=>{boardInsert()}}>등록</button>
         </Row>
-        <QuillEditor value={content} handleContent={handleContent} quillRef={quillRef} files={files} handleFiles={handleFiles}/>
+        <QuillEditor value={content} handleContent={handleContent} quillRef={quillRef} files={files} handleFiles={handleFiles} />
     </WriteSection>
     <Footer />
     </>
