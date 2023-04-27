@@ -79,12 +79,13 @@
 	</delete>
 
 	<!--=========================================== TB_QNA 영역 =========================================== -->
-	<!-- 1대1 문의/판매자 등록 조회 -->
+	<!-- 1대1 문의 조회 -->
 	<select id="inquiryList" parameterType="map" resultType="map">
 		SELECT q.qna_no
 		, u.user_id
 		, u.user_nickname
 		, q.qna_title
+		, q.qna_sort
 		,
 		q.qna_content
 		, q.qna_date
@@ -104,7 +105,6 @@
 		<if test='qna_sort != null and qna_sort.equals("2")'>
 			AND q.qna_sort = 2
 		</if>
-		<!-- 판매자등록(4)만 채번 -->
 		<if test='qna_sort != null and qna_sort.equals("4")'>
 			AND q.qna_sort = 4
 		</if>

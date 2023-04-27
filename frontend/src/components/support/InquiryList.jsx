@@ -57,13 +57,13 @@ const InquiryList = () => {
     }
   };
 
-  const handleComment = (qna_no) =>{
-    if(sessionStorage.getItem("user_role")){
-      console.log(qna_no +"문의답변 호출")
-    }else{
-      console.log("잘못된 접근입니다. 관리자계정으로 접근할 것.")
+  const handleComment = (qna_no) => {
+    if (sessionStorage.getItem("user_role")) {
+      console.log(qna_no + "문의답변 호출");
+    } else {
+      console.log("잘못된 접근입니다. 관리자계정으로 접근할 것.");
     }
-  }
+  };
 
   /* 글 목록 */
   // 게시글 담을 객체배열
@@ -135,18 +135,18 @@ const InquiryList = () => {
                   <TableCell align="center">{item.qna_no}</TableCell>
                   <TableCell align="left">
                     <div className="questionContainer">
-                      {item.qna_sort === 4 && <span>{AiFillLock}</span>}
                       <span
                         className="questionText"
                         onClick={() =>
                           handleClick(
                             item.user_id,
                             item.qna_no,
-                            item.qna_sort === 4
+                            item.qna_sort == 4
                           )
                         }
                         style={{ cursor: "pointer" }}
                       >
+                        {item.qna_sort == 4 ? <AiFillLock /> : null}
                         {item.qna_title}
                       </span>
                     </div>
@@ -156,8 +156,25 @@ const InquiryList = () => {
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={4}>
-                    <AnswerText className={isOpen[item.qna_no] ? "show" : ""} onClick={handleComment(item.qna_no)}>
-                      <p className="answerTextP" style={{ cursor: "pointer" }} >
+                    <AnswerText
+                      className={isOpen[item.qna_no] ? "show" : ""}
+                      onClick={
+                        item.qna_sort !== 4 &&
+                        sessionStorage.getItem("user_id") === item.user_id
+                          ? handleComment(item.qna_no)
+                          : null
+                      }
+                    >
+                      <p
+                        className="answerTextP"
+                        style={{
+                          cursor:
+                            item.qna_sort !== 4 &&
+                            sessionStorage.getItem("user_id") === item.user_id
+                              ? "pointer"
+                              : "default",
+                        }}
+                      >
                         {removeTag(item.qna_content)}
                       </p>
                     </AnswerText>
