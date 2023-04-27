@@ -30,7 +30,7 @@ function App({authLogic}) {
   return (
     <>
     <Routes>
-      <Route path='/' exact={true} element={<HomePage authLogic={authLogic} />} />
+      <Route path='/' exact={true} element={<HomePage />} />
       <Route path='/board/:category'  element={<BoardPage />} />
       <Route path='/board/detail/:bno' element={<BoardDetail />} />
       <Route path='/board/write' exact={true} element={<BoardWriteForm />} />
@@ -42,7 +42,7 @@ function App({authLogic}) {
       <Route path='/order' exact={true} element={<OrderPage />} />
       <Route path='/payResult' exact={true} element={<PaymentResult />} />
       <Route path='/myPage' element={<MyPagePage />} />
-      <Route path='/signup' exact={true} element={<SignUpPage authLogic ={authLogic}/>} />
+      <Route path='/signup' exact={true} element={<SignUpPage/>} />
       <Route path='/signin' exact={true} element={<SignInPage authLogic ={authLogic}/>}/>
       <Route path='/market' exact={true} element={<MarketPage />} />
       <Route path='/signin' exact={true} element={<SignInPage authLogic ={authLogic}/>} />

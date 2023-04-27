@@ -3,10 +3,10 @@ import Header from '../include/Header'
 import Footer from '../include/Footer'
 import HomeLayout from '../home/HomeLayout'
 
-const HomePage = ({authLogic}) => {
+const HomePage = () => {
   return (
     <>
-    <Header authLogic={authLogic} />
+    <Header />
       <HomeLayout />
     <Footer />
     </>

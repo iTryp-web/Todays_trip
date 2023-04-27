@@ -7,7 +7,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { useEffect } from 'react';
 import { KAKAO_AUTH_LOGOUT_URL } from '../auth/KakaoLogin';
 
-const Header = ({authLogic}) => {
+const Header = () => {
   const navigate = useNavigate()
   // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
   // 아이디, 닉네임 담을 변수

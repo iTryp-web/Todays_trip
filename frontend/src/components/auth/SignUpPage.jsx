@@ -33,9 +33,10 @@ import EmailVerifyCode from "./EmailVerifyCode";
 import { KAKAO_AUTH_URL } from "./KakaoLogin";
 import { NAVER_AUTH_URL } from "./NaverLogin";
 
-const SignUpPage = ({ authLogic }) => {
-  const auth = authLogic.getUserAuth();
+const SignUpPage = () => {
   const userAuth = useSelector((state) => state.userAuth);
+  //const auth = authLogic.getUserAuth(); 변경
+  const auth = userAuth.auth;
   const navigate = useNavigate();
 
   const [memInfo, setMemInfo] = useState({
@@ -687,8 +688,10 @@ const SignUpPage = ({ authLogic }) => {
     try {
       let user = await onAuthChange(auth)
       if (!user) {
-        await loginGoogle(authLogic.getUserAuth(), authLogic.getGoogleAuthProvider())
-        const auth1 = authLogic.getUserAuth();
+        // await loginGoogle(authLogic.getUserAuth(), authLogic.getGoogleAuthProvider()) 변경
+        await loginGoogle(userAuth.auth, userAuth.googleProvider)
+        // const auth1 = authLogic.getUserAuth(); 변경
+        const auth1 = userAuth.auth;
         const user1 = await onAuthChange(auth1)
         user = user1
       }
@@ -709,7 +712,8 @@ const SignUpPage = ({ authLogic }) => {
         ssg.setItem('user_id', jsonDoc[0].USER_ID)
       }
       //오라클서버의 회원집합에 uid가 존재하지 않으면
-      const result = await loginGoogle(authLogic.getUserAuth(), authLogic.getGoogleAuthProvider())
+      // const result = await loginGoogle(authLogic.getUserAuth(), authLogic.getGoogleAuthProvider()) 변경
+      const result = await loginGoogle(userAuth.auth, userAuth.googleProvider)
       let params;
       params = {
         user_id: result.uid
