@@ -11,7 +11,7 @@ import {
 import Header from "../include/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const SNSSignUp = ({ authLogic, kakaoData }) => {
+const SNSSignUp = ({ authLogic, kakaoData, naverData }) => {
   const navigate = useNavigate();
   const [nameInput, setNameInput] = useState("");
   const [nickNameInput, setNickNameInput] = useState("");
@@ -162,22 +162,24 @@ const SNSSignUp = ({ authLogic, kakaoData }) => {
 
   //구글 회원가입
   const location = useLocation();
-  [ kakaoData ] = useState(location.state?.kakaoData);
-  const signup = async ({ kakaoData }) => {
+  [naverData] = useState(location.state?.naverData);
+  [kakaoData] = useState(location.state?.kakaoData);
+  const signup = async ({ kakaoData, naverData }) => {
     const auth = authLogic.getUserAuth();
     const user = await onAuthChange(auth);
     console.log("SNS 회원가입 구현");
-    console.log(user.uid);
-    console.log(user.email);
-    console.log(kakaoData);
     try {
       const datas = {
-        user_id: user.uid ? user.uid : kakaoData.id,
+        user_id: user?.uid
+          ? user.uid
+          : kakaoData?.id || naverData?.response?.id, // 수정: user가 null일 경우를 대비하여 옵셔널 체이닝 연산자를 사용하여 uid에 접근
         user_pw: "",
         user_nickname: nickNameInput,
         user_name: nameInput,
         user_phone: phoneInput,
-        user_email: user.email ? user.email : kakaoData.kakao_account.email,
+        user_email: user?.email
+          ? user.email
+          : kakaoData?.kakao_account?.email || naverData?.response?.email, // 수정: user가 null일 경우를 대비하여 옵셔널 체이닝 연산자를 사용하여 email에 접근
       };
       console.log(datas);
       const response = await memberInsertDB(datas);
@@ -204,7 +206,7 @@ const SNSSignUp = ({ authLogic, kakaoData }) => {
       checkPh == true &&
       checkNm == true
     ) {
-      signup({ kakaoData });
+      signup({ kakaoData, naverData });
       alert("회원가입이 완료되었습니다.");
     } else if (checkNick == false || checkPh == false || checkNm == false) {
       alert("중복 검사를 완료해주세요.");

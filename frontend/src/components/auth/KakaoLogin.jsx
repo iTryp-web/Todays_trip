@@ -4,16 +4,17 @@ import { checkInfoDB, sessionListDB } from "../../service/memberLogic";
 import { useNavigate } from "react-router-dom";
 
 export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
-export const KAKAO_AUTH_LOGOUT_URL = `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&logout_redirect_uri=${process.env.REACT_APP_KAKAO_LOGOUT_REDIRECT_URI}`
+export const KAKAO_AUTH_LOGOUT_URL = `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&logout_redirect_uri=${process.env.REACT_APP_KAKAO_LOGOUT_REDIRECT_URI}`;
 
 const KakaoLogin = () => {
   const navigate = useNavigate();
+  //카카오 코드 얻기
   let kcode = new URL(window.location.href).searchParams.get("code");
+  //카카오 토큰 얻기
   console.log(kcode);
   const getToken = async (kcode) => {
     console.log("getToken실행");
     const grant_type = "authorization_code";
-
     const res = await axios.post(
       `https://kauth.kakao.com/oauth/token?grant_type=${grant_type}&client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&code=${kcode}`,
       {
@@ -42,7 +43,6 @@ const KakaoLogin = () => {
 
     try {
       const ssg = sessionStorage;
-      console.log("회원정보 비교");
       let params;
       params = {
         user_id: kakaoUser.data.id,
@@ -55,7 +55,6 @@ const KakaoLogin = () => {
         navigate("/auth/SNSSignUp", { state: { kakaoData: kakaoData } });
       } else {
         const res = await sessionListDB({ user_id: kakaoUser.data.id });
-        console.log(res.data);
         //오라클서버의 회원집합에 uid가 존재하면 - 세션 스토리지에 값을 담자
         if (res.data !== 0) {
           //스프링 부트 - RestMemberController - memberList에서 넘어오는 정보
@@ -65,6 +64,7 @@ const KakaoLogin = () => {
           ssg.setItem("user_nickname", jsonDoc[0].USER_NICKNAME);
           ssg.setItem("user_email", jsonDoc[0].USER_EMAIL);
           ssg.setItem("user_id", jsonDoc[0].USER_ID);
+          ssg.setItem("user_role", jsonDoc[0].ROLE);
           navigate("/");
         }
       }
