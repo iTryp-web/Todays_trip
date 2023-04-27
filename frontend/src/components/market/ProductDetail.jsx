@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useRef } from 'react';
 import { useCallback } from 'react';
 import { useEffect } from 'react';
 import { Button, Modal,Form} from 'react-bootstrap'
@@ -35,9 +36,10 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   const handleShow=()=>setShow(true)//모달창보여주기
 
   /* 장바구니버튼 클릭 */
-  const handleClick = (e) => {
+  const handleClick = () => {
     handleShow();
     cookieAdd();
+    // countRef.current++;
   };
 
   /* 선택갯수 */
@@ -50,7 +52,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   const plus_img = "/images/plus.png";
   const minus_img = "/images/minus2.png";
 
-  console.log(detailPost);
+  console.log(detailPost);//무한루프....
 
   //날짜필터선택
   let [filter,setFilter]=useState('1');
@@ -63,35 +65,48 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   const [cookies, setCookies] = useCookies(['cart']);
   let cartList=[];
   const [cartAdd, setCartAdd]=useState({});
+  // const countRef=useRef(0)
  
-  
+  //////////////////////////////////////////////////쿠키조건문 안먹음. 은재언니 도움!!!!!
   //쿠키에 장바구니 담기 함수
-  const cookieAdd=useCallback(()=>{
-    console.log("cookieAdd")
-    if(cookies===undefined){//장바구니 없는 경우
+  const cookieAdd=() => {
+    console.log("cookieAdd")//여기까지 멀쩡;;
+    // 쿠키에서 기존 장바구니 가져오기
+    const existingCart = cookies?.cart ?? [];
+    cartList = [...existingCart, cartAdd];
+    //여러개 안담기는듯...
+    console.log(cartList)
+
+    // if(cookies===undefined){//장바구니 없는 경우
         //앞의 키값은 바꾸지 않기! 은재언니가 씀 뒤에는 변수로 연결
-        cartList.push(cartAdd)
-      }else{//장바구니 이미 있는 경우
-        cartList=[...cookies.cart,cartAdd]
-        console.log(cookies.cart);
-      }
+        // cartList.push(cartAdd)
+        // console.log(cartList)
+      // }else{//장바구니 이미 있는 경우
+      //   cartList=[...cookies.cart,cartAdd]
+      //   console.log(cookies);
+      //   console.log(cookies.cart);
+      // }
       //3600000초 후에 없어지기-장바구니 리셋
       //Date.now() + 259200000의 값을 expires에 할당하면 3일 후 만료되는 쿠키를 설정할 수 있습니다.
       setCookies('cart', 
         cartList, {expires: new Date(Date.now() +259200000)}
         )
-
-  },[])
+      
+  }
 
   //쿠키에 상품정보담기
-/*   setCartAdd({
-    "marketNum" : detailPost.market_no, 
-    "marketImg" : thumbnailUrl,//썸네일
-    "marketName" : detailPost.market_title,
-    "marketOption" : "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스....ㅠㅠ
-    "marketCnt" : count,//사용자가 선택한 갯수
-    "marketPrice" : detailPost.market_price
-  }) */
+  useEffect(() => {
+    //쿠키에 상품정보담기
+    setCartAdd({
+      "marketNum": detailPost.market_no,
+      "marketImg": thumbnailUrl,//썸네일
+      "marketName": detailPost.market_title,
+      "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스....ㅠㅠ
+      "marketCnt": count,//사용자가 선택한 갯수
+      "marketPrice": detailPost.market_price
+    });
+  }, [count, detailPost.market_no, detailPost.market_price, detailPost.market_title, thumbnailUrl]);
+  
   
   return (
     <>

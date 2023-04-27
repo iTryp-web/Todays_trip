@@ -54,6 +54,10 @@ const MarketDetail = () => {
 
   // 상세보기 정보  변수 - file_exist(파일존재여부), liked(좋아요 누른 게시물인지 아닌지 판별) 고려하기!!
   const [detailPost, setDetailPost] = useState({})
+  console.log(detailPost);
+  // const detailPost=detailPosts.map((product)=>(
+  //   console.log(product)
+  // ))
   
   // useEffect 실행용 변수
   const [start, setStart] = useState('')
@@ -135,7 +139,7 @@ const MarketDetail = () => {
     
     }
     marketDetail()
-  }, [ mno, start])
+  }, [mno, start])
 
   
   // 글 삭제 버튼
