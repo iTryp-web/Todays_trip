@@ -79,12 +79,14 @@
 	</delete>
 
 	<!--=========================================== TB_QNA 영역 =========================================== -->
-	<!-- 1대1 문의/판매자 등록 조회 -->
+	<!-- 1대1 문의 조회 -->
 	<select id="inquiryList" parameterType="map" resultType="map">
 		SELECT q.qna_no
 		, u.user_id
+		, q.qna_step
 		, u.user_nickname
 		, q.qna_title
+		, q.qna_sort
 		,
 		q.qna_content
 		, q.qna_date
@@ -104,7 +106,6 @@
 		<if test='qna_sort != null and qna_sort.equals("2")'>
 			AND q.qna_sort = 2
 		</if>
-		<!-- 판매자등록(4)만 채번 -->
 		<if test='qna_sort != null and qna_sort.equals("4")'>
 			AND q.qna_sort = 4
 		</if>
@@ -128,8 +129,9 @@
 		#{user_id},
 		#{qna_title},
 		#{qna_content},
-		2,
-		TO_CHAR(sysdate, 'YYYY-MM-DD
+		#{qna_sort},
+		TO_CHAR(sysdate,
+		'YYYY-MM-DD
 		HH24:MI:SS')
 		)
 	</insert>
@@ -158,12 +160,13 @@
 		<foreach collection="list" item="item" separator=";"
 			open="DECLARE BEGIN" close="; END;">
 			UPDATE TB_Q_FILE
-			SET qna_no = #{item.qna_no}
+			SET qna_no =
+			#{item.qna_no}
 			WHERE file_name =
 			LTRIM(#{item.file_name})
 		</foreach>
 	</update>
-	
+
 	<!-- Quill image 삭제 -->
 	<delete id="qImageDelete" parameterType="map">
 		DELETE FROM TB_Q_FILE

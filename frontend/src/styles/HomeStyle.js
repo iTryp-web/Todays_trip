@@ -163,6 +163,7 @@ export const BoardList = styled.ul`
   }
   .icon-like {
     margin: 0 3px 2px 15px;
+    font-size: 12px;
   }
   li {
     cursor: pointer;

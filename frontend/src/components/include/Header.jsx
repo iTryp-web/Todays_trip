@@ -14,6 +14,7 @@ const Header = () => {
   // 아이디, 닉네임 담을 변수
   const [userId] = useState(window.sessionStorage.getItem('user_id'))
   const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+  const [userRole] = useState(window.sessionStorage.getItem('user_role'))
   // auth 리덕스
   const userAuth = useSelector((state) => state.userAuth);
   const auth = userAuth.auth;
@@ -76,9 +77,15 @@ const Header = () => {
               </Link>
             )}
             {userId ? (
-            <Link to="/mypage" className="signout button">
-              마이페이지
+              userRole == 2 ? (
+            <Link to="/admin/market" className="signout button">
+              관리자 페이지
             </Link>
+              ) : (
+            <Link to="/mypage" className="signout button">
+              마이 페이지
+            </Link>
+              )
             ) : (
             <Link to="/signup" className="signout button">
               회원가입

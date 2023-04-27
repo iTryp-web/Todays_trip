@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
+import { useRef } from 'react';
+import { useCallback } from 'react';
+import { useEffect } from 'react';
 import { Button, Modal,Form} from 'react-bootstrap'
+import { useCookies } from 'react-cookie';
 
 import { BsFillCartCheckFill } from 'react-icons/bs'
 import { Link, useNavigate } from 'react-router-dom'
@@ -16,23 +20,97 @@ const Btnwrap=styled.div`
   gap: 10px;
 
 `
+ const DetailContent = styled.div`
+  margin: 10px 0 40px 0;
+  line-height: 30px;
+  font-size: 15px;
+  img {
+    max-width: 100%;
+  }
+`;
 
-const ProductDetail = ({cookieAdd}) => {
+const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   const navigate=useNavigate();
-  const [products, setProducts] = useState([]);
-  const [count, setCount] = useState(1);
   const [show, setShow]=useState(false)//모달창초기값
   const handleClose=()=>setShow(false)//모달창닫기
   const handleShow=()=>setShow(true)//모달창보여주기
-  const price=1000;
+
+  /* 장바구니버튼 클릭 */
+  const handleClick = () => {
+    handleShow();
+    cookieAdd();
+    // countRef.current++;
+  };
+
+  /* 선택갯수 */
+  const [count, setCount] = useState(1);
+  
   /* 품절여부 */
   const isSoldOut=0;
+
   //아이콘 이미지
   const plus_img = "/images/plus.png";
   const minus_img = "/images/minus2.png";
+
+  console.log(detailPost);//무한루프....
+
+  //날짜필터선택
+  let [filter,setFilter]=useState('1');
+
+  const handleFilter=(select)=>{
+    setFilter(select.target.value)
+  }
+
+  /* 장바구니 */
+  const [cookies, setCookies] = useCookies(['cart']);
+  let cartList=[];
+  const [cartAdd, setCartAdd]=useState({});
+  // const countRef=useRef(0)
+ 
+  //////////////////////////////////////////////////쿠키조건문 안먹음. 은재언니 도움!!!!!
+  //쿠키에 장바구니 담기 함수
+  const cookieAdd=() => {
+    console.log("cookieAdd")//여기까지 멀쩡;;
+    // 쿠키에서 기존 장바구니 가져오기
+    const existingCart = cookies?.cart ?? [];
+    cartList = [...existingCart, cartAdd];
+    //여러개 안담기는듯...
+    console.log(cartList)
+
+    // if(cookies===undefined){//장바구니 없는 경우
+        //앞의 키값은 바꾸지 않기! 은재언니가 씀 뒤에는 변수로 연결
+        // cartList.push(cartAdd)
+        // console.log(cartList)
+      // }else{//장바구니 이미 있는 경우
+      //   cartList=[...cookies.cart,cartAdd]
+      //   console.log(cookies);
+      //   console.log(cookies.cart);
+      // }
+      //3600000초 후에 없어지기-장바구니 리셋
+      //Date.now() + 259200000의 값을 expires에 할당하면 3일 후 만료되는 쿠키를 설정할 수 있습니다.
+      setCookies('cart', 
+        cartList, {expires: new Date(Date.now() +259200000)}
+        )
+      
+  }
+
+  //쿠키에 상품정보담기
+  useEffect(() => {
+    //쿠키에 상품정보담기
+    setCartAdd({
+      "marketNum": detailPost.market_no,
+      "marketImg": thumbnailUrl,//썸네일
+      "marketName": detailPost.market_title,
+      "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스....ㅠㅠ
+      "marketCnt": count,//사용자가 선택한 갯수
+      "marketPrice": detailPost.market_price
+    });
+  }, [count, detailPost.market_no, detailPost.market_price, detailPost.market_title, thumbnailUrl]);
+  
   
   return (
     <>
+    
     
       
       <hr/>
@@ -61,21 +139,27 @@ const ProductDetail = ({cookieAdd}) => {
           <div className='container'>
             <div  className='imgarea'>
               {/* 썸네일 */}
-              <img src='https://image.ohou.se/image/central_crop/bucketplace-v2-development/uploads-productions-166141476368385159.jpg/640/640'/>
-              {/* 상세페이지 */}
+              <img src={thumbnailUrl} />
+      
               <h4 className='title'>상세보기</h4>
-              <img width="100%" src="https://storage.googleapis.com/heropy-api/vdvPmMsXKev094400.jpg" alt="프랭킷 펫타올 코지타올"></img>
+              {/* 상세보기 이미지 여러개 */}
+              {detailImageUrls.map((url) => (
+                      <img src={url} />
+                      ))}
+                  {/* 내용 */}
+                  <p>{detailPost.market_content}</p>
+                {/* <DetailContent dangerouslySetInnerHTML={{__html:detailPost.board_content}}></DetailContent> */}
             </div>
 
             <div className='menu'>
               <div className='fixed'>
                   <div className='info'>
-                    <h4 className='title'>프랭킷 펫타올 코지타올</h4>
+                    <h4 className='title'>{detailPost.market_title}</h4>
                     <div className='wrap'>
-                      <p className='price'>{price}원</p>
+                      <p className='price'>{detailPost.market_price?detailPost.market_price.toLocaleString('ko-KR'):0 }원</p>
                     </div>
                     {/* 제품 상세설명 */}
-                    <p className='desc'>부드러운 극세사로 피부자극을 줄이고 빠른 흡수력으로 드라잉시간은 최소화 하세요!</p>
+                    {/* <p className='desc'>{detailPost.market_content}</p> */}
                   </div>
                   <div className='total'>
                     <div className='countwrap'>
@@ -105,7 +189,7 @@ const ProductDetail = ({cookieAdd}) => {
 
                         <p>일정선택</p>
                        
-                        <Form.Select  style={{width:'150px', height:'40px'}}>
+                        <Form.Select defaultValue="1" onChange={handleFilter} style={{width:'150px', height:'40px'}}>
                             <option>날짜선택</option>
                             <option value="1">23.10.19</option>
                             <option value="2">23.11.10</option>
@@ -117,7 +201,8 @@ const ProductDetail = ({cookieAdd}) => {
 
                     <div className='totalprice'>
                         <p>총 상품 금액</p>
-                        <p>₩ {price * count}원</p>
+
+                        <p>₩ {detailPost.market_price?(detailPost.market_price * count).toLocaleString('ko-KR'):0}원</p>
                     </div>
                   </div>
                   {/* 품절이면 0 아니면 다른거.... */}
@@ -130,19 +215,25 @@ const ProductDetail = ({cookieAdd}) => {
                         <Button
                           name={'장바구니'}
                           className='sale'
+                          onClick={handleClick}
+                        >장바구니</Button>
+                        
+                        {/* <Button
+                          name={'장바구니'}
+                          className='sale'
                           onClick={(e) => {handleShow(); Object.entries(cookieAdd)
                           }}
-                        >장바구니</Button>
+                        >장바구니</Button> */}
                         <Button
                           name={'구매하기'}
                           onClick={() => {
                             navigate('/order', { state: { orderItems:[{
-                             /*  marketName: title,
-                              marketOption:"날짜선택한거"
-                                id: ,
+                                marketName: detailPost.market_title,
+                                marketOption:filter,
+                                id: detailPost.user_id,
                                 count: count,
-                                price: products.price,
-                                totalPrice: price * count, */
+                                price: detailPost.market_price,
+                                totalPrice: detailPost.market_price* count
                             }] 
                           }})
                         }}

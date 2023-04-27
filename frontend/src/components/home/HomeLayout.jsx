@@ -1,7 +1,7 @@
 import React from 'react'
 import { BoardList, CurationContent, CurationList, Main, MainCategoryList, MainSection, MarketList, UserImg } from '../../styles/HomeStyle'
 import { Link, useNavigate } from 'react-router-dom'
-import { AiFillLike, AiOutlineRight } from 'react-icons/ai'
+import { AiFillHeart, AiFillLike, AiOutlineRight } from 'react-icons/ai'
 import ImageSlider from './ImageSlider'
 import { HomeCategories } from './homeData'
 import { useEffect } from 'react'
@@ -9,6 +9,7 @@ import { mainListDB } from '../../service/homeLogic'
 import { useState } from 'react'
 import { BsBookmarkStar, BsBookmarkStarFill, BsFillEyeFill } from 'react-icons/bs'
 import { profileImg } from '../board/boardData'
+import { FaHeart } from 'react-icons/fa'
 
 const HomeLayout = () => {
   const navigate = useNavigate()
@@ -208,7 +209,7 @@ const HomeLayout = () => {
                       <p className='icons'>
                         <BsFillEyeFill className='icon-hit' />
                         {post.board_hit ? post.board_hit : 0}
-                        <AiFillLike className='icon-like' />
+                        <FaHeart className='icon-like' />
                         {post.like_count ? post.like_count : 0}
                       </p>
                       <em>
@@ -252,7 +253,7 @@ const HomeLayout = () => {
                       <p className='icons'>
                         <BsFillEyeFill className='icon-hit' />
                         {post.board_hit ? post.board_hit : 0}
-                        <AiFillLike className='icon-like' />
+                        <FaHeart className='icon-like' />
                         {post.like_count ? post.like_count : 0}
                       </p>
                       <em>{new Date(post.board_date).toLocaleDateString('ko-KR', {

@@ -61,6 +61,21 @@ const InquiryWriteForm = () => {
     console.log(res.data);
     navigate("/support/inquiryBoard");
   };
+  const inquiryQuitInsert = async () => {
+    console.log("inquiryInsert");
+    console.log(files);
+    const board = {
+      user_id: sessionStorage.getItem("user_id"),
+      qna_title: title,
+      qna_content: content,
+      qna_sort: isProtected,
+      qna_step: 0,
+      imageNames: files,
+    };
+    const res = await inquiryInsertDB(board);
+    console.log(res.data);
+    navigate("/support/inquiryBoard");
+  };
 
   return (
     <>

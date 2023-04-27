@@ -72,9 +72,9 @@
 					,m.market_category
 					,m.market_title
 					,m.market_content
-					,REGEXP_REPLACE(REVERSE(REGEXP_REPLACE(REVERSE(TO_CHAR(m.market_price)), '(\d{3})','\1,')), '^,','') market_price
+					,m.market_price
 					,m.market_date
-					,r.REVIEW_COUNT
+					,r.review_count
 					,r.star_avg
 					,f.file_url
 					,f.file_step
@@ -89,7 +89,7 @@
            			file_url, market_no, file_step 
            	FROM TB_M_FILE) f 
 			  	  WHERE m.user_id = u.user_id
-			  	  and m.market_no(+)=r.market_no
+			  	  and m.market_no=r.market_no(+)
 			  	  and m.market_no=f.market_no 
 			  	   AND m.market_no = #{market_no}
 		

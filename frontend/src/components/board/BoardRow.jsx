@@ -2,7 +2,7 @@ import React from 'react'
 import { PostContent, PostFooter, PostLi } from '../../styles/BoardStyle'
 import { Link } from 'react-router-dom'
 import { AiFillLike } from 'react-icons/ai';
-import { FaCommentDots } from 'react-icons/fa';
+import { FaCommentDots, FaHeart } from 'react-icons/fa';
 import { BsBookmarkStar, BsBookmarkStarFill, BsFillEyeFill, BsFillImageFill } from 'react-icons/bs';
 
 const BoardRow = ({post}) => {
@@ -37,14 +37,7 @@ const BoardRow = ({post}) => {
           <PostFooter>
             <ul className="list-count">
               <li className='heart-icon'>
-                <lord-icon
-                  src="https://cdn.lordicon.com/xryjrepg.json"
-                  trigger="hover"
-                  colors="primary:#c5c5c5"
-                  state="hover"
-                  style={{width:"20px", height:"20px"}}>
-                </lord-icon>
-                {/*  <AiFillLike /> */}
+                <FaHeart />
                 {post.like_count ? post.like_count : 0}
               </li>
               <li>

@@ -56,7 +56,7 @@ export const faqPost = [
     category: "member-info",
     fboard_title: "회원탈퇴는 어떻게 하나요?",
     fboard_content:
-      "마이페이지에서 회원탈퇴 절차를 따르시거나, 고객센터에 문의해주세요.",
+      "개별 문의를 통해서 해결해드리겠습니다.",
   },
   {
     fboard_no: 6,
