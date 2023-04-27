@@ -84,14 +84,14 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   },[])
 
   //쿠키에 상품정보담기
-  setCartAdd({
+/*   setCartAdd({
     "marketNum" : detailPost.market_no, 
     "marketImg" : thumbnailUrl,//썸네일
     "marketName" : detailPost.market_title,
     "marketOption" : "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스....ㅠㅠ
     "marketCnt" : count,//사용자가 선택한 갯수
     "marketPrice" : detailPost.market_price
-  })
+  }) */
   
   return (
     <>

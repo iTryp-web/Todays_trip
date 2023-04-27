@@ -7,10 +7,6 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import BoardLayout from '../board/BoardLayout';
 
 const BoardPage = () => {
-  // 단위테스트용!!
-  window.sessionStorage.setItem('user_id', 'test2')
-  window.sessionStorage.setItem('user_nickname', '테스트2')
-  window.sessionStorage.setItem('user_role', '0')
   const navigate = useNavigate()
 
   // 로그인할때 세션스토리지에 담았다가 꺼낼 것!

@@ -166,7 +166,7 @@ const BoardDetail = () => {
     setIsUserReport(false)
     setCommentUserReport({})
     const board = {
-      user_id: sessionStorage.getItem('user_id'),
+      user_id: userId,
       report_type: type,
       report_num: bno,
       report_group: no,
