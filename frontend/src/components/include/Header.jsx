@@ -6,6 +6,7 @@ import { BsCart } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useEffect } from 'react';
 import { KAKAO_AUTH_LOGOUT_URL } from '../auth/KakaoLogin';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
   const navigate = useNavigate()
@@ -13,14 +14,16 @@ const Header = () => {
   // 아이디, 닉네임 담을 변수
   const [userId] = useState(window.sessionStorage.getItem('user_id'))
   const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+  // auth 리덕스
+  const userAuth = useSelector((state) => state.userAuth);
+  const auth = userAuth.auth;
 
   const menuClick = () => {
 
   }
 
   const logout = () => {
-
-    authLogic.getUserAuth().signOut();
+    auth.signOut();
     console.log('logout')
     window.sessionStorage.clear();
     window.location.reload()
