@@ -98,8 +98,8 @@ const InquiryList = () => {
         };
         console.log(obj.file_exist);
         list.push(obj);
-        console.log("=================================")
-        console.log(obj.qna_step)
+        console.log("=================================");
+        console.log(obj.qna_step);
       });
       setPosts(list);
     };
@@ -135,11 +135,12 @@ const InquiryList = () => {
               .filter((item) => item.qna_step === 0 || item.qna_step === 2)
               .map((item) => (
                 <React.Fragment key={item.qna_no}>
+                  {/* 이 부분에는 qna_step이 0이거나 2인 글만 출력될 수 있도록.*/}
                   <TableRow>
                     <TableCell align="center">{item.qna_no}</TableCell>
-                    <TableCell  align="left">
+                    <TableCell align="left">
                       <div className="questionContainer">
-                        <span 
+                        <span
                           className="questionText"
                           onClick={() =>
                             handleClick(
@@ -151,7 +152,9 @@ const InquiryList = () => {
                           style={{ cursor: "pointer" }}
                         >
                           {item.qna_sort == 4 ? <AiFillLock /> : null}
-                          {item.qna_step == 2 ? <AnswerComplete>답변완료</AnswerComplete> : null}
+                          {item.qna_step == 2 ? (
+                            <AnswerComplete>[답변완료]</AnswerComplete>
+                          ) : null}
                           {item.qna_title}
                         </span>
                       </div>
@@ -174,15 +177,24 @@ const InquiryList = () => {
                           {removeTag(item.qna_content)}
                         </p>
                       </AnswerText>
+                          
+                      {/* 이 부분에  qna_step이 1인 qna_content가 왔으면 좋겠음.*/}
+                      <AnswerText className={isOpen[item.qna_no] ? "show" : ""}>
+                        <p
+                          className="answerTextP"
+                          style={{
+                            cursor:
+                              sessionStorage.getItem("user_role") === 2
+                                ? "pointer"
+                                : "default",
+                          }}
+                        >
+                          {removeTag(item.qna_content)}
+                        </p>
+                      </AnswerText>
                     </TableCell>
+
                   </TableRow>
-                  {item.qna_step === 1 ? (
-                    <TableRow>
-                      <TableCell colSpan={4}>
-                        <commentWindow />
-                      </TableCell>
-                    </TableRow>
-                  ) : null}
                 </React.Fragment>
               ))}
           </TableBody>

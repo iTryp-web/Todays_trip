@@ -20,7 +20,7 @@ const InquiryWriteForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
-  const [isProtected, setIsProtected] = useState(2);
+  const [isProtected, setIsProtected] = useState(false);
   const quillRef = useRef();
 
   const handleTitle = useCallback((e) => {
@@ -34,14 +34,13 @@ const InquiryWriteForm = () => {
   }, []);
 
   const handleProtected = useCallback((event) => {
-    const isProtected = event.target.checked;
-    setIsProtected(isProtected ? 4 : 2);
+    setIsProtected(event.target.checked); 
   }, []);
 
   const handleFiles = useCallback(
     (value) => {
       console.log(value);
-      setFiles([...files, value]); // 깊은복사
+      setFiles([...files, value]);
     },
     [files]
   );
@@ -50,25 +49,12 @@ const InquiryWriteForm = () => {
     console.log("inquiryInsert");
     console.log(files);
     const board = {
-      user_id: sessionStorage.getItem("user_id"),
+      // user_id: sessionStorage.getItem("user_id"),
+      user_id: sessionStorage.getItem("test1"),
       qna_title: title,
       qna_content: content,
-      qna_sort: isProtected,
       qna_step: 0,
-      imageNames: files,
-    };
-    const res = await inquiryInsertDB(board);
-    console.log(res.data);
-    navigate("/support/inquiryBoard");
-  };
-  const inquiryQuitInsert = async () => {
-    console.log("inquiryInsert");
-    console.log(files);
-    const board = {
-      user_id: sessionStorage.getItem("user_id"),
-      qna_title: title,
-      qna_content: content,
-      qna_sort: isProtected,
+      qna_sort: isProtected ? 4 : 2, // isProtected의 값을 기준으로 qna_sort를 설정합니다
       qna_step: 0,
       imageNames: files,
     };
@@ -102,8 +88,8 @@ const InquiryWriteForm = () => {
               handleTitle(e.target.value);
             }}
           />
-          <div className="inqInnerDiv">
-            <InqCheckDiv>
+            <div className="inqInnerDiv">
+              <InqCheckDiv>
               <label>
                 <input
                   type="checkbox"

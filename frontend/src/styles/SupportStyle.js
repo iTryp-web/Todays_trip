@@ -422,6 +422,5 @@ export const InqCheckDiv = styled.div`
 
 export const AnswerComplete = styled.span`
   font-weight: 600;
-  color:#4996F3;
   padding-right: 10px;
 `
