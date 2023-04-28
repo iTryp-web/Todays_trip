@@ -2,8 +2,13 @@ import React from "react";
 import Header from "../include/Header";
 import { ConfirmButton, Div, EmailInputBox, FindEmailBlock, IfBox } from "../../styles/SignStyle";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Toast from "../include/Toast";
 
 const FindUserPage = () => {
+  const status = useSelector(store => store.toastStatus.status)
+  console.log(status)
+  const dispatch = useDispatch()
   const [findInput, setFindInput] = useState("");
 
   const handleFocus = () => {};
@@ -16,6 +21,7 @@ const FindUserPage = () => {
   };
   return (
     <>
+      {status && <Toast />}
       <Header />
       <Div>
       <FindEmailBlock>

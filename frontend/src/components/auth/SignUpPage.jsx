@@ -356,6 +356,7 @@ const SignUpPage = () => {
         user_name: memInfo.name,
         user_phone: memInfo.phone,
         user_email: userEmail,
+        provider : "TDT"
       };
       console.log(datas);
       const response = await memberInsertDB(datas);

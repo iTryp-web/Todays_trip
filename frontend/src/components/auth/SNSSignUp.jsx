@@ -194,7 +194,8 @@ const SNSSignUp = ({ authLogic, kakaoData, naverData }) => {
         user_email: user?.email
           ? user.email
           : kakaoData?.kakao_account?.email || naverData?.response?.email, // 수정: user가 null일 경우를 대비하여 옵셔널 체이닝 연산자를 사용하여 email에 접근
-      };
+        provider : '카카오'
+        };
       console.log(datas);
       const response = await memberInsertDB(datas);
       console.log(response);

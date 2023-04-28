@@ -28,7 +28,8 @@ export const LoginFormBlock = styled.form`
   }
 
   p {
-    text-align: center;
+    a{
+    }text-align: center;
     width: 100%;
     margin-top: 0.8rem;
     font-size: 0.9rem;
