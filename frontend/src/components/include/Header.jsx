@@ -3,9 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { NavLinkStyle, HeaderBlock } from '../../styles/HeaderStyle';
 import { MdSearch } from "react-icons/md";
 import { BsCart } from "react-icons/bs";
-import { AiOutlineMenu } from "react-icons/ai";
-import { useEffect } from 'react';
-import { KAKAO_AUTH_LOGOUT_URL } from '../auth/KakaoLogin';
 import { useSelector } from 'react-redux';
 
 const Header = () => {
@@ -19,10 +16,21 @@ const Header = () => {
   const userAuth = useSelector((state) => state.userAuth);
   const auth = userAuth.auth;
 
-  const menuClick = () => {
-
+  // 검색값 저장
+  const [searchVal, setSearchVal] = useState('')
+  const handleValue = (e) => {
+    setSearchVal(e.target.value)
+    console.log(e.target.value);
+  }
+  // 입력값 엔터누르면 검색하기
+  const search = (e) => {
+    if(e.keyCode === 13) {
+      console.log(searchVal);
+      navigate('/market/all?keyword='+searchVal)
+    }
   }
 
+  // 로그아웃 버튼
   const logout = () => {
     console.log('logout')
     auth.signOut();
@@ -34,7 +42,6 @@ const Header = () => {
   return (
     <>
       <HeaderBlock>
-      <AiOutlineMenu className="menu-icon" onClick={() => menuClick()} />
         <Link to="/" className="logo">
           오늘의 여행
         </Link>
@@ -61,7 +68,7 @@ const Header = () => {
         <div className="button-block">
           <div className="search">
             <MdSearch className="search-icon" />
-            <input className="search-input" placeholder="검색" />
+            <input className="search-input" placeholder="검색" type='text' onChange={(e) => handleValue(e)} onKeyDown={(e) => search(e)} />
           </div>
           <Link to="/cart" className="cart">
             <BsCart className="cart-icon" />
@@ -91,7 +98,6 @@ const Header = () => {
               회원가입
             </Link>
             )}
-{/*             <button className="seller-button">판매자 가입</button> */}
           </div>
         </div>
       </HeaderBlock>

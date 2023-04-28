@@ -1,5 +1,5 @@
 import React from 'react'
-import { BoardList, CurationContent, CurationList, Main, MainCategoryList, MainSection, MarketList, UserImg } from '../../styles/HomeStyle'
+import { BoardList, CurationContent, CurationList, Main, MainCategoryList, MainSection, MarketList, NoneDiv, UserImg } from '../../styles/HomeStyle'
 import { Link, useNavigate } from 'react-router-dom'
 import { AiFillHeart, AiFillLike, AiOutlineRight } from 'react-icons/ai'
 import ImageSlider from './ImageSlider'
@@ -189,7 +189,7 @@ const HomeLayout = () => {
             </Link>
           </header>
           <BoardList>
-          {boardHot &&
+          {boardHot.length > 0 ?
               boardHot.map((post) => (
                 <li key={post.board_no} onClick={() => navigate('/board/detail/'+post.board_no)}>
                   <div className='categoryP'>{post.board_category}</div>
@@ -220,7 +220,10 @@ const HomeLayout = () => {
                       })}
                       </em>
                 </li>
-              ))}
+              )) : (
+                <NoneDiv>
+                  인기글이 없습니다.
+                </NoneDiv>)}
           </BoardList>
         </MainSection>
 
@@ -233,7 +236,7 @@ const HomeLayout = () => {
             </Link>
           </header>
           <BoardList>
-          {boardNew &&
+          {boardNew.length > 0 ?
               boardNew.map((post) => (
                 <li key={post.board_no} onClick={() => navigate('/board/detail/'+post.board_no)}>
                   <div className='categoryP'>{post.board_category}</div>
@@ -263,7 +266,10 @@ const HomeLayout = () => {
                       })}
                       </em>
                 </li>
-              ))}
+              )) : (
+              <NoneDiv>
+                새로운 글이 없습니다.
+              </NoneDiv>)}
           </BoardList>
         </MainSection>
 

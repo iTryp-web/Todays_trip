@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Dropdown, DropdownButton } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { marketListDB } from '../../service/marketLogic';
 import { BtnSearch, SearchInput } from '../../styles/BoardStyle';
 import { ProductListBlock, SearchDiv, SelectBlock } from '../../styles/MarketStyle';
@@ -8,6 +8,17 @@ import { categories, search } from './MarketData';
 import ProductItem from './ProductItem';
 
 const ProductList = () => {
+  // 헤더 검색용
+  const url = window.location.search;
+  const [searchParams, setSearchParams] = useSearchParams();
+  useEffect(() => {
+    if(searchParams.get('keyword') != null) {
+      setSearchVal('제목+내용')
+      setKeyword(searchParams.get('keyword'))
+      setSearchStart(new Date())
+    }
+  }, [url])
+
   /* 판매글 목록 */
     // 판매글 담을 객체배열
     const [items, setItems]=useState([{}]);

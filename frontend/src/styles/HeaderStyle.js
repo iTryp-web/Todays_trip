@@ -13,11 +13,6 @@ export const HeaderBlock = styled.div`
   background: white;
   margin: 0 auto;
   margin-top: 7px;
-  .menu-icon {
-    display: none;
-    font-size: 1.5rem;
-  }
-  
   .logo {
     color: #4996F3;
     text-decoration-line: none;
@@ -28,20 +23,18 @@ export const HeaderBlock = styled.div`
     padding-top: 0.4rem;
     min-width: 80px;
   }
-
   nav {
     min-width: 320px;
     flex: 1;
     padding-left: 0.7rem;
   }
-
   .button-block {
     display: flex;
     justify-content: space-between;
     .search {
       flex: 1;
       position: relative;
-      width: 360px;
+      width: 370px;
       height: 40px;
       display: flex;
       .search-input {
@@ -59,7 +52,7 @@ export const HeaderBlock = styled.div`
         top: 5px;
         left: 13px;
         z-index: 1;
-        font-size: 2rem;
+        font-size: 1.9rem;
       }
     }
     .cart {
@@ -67,49 +60,34 @@ export const HeaderBlock = styled.div`
       color: #4996F3;
       align-self: center;
       font-size: 1.5rem;
-      margin: 0 1rem;
+      margin: 0 0 0 1rem;
     }
     .buttons {
       flex: 1;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      font-size: 0.8rem;
+      font-size: 14px;
+      width: 100px;
+      margin-left: 10px;
+      margin-top: 5px;
       .signin{
         cursor: pointer;
         text-decoration: none;
-        color: darkgray;
-        margin-left: 1rem;
-        margin-right: -0.7rem;
-        padding-right: 0.3rem;
+        color: #979797;
         &:hover {
           color: #4996F3;
+          font-weight: 600;
         }
       }
       .signout {
-        margin-left: -0.7rem;
+        margin-left: 1.5rem;
+        margin-right: 1rem;
         text-decoration: none;
-        color: darkgray;
-        margin-right: -0.7rem;
-        padding-right: 0.3rem;
+        color: #979797;
         &:hover {
           color: #4996F3;
-        }
-      }
-      .signup-button {
-        width: 100%;
-        max-width: 100px;
-        letter-spacing: -1px;
-        padding: 0 0.9rem;
-        height: 40px;
-        border: none;
-        border-radius: 5px;
-        background: #4996F3;
-        color: white;
-        font-size: 0.9rem;
-        font-weight: 600;
-        &:hover {
-          background: #4996F3;
+          font-weight: 600;
         }
       }
     }
@@ -126,18 +104,8 @@ export const HeaderBlock = styled.div`
       .cart {
         margin: 0 0.2rem 0 1rem;
       }
-      .buttons {
-        .signin{
-          padding-right: 0.5rem;
-          margin-right: 0.4rem;
-        }
-        .signup {
-          padding-right: 0.5rem;
-          margin-right: 0.4rem;
-        }
-        .center {
-          display: none;
-        }
+      .center {
+        display: none;
       }
     }
   }
@@ -151,36 +119,6 @@ export const HeaderBlock = styled.div`
       .cart{
         display: none;
       }
-      .buttons {
-        .signin{
-          padding-right: 0.3rem;
-          margin-right: 0.3rem;
-        }
-        .signup {
-          padding-right: 0rem;
-          margin-right: 0rem;
-        }
-    }
-  }
-
-  @media only screen and (max-width: 768px) {
-    padding: 0 1rem;
-    height: 50px;
-    justify-content: space-between;
-    text-align: center;
-    .menu-icon {
-      display: block;
-      cursor: pointer;
-    }
-    .logo {
-      flex: 1;
-      margin: 0;
-    }
-    nav {
-      display: none;
-    }
-    .button-block {
-        display: none;
     }
   }
 `;
