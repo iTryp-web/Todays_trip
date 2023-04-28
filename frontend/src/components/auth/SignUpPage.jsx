@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { GoSearch } from "react-icons/go";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginGoogle, onAuthChange } from "../../service/authLogic";
 import {
@@ -32,12 +32,17 @@ import HeaderIcon from "../include/HeaderIcon";
 import EmailVerifyCode from "./EmailVerifyCode";
 import { KAKAO_AUTH_URL } from "./KakaoLogin";
 import NaverLogin, { NAVER_AUTH_URL } from "./NaverLogin";
+import { setToastMsg } from "../../redux/toastStatus/action";
+import Toast from "../include/Toast";
 
 const SignUpPage = () => {
   const userAuth = useSelector((state) => state.userAuth);
   //const auth = authLogic.getUserAuth(); 변경
   const auth = userAuth.auth;
   const navigate = useNavigate();
+  const status = useSelector(store => store.toastStatus.status)
+  console.log(status)
+  const dispatch = useDispatch()
 
   const [memInfo, setMemInfo] = useState({
     email: "",
@@ -74,6 +79,7 @@ const SignUpPage = () => {
   const [pwChecktext, setPwCheckText] = useState("");
   const [nicknametext, setNicknameText] = useState("");
   const [referrertext, setReferrerText] = useState("");
+  const [pwCheck, setPwCheck] = useState(false)
 
   //이메일 input박스 얇은 테두리색깔
   const [emailInputColor, setEmailInputColor] = useState("lightgray");
@@ -148,6 +154,8 @@ const SignUpPage = () => {
       console.log("닉네임 중복확인");
       //이전닉네임값
       const prevNicknameInput = nicknameInputRef.current;
+      const nickNameRegex = /^\S+$/;
+      const validNickInput = nickNameRegex.test(nicknameInput)
       let params;
       params = { user_nickname: memInfo["nickname"], type: "overlap" };
       console.log(params);
@@ -163,7 +171,7 @@ const SignUpPage = () => {
       //이전닉네임값이 null이아니고 nicknameInput이 null이 아닐때만 작동
       //닉네임 존재해서 사용불가능할때
       if (nicknameInput !== null && prevNicknameInput !== null) {
-        if (jsonDoc && nicknameInput.length > 0) {
+        if (jsonDoc && nicknameInput.length > 0 && validNickInput) {
           console.log(jsonDoc[0].USER_NICKNAME);
           setNicknameText("사용 불가능한 닉네임 입니다");
           setNicknameInputColor("#f77");
@@ -174,6 +182,11 @@ const SignUpPage = () => {
           setNicknameInputColor("#f77");
           setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setTextNickNameColor("#f77");
+        }
+        else if(!validNickInput){
+          setNicknameText("빈칸을 포함 할 수 없습니다.");
+          setNicknameInputColor("#f77");
+          setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
         }
         //닉네임 중복아니어서 사용가능할때
         else {
@@ -352,7 +365,6 @@ const SignUpPage = () => {
       }
       sessionStorage.clear();
       navigate("/");
-      return "회원가입되었습니다. 감사합니다.";
     } catch (error) {
       console.log(error + " 오류: 관리자에게 연락바랍니다.");
     }
@@ -648,17 +660,43 @@ const SignUpPage = () => {
       pwInput !== null &&
       phoneInput !== null &&
       pwInput !== null &&
+      nicknameInput !== null &&
       pwCheckInput !== null &&
       nameInput !== null &&
       isRequiredChecked == true &&
-      verifyEmail == true
+      verifyEmail == true &&
+      pwCheck == true &&
+      idInput !== '' &&
+      pwInput !== '' &&
+      phoneInput !== '' &&
+      nicknameInput !== '' &&
+      pwCheckInput !== '' &&
+      nameInput !== ''
     ) {
       signup();
       alert("회원가입이 완료되었습니다.");
     } else if (verifyEmail == false) {
-      alert("이메일 인증을 완료해주세요.");
+      dispatch(setToastMsg('이메일 인증을 완료해주세요.'));
+    } else if (
+      !idInput ||
+      !pwInput ||
+      !phoneInput ||
+      !pwInput ||
+      !pwCheckInput ||
+      !nicknameInput ||
+      !nameInput ||
+      !isRequiredChecked ||
+      !pwCheck ||
+      idInput === '' ||
+      pwInput === '' ||
+      phoneInput === '' ||
+      nicknameInput === '' ||
+      pwCheckInput === '' ||
+      nameInput === ''
+    ) {
+      dispatch(setToastMsg('필수항목을 채워주세요.'));
     } else {
-      alert("필수항목을 채워주세요.");
+      dispatch(setToastMsg('회원가입 오류입니다. 관리자에게 문의해주세요.'));
     }
   };
 
@@ -672,11 +710,13 @@ const SignUpPage = () => {
       setPwCheckShadowColor("");
       setTextPwCheckColor("black");
       setPwCheckText("");
+      setPwCheck(true)
     } else {
       setPwCheckInputColor("#f77");
       setPwCheckShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
       setTextPwCheckColor("#f77");
       setPwCheckText("비밀번호가 일치하지 않습니다.");
+      setPwCheck(false)
     }
   }, [pwInput, pwCheckInput]);
 
@@ -745,6 +785,7 @@ const SignUpPage = () => {
   return (
     <>
       <HeaderIcon />
+      {status && <Toast />}
       <SignUpDiv>
         <SignUpBlock>
           <h4>회원가입</h4>

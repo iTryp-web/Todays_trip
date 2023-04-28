@@ -250,6 +250,10 @@ export const AuthButton = styled.button`
   font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
+  :focus {
+    outline: none;
+  }
+
 `;
 
 export const NamenPhoneBlock = styled.div`
@@ -718,6 +722,8 @@ export const JoinButton = styled.button`
   color: white;
   &:hover {
     background-color: #537fe7;
-    border: none;
+    :focus{
+      border: none;
+    }
   }
 `;

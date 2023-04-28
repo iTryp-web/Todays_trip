@@ -26,7 +26,7 @@ const Header = () => {
   const logout = () => {
     console.log('logout')
     auth.signOut();
-    window.location.href = KAKAO_AUTH_LOGOUT_URL;
+    window.location.href = process.env.REACT_APP_KAKAO_LOGOUT_REDIRECT_URI;
     window.sessionStorage.clear();
     window.location.reload()
   }

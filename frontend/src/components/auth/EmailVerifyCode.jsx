@@ -1,8 +1,15 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Toast from "../include/Toast";
+import { setToastMsg } from "../../redux/toastStatus/action";
 
 const EmailVerifyCode = ({ setModalAuthIsOpen, setVerifyEmail }) => {
+  const status = useSelector(store => store.toastStatus.status)
+  console.log(status)
+  const dispatch = useDispatch()
+  
   const [codeInput, setCodeInput] = useState("");
   const [codetext, setCodeText] = useState("");
 
@@ -20,7 +27,7 @@ const EmailVerifyCode = ({ setModalAuthIsOpen, setVerifyEmail }) => {
         console.log(response.data);
         const result = response.data;
         if (result == 1) {
-          alert("인증성공");
+          dispatch(setToastMsg('인증 성공.'));
           setCodeText("");
           setModalAuthIsOpen(false);
           setVerifyEmail(true);
@@ -35,6 +42,7 @@ const EmailVerifyCode = ({ setModalAuthIsOpen, setVerifyEmail }) => {
   };
   return (
     <>
+      {status && <Toast />}
       <h4>이메일 인증 코드</h4>
       <hr />
       <input

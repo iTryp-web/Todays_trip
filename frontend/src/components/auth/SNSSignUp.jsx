@@ -10,8 +10,16 @@ import {
 } from "../../styles/SignStyle";
 import Header from "../include/Header";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setToastMsg } from "../../redux/toastStatus/action";
+import Toast from "../include/Toast";
 
 const SNSSignUp = ({ authLogic, kakaoData, naverData }) => {
+
+  const status = useSelector(store => store.toastStatus.status)
+  console.log(status)
+  const dispatch = useDispatch()
+
   const navigate = useNavigate();
   const [nameInput, setNameInput] = useState("");
   const [nickNameInput, setNickNameInput] = useState("");
@@ -53,6 +61,8 @@ const SNSSignUp = ({ authLogic, kakaoData, naverData }) => {
 
   //닉네임 중복검사
   const checkNickName = async () => {
+    const nickNameRegex = /^\S+$/;
+    const validNickInput = nickNameRegex.test(nickNameInput)
     let params;
     params = { user_nickname: nickNameInput };
     console.log(params);
@@ -65,13 +75,17 @@ const SNSSignUp = ({ authLogic, kakaoData, naverData }) => {
     console.log(data);
     const jsonDoc = JSON.parse(data);
 
-    if (jsonDoc && nickNameInput.length > 0) {
+    if (jsonDoc && nickNameInput.length > 0 && validNickInput) {
       console.log(jsonDoc[0].USER_NICKNAME);
-      setNicknameText("사용 불가능한 닉네임 입니다");
+      setNicknameText("중복된 닉네임 입니다");
       setNicknameInputColor("#f77");
       setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
     } else if (nickNameInput.length == 0) {
       setNicknameText("필수항목입니다.");
+      setNicknameInputColor("#f77");
+      setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+    }else if(!validNickInput){
+      setNicknameText("빈칸을 포함 할 수 없습니다.");
       setNicknameInputColor("#f77");
       setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
     }
@@ -81,7 +95,7 @@ const SNSSignUp = ({ authLogic, kakaoData, naverData }) => {
       setNicknameInputColor("#4996f3");
       setNicknameShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
       setNicknameText("");
-      alert("사용 가능합니다.");
+      dispatch(setToastMsg('사용 가능합니다.'));
       setCheckNick(true);
     }
   };
@@ -133,7 +147,7 @@ const SNSSignUp = ({ authLogic, kakaoData, naverData }) => {
       setPhoneInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
       setPhoneInputColor("#4996f3");
       setPhoneText("");
-      alert("사용 가능합니다.");
+      dispatch(setToastMsg('사용 가능합니다.'));
       setCheckPh(true);
     }
   };
@@ -199,6 +213,7 @@ const SNSSignUp = ({ authLogic, kakaoData, naverData }) => {
     e.preventDefault();
     console.log(checkNick);
     console.log(checkPh);
+    console.log(checkNm);
     if (
       nickNameInput !== null &&
       phoneInput !== null &&
@@ -207,17 +222,17 @@ const SNSSignUp = ({ authLogic, kakaoData, naverData }) => {
       checkNm == true
     ) {
       signup({ kakaoData, naverData });
-      alert("회원가입이 완료되었습니다.");
-    } else if (checkNick == false || checkPh == false || checkNm == false) {
-      alert("중복 검사를 완료해주세요.");
-    } else {
-      alert("필수항목을 채워주세요.");
+      alert("회원가입이 완료되었습니다. 로그인 해주세요!")
+    } 
+     else {
+      dispatch(setToastMsg('필수 항목을 완료해주세요.'));
     }
   };
 
   return (
     <>
       <Header />
+      {status && <Toast />}
       <Div>
         <GoogleBlock>
           <InputBox>
