@@ -207,7 +207,7 @@
 	</insert>
 	<!-- 리뷰 전체 조회 정렬- 프론트에서sort(높은평점순-high, 낮은-low, 좋아요많은순-like, new, old)-->
 	<select id="reviewList" parameterType="map" resultType="map">
-		SELECT u.user_id
+<!-- 		SELECT u.user_id
 		     , u.user_nickname
 	       , m.review_no
 	       , m.market_no
@@ -224,22 +224,40 @@
 				    GROUP BY like_group) l
   	  WHERE m.user_id = u.user_id(+)
   	  AND m.market_no = #{market_no}
-  	  AND m.review_no = l.like_group(+)
+  	  AND m.review_no = l.like_group(+) -->
+  	  
+  	  SELECT u.user_id
+       , u.user_nickname
+       , m.review_no
+       , m.market_no
+       , m.type_review
+       , m.review_star
+       , m.review_content
+       , m.review_date  
+       , l.like_count
+       , COUNT(m.review_no) OVER (PARTITION BY m.market_no) AS review_count<!-- 리뷰의 갯수를 가져오기 -->
+			FROM TB_M_REVIEW m
+			LEFT JOIN TB_USER u ON m.user_id = u.user_id
+			LEFT JOIN (
+			    SELECT COUNT(user_id) like_count, like_group
+			    FROM TB_LIKE
+			    WHERE like_type = 2
+			    GROUP BY like_group
+			) l ON m.review_no = l.like_group
+			WHERE m.market_no = #{market_no}
+  	  <if test='sort != null and sort.equals("new")'>
+  	  	ORDER BY m.review_date DESC
+  	  </if>
+  	  <if test='sort != null and sort.equals("like")'>
+  	  	ORDER BY l.like_count DESC
+  	  </if>
   	  <if test='sort != null and sort.equals("high")'>
   	  	ORDER BY m.review_star DESC
   	  </if>
   	  <if test='sort != null and sort.equals("low")'>
   	  	ORDER BY m.review_star ASC
   	  </if>
-  	  <if test='sort != null and sort.equals("like")'>
-  	  	ORDER BY l.like_count DESC
-  	  </if>
-  	  <if test='sort != null and sort.equals("new")'>
-  	  	ORDER BY m.review_date DESC
-  	  </if>
-  	  <if test='sort != null and sort.equals("old")'>
-  	  	ORDER BY m.review_date ASC
-  	  </if>
+  	  
 	</select>
 	
 	<!-- 리뷰 쓰기 -->

@@ -67,14 +67,14 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   const [cartAdd, setCartAdd]=useState({});
   // const countRef=useRef(0)
  
-  //////////////////////////////////////////////////쿠키조건문 안먹음. 은재언니 도움!!!!!
+  //////////////////////////////////////////////////쿠키조건문 안먹음. 은재언니 도움!!!!! 새로고침하면 쿠키가 날아가 왜그러지???
   //쿠키에 장바구니 담기 함수
   const cookieAdd=() => {
     console.log("cookieAdd")//여기까지 멀쩡;;
     // 쿠키에서 기존 장바구니 가져오기
     const existingCart = cookies?.cart ?? [];
     cartList = [...existingCart, cartAdd];
-    //여러개 안담기는듯...
+    //여러개 담기는듯...?? 해결된듯 cookies.cart문제. 얘가 정확히 뭔지 물어보기
     console.log(cartList)
 
     // if(cookies===undefined){//장바구니 없는 경우
@@ -86,7 +86,8 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
       //   console.log(cookies);
       //   console.log(cookies.cart);
       // }
-      //3600000초 후에 없어지기-장바구니 리셋
+
+      //장바구니 리셋
       //Date.now() + 259200000의 값을 expires에 할당하면 3일 후 만료되는 쿠키를 설정할 수 있습니다.
       setCookies('cart', 
         cartList, {expires: new Date(Date.now() +259200000)}
@@ -123,7 +124,14 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
         </Modal.Header>
         <Modal.Body>
           <div style={{textAlign:"center"}}>
-              <BsFillCartCheckFill className='icon' size="30" title="cart" color="#4996F3" />
+          <lord-icon
+              src="https://cdn.lordicon.com/lqsduwhb.json"
+              trigger="hover"
+              colors="primary:#4996f3"
+              state="hover-1"
+              style={{width:"50px", height:"50px"}}>
+          </lord-icon>
+              {/* <BsFillCartCheckFill className='icon' size="30" title="cart" color="#4996F3" /> */}
               <h5>장바구니에 추가되었습니다.</h5>
           </div>
           

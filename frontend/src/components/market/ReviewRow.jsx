@@ -16,10 +16,9 @@ const ReviewRow = ({review}) => {
 
 
    // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
-  // 아이디, 닉네임 담을 변수
+  // 닉네임 담을 변수
   const [userId] = useState(window.sessionStorage.getItem('user_id'))
-  // const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
-  const userNickname = '숙자'
+  const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
 
 
   /* 리뷰 Dot버튼 */
@@ -27,24 +26,25 @@ const ReviewRow = ({review}) => {
   const onClickBtnDot = () => {
     setClickBtnDot((is_ClickBtnDot) => !is_ClickBtnDot);
   };
-  //  해시값으로 글번호 가져오기
-  const {rno} = 2
-  // const {rno} = useParams()
-  console.log("rno => " + rno);
-  // 글 삭제 버튼
+  //마켓번호
+  const mno=review.market_no;
+  //리뷰번호
+  const rno=review.review_no;
+
+  // 리뷰 삭제 버튼
   const reviewDelete = async () => {
-    console.log('reviewDelete' + rno);
+    console.log('reviewDelete 리뷰번호 : ' + rno);
     const review = {
       review_no: rno,
     }
     const res = await reviewDeleteDB(review)
     console.log('reviewDelete=> ' + res.data);
-    navigate('/market/detail')
+    navigate('/market/detail'+mno)
   }
-  // 글 수정 버튼
+  // 리뷰 수정 버튼
   const reviewUpdate = () => {
     console.log('reviewUpdate');
-    navigate('/market/detail'+rno)
+    navigate('/market/detail'+mno)
   };
 
   // 좋아요 판별 변수
@@ -145,26 +145,41 @@ const ReviewRow = ({review}) => {
       </PostContent>
       <PostFooter>
         <ul className="list-count">
-          
-            <Like
+
+                <Like>
+                {isLiked ? (
+                  <lord-icon
                   onClick={() => {
                     {
                       isLiked ? reviewLike() : reviewDislike();
                     }
                   }}
-                >
-                    <lord-icon
-                      src="https://cdn.lordicon.com/xryjrepg.json"
-                      trigger="click"
-                      color={isLiked ? '#4996F3' : 'light-gray'}
-                      style={{width:'20px', height:'20px'}}>
+                  className='heart-icon'
+                  src="https://cdn.lordicon.com/xryjrepg.json"
+                  trigger="click"
+                  colors="primary:#4996F3"
+                  style={{width:"20px", height:"20px"}}>
+                </lord-icon>
+                  ) : (
+                  <lord-icon
+                    onClick={() => {
+                      {
+                        isLiked ? reviewLike() : reviewDislike();
+                      }
+                    }}
+                    className='heart-icon'
+                    src="https://cdn.lordicon.com/xryjrepg.json"
+                    trigger="click"
+                    colors="primary:#808080"
+                    style={{width:"20px", height:"20px"}}>
                   </lord-icon>
-                  {/* <AiTwotoneHeart color={isLiked ? '#4996F3' : 'gray'} /> */}
-                 
+                  )}
                   <FontContent liked={isLiked}>
                     좋아요 {review.like_count ? review.like_count : 0}
                   </FontContent>
-            </Like>
+                </Like>
+
+           
               
       </ul>
       <li>

@@ -133,6 +133,12 @@ border: none;
 outline: none;
 width: 110px;
 `;
+ export const ParentContainer = styled.div`
+ position: relative;
+ left: 60%;
+`;
+
+
 export const SearchDiv = styled.div`
 position: absoulte;
 width: 70%;
@@ -362,7 +368,7 @@ export const Category=styled.div`
 export const ReviewUI=styled.div`
 height: auto;
 -webkit-box-pack: justify;
-justify-content: space-between;
+// justify-content: space-between;
 padding-top: 30px;
 padding-bottom: 150px;
 padding-left: 250px;
@@ -371,6 +377,7 @@ padding-right: 150px;
 .reviewheader{
   font-weight: bold;
   display:flex;
+
   button{
     position:relative;
     left: 70%;

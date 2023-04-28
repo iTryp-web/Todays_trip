@@ -31,7 +31,7 @@ const ProductItem = ({items}) => {
             
               <Star>
               <div className="star_rating">
-                <div className="star_rating_fill" style={{width:`${(item.star_avg / 5) * 100}%`}} >
+                <div className="star_rating_fill" style={{width:`${(item.star_avg?item.star_avg:0 / 5) * 100}%`}} >
       
                   
                   <span>★</span>
@@ -49,7 +49,7 @@ const ProductItem = ({items}) => {
                 </div>
               </div>
             </Star>
-              <span className="review_count">리뷰 {item.review_count}</span>
+              <span className="review_count">리뷰 {item.review_count?item.review_count:0}</span>
             </div>
           </ItemBlock>
 ))}

@@ -8,7 +8,6 @@ import MarketReview from './MarketReview';
 
 
 const DetailNav = ({mno}) => {
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('review');
 
   const handleTabClick = (tab) => {
