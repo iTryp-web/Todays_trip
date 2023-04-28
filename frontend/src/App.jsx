@@ -45,7 +45,7 @@ function App({ authLogic }) {
         <Route path="/order" exact={true} element={<OrderPage />} />
         <Route path="/payResult" exact={true} element={<PaymentResult />} />
 
-        <Route path="/myPage" element={<MyPagePage />} />
+        <Route path="/myPage/:category" element={<MyPagePage />} />
 
         <Route path="/signup" exact={true} element={<SignUpPage />} />
         <Route path="/signin" exact={true} element={<SignInPage />} />
