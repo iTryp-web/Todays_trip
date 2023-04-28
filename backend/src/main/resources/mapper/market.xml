@@ -41,7 +41,7 @@
 				AND m.market_content LIKE '%'||#{keyword}||'%'
 			</if>
 			<if test='search != null and search.equals("제목+내용")'>
-				AND (m.market_content LIKE '%'||#{keyword}||'%'
+				AND (m.market_title LIKE '%'||#{keyword}||'%'
              or m.market_content LIKE '%'||#{keyword}||'%')
 			</if>
 			<if test='filter != null and filter.equals("리뷰")'>

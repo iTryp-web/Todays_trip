@@ -215,6 +215,11 @@ export const UserImg = styled.div`
   }
 `;
 
+export const NoneDiv = styled.div`
+  font-size: 18px;
+  color: #979797;
+`
+
 /* ImageSlider 스타일 */
 export const SliderBlock = styled(Slider)`
   text-align: center;

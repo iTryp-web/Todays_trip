@@ -50,11 +50,7 @@ function App({ authLogic }) {
         <Route path="/signup" exact={true} element={<SignUpPage />} />
         <Route path="/signin" exact={true} element={<SignInPage />} />
         <Route path="/findEmail" exact={true} element={<FindUserPage />} />
-        <Route
-          path="/auth/snsSignUp"
-          exact={true}
-          element={<SNSSignUp authLogic={authLogic} />}
-        />
+        <Route path="/auth/snsSignUp" exact={true} element={<SNSSignUp authLogic={authLogic} />} />
         <Route path="/auth/kakao" exact={true} element={<KakaoLogin />} />
         <Route path="/auth/naver" exact={true} element={<NaverLogin />} />
 
@@ -65,16 +61,8 @@ function App({ authLogic }) {
         <Route path="/market/detail/:mno" element={<MarketDetail />} />
 
         <Route path="/support/:category" exact={true} element={<FaqPage />} />
-        <Route
-          path="/support/inquiryBoard"
-          exact={true}
-          element={<InquiryList />}
-        />
-        <Route
-          path="/support/write"
-          exact={true}
-          element={<InquiryWriteForm />}
-        />
+        <Route path="/support/inquiryBoard" exact={true} element={<InquiryList />} />
+        <Route path="/support/write" exact={true} element={<InquiryWriteForm />} />
       </Routes>
     </>
   );
