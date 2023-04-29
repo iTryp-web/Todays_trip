@@ -50,6 +50,13 @@ public class MemberDao {
 		result = sqlSessionTemplate.update("memberUpdate",pMap);
 		return result;
 	}
+	//임시 비밀번호
+	public int resetPassWord(Map<String, Object> pMap) {
+		logger.info("resetPassWord 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("resetPassWord",pMap);
+		return result;
+	}
 	//회원 탈퇴
 	public int memberDelete(Map<String, Object> pMap) {
 		logger.info("memberDelete 호출");

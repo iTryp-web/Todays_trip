@@ -132,7 +132,19 @@
 			</if>
 		</trim>
 	</update>
-
+	
+	<!--  임시 비밀번호로 변경 -->
+	<update id="resetPassWord" parameterType="map">
+		update TB_USER
+		<set>
+			<if test='user_pw !=null and user_pw.length()>0'>
+				user_pw = #{user_pw}
+			</if>
+		</set>
+			WHERE user_id = #{user_id}
+	</update>	
+	
+	
 	<!-- 회원 탈퇴 (바로 삭제 X, status를 1로 변경) -->
 	<update id="memberDelete" parameterType="map">
 		update TB_USER

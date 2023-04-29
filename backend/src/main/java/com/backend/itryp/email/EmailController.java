@@ -21,7 +21,14 @@ public class EmailController {
 		public void emailConfirm(@RequestBody String email)throws Exception{
 			logger.info("post emailConfirm");
 			System.out.println("전달 받은 이메일 : "+email);
-			emailService.sendSimpleMessage(email);	
+			emailService.sendSimpleMessage1(email);	
+		}
+		@ResponseBody
+		@PostMapping("/resetmail")
+		public String resetEmail(@RequestBody String email)throws Exception{
+			logger.info("post ResetEmail");
+			System.out.println("전달 받은 이메일 : "+email);
+			return emailService.sendSimpleMessage2(email);	
 		}
 		
 		@ResponseBody
@@ -32,11 +39,10 @@ public class EmailController {
 			int result = 0;
 			String code = req.getCode();
 			System.out.println("code : "+code);
-			System.out.println("code match : "+ EmailServiceImpl.ePw.equals(code));
-			if(EmailServiceImpl.ePw.equals(code)) {
+			System.out.println("code match : "+ EmailServiceImpl.ePw1.equals(code));
+			if(EmailServiceImpl.ePw1.equals(code)) {
 				result =1;
 			}
-			
 			return result;
 		}
-}
+	}

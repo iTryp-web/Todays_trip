@@ -82,6 +82,23 @@ export const memberUpdateDB = (member) => {
   });
 };
 
+//임시 비밀번호
+export const resetPassWordDB = (member) => {
+  return new Promise((resolve, reject) => {
+    console.log(member);
+    try {
+      const response = axios({
+        method: "post", // @RequestBody
+        url: process.env.REACT_APP_SPRING_IP + "member/resetPassWord",
+        data: member, // post방식 data
+      });
+      resolve(response); // 요청 처리 성공했을 때
+    } catch (error) {
+      reject(error); // 요청 처리 실패했을 때
+    }
+  });
+};
+
 //회원 탈퇴
 export const memberDeleteDB = (member) => {
   return new Promise((resolve, reject) => {

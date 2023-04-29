@@ -8,6 +8,7 @@ import { setToastMsg } from "../../redux/toastStatus/action";
 const EmailVerifyCode = ({ setModalAuthIsOpen, setVerifyEmail }) => {
   const status = useSelector(store => store.toastStatus.status)
   console.log(status)
+  
   const dispatch = useDispatch()
   
   const [codeInput, setCodeInput] = useState("");
@@ -17,6 +18,7 @@ const EmailVerifyCode = ({ setModalAuthIsOpen, setVerifyEmail }) => {
     setCodeInput(e.target.value);
     console.log(e.target.value);
   };
+  //서버에 입력한 값을 보내고 그 값을 비교해서 맞으면 1(인증성공) 틀리면 0(인증실패) 반환
   const checkCode = async (e) => {
     e.preventDefault();
     const code = codeInput;
