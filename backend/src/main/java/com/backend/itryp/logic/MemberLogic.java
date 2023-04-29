@@ -56,6 +56,15 @@ public class MemberLogic {
 		result = memberDao.memberUpdate(pMap);
 		return result;
 	}
+	//임시 비밀번호 발급
+	public int resetPassWord(Map<String, Object> pMap) {
+		logger.info("resetPassWord 호출");
+		logger.info(pMap.toString());
+		int result = 0;	
+		result = memberDao.resetPassWord(pMap);
+		return result;
+	}
+
 
 	public int memberDelete(Map<String, Object> pMap) {
 		logger.info("memberDelete 호출");
@@ -64,6 +73,6 @@ public class MemberLogic {
 		result = memberDao.memberDelete(pMap);
 		return result;
 	}
-
+	
 
 }

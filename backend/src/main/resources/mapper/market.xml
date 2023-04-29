@@ -100,7 +100,7 @@
 	<insert id="marketInsert" parameterType="map" useGeneratedKeys="true" keyColumn="market_no" keyProperty="market_no">
 		INSERT INTO TB_MARKET
 		           (market_no
-	             ,user_id
+	             			,user_id
 							 ,market_category  
 							 ,market_title     
 							 ,market_content  
@@ -207,26 +207,7 @@
 	</insert>
 	<!-- 리뷰 전체 조회 정렬- 프론트에서sort(높은평점순-high, 낮은-low, 좋아요많은순-like, new, old)-->
 	<select id="reviewList" parameterType="map" resultType="map">
-<!-- 		SELECT u.user_id
-		     , u.user_nickname
-	       , m.review_no
-	       , m.market_no
-	       , m.type_review
-	       , m.review_star
-	       , m.review_content
-	       , m.review_date  
-	       , l.like_count
-		  FROM TB_M_REVIEW m
-		  		, TB_USER u
-		  		, (SELECT COUNT(user_id) like_count, like_group
-				    FROM TB_LIKE
-				    WHERE like_type = 2
-				    GROUP BY like_group) l
-  	  WHERE m.user_id = u.user_id(+)
-  	  AND m.market_no = #{market_no}
-  	  AND m.review_no = l.like_group(+) -->
-  	  
-  	  SELECT u.user_id
+  	 <!--  SELECT u.user_id
        , u.user_nickname
        , m.review_no
        , m.market_no
@@ -235,7 +216,7 @@
        , m.review_content
        , m.review_date  
        , l.like_count
-       , COUNT(m.review_no) OVER (PARTITION BY m.market_no) AS review_count<!-- 리뷰의 갯수를 가져오기 -->
+       , COUNT(m.review_no) OVER (PARTITION BY m.market_no) AS review_count리뷰의 갯수를 가져오기
 			FROM TB_M_REVIEW m
 			LEFT JOIN TB_USER u ON m.user_id = u.user_id
 			LEFT JOIN (
@@ -244,7 +225,27 @@
 			    WHERE like_type = 2
 			    GROUP BY like_group
 			) l ON m.review_no = l.like_group
-			WHERE m.market_no = #{market_no}
+			WHERE m.market_no = #{market_no} -->
+				SELECT u.user_id
+				       , u.user_nickname
+				       , m.review_no
+				       , m.market_no
+				       , m.type_review
+				       , m.review_star
+				       , m.review_content
+				       , m.review_date  
+				       , l.like_count
+				       , COUNT(m.review_no) OVER (PARTITION BY m.market_no) AS review_count
+				       , AVG(m.review_star) OVER (PARTITION BY m.market_no) AS avg_review_star <!-- 수정된 부분 -->
+				FROM TB_M_REVIEW m
+				LEFT JOIN TB_USER u ON m.user_id = u.user_id
+				LEFT JOIN (
+				    SELECT COUNT(user_id) like_count, like_group
+				    FROM TB_LIKE
+				    WHERE like_type = 2
+				    GROUP BY like_group
+				) l ON m.review_no = l.like_group
+				WHERE m.market_no = #{market_no}
   	  <if test='sort != null and sort.equals("new")'>
   	  	ORDER BY m.review_date DESC
   	  </if>
@@ -300,17 +301,21 @@
 			AND market_no = #{market_no}
 	</delete>
 	
-	<!--리뷰 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) like_group은 리뷰넘버-->
+	<!--리뷰 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) like_group은 리뷰넘버 like_no는 마켓글번호 -->
 	<insert id="reviewLike" parameterType="map">
 		INSERT INTO TB_LIKE
-								(user_id
+							(user_id
 							 , like_type
+							 , like_no
 							 , like_group
+							 ,like_step
 							 , like_date
 							 )
-				 VALUES (#{user_id}
+				 VALUES     (#{user_id}
 				 			 , 2
-				 			 , #{like_group}
+				 			 , #{market_no}
+				 			 , #{review_no}
+				 			 ,-1
 				 			 , TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 							 )
 	</insert>

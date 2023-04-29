@@ -28,8 +28,9 @@ export const LoginFormBlock = styled.form`
   }
 
   p {
-    a{
-    }text-align: center;
+    a {
+    }
+    text-align: center;
     width: 100%;
     margin-top: 0.8rem;
     font-size: 0.9rem;
@@ -254,7 +255,6 @@ export const AuthButton = styled.button`
   :focus {
     outline: none;
   }
-
 `;
 
 export const NamenPhoneBlock = styled.div`
@@ -589,6 +589,7 @@ export const EmailInputBox = styled.div`
       height: 38px;
       font-size: 14px;
       border: 1px solid lightgray;
+      border-radius: 5px;
       padding-left: 15px;
       &:focus {
         outline: none;
@@ -629,6 +630,15 @@ export const ConfirmButton = styled.button`
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
+  border: none;
+  background-color: #4996f3;
+  color: white;
+  &:hover {
+    background-color: #537fe7;
+    :focus {
+      border: none;
+    }
+  }
 `;
 
 export const Div = styled.div`
@@ -665,12 +675,12 @@ export const GoogleBlock = styled.section`
 export const InputBox = styled.div`
   p {
     font-size: 12px;
-    margin-top : 5%;
+    margin-top: 5%;
   }
   label {
     width: 300px;
     position: relative;
-    
+
     input {
       width: 100%;
       height: 38px;
@@ -690,7 +700,7 @@ export const InputBox = styled.div`
     button {
       position: absolute;
       width: 25%;
-      height : 30px;
+      height: 30px;
       top: 4px;
       right: 5px;
       font-size: 15px;
@@ -723,7 +733,7 @@ export const JoinButton = styled.button`
   color: white;
   &:hover {
     background-color: #537fe7;
-    :focus{
+    :focus {
       border: none;
     }
   }

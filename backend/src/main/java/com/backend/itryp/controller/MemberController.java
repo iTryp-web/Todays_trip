@@ -126,6 +126,20 @@ public class MemberController {
 		return String.valueOf(result);
 	}
 	
+	/*******************
+	 * 임시 비밀번호 발급
+	 * @param pMap
+	 * @return
+	 *******************/
+	@PostMapping("resetPassWord")
+	public String resetPassWord(@RequestBody Map<String,Object> pMap) {
+		logger.info("resetPassWord 호출");
+		logger.info(pMap);
+		int result = 0;
+		result = memberLogic.resetPassWord(pMap);
+		return String.valueOf(result);
+	}
+	
 	/********************
 	 * 회원 탈퇴 - status =1로 update(삭제 X)
 	 * @param pMap

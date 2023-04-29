@@ -616,7 +616,7 @@ const SignUpPage = () => {
     await axios
       .post("http://localhost:8000/service/mail", { email: userEmail })
       .then((response) => {
-        console.log(response.data);
+        console.log(response.data);//아무것도 안찍히는 값 이메일이 보내졌다!
       })
       .catch((error) => {
         console.log(error);
