@@ -9,6 +9,9 @@ import { BsArrowReturnLeft, BsArrowReturnRight, BsBookmarkStar, BsBookmarkStarFi
 import { boardDeleteDB, boardDetailDB, likeOffDB, likeOnDB, replyDeleteDB, replyInsertDB, replyUpdateDB, reportDB } from '../../service/boardLogic';
 import { categories, profileImg } from './boardData';
 import { HiOutlineX } from 'react-icons/hi';
+import { useDispatch, useSelector } from 'react-redux';
+import { setToastMsg } from '../../redux/toastStatus/action';
+import Toast from '../include/Toast';
 
 
 const BoardDetail = () => {
@@ -22,6 +25,21 @@ const BoardDetail = () => {
   // 아이디, 닉네임 담을 변수
   const [userId] = useState(window.sessionStorage.getItem('user_id'))
   const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+
+  // 리덕스
+  const status = useSelector(store => store.toastStatus.status)
+  console.log(status)
+  const dispatch = useDispatch()
+  const [toast, setToast] = useState(false)
+  const loginToast = () => {
+    setToast(!toast)
+  }
+  useEffect (() => {
+    if(toast) {
+      dispatch(setToastMsg('로그인이 필요합니다.'))
+      setToast(!toast)
+    }
+  }, [toast])
 
   // 상세보기 정보  변수 - file_exist(파일존재여부), liked(좋아요 누른 게시물인지 아닌지 판별) 고려하기!!
   const [detailPost, setDetailPost] = useState({})
@@ -428,12 +446,12 @@ const BoardDetail = () => {
                   <img className='userImg' src={profileImg[Math.floor(((new Date(detailPost.board_date).getSeconds())%10))]} alt="" />
                 </UserImg>
                 <UserWrap>
-                  <Username isUser={userNickname === detailPost.user_nickname ? false : true}
+                  <Username isUser={!userNickname || userNickname === detailPost.user_nickname ? false : true}
                     onClick={() => {
                       onClickBtnUser()
                     }}
                   >{detailPost.user_nickname}</Username>
-                  {isClickBtnUser && userNickname !== detailPost.user_nickname ? (
+                  {isClickBtnUser && userNickname && userNickname !== detailPost.user_nickname ? (
                     <ModalUserDiv className='user'>
                     <ModalUl onClick={() => reportUser(detailPost.user_nickname)}>신고하기</ModalUl>
                     </ModalUserDiv>
@@ -498,28 +516,17 @@ const BoardDetail = () => {
             </TitleContainer>
 
             <BodyContainer>
+              {/* 토스트 메시지 */}
+              {loginToast && status && <Toast />}
               <section style={{minHeight: '400px'}}>
                 <DetailContent dangerouslySetInnerHTML={{__html:detailPost.board_content}}>
                 </DetailContent>
               </section>
               <CountDiv>
                 <Like>
-                  {isLiked ? (
-                  <lord-icon
-                  onClick={() => {
-                    {
-                      /* type, group, step */
-                      isLiked ? likeOff(0, -1, 0) : likeOn(0, -1, 0);
-                    }
-                  }}
-                  className='heart-icon'
-                  src="https://cdn.lordicon.com/xryjrepg.json"
-                  trigger="click"
-                  colors="primary:#4996F3"
-                  style={{width:"20px", height:"20px"}}>
-                </lord-icon>
-                  ) : (
-                  <lord-icon
+                  {userNickname ? (
+                    isLiked ? (
+                    <lord-icon
                     onClick={() => {
                       {
                         /* type, group, step */
@@ -529,9 +536,33 @@ const BoardDetail = () => {
                     className='heart-icon'
                     src="https://cdn.lordicon.com/xryjrepg.json"
                     trigger="click"
-                    colors="primary:#808080"
+                    colors="primary:#4996F3"
                     style={{width:"20px", height:"20px"}}>
                   </lord-icon>
+                    ) : (
+                    <lord-icon
+                      onClick={() => {
+                        {
+                          /* type, group, step */
+                          isLiked ? likeOff(0, -1, 0) : likeOn(0, -1, 0);
+                        }
+                      }}
+                      className='heart-icon'
+                      src="https://cdn.lordicon.com/xryjrepg.json"
+                      trigger="click"
+                      colors="primary:#808080"
+                      style={{width:"20px", height:"20px"}}>
+                    </lord-icon>
+                    )
+                  ) : (
+                      <lord-icon
+                        onClick={() => loginToast()}
+                        className='heart-icon'
+                        src="https://cdn.lordicon.com/xryjrepg.json"
+                        trigger="click"
+                        colors="primary:#808080"
+                        style={{width:"20px", height:"20px"}}>
+                      </lord-icon>
                   )}
                   {/*  <AiFillLike color={isLiked ? '#4996F3' : 'gray'} /> */}
                   <FontContent liked={isLiked}>
@@ -558,7 +589,7 @@ const BoardDetail = () => {
                   id='commentInput'
                   placeholder="댓글을 남겨보세요"
                   onChange={(e)=>{handleComment(e.target.value)}}
-                  maxLength={255}
+                  maxLength={200}
                 />
                 {comment ? (
                   <BtnCommentInsert
@@ -587,7 +618,7 @@ const BoardDetail = () => {
                       <CommentInput
                         id='commentInput'
                         onChange={(e)=>{handleNewComment(e.target.value)}}
-                        maxLength={255}
+                        maxLength={200}
                         defaultValue={item.comment_content}>
                         </CommentInput>
                       <BtnCommentInsert
@@ -598,13 +629,13 @@ const BoardDetail = () => {
                     </InputDiv>
                     ) : (
                     <CommentDiv>
-                      <CommentUser isCommentUser={userNickname === item.user_nickname ? false : true}
+                      <CommentUser isCommentUser={!userNickname || userNickname === item.user_nickname ? false : true}
                         onClick={() => {
                           onClickBtnCommentUser(item.comment_no, item.comment_step)
                         }}>
                       {item.user_nickname}
                     </CommentUser>
-                    {commentUser.cno === item.comment_no && commentUser.cstep === item.comment_step && userNickname !== item.user_nickname ? (
+                    {userNickname && commentUser.cno === item.comment_no && commentUser.cstep === item.comment_step && userNickname !== item.user_nickname ? (
                     <ModalCommentUserDiv cstep={item.comment_step}>
                     <ModalUl onClick={() => reportCommentUser(item.comment_no, item.comment_step, item.user_nickname)}>신고하기</ModalUl>
                     </ModalCommentUserDiv>
@@ -642,28 +673,39 @@ const BoardDetail = () => {
                       {item.comment_status === 0 || item.comment_status === 3 ? (
                         <CommentLike iconColor={commentColor(item.comment_no, item.comment_step)}>
                           {/* <AiFillLike className='like-icon' /> */}
-                          {commentColor(item.comment_no, item.comment_step) ? (
-                            <lord-icon
-                              onClick={() => {
-                                btnCommentLike(item.comment_no, item.comment_step
-                                )}}
-                            className='heart-icon'
-                            src="https://cdn.lordicon.com/xryjrepg.json"
-                            trigger="click"
-                            colors="primary:#4996F3"
-                            style={{width:"16px", height:"16px"}}>
-                          </lord-icon>
-                            ) : (
-                            <lord-icon
-                              onClick={() => {
-                                btnCommentLike(item.comment_no, item.comment_step
-                                )}}
+                          {userNickname ? (
+                            commentColor(item.comment_no, item.comment_step) ? (
+                              <lord-icon
+                                onClick={() => {
+                                  btnCommentLike(item.comment_no, item.comment_step
+                                  )}}
                               className='heart-icon'
                               src="https://cdn.lordicon.com/xryjrepg.json"
                               trigger="click"
-                              colors="primary:#808080"
+                              colors="primary:#4996F3"
                               style={{width:"16px", height:"16px"}}>
                             </lord-icon>
+                              ) : (
+                              <lord-icon
+                                onClick={() => {
+                                  btnCommentLike(item.comment_no, item.comment_step
+                                  )}}
+                                className='heart-icon'
+                                src="https://cdn.lordicon.com/xryjrepg.json"
+                                trigger="click"
+                                colors="primary:#808080"
+                                style={{width:"16px", height:"16px"}}>
+                              </lord-icon>
+                              )
+                            ) : (
+                              <lord-icon
+                                onClick={() => loginToast()}
+                                className='heart-icon'
+                                src="https://cdn.lordicon.com/xryjrepg.json"
+                                trigger="click"
+                                colors="primary:#808080"
+                                style={{width:"16px", height:"16px"}}>
+                              </lord-icon>
                             )}
                           <span className='like-count'>{item.like_count ? item.like_count : 0}</span>
                         </CommentLike>
@@ -685,7 +727,7 @@ const BoardDetail = () => {
                         id='reCommentInput'
                         placeholder="답글을 남겨보세요"
                         onChange={(e)=>{handleReComment(e.target.value)}}
-                        maxLength={255}
+                        maxLength={200}
                       />
                       {reComment ? (
                         <BtnCommentInsert

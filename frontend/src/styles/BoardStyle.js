@@ -49,6 +49,7 @@ export const BtnWrite = styled.button`
 /* 보드 섹션 전체 */
 export const BoardSection = styled.section`
   max-width: 1344px;
+  min-height: 400px;
   padding: 0 4rem;
   display: flex;
   align-items: center;
@@ -383,6 +384,14 @@ export const PostFooter = styled.div`
     color: #c5c5c5;
   }
 `;
+
+export const NoneDiv = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  color: #979797;
+  text-align: center;
+  padding: 100px 0;
+`
 
 /********** BoardWriteForm 스타일 **********/
 /* 글쓰기 섹션 전체 */

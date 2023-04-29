@@ -55,8 +55,8 @@ const AdminOrderDetail = () => {
         }
       setOrders(list)
       }
-      orderDetail()
     }
+    orderDetail()
   }, [orderNo])
 
   return (

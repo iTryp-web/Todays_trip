@@ -4,9 +4,10 @@ import styled, { css } from "styled-components";
 /* 어드민 섹션 전체 */
 export const AdminSection = styled.section`
   max-width: 1344px;
+  min-height: 500px;
+  height: 100%;
   padding: 0 4rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   background: white;
   margin: 0 auto;
@@ -86,6 +87,7 @@ export const AContentSection = styled.section`
   flex: 1;
   max-width: 960px;
   margin-left: 230px;
+  margin-top: 20px;
   h3 {
     font-size: 18px;
     font-weight: 700;
@@ -109,6 +111,14 @@ export const QnaCategory = styled.span`
     color: #4996f3;
     font-weight: 800;
   `}
+`
+
+export const NoneDiv = styled.div`
+  font-size: 18px;
+  font-weight: 600;
+  color: #979797;
+  text-align: center;
+  padding: 100px 0;
 `
 
 /********** AdminQnaRow 스타일 **********/

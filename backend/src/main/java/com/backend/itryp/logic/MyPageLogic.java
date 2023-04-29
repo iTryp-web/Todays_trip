@@ -85,4 +85,34 @@ public class MyPageLogic {
 		return rList;
 	}
 
+	/**
+	 * 주문 목록 불러오기
+	 * 
+	 * @param pmap
+	 * @return
+	 */
+	public List<Map<String, Object>> myOrderList(Map<String, Object> pmap) {
+		log.info("myOrderList 호출");
+		List<Map<String, Object>> rList = new ArrayList<>();
+		rList = mpDao.myOrderList(pmap);
+		return rList;
+	}
+
+	/**
+	 * 주문 상세보기
+	 * 
+	 * @param pmap
+	 * @return
+	 */
+	public List<Map<String, Object>> myOrderDetail(Map<String, Object> pmap) {
+		log.info("myOrderDetail 호출");
+//		if(pmap.get("order_no") != null) {
+//			int order_no = Integer.parseInt(pmap.get("order_no").toString());
+//			pmap.put("order_no", order_no);
+//		}
+		List<Map<String, Object>> rList = new ArrayList<>();
+		rList = mpDao.myOrderDetail(pmap);
+		return rList;
+	}
+
 }

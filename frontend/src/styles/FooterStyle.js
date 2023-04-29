@@ -49,7 +49,7 @@ export const LeftRow = styled.div`
     }
     &.hour {
       position: absolute;
-      top: 43px;
+      top: 44px;
       left: 135px;
       margin-top: 10px;
       padding-bottom: 3px;

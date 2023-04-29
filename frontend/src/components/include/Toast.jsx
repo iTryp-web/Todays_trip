@@ -50,7 +50,7 @@ const Toast = () => {
     if (toastStatus.status) {
       setTimeout(() => {
         dispatch(setToastFalse());
-      }, 700);
+      }, 800);
     }
   }, [toastStatus.status, dispatch]);
 

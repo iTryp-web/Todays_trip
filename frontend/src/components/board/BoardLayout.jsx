@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import {BoardSection, BoardCategory, CategoryLi, BContentSection, SearchInput, Wrap, StyledSlider, SliderListF, CommunityH3, CategoryUl, BtnSearch, SearchDiv, SearchSelect, SearchInputText, SliderDiv, SliderDivCategory, SliderDivTitle, SliderDivWriter, SliderMain, SliderSub} from '../../styles/BoardStyle'
+import {BoardSection, BoardCategory, CategoryLi, BContentSection, SearchInput, Wrap, StyledSlider, SliderListF, CommunityH3, CategoryUl, BtnSearch, SearchDiv, SearchSelect, SearchInputText, SliderDiv, SliderDivCategory, SliderDivTitle, SliderDivWriter, SliderMain, SliderSub, NoneDiv} from '../../styles/BoardStyle'
 import { useNavigate, useParams } from 'react-router-dom'
 import BoardRow from './BoardRow';
 import BoardTopPost from './BoardTopPost';
@@ -161,9 +161,12 @@ useEffect(() => {
 
           {/* 글 목록 */}
           <ul className='contentUl'>
-            {posts && posts.slice(offset, offset + limit).map((post) => {
+            {posts.length > 0 ? posts.slice(offset, offset + limit).map((post) => {
               return <BoardRow key={post.board_no} post={post} />
-            })}
+            }) : (
+              <NoneDiv>
+                새로운 글이 없습니다.
+              </NoneDiv>)}
           </ul>
             {posts.length > limit ? (<Pagination total={posts.length} limit={limit} page={page} setPage={setPage} />) : null}
 

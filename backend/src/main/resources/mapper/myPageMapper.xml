@@ -98,5 +98,86 @@
 		 WHERE q.user_id = #{user_id}
 		 ORDER BY q.qna_no DESC
 	</select>
-
+	
+	<!-- 주문 목록 불러오기 -->
+	<select id="myOrderList" parameterType="map" resultType="map">
+		SELECT o.order_no
+		     , o.order_payment
+		     , o.order_date
+		     , o.order_status
+		     , d.market_title
+		     , c.item_count
+		     , f.file_url
+		     , r_count
+		FROM TB_ORDER o
+			, (SELECT d.order_no, m.market_title, d.market_no
+			    FROM TB_MARKET m
+			       , TB_ORDER_DETAIL d
+			       , (SELECT d.order_no, MAX(m.market_price) max_price
+			         FROM TB_MARKET m, TB_ORDER_DETAIL d
+			         WHERE m.market_no = d.market_no
+			         GROUP BY d.order_no) t
+			    WHERE m.market_no = d.market_no
+			    AND t.order_no = d.order_no
+			    AND t.max_price = m.market_price) d
+			, (SELECT d.order_no, COUNT(m.market_title) item_count
+			    FROM TB_MARKET m, TB_ORDER_DETAIL d
+			    WHERE m.market_no = d.market_no
+			     GROUP BY d.order_no) c
+			, (SELECT m.market_no, f.file_url
+			    FROM TB_MARKET m, TB_M_FILE f
+			    WHERE m.market_no = f.market_no
+			    AND f.file_step = 1) f
+			 , (SELECT d.market_no, COUNT(r.user_id) r_count
+				FROM TB_M_REVIEW r, TB_ORDER_DETAIL d
+				WHERE r.market_no(+) = d.market_no
+				GROUP BY d.market_no) r
+		WHERE o.order_no = c.order_no
+		AND o.order_no = c.order_no
+		AND o.order_no = d.order_no
+		AND d.market_no = f.market_no
+		AND r.market_no = d.market_no
+		AND o.user_id = #{user_id}
+		ORDER BY o.order_date DESC
+	</select>
+	
+	<select id="myOrderDetail" parameterType="map" resultType="map">
+		SELECT d.detail_no
+             , m.market_no
+             , m.market_title
+             , o.user_id
+             , o.order_name
+             , o.order_email
+             , o.order_phone
+             , o.coupon_no
+             , o.order_total
+             , c.coupon_rate
+             , c.coupon_max
+             , d.market_count
+             , d.order_amount
+             , d.market_order_date
+             , p.pay_method
+             , p.pay_date
+             , p.pay_total
+             , f.file_url
+             , r_count
+         FROM TB_MARKET m
+            , TB_ORDER o
+            , TB_ORDER_DETAIL d
+            , TB_U_COUPON c
+            , TB_PAY p
+            , TB_M_FILE f
+            , (SELECT d.market_no, COUNT(r.user_id) r_count
+                FROM TB_M_REVIEW r, TB_ORDER_DETAIL d
+                WHERE r.market_no(+) = d.market_no
+                GROUP BY d.market_no) r
+        WHERE m.market_no = d.market_no
+        AND o.order_no = d.order_no
+        AND c.coupon_no(+) = o.coupon_no
+        AND p.order_no = o.order_no
+        AND f.market_no = m.market_no
+        AND r.market_no = d.market_no
+		AND o.user_id = #{user_id}
+		AND o.order_no = #{order_no}
+	</select>
 </mapper>

@@ -84,3 +84,37 @@ export const myPageQNADB = (user_info) => {
     }
   });
 };
+
+/* 주문 목록 불러오기 */
+export const myOrderListDB = (user_info) => {
+  console.log(user_info);
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "mypage/orderList",
+        data: user_info,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/* 주문 상세 목록 불러오기 */
+export const myOrderDetailDB = (detail) => {
+  console.log(detail);
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "mypage/orderDetail",
+        data: detail,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

@@ -1,5 +1,5 @@
 import React from 'react'
-import { AContentSection, AdminCategory, AdminCategoryLi, AdminCategoryUl, AdminPageUl, AdminSection, QnaCategory, ReportUl } from '../../styles/AdminStyle'
+import { AContentSection, AdminCategory, AdminCategoryLi, AdminCategoryUl, AdminPageUl, AdminSection, NoneDiv, QnaCategory, ReportUl } from '../../styles/AdminStyle'
 import { aBanCategories, aMarketCategories, adminCategories } from './adminData';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -60,8 +60,6 @@ const AdminLayout = () => {
       let userBan_count = 0
       let boardBan_count = 0
       let commentBan_count = 0
-      // 마켓문의 db 담기 - 새로운문의 qna_new
-      const list1 = []
       if(jsonDoc.length > 0) {
         market_count = jsonDoc[0].MARKET_COUNT
         report_count = jsonDoc[0].REPORT_COUNT
@@ -76,48 +74,52 @@ const AdminLayout = () => {
         console.log(userBan_count);
         console.log(boardBan_count);
         console.log(commentBan_count);
-        for(let i=0; i<market_count; i++) {
-          const obj = {
-            market_no: jsonDoc[i].MARKET_NO,
-            user_id: jsonDoc[i].USER_ID,
-            market_category: jsonDoc[i].MARKET_CATEGORY,
-            market_title: jsonDoc[i].MARKET_TITLE,
-            market_price: jsonDoc[i].MARKET_PRICE,
-            market_date: jsonDoc[i].MARKET_DATE,
-            file_url: jsonDoc[i].FILE_URL,
-            sales_count: jsonDoc[i].SALES_COUNT,
-            qna_new: jsonDoc[i].QNA_NEW, // 새로운 문의 수
-            qna_count: jsonDoc[i].QNA_COUNT, // 해당글 문의 수
+        if(market_count > 0) {
+          // 마켓문의 db 담기 - 새로운문의 qna_new
+          const list1 = []
+          for(let i=0; i<market_count; i++) {
+            const obj = {
+              market_no: jsonDoc[i].MARKET_NO,
+              user_id: jsonDoc[i].USER_ID,
+              market_category: jsonDoc[i].MARKET_CATEGORY,
+              market_title: jsonDoc[i].MARKET_TITLE,
+              market_price: jsonDoc[i].MARKET_PRICE,
+              market_date: jsonDoc[i].MARKET_DATE,
+              file_url: jsonDoc[i].FILE_URL,
+              sales_count: jsonDoc[i].SALES_COUNT,
+              qna_new: jsonDoc[i].QNA_NEW, // 새로운 문의 수
+              qna_count: jsonDoc[i].QNA_COUNT, // 해당글 문의 수
+            }
+            console.log(obj);
+            list1.push(obj)
           }
-          console.log(obj);
-          list1.push(obj)
+          setQnaList(list1)
         }
-      }
-      setQnaList(list1)
-      // 신고 db 담기 - 새로운 신고 report_new
-      const list2 = []
-      const list3 = []
-      const list31 = []
-      if(jsonDoc.length > market_count) {
-        for(let i=market_count; i<(market_count + report_count); i++) {
-          const obj = {
-            report_no: jsonDoc[i].REPORT_NO,
-            user_id: jsonDoc[i].USER_ID,
-            report_type: jsonDoc[i].REPORT_TYPE,
-            report_num: jsonDoc[i].REPORT_NUM,
-            report_group: jsonDoc[i].REPORT_GROUP,
-            report_step: jsonDoc[i].REPORT_STEP,
-            report_user: jsonDoc[i].REPORT_USER,
-            report_reason: jsonDoc[i].REPORT_REASON,
-            report_date: jsonDoc[i].REPORT_DATE,
-            report_result: jsonDoc[i].REPORT_RESULT,
-            report_new: jsonDoc[i].REPORT_NEW,
+        if(report_count > 0) {
+          // 신고 db 담기 - 새로운 신고 report_new
+          const list2 = []
+          for(let i=market_count; i<(market_count + report_count); i++) {
+            const obj = {
+              report_no: jsonDoc[i].REPORT_NO,
+              user_id: jsonDoc[i].USER_ID,
+              report_type: jsonDoc[i].REPORT_TYPE,
+              report_num: jsonDoc[i].REPORT_NUM,
+              report_group: jsonDoc[i].REPORT_GROUP,
+              report_step: jsonDoc[i].REPORT_STEP,
+              report_user: jsonDoc[i].REPORT_USER,
+              report_reason: jsonDoc[i].REPORT_REASON,
+              report_date: jsonDoc[i].REPORT_DATE,
+              report_result: jsonDoc[i].REPORT_RESULT,
+              report_new: jsonDoc[i].REPORT_NEW,
+            }
+            console.log(obj);
+            list2.push(obj)
           }
-          console.log(obj);
-          list2.push(obj)
+          setReportList(list2)
         }
-        // 탈퇴신청 db 담기 - 새로운 탈퇴신청 resign_new
-        if(jsonDoc.length > (market_count + report_count)) {
+        if(resign_count > 0) {
+          // 탈퇴신청 db 담기 - 새로운 탈퇴신청 resign_new
+          const list3 = []
           for(let i=(market_count + report_count); i<(market_count + report_count + resign_count); i++) {
             const obj = {
               user_id: jsonDoc[i].USER_ID,
@@ -135,11 +137,11 @@ const AdminLayout = () => {
             console.log(obj);
             list3.push(obj)
           }
-        }
-        setReportList(list2)
         setResignList(list3)
-        // 주문 목록 db 담기
-        if(jsonDoc.length > (market_count + report_count + resign_count)) {
+        }
+        if(market_count > 0) {
+          // 주문 목록 db 담기
+          const list31 = []
           for(let i=(market_count + report_count + resign_count); i<(market_count + report_count + resign_count + order_count); i++) {
             const obj = {
               order_no: jsonDoc[i].ORDER_NO,
@@ -152,146 +154,62 @@ const AdminLayout = () => {
             console.log(obj);
             list31.push(obj)
           }
-        }
         setOrderList(list31)
-        // 차단 목록 담기 - 유저, 글, 댓글(각각 조건 걸기)
-        const list4 = []
-        const list5 = []
-        const list6 = []
-        if(jsonDoc.length > (market_count + report_count + resign_count + order_count)) {
-          // +유저 밴 목록 있는 경우
-          if(userBan_count > 0) {
-            for(let i=(market_count + report_count + resign_count + order_count);
-            i<(market_count + report_count + resign_count + order_count + userBan_count); i++) {
-              const obj = {
-                user_id: jsonDoc[i].USER_ID,
-                user_nickname: jsonDoc[i].USER_NICKNAME,
-                user_name: jsonDoc[i].USER_NAME,
-                user_phone: jsonDoc[i].USER_PHONE,
-                user_level: jsonDoc[i].USER_LEVEL,
-                status: jsonDoc[i].STATUS,
-              }
-              console.log(obj);
-              list4.push(obj)
+        }
+        if(userBan_count > 0) {
+          // 차단 목록 담기 - 유저
+          const list4 = []
+          for(let i=(market_count + report_count + resign_count + order_count);
+          i<(market_count + report_count + resign_count + order_count + userBan_count); i++) {
+            const obj = {
+              user_id: jsonDoc[i].USER_ID,
+              user_nickname: jsonDoc[i].USER_NICKNAME,
+              user_name: jsonDoc[i].USER_NAME,
+              user_phone: jsonDoc[i].USER_PHONE,
+              user_level: jsonDoc[i].USER_LEVEL,
+              status: jsonDoc[i].STATUS,
             }
-            setUserBanList(list4)
-            // ++글 밴 목록 있는 경우
-            if(boardBan_count > 0) {
-              for(let i=(market_count + report_count + resign_count + order_count + userBan_count);
-              i<(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count); i++) {
-                const obj = {
-                  board_no: jsonDoc[i].BOARD_NO,
-                  user_id: jsonDoc[i].USER_ID,
-                  board_category: jsonDoc[i].BOARD_CATEGORY,
-                  board_title: jsonDoc[i].BOARD_TITLE,
-                  board_date: jsonDoc[i].BOARD_DATE,
-                  board_status: jsonDoc[i].BOARD_STATUS,
-                }
-                console.log(obj)
-                list5.push(obj)
-              }
-              setBoardBanList(list5)
-              // +++댓글 밴 목록 있는 경우
-              if(commentBan_count > 0) {
-                for(let i=(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count);
-                i<(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count + commentBan_count); i++) {
-                  const obj = {
-                    board_no: jsonDoc[i].BOARD_NO,
-                    user_id: jsonDoc[i].USER_ID,
-                    comment_no: jsonDoc[i].COMMENT_NO,
-                    comment_step: jsonDoc[i].COMMENT_STEP,
-                    comment_content: jsonDoc[i].COMMENT_CONTENT,
-                    comment_date: jsonDoc[i].COMMENT_DATE,
-                    comment_status: jsonDoc[i].COMMENT_STATUS,
-                  }
-                  console.log(obj)
-                  list6.push(obj)
-                }
-                setCommentBanList(list6)
-              }
-            }
-            // --글 밴 목록 없는 경우
-            else {
-              // +++댓글 밴 목록 있는 경우
-              if(commentBan_count > 0) {
-                for(let i=(market_count + report_count + resign_count + order_count + userBan_count);
-                i<(market_count + report_count + resign_count + order_count + userBan_count + commentBan_count); i++) {
-                  const obj = {
-                    board_no: jsonDoc[i].BOARD_NO,
-                    user_id: jsonDoc[i].USER_ID,
-                    comment_no: jsonDoc[i].COMMENT_NO,
-                    comment_step: jsonDoc[i].COMMENT_STEP,
-                    comment_content: jsonDoc[i].COMMENT_CONTENT,
-                    comment_date: jsonDoc[i].COMMENT_DATE,
-                    comment_status: jsonDoc[i].COMMENT_STATUS,
-                  }
-                  console.log(obj)
-                  list6.push(obj)
-                }
-                setCommentBanList(list6)
-              }
-            }
+            console.log(obj);
+            list4.push(obj)
           }
-
-          // -유저밴 없는 경우
-          else {
-            // ++글 밴 목록 있는 경우
-            if(boardBan_count > 0) {
-              for(let i=(market_count + report_count + resign_count + order_count);
-              i<(market_count + report_count + resign_count + order_count + boardBan_count); i++) {
-                const obj = {
-                  board_no: jsonDoc[i].BOARD_NO,
-                  user_id: jsonDoc[i].USER_ID,
-                  board_category: jsonDoc[i].BOARD_CATEGORY,
-                  board_title: jsonDoc[i].BOARD_TITLE,
-                  board_date: jsonDoc[i].BOARD_DATE,
-                  board_status: jsonDoc[i].BOARD_STATUS,
-                }
-                console.log(obj)
-                list5.push(obj)
-              }
-              setBoardBanList(list5)
-              // +++댓글 밴 목록 있는 경우
-              if(commentBan_count > 0) {
-                for(let i=(market_count + report_count + resign_count + order_count + boardBan_count);
-                i<(market_count + report_count + resign_count + order_count + boardBan_count + commentBan_count); i++) {
-                  const obj = {
-                    board_no: jsonDoc[i].BOARD_NO,
-                    user_id: jsonDoc[i].USER_ID,
-                    comment_no: jsonDoc[i].COMMENT_NO,
-                    comment_step: jsonDoc[i].COMMENT_STEP,
-                    comment_content: jsonDoc[i].COMMENT_CONTENT,
-                    comment_date: jsonDoc[i].COMMENT_DATE,
-                    comment_status: jsonDoc[i].COMMENT_STATUS,
-                  }
-                  console.log(obj)
-                  list6.push(obj)
-                }
-                setCommentBanList(list6)
-              }
+          setUserBanList(list4)
+        }
+        if(boardBan_count > 0) {
+          // 차단 목록 담기 - 글
+          const list5 = []
+          for(let i=(market_count + report_count + resign_count + order_count + userBan_count);
+          i<(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count); i++) {
+            const obj = {
+              board_no: jsonDoc[i].BOARD_NO,
+              user_id: jsonDoc[i].USER_ID,
+              board_category: jsonDoc[i].BOARD_CATEGORY,
+              board_title: jsonDoc[i].BOARD_TITLE,
+              board_date: jsonDoc[i].BOARD_DATE,
+              board_status: jsonDoc[i].BOARD_STATUS,
             }
-            // --글 밴 목록 없는 경우
-            else {
-              // +++댓글 밴 목록 있는 경우
-              if(commentBan_count > 0) {
-                for(let i=(market_count + report_count + resign_count + order_count);
-                i<(market_count + report_count + resign_count + order_count + commentBan_count); i++) {
-                  const obj = {
-                    board_no: jsonDoc[i].BOARD_NO,
-                    user_id: jsonDoc[i].USER_ID,
-                    comment_no: jsonDoc[i].COMMENT_NO,
-                    comment_step: jsonDoc[i].COMMENT_STEP,
-                    comment_content: jsonDoc[i].COMMENT_CONTENT,
-                    comment_date: jsonDoc[i].COMMENT_DATE,
-                    comment_status: jsonDoc[i].COMMENT_STATUS,
-                  }
-                  console.log(obj)
-                  list6.push(obj)
-                }
-                setCommentBanList(list6)
-              }
-            }
+            console.log(obj)
+            list5.push(obj)
           }
+          setBoardBanList(list5)
+        }
+        if(commentBan_count > 0) {
+          // 차단 목록 담기 - 댓글
+          const list6 = []
+          for(let i=(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count);
+          i<(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count + commentBan_count); i++) {
+            const obj = {
+              board_no: jsonDoc[i].BOARD_NO,
+              user_id: jsonDoc[i].USER_ID,
+              comment_no: jsonDoc[i].COMMENT_NO,
+              comment_step: jsonDoc[i].COMMENT_STEP,
+              comment_content: jsonDoc[i].COMMENT_CONTENT,
+              comment_date: jsonDoc[i].COMMENT_DATE,
+              comment_status: jsonDoc[i].COMMENT_STATUS,
+            }
+            console.log(obj)
+            list6.push(obj)
+          }
+          setCommentBanList(list6)
         }
       }
     }
@@ -383,7 +301,9 @@ const AdminLayout = () => {
                 return <AdminQnaRow key={qna.market_no} qna={qna} selectedMarket={selectedMarket} />
               })}
             </ul>
-          ) : null}
+          ) : (selected === '마켓' ? (
+            <NoneDiv>상품 목록이 없습니다.</NoneDiv>
+            ) : null)}
 
           {/* 주문 목록 */}
           {orderList.length > 0  && selected === '주문' ? (
@@ -417,7 +337,9 @@ const AdminLayout = () => {
               </tr>
               </Table>
             </ReportUl>
-          ) : null}
+          ) : (selected === '주문' ? (
+            <NoneDiv>주문 목록이 없습니다.</NoneDiv>
+            ) : null)}
 
           {/* 신고 목록 */}
           {reportList.length > 0  && selected === '신고' ? (
@@ -451,7 +373,9 @@ const AdminLayout = () => {
               </tr>
               </Table>
             </ReportUl>
-          ) : null}
+          ) : (selected === '신고' ? (
+            <NoneDiv>신고 목록이 없습니다.</NoneDiv>
+            ) : null)}
 
           {/* 차단 목록 */}
           {(userBanList.length > 0 || boardBanList.length > 0 || commentBanList.length > 0) && selected === '차단' ? (
@@ -502,7 +426,9 @@ const AdminLayout = () => {
             </tr>
             </Table>
             </ReportUl>
-          ) : null}
+          ) : (selected === '탈퇴' ? (
+            <NoneDiv>탈퇴 목록이 없습니다.</NoneDiv>
+            ) : null)}
         </AContentSection>
       </AdminSection>
     </>

@@ -217,7 +217,10 @@ export const UserImg = styled.div`
 
 export const NoneDiv = styled.div`
   font-size: 18px;
+  font-weight: 600;
   color: #979797;
+  text-align: center;
+  padding: 100px 0;
 `
 
 /* ImageSlider 스타일 */

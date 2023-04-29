@@ -82,4 +82,31 @@ public class MyPageDao {
 		rList = sst.selectList("getMyQNAList", pmap);
 		return rList;
 	}
+
+	/**
+	 * 주문 목록 불러오기
+	 * 
+	 * @param pmap
+	 * @return
+	 */
+	public List<Map<String, Object>> myOrderList(Map<String, Object> pmap) {
+		log.info("myOrderList 호출");
+		List<Map<String, Object>> rList = null;
+		rList = sst.selectList("myOrderList", pmap);
+		return rList;
+	}
+
+	/**
+	 * 주문 상세보기
+	 * 
+	 * @param pmap
+	 * @return
+	 */
+	public List<Map<String, Object>> myOrderDetail(Map<String, Object> pmap) {
+		log.info("myOrderDetail 호출");
+		log.info(pmap);
+		List<Map<String, Object>> rList = null;
+		rList = sst.selectList("myOrderDetail", pmap);
+		return rList;
+	}
 }

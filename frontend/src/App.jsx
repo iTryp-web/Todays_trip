@@ -25,6 +25,8 @@ import KakaoLogin from "./components/auth/KakaoLogin";
 import MyPagePage from "./components/page/MyPagePage";
 import SNSSignUp from "./components/auth/SNSSignUp";
 import NaverLogin from "./components/auth/NaverLogin";
+import MyOrderList from "./components/mypage/MyOrderList";
+import MyOrderDetail from "./components/mypage/MyOrderDetail";
 
 function App({ authLogic }) {
   return (
@@ -46,6 +48,8 @@ function App({ authLogic }) {
         <Route path="/payResult" exact={true} element={<PaymentResult />} />
 
         <Route path="/myPage/:category" element={<MyPagePage />} />
+        <Route path="/myPage/orderlist" exact={true} element={<MyOrderList />} />
+        <Route path="/myPage/orderdetail/:ono" element={<MyOrderDetail/>} />
 
         <Route path="/signup" exact={true} element={<SignUpPage />} />
         <Route path="/signin" exact={true} element={<SignInPage />} />
@@ -55,7 +59,7 @@ function App({ authLogic }) {
         <Route path="/auth/naver" exact={true} element={<NaverLogin />} />
 
         <Route path="/market" exact={true} element={<MarketPage />} />
-        <Route path="/market/:category" exact={true} element={<MarketPage />} />
+        <Route path="/market/:category" element={<MarketPage />} />
         <Route path="/market/review" exact={true} element={<MarketReview />} />
         <Route path="/market/write" exact={true} element={<MarketWrite />} />
         <Route path="/market/detail/:mno" element={<MarketDetail />} />

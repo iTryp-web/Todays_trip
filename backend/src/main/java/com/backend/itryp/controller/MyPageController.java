@@ -109,4 +109,35 @@ public class MyPageController {
 		return temp;
 	}
 	
+	/**
+	 * 주문 목록 불러오기
+	 * @param pmap
+	 * @return
+	 */
+	@PostMapping("orderList")
+	public String myOrderList(@RequestBody Map<String, Object> pmap) {
+		log.info("myOrderList 호출 " + pmap);
+		String temp = null;
+		List<Map<String,Object>> rmap = null;
+		rmap = mpLogic.myOrderList(pmap);
+		Gson g = new Gson();
+		temp = g.toJson(rmap);
+		return temp;
+	}
+	
+	/**
+	 * 주문 상세보기
+	 * @param pmap
+	 * @return
+	 */
+	@PostMapping("orderDetail")
+	public String myOrderDetail(@RequestBody Map<String, Object> pmap) {
+		log.info("myOrderDetail 호출 " + pmap);
+		String temp = null;
+		List<Map<String,Object>> rmap = null;
+		rmap = mpLogic.myOrderDetail(pmap);
+		Gson g = new Gson();
+		temp = g.toJson(rmap);
+		return temp;
+	}
 }
