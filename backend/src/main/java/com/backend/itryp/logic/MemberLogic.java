@@ -39,7 +39,13 @@ public class MemberLogic {
 		mList = memberDao.sessionList(pMap);
 		return mList;
 	}
-	
+	//이메일 조회
+	public List<Map<String, Object>> findUser(Map<String, Object> pMap) {
+		logger.info("findeUser 호출");
+		List<Map<String,Object>> mList = new ArrayList<>();
+		mList = memberDao.findUser(pMap);
+		return mList;
+	}
 	//회원가입
 	public int memberInsert(Map<String, Object> pMap) {
 		logger.info("memberInsert 호출");

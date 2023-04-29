@@ -48,6 +48,21 @@ export const sessionListDB = (member) => {
   });
 };
 
+export const findUserDB = (member) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "member/findUser",
+        params: member,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 //회원가입
 export const memberInsertDB = (member) => {
   return new Promise((resolve, reject) => {

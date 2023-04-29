@@ -36,6 +36,13 @@ public class MemberDao {
 		
 		return mList;
 	}
+	//이메일 찾기 + 회원정보 구분
+	public List<Map<String, Object>> findUser(Map<String, Object> pMap) {
+		logger.info("findUser 호출");
+		List<Map<String, Object>> mList = sqlSessionTemplate.selectList("findUser",pMap);
+		
+		return mList;
+	}
 	//회원가입
 	public int memberInsert(Map<String, Object> pMap) {
 		logger.info("memberInsert 호출");
@@ -64,4 +71,5 @@ public class MemberDao {
 		result = sqlSessionTemplate.update("memberDelete",pMap);
 		return result;
 	}
+	
 }

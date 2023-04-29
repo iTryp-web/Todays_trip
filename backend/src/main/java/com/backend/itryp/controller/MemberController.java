@@ -74,6 +74,24 @@ public class MemberController {
 		return temp;
 	}
 	
+	@GetMapping("findUser")
+	public String findUser(@RequestParam Map<String, Object> pMap) {
+		logger.info("findUser 호출");
+		logger.info(pMap);
+		String temp = null;
+		List<Map<String, Object>> mList = new ArrayList<>();
+		mList = memberLogic.findUser(pMap);
+		logger.info(mList);
+		if(mList.size()>0) {
+			Gson g = new Gson();
+			temp = g.toJson(mList);
+		}
+		else {
+			temp = "0";
+		}
+		return temp;
+	}
+	
 	/******************
 	 * 중복 검사, 이메일 찾기
 	 * @param pMap
@@ -139,6 +157,7 @@ public class MemberController {
 		result = memberLogic.resetPassWord(pMap);
 		return String.valueOf(result);
 	}
+	
 	
 	/********************
 	 * 회원 탈퇴 - status =1로 update(삭제 X)

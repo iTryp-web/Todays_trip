@@ -23,6 +23,7 @@ public class TbUserVO {
 	private String user_level;
 	private int fail_cnt;
 	private String salt;
+	private String provider;
 	private int role;
 	private int status;
 

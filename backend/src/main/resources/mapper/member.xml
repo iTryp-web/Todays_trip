@@ -97,10 +97,6 @@
 			<if test='user_phone!= null and user_phone.length()>0'>
 				user_phone = #{user_phone}
 			</if>
-			<!-- 아이디(이메일) 찾기 : 이메일 찾기 만들때 sort에 이메일찾기 넣어줘야함 -->
-			<if test='sort!=null and sort.equals("아이디찾기")'>
-				AND status = 0
-			</if>
 		</where>
 	</select>
 	
@@ -133,7 +129,7 @@
 		</trim>
 	</update>
 	
-	<!--  임시 비밀번호로 변경 -->
+	<!-- 자체 회원 임시 비밀번호로 변경 -->
 	<update id="resetPassWord" parameterType="map">
 		update TB_USER
 		<set>
@@ -143,6 +139,16 @@
 		</set>
 			WHERE user_id = #{user_id}
 	</update>	
+	
+	<!-- 이메일(아이디) 조회 + 자체회원/소셜회원 구분 -->
+	<select id="findUser" parameterType="map" resultType="map">
+		SELECT
+		user_email
+		,provider
+		from TB_USER
+		WHERE
+		user_email=#{user_email}
+	</select>
 	
 	
 	<!-- 회원 탈퇴 (바로 삭제 X, status를 1로 변경) -->
