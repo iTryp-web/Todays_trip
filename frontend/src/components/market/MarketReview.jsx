@@ -24,11 +24,14 @@ const MarketReview = ({mno}) => {
 
   //마켓글 별점 배열
   const [rstar, setRstar]=useState([{}]);
-  console.log("별점배열 : "+ rstar);
+  console.log("별점배열 : "+ rstar);//undefined
+
+  const [avgStar, setAvgStar]=useState(0);
+  console.log("평균별점 바깥"+avgStar);
 
   //평균 star rating percentage 계산 후 style로 반영
     const ratingToPercentAvg = {
-      // width: `${(starAvg / 5) * 100}%`,
+      width: `${(avgStar / 5) * 100}%`,   
     };
 
   //필터선택
@@ -59,7 +62,6 @@ const MarketReview = ({mno}) => {
       const datas = res.data
       //datas가 배열이다. 안에 객체있음. forEach로 돌려야된다...item으로 쪼갠다. 그안에 데이터있음
       datas.forEach((item) => {
-        console.log("item"+item);
       // DB에서 받은 데이터
       //like_no=market_no
       //like_group=review_no
@@ -71,7 +73,8 @@ const MarketReview = ({mno}) => {
         review_content: item.REVIEW_CONTENT,
         review_date  : item.REVIEW_DATE,
         like_count: item.LIKE_COUNT,
-        review_count:item.REVIEW_COUNT
+        review_count:item.REVIEW_COUNT,
+        avg_review_star:item.AVG_REVIEW_STAR
       }
       list.push(obj)
       starList.push(item.REVIEW_STAR);
@@ -80,20 +83,19 @@ const MarketReview = ({mno}) => {
       //리뷰테이블 로우 갯수 어캐가져오냐
       setRcount(item.REVIEW_COUNT)
       console.log("리뷰갯수 잘가져오나?=>"+rcount);
+      console.log("별점평균 :"+item.AVG_REVIEW_STAR);
+      setReviews(list)
+      setRstar(reviews.review_star)  
+      setAvgStar(reviews.avg_review_star)
     })
-    setReviews(list)
-    setRstar(reviews.review_star)  
-
   }
   reviewList()
-},[mno, filter, rcount])
+},[mno, filter, rcount, avgStar])
 console.log(reviews);
 
 
-
-
   // 페이지넘기기-pagination
-  const limit= useState(5);
+  const [limit, setLimit]= useState(5);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
 
@@ -153,14 +155,6 @@ console.log(reviews);
               ))
           }
           </ul>
-
-        {/* 테스트 가데이터
-                <ul>
-                  {reviewData.slice(offset, offset + limit).map((review)=>(
-                    <ReviewRow key={reviewData.review_no} review={review}/>
-                  ))}
-                </ul> */}
-
         
            {/* <!-- Add review --> 마이페이지로 가야될듯
         <form className='reviewAdd'>
@@ -181,7 +175,8 @@ console.log(reviews);
           <Button >
             리뷰등록
           </Button> */}
-        {/* <Pagination total={reviews.length} limit={limit} page={page} setPage={setPage} /> */}
+
+        <Pagination total={reviews.length} limit={limit} page={page} setPage={setPage} />
       </ReviewUI>
     </>
   )
