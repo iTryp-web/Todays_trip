@@ -73,7 +73,11 @@ public class MemberController {
 		}
 		return temp;
 	}
-	
+	/*******************
+	 * 이메일 찾기
+	 * @param pMap
+	 * @return
+	 ********************/
 	@GetMapping("findUser")
 	public String findUser(@RequestParam Map<String, Object> pMap) {
 		logger.info("findUser 호출");
@@ -92,8 +96,31 @@ public class MemberController {
 		return temp;
 	}
 	
+	/*******************
+	 * 추천인 찾기
+	 * @param pMap
+	 * @return
+	 ********************/
+	@GetMapping("referrer")
+	public String referrer(@RequestParam Map<String, Object> pMap) {
+		logger.info("referrer 호출");
+		logger.info(pMap);
+		String temp = null;
+		List<Map<String, Object>> mList = new ArrayList<>();
+		mList = memberLogic.referrer(pMap);
+		logger.info(mList);
+		if(mList.size()>0) {
+			Gson g = new Gson();
+			temp = g.toJson(mList);
+		}
+		else {
+			temp = "0";
+		}
+		return temp;
+	}
+	
 	/******************
-	 * 중복 검사, 이메일 찾기
+	 * 중복 검사
 	 * @param pMap
 	 * @return
 	 ******************/

@@ -32,6 +32,21 @@ export const checkInfoDB = (member) => {
   });
 };
 
+export const referrerDB = (member) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "member/referrer",
+        params: member,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 //세션 저장용
 export const sessionListDB = (member) => {
   return new Promise((resolve, reject) => {
@@ -130,3 +145,5 @@ export const memberDeleteDB = (member) => {
     }
   });
 };
+
+

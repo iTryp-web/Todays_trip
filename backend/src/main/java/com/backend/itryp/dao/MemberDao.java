@@ -43,6 +43,14 @@ public class MemberDao {
 		
 		return mList;
 	}
+	//추천인 조회
+	public List<Map<String, Object>> referrer(Map<String, Object> pMap) {
+		logger.info("referrer 호출");
+		List<Map<String, Object>> mList = sqlSessionTemplate.selectList("referrer",pMap);
+		
+		return mList;
+	}
+	
 	//회원가입
 	public int memberInsert(Map<String, Object> pMap) {
 		logger.info("memberInsert 호출");
@@ -71,5 +79,5 @@ public class MemberDao {
 		result = sqlSessionTemplate.update("memberDelete",pMap);
 		return result;
 	}
-	
+
 }

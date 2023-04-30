@@ -347,7 +347,7 @@ export const ReferBlock = styled.div`
     ::after {
       padding-left: 3px;
       font-size: 12px;
-      content: "(선택항목)";
+      content: "(선택항목, 닉네임을 입력해주세요)";
       color: gray;
     }
   }

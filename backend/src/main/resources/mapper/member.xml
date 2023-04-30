@@ -58,7 +58,7 @@
 		user_id=#{user_id} AND
 		user_pw=#{user_pw} AND status = 0
 	</select>
-	
+
 	<!-- 로그인시 세션 정보 저장용(아이디, 이메일, 닉네임, 이름) -->
 	<select id="sessionList" parameterType="map" resultType="map">
 		SELECT
@@ -99,8 +99,16 @@
 			</if>
 		</where>
 	</select>
-	
-	
+
+	<!-- 추천인 조회용 -->
+	<select id="referrer" parameterType="map" resultType="map">
+		SELECT
+		user_id
+		,user_nickname
+		from TB_USER
+		WHERE
+		user_nickname=#{user_nickname}
+	</select>
 
 
 	<!-- 회원정보 수정 : 수정가능한 정보 : 닉네임, 비밀번호, 핸드폰번호, 주소 -->
@@ -128,7 +136,7 @@
 			</if>
 		</trim>
 	</update>
-	
+
 	<!-- 자체 회원 임시 비밀번호로 변경 -->
 	<update id="resetPassWord" parameterType="map">
 		update TB_USER
@@ -137,9 +145,9 @@
 				user_pw = #{user_pw}
 			</if>
 		</set>
-			WHERE user_id = #{user_id}
-	</update>	
-	
+		WHERE user_id = #{user_id}
+	</update>
+
 	<!-- 이메일(아이디) 조회 + 자체회원/소셜회원 구분 -->
 	<select id="findUser" parameterType="map" resultType="map">
 		SELECT
@@ -149,8 +157,8 @@
 		WHERE
 		user_email=#{user_email}
 	</select>
-	
-	
+
+
 	<!-- 회원 탈퇴 (바로 삭제 X, status를 1로 변경) -->
 	<update id="memberDelete" parameterType="map">
 		update TB_USER
@@ -158,4 +166,6 @@
 		= 1
 		WHERE user_id = #{user_id}
 	</update>
+
+
 </mapper>

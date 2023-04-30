@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.itryp">
+
+
+	<!-- 기존 회원 쿠폰 생성 후 발급 -->
+	<insert id="couponInsert" parameterType="map">
+		<selectKey keyProperty="couponNo"
+			resultType="java.lang.String" order="BEFORE">
+			SELECT TO_CHAR(sysdate,
+			'YYYYMMDD-HH24MISS-') || TB_U_COUPON_NO_SEQ.NEXTVAL
+			FROM DUAL
+		</selectKey>
+		INSERT INTO TB_U_COUPON
+		(coupon_no, coupon_name, user_id, coupon_rate,
+		coupon_min, coupon_max,
+		coupon_date, coupon_valid)
+		VALUES (
+		#{couponNo},
+		#{couponName},
+		(SELECT user_id FROM TB_USER WHERE user_id =
+		#{userEmail}),
+		#{couponRate},
+		#{couponMin},
+		#{couponMax},
+		TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS'),
+		#{couponValid}
+		)
+	</insert>
+
+
+	<!-- 신규 회원 쿠폰 생성 후 발급 -->
+	<insert id="referrerCouponInsert" parameterType="map">
+		<selectKey keyProperty="couponNo"
+			resultType="java.lang.String" order="BEFORE">
+			SELECT TO_CHAR(sysdate, 'YYYYMMDD-HH24MISS-') || TB_U_COUPON_NO_SEQ.NEXTVAL
+			FROM DUAL
+		</selectKey>
+		INSERT INTO TB_U_COUPON
+		(coupon_no, coupon_name, user_id, coupon_rate, coupon_min, coupon_max,
+		coupon_date, coupon_valid)
+		VALUES (
+		#{couponNo},
+		#{couponName},
+		(SELECT user_id FROM TB_USER WHERE user_id = #{referrerId}),
+		#{couponRate},
+		#{couponMin},
+		#{couponMax},
+		TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS'),
+		#{couponValid}
+		)
+	</insert>
+</mapper>

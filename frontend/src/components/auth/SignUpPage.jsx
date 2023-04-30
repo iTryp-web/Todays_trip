@@ -9,6 +9,7 @@ import { loginGoogle, onAuthChange } from "../../service/authLogic";
 import {
   checkInfoDB,
   memberInsertDB,
+  referrerDB,
   sessionListDB,
 } from "../../service/memberLogic";
 import {
@@ -34,15 +35,19 @@ import { KAKAO_AUTH_URL } from "./KakaoLogin";
 import NaverLogin, { NAVER_AUTH_URL } from "./NaverLogin";
 import { setToastMsg } from "../../redux/toastStatus/action";
 import Toast from "../include/Toast";
+import {
+  couponInsertDB,
+  referrerCouponInsertDB,
+} from "../../service/couponLogic";
 
 const SignUpPage = () => {
   const userAuth = useSelector((state) => state.userAuth);
   //const auth = authLogic.getUserAuth(); 변경
   const auth = userAuth.auth;
   const navigate = useNavigate();
-  const status = useSelector(store => store.toastStatus.status)
-  console.log(status)
-  const dispatch = useDispatch()
+  const status = useSelector((store) => store.toastStatus.status);
+  console.log(status);
+  const dispatch = useDispatch();
 
   const [memInfo, setMemInfo] = useState({
     email: "",
@@ -52,6 +57,7 @@ const SignUpPage = () => {
     nickname: "",
   });
 
+  const [referrerId, setReferrerId] = useState("");
   const [verifyEmail, setVerifyEmail] = useState(false);
   const [idInput, setIdInput] = useState("");
   const [isButtonActive, setIsButtonActive] = useState(false);
@@ -79,7 +85,7 @@ const SignUpPage = () => {
   const [pwChecktext, setPwCheckText] = useState("");
   const [nicknametext, setNicknameText] = useState("");
   const [referrertext, setReferrerText] = useState("");
-  const [pwCheck, setPwCheck] = useState(false)
+  const [pwCheck, setPwCheck] = useState(false);
 
   //이메일 input박스 얇은 테두리색깔
   const [emailInputColor, setEmailInputColor] = useState("lightgray");
@@ -155,7 +161,7 @@ const SignUpPage = () => {
       //이전닉네임값
       const prevNicknameInput = nicknameInputRef.current;
       const nickNameRegex = /^\S+$/;
-      const validNickInput = nickNameRegex.test(nicknameInput)
+      const validNickInput = nickNameRegex.test(nicknameInput);
       let params;
       params = { user_nickname: memInfo["nickname"], type: "overlap" };
       console.log(params);
@@ -182,8 +188,7 @@ const SignUpPage = () => {
           setNicknameInputColor("#f77");
           setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setTextNickNameColor("#f77");
-        }
-        else if(!validNickInput){
+        } else if (!validNickInput) {
           setNicknameText("빈칸을 포함 할 수 없습니다.");
           setNicknameInputColor("#f77");
           setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
@@ -356,11 +361,28 @@ const SignUpPage = () => {
         user_name: memInfo.name,
         user_phone: memInfo.phone,
         user_email: userEmail,
-        provider : "TDT"
+        provider: "TDT",
       };
       console.log(datas);
       const response = await memberInsertDB(datas);
       console.log(response);
+
+      //추천인 있을 경우
+      if (referrerId) {
+        const cuoponData = {
+          userEmail: userEmail,
+          referrerId: referrerId,
+          couponName: "회원가입 축하 쿠폰",
+          couponRate: 10,
+          couponMin: 10000,
+          couponMax: 100000,
+          couponValid: 100,
+        };
+        const response1 = await couponInsertDB(cuoponData);
+        const response2 = await referrerCouponInsertDB(cuoponData);
+        console.log(response1);
+        console.log(response2);
+      }
       if (response.data !== 1) {
         return "DB 오류: 관리자에게 연락바랍니다.";
       }
@@ -616,7 +638,7 @@ const SignUpPage = () => {
     await axios
       .post("http://localhost:8000/service/mail", { email: userEmail })
       .then((response) => {
-        console.log(response.data);//아무것도 안찍히는 값 이메일이 보내졌다!
+        console.log(response.data); //아무것도 안찍히는 값 이메일이 보내졌다!
       })
       .catch((error) => {
         console.log(error);
@@ -667,17 +689,17 @@ const SignUpPage = () => {
       isRequiredChecked == true &&
       verifyEmail == true &&
       pwCheck == true &&
-      idInput !== '' &&
-      pwInput !== '' &&
-      phoneInput !== '' &&
-      nicknameInput !== '' &&
-      pwCheckInput !== '' &&
-      nameInput !== ''
+      idInput !== "" &&
+      pwInput !== "" &&
+      phoneInput !== "" &&
+      nicknameInput !== "" &&
+      pwCheckInput !== "" &&
+      nameInput !== ""
     ) {
       signup();
       alert("회원가입이 완료되었습니다.");
     } else if (verifyEmail == false) {
-      dispatch(setToastMsg('이메일 인증을 완료해주세요.'));
+      dispatch(setToastMsg("이메일 인증을 완료해주세요."));
     } else if (
       !idInput ||
       !pwInput ||
@@ -688,16 +710,16 @@ const SignUpPage = () => {
       !nameInput ||
       !isRequiredChecked ||
       !pwCheck ||
-      idInput === '' ||
-      pwInput === '' ||
-      phoneInput === '' ||
-      nicknameInput === '' ||
-      pwCheckInput === '' ||
-      nameInput === ''
+      idInput === "" ||
+      pwInput === "" ||
+      phoneInput === "" ||
+      nicknameInput === "" ||
+      pwCheckInput === "" ||
+      nameInput === ""
     ) {
-      dispatch(setToastMsg('필수항목을 채워주세요.'));
+      dispatch(setToastMsg("필수항목을 채워주세요."));
     } else {
-      dispatch(setToastMsg('회원가입 오류입니다. 관리자에게 문의해주세요.'));
+      dispatch(setToastMsg("회원가입 오류입니다. 관리자에게 문의해주세요."));
     }
   };
 
@@ -711,13 +733,13 @@ const SignUpPage = () => {
       setPwCheckShadowColor("");
       setTextPwCheckColor("black");
       setPwCheckText("");
-      setPwCheck(true)
+      setPwCheck(true);
     } else {
       setPwCheckInputColor("#f77");
       setPwCheckShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
       setTextPwCheckColor("#f77");
       setPwCheckText("비밀번호가 일치하지 않습니다.");
-      setPwCheck(false)
+      setPwCheck(false);
     }
   }, [pwInput, pwCheckInput]);
 
@@ -781,6 +803,38 @@ const SignUpPage = () => {
   //네이버 로그인
   const loginN = () => {
     window.location.href = NAVER_AUTH_URL;
+  };
+
+  //추천인 닉네임 확인
+  const CheckUser = async (e) => {
+    e.preventDefault();
+    let params;
+    params = {
+      user_nickname: referrerInput,
+    };
+    console.log(params);
+
+    let response = { data: 0 };
+    response = await referrerDB(params);
+    console.log(response.data);
+
+    const data = JSON.stringify(response.data);
+    console.log(data);
+    const jsonDoc = JSON.parse(data);
+
+    if (jsonDoc && referrerInput.length > 0) {
+      console.log(jsonDoc[0].USER_NICKNAME);
+      console.log(jsonDoc[0].USER_ID);
+      setReferrerId(jsonDoc[0].USER_ID);
+      setReferrerText("");
+      setReferrerInputColor("#4996f3");
+      setReferrerShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
+      dispatch(setToastMsg("일치하는 회원이 존재합니다."));
+    } else {
+      setReferrerShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+      setReferrerInputColor("#f77");
+      setReferrerText("존재하지 않는 회원입니다.");
+    }
   };
 
   return (
@@ -1104,7 +1158,10 @@ const SignUpPage = () => {
                 }}
               />
               <button>
-                <GoSearch className="search-icon" />
+                <GoSearch
+                  className="search-icon"
+                  onClick={(e) => CheckUser(e)}
+                />
               </button>
             </label>
             {referrertext !== "" && (
