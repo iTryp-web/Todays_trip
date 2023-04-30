@@ -67,6 +67,7 @@ public class MarketLogic {
 			// -> xml에서 forEach list로 받기에 해당 부분 처리가 필요함
 			result = marketDao.mImageUpdate(mImageNames(pMap));
 		}else {pMap.put("mImageNames","\\images\\market\\taj-mahal-g09f47c5ef_1280.jpg" );
+			//디폴트이미지 임의대로 넣어놓음-타지마할
 			result=marketDao.mImageUpdate(mImageNames(pMap));
 			
 		}

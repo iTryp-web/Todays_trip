@@ -15,6 +15,7 @@ import { database } from '../../service/firebase'
 import { off, onValue, ref, set} from 'firebase/database'
 import styled from 'styled-components';
 import { useEffect } from 'react';
+import { Input } from 'semantic-ui-react';
 
 const DateContainer=styled.div`/* 일정등록버튼 */
 .btnInsert{
@@ -34,12 +35,15 @@ const DateContainer=styled.div`/* 일정등록버튼 */
 
 const MarketWrite = () => {
   const navigate = useNavigate()
-  const [category] = useState(['투어', '한인택시', '숙소', '렌트카'])
+  const [category] = useState(['패키지','투어', '한인택시', '숙소', '렌트카'])
   const [selected, setSelected] = useState('투어')
   const[title, setTitle]= useState('');
   const[content, setContent]= useState('');
   const[files, setFiles]= useState([]);
   const quillRef = useRef();
+
+  const [price,setPrice]=useState(0)
+
   /* 실시간 데이터 베이스 */
   const [show, setShow]=useState(false)//모달창초기값
   const handleClose=()=>setShow(false)//모달창닫기
@@ -117,6 +121,17 @@ const MarketWrite = () => {
          return()=>off(startCountRef)
        })
      },[])
+
+     //화면에 입력받은 가격정보 담기
+  const handlePriceForm=(e)=>{
+      const { name, value } = e.target;
+      
+        if (name === 'price') {
+          setPrice(value);
+        } else {
+         
+        }
+      }
   
   const handleCategory = useCallback((e) => {
     setSelected(e);
@@ -137,37 +152,24 @@ const MarketWrite = () => {
       setFiles([...files, value]); // 깊은복사
   },[files]);
 
-  const marketInsert = async() => {
-    console.log('marketInsert');
-    console.log(files)
-    const market = {
-      user_id: sessionStorage.getItem('user_id'),
-      market_category: selected,
-      market_title: title,
-      market_content: content,
-      imageNames: files
-    }
-    const res = await marketInsertDB(market)
-    console.log(res.data)
-    navigate('/market/all')
-  }
-  /* INSERT INTO TB_MARKET
-		           (market_no
-	             			,user_id
-							 ,market_category  
-							 ,market_title     
-							 ,market_content  
-							 ,market_price    
-							 ,market_date 
-		            )
-		    VALUES (TB_MARKET_NO_SEQ.NEXTVAL
-	            , #{user_id}
-	            , #{market_category}
-	            , #{market_title}
-	            , #{market_content}
-	            , #{market_price}
-	            , TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
-		          ) */
+
+      const marketInsert = async() => {
+        console.log('marketInsert');
+        console.log(files)
+        const market = {
+          // user_id: sessionStorage.getItem('user_id'),
+          user_id: 'admin',
+          market_category: selected,
+          market_title: title,
+          market_content: content,
+          market_price:price,
+          imageNames: files
+        }
+        const res = await marketInsertDB(market)
+        console.log(res.data)
+        alert('글쓰기 성공!');
+        navigate('/market/write')
+      }
 
   return (
     <>
@@ -225,6 +227,12 @@ const MarketWrite = () => {
     {/* ========================== [[ 일정등록 Modal ]] ========================== */}    
    
     <WriteSection>
+        <Form.Group className="mb-3 row" controlId="boardWriter">
+            <Form.Label className="col-sm-2 col-form-label">가격</Form.Label>
+            <div className='col-sm-10'>
+            <Form.Control type="number" name="price" onChange={handlePriceForm} className='form-control form-control-sm' placeholder="Enter 인당가격" />
+            </div>
+          </Form.Group>
         <Row>
           <DropdownButton className='categoryDropdown' variant="" title={selected}>
             {category.map((item, index)=>(
@@ -250,8 +258,6 @@ const MarketWrite = () => {
         </Row>
         <MQuillEditor value={content} handleContent={handleContent} quillRef={quillRef} files={files} handleFiles={handleFiles}/>
         </WriteSection>
-
-        
 
     <Footer />
     </>

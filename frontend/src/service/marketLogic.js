@@ -51,27 +51,6 @@ export const marketInsertDB = (market) => {
     }
   });
 };
-// 마켓글 이미지 추가-mImageInsert
-export const uploadImageDB = (file) => {
-  console.log(file);
-  return new Promise((resolve, reject) => {
-    try {
-      const response = axios({
-        method: "post",
-        url: process.env.REACT_APP_SPRING_IP + "market/mUploadImage",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        processData: false,
-        contentType: false,
-        data: file, // 스프링 부트와 연동시 @RequestBody 사용
-      });
-      resolve(response);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
 
 /* 판매글 수정 */
 export const marketUpdateDB = (market) => {
@@ -97,7 +76,7 @@ export const mUploadImageDB = (file) => {
     try {
       const response = axios({
         method: "post",
-        url: process.env.REACT_APP_SPRING_IP + "market/uploadImage",
+        url: process.env.REACT_APP_SPRING_IP + "market/mUploadImage",
         headers: {
           "Content-Type": "multipart/form-data",
         },
