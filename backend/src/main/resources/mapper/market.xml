@@ -126,8 +126,12 @@
 								(file_no
 							 , market_no
 							 , file_name
+		    			  <if test="file_url != null and file_url.length() != 0">
 		    			 , file_url
+		    			 </if>
+							 <if test="file_size != null and file_size > 0">
 		    			 , file_size
+		    			 </if>
 		    			 )
 		    VALUES (TB_M_FILE_NO_SEQ.NEXTVAL
 				    	 , #{market_no}
@@ -383,7 +387,7 @@
 		WHERE q.user_id = u.user_id
 		and q.market_no=#{market_no}
 		and q.qna_step=0 
-		
+		<!-- 
 		<if test='search != null and search.equals("작성자")'>
 			AND u.user_nickname LIKE '%'||#{keyword}||'%'
 		</if>
@@ -393,7 +397,7 @@
 		<if test='search != null and search.equals("내용")'>
 			AND q.qna_content LIKE '%'||#{keyword}||'%'
 		</if>
-		ORDER BY q.qna_no ASC
+		ORDER BY q.qna_no ASC -->
 	</select>
 	
 </mapper>

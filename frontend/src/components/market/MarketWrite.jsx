@@ -40,14 +40,15 @@ const MarketWrite = () => {
   const[content, setContent]= useState('');
   const[files, setFiles]= useState([]);
   const quillRef = useRef();
+  /* 실시간 데이터 베이스 */
   const [show, setShow]=useState(false)//모달창초기값
   const handleClose=()=>setShow(false)//모달창닫기
   const handleShow=()=>setShow(true)//모달창보여주기
     //사용자로부터 입력받은 값-상태훅으로 관리하기
-    const [m_no,setM_no]=useState(0)//식별자
-    const [m_count,setM_count]=useState(0)//가능한갯수
-    const [m_start,setM_start]=useState('')
-    const [m_end, setM_end]=useState('')
+    const [s_no,setM_no]=useState(0)//식별자
+    const [buy_no,setM_count]=useState(0)//가능한갯수
+    const [start_date,setM_start]=useState('')
+    const [finish_date, setM_end]=useState('')
   const [fdata, setFdata]=useState({
     m_no:0,//마켓넘버
     m_count:'',//예약가능 티켓수
@@ -94,16 +95,15 @@ const MarketWrite = () => {
       event.preventDefault()
     
       const fdata={
-        m_no:0,//마켓넘버
-        m_count:'',//예약가능 티켓수
-        m_start:'',//시작날짜
-        m_end:'',//끝날짜
-        m_start:m_start,
-        m_end:m_end
+        s_no:0,//일정넘버
+        market_no:0,//마켓넘버
+        buy_no:'',//예약가능 티켓수
+        start_date:start_date,//시작날짜
+        finish_date:finish_date,//끝날짜
       }
       console.log(fdata);
       //파이어베이스 실시간 디비넣기
-     set(ref(database,'market/'+fdata.m_no), fdata);
+     set(ref(database,'market/'+fdata.market_no), fdata);
       handleClose()
     }
 
@@ -148,9 +148,26 @@ const MarketWrite = () => {
       imageNames: files
     }
     const res = await marketInsertDB(market)
-    console.log(res)
-    navigate('/market')
+    console.log(res.data)
+    navigate('/market/all')
   }
+  /* INSERT INTO TB_MARKET
+		           (market_no
+	             			,user_id
+							 ,market_category  
+							 ,market_title     
+							 ,market_content  
+							 ,market_price    
+							 ,market_date 
+		            )
+		    VALUES (TB_MARKET_NO_SEQ.NEXTVAL
+	            , #{user_id}
+	            , #{market_category}
+	            , #{market_title}
+	            , #{market_content}
+	            , #{market_price}
+	            , TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
+		          ) */
 
   return (
     <>
@@ -169,28 +186,28 @@ const MarketWrite = () => {
         <Modal.Body>
         <Form id="f_memo">         
           <Form.Group className="mb-3 row" controlId="mTitle">
-            <Form.Label className="col-sm-2 col-form-label">일정명</Form.Label>
+            <Form.Label className="col-sm-2 col-form-label">일정번호</Form.Label>
             <div className='col-sm-10'>
-            <Form.Control className='form-control form-control-sm' type="text" name="m_title" onChange={handleChangeForm} placeholder="Enter 일정명" />
+            <Form.Control className='form-control form-control-sm' type="number" name="scheduleNo" onChange={handleChangeForm} placeholder="Enter 일정번호" />
             </div>
           </Form.Group>
           <Form.Group className="mb-3 row" controlId="boardWriter">
             <Form.Label className="col-sm-2 col-form-label">가능수량</Form.Label>
             <div className='col-sm-10'>
-            <Form.Control type="text" name="m_writer" onChange={handleChangeForm} className='form-control form-control-sm' placeholder="Enter 가능수량" />
+            <Form.Control type="number" name="buyNo" onChange={handleChangeForm} className='form-control form-control-sm' placeholder="Enter 가능수량" />
             </div>
           </Form.Group>
           <Form.Group className="mb-3 row" controlId="edit-start">
             <Form.Label className="col-sm-2 col-form-label">일정시작</Form.Label>
             <div className='col-sm-10'>
-            <Datetime dateFormat='YYYY-MM-DD' isValiDate={valid} name="m_start" onChange={handleStart}/>
+            <Datetime dateFormat='YYYY-MM-DD' isValiDate={valid} name="startDate" onChange={handleStart}/>
             </div>
           </Form.Group>
           <Form.Group className="mb-3 row" controlId="edit-end">
             <Form.Label className="col-sm-2 col-form-label">일정끝</Form.Label>
             <div className='col-sm-10'>
               {/* 페이지 이동 처리? onChange로 하려고 datetime 씀? 이종간이다...*/}
-            <Datetime dateFormat='YYYY-MM-DD' isValiDate={valid}  name="m_end" onChange={handleEnd}/>
+            <Datetime dateFormat='YYYY-MM-DD' isValiDate={valid}  name="finishDate" onChange={handleEnd}/>
             </div>
           </Form.Group>
          
@@ -205,7 +222,7 @@ const MarketWrite = () => {
           </Button>
         </Modal.Footer>
       </Modal>     
-    {/* ========================== [[ 글등록 Modal ]] ========================== */}    
+    {/* ========================== [[ 일정등록 Modal ]] ========================== */}    
    
     <WriteSection>
         <Row>
