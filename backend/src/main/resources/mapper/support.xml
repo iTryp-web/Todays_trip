@@ -86,12 +86,14 @@
 		, q.qna_step
 		, u.user_nickname
 		, q.qna_title
-		, q.qna_sort
+		,
+		q.qna_sort
 		,
 		q.qna_content
 		, q.qna_date
 		FROM TB_QNA q, TB_USER u
-		WHERE q.user_id =
+		WHERE
+		q.user_id =
 		u.user_id
 		<if test='search != null and search.equals("작성자")'>
 			AND u.user_nickname LIKE '%'||#{keyword}||'%'
@@ -173,39 +175,26 @@
 		WHERE qna_no = #{qna_no}
 	</delete>
 
-	<!-- 1대1 문의 글 상세조회 -->
-	<select id="inquiryDetail" parameterType="map" resultType="map">
-		SELECT
-		nf.nf_no
-		, nf.board_category
-		, nf.board_title
-		, b.board_content
-		,
-		b.board_date
-		, b.board_hit
-		, b.type_board
-		FROM TB_NOTICES_FAQ nf
-		, TB_USER
-		u
-		, (SELECT COUNT(user_Id)
-		like_count, like_group
-		FROM TB_LIKE
-		WHERE
-		like_type = 0
-		GROUP BY
-		like_group) l
-		, (SELECT COUNT(user_id)
-		comment_count, board_no
-		FROM
-		TB_B_COMMENT
-		GROUP BY board_no) c
-		WHERE
-		b.user_id = u.user_id
-		AND
-		b.board_no = l.like_group
-		AND b.board_no =
-		#{board_no};
-	</select>
+
+	<!-- 1대1 문의 글 수정 / step 업데이트 -->
+	<update id="inquiryUpdate" parameterType="map">
+		UPDATE TB_BOARD
+		<trim prefix="SET" prefixOverrides=",">
+			<if test="qna_step != null and qna_step.length() != 0">
+				, qna_step = #{qna_step}
+			</if>
+			<if test="qna_sort != null and qna_sort.length() != 0">
+				, qna_sort = #{qna_sort}
+			</if>
+			<if test="qna_title != null and qna_title.length() != 0">
+				, qna_title = #{qna_title}
+			</if>
+			<if test="qna_content != null and qna_content.length() != 0">
+				, qna_content = #{qna_content}
+			</if>
+		</trim>
+		WHERE qna_no = #{qna_no}
+	</update>
 
 	<!-- 1대1 문의 글 삭제 -->
 	<delete id="inquiryDelete" parameterType="map">
@@ -213,30 +202,4 @@
 		WHERE qna_no = #{qna_no}
 	</delete>
 
-	<!-- 판매자 등록 글 작성 -->
-	<insert id="sellerRegInsert" parameterType="map">
-		INSERT INTO TB_QNA(
-		qna_no,
-		user_id,
-		qna_title,
-		qna_content,
-		qna_sort,
-		qna_date
-		)
-		VALUES(
-		TB_QNA_NO_SEQ.NEXTVAL,
-		#{user_id},
-		#{qna_title},
-		#{qna_content},
-		#{qna_sort},
-		TO_CHAR(sysdate, 'YYYY-MM-DD
-		HH:MM:SS')
-		)
-	</insert>
-
-	<!-- 판매자 등록 글 삭제 -->
-	<delete id="sellerRegDelete" parameterType="map">
-		DELETE FROM TB_QNA
-		WHERE qna_no = #{qna_no}
-	</delete>
 </mapper>

@@ -190,14 +190,13 @@ public class SupportDao {
 	}	
 	
 	/**
-	 * 댓글 삭제
-	 * 
-	 * @param pMap
-	 * @return
 	 */
-	public int replyDelete(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int inquiryUpdate(Map<String, Object> pList) {
+		logger.info("imageUpdate 호출");
+		logger.info(pList);
+		int result = 0;
+		result = sqlSessionTemplate.update("imageUpdate", pList);
+		return result;
 	}
 
 

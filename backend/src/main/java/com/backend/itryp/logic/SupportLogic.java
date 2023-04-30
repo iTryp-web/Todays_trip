@@ -122,8 +122,6 @@ public class SupportLogic {
 		int result = 0;
 		result = supportDao.inquiryDelete(pMap);
 		pMap.put("delete_qna", 1);
-		int commentDelete = supportDao.replyDelete(pMap);
-		logger.info("댓글삭제 => " + commentDelete);
 		return result;
 	}
 
@@ -164,6 +162,19 @@ public class SupportLogic {
 		logger.info("sellerRegDelete 호출");
 		int result = 0;
 		result = supportDao.sellerRegDelete(pMap);
+		return result;
+	}
+
+	public int inquiryUpdate(Map<String, Object> pMap) {
+		logger.info("inquiryUpdate 호출");
+		int qna_no = -1;
+		if(pMap.get("qna_no") != null) {
+			qna_no = Integer.parseInt(pMap.get("qna_no").toString());
+			pMap.put("qna_no", qna_no);
+		}
+		int result = 0;
+		result = supportDao.inquiryUpdate(pMap);
+		// Quill image가 있을 경우
 		return result;
 	}
 

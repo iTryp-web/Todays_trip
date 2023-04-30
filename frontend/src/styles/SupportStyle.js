@@ -424,3 +424,7 @@ export const AnswerComplete = styled.span`
   font-weight: 600;
   padding-right: 10px;
 `
+
+export const InquiryAnswerButton = styled.button`
+  
+`

@@ -14,6 +14,7 @@ import {
 import { BsDot } from "react-icons/bs";
 import { inquiryInsertDB } from "../../service/supportLogic";
 import QCheckbox from "./QCheckbox";
+import InquiryRow from "./InquiryRow";
 
 const InquiryWriteForm = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const InquiryWriteForm = () => {
   }, []);
 
   const handleProtected = useCallback((event) => {
-    setIsProtected(event.target.checked); 
+    setIsProtected(event.target.checked);
   }, []);
 
   const handleFiles = useCallback(
@@ -48,17 +49,16 @@ const InquiryWriteForm = () => {
   const inquiryInsert = async () => {
     console.log("inquiryInsert");
     console.log(files);
-    const board = {
+    const inquiry = {
       // user_id: sessionStorage.getItem("user_id"),
-      user_id: sessionStorage.getItem("test1"),
+      user_id: "user",
       qna_title: title,
       qna_content: content,
       qna_step: 0,
       qna_sort: isProtected ? 4 : 2, // isProtected의 값을 기준으로 qna_sort를 설정합니다
-      qna_step: 0,
       imageNames: files,
     };
-    const res = await inquiryInsertDB(board);
+    const res = await inquiryInsertDB(inquiry);
     console.log(res.data);
     navigate("/support/inquiryBoard");
   };
@@ -88,8 +88,8 @@ const InquiryWriteForm = () => {
               handleTitle(e.target.value);
             }}
           />
-            <div className="inqInnerDiv">
-              <InqCheckDiv>
+          <div className="inqInnerDiv">
+            <InqCheckDiv>
               <label>
                 <input
                   type="checkbox"
@@ -116,6 +116,7 @@ const InquiryWriteForm = () => {
           files={files}
           handleFiles={handleFiles}
         />
+        <InquiryRow inquiryInsert={inquiryInsert}/>
       </InquirySection>
       <Footer />
     </>

@@ -139,6 +139,27 @@ public class SupportController {
 		logger.info(result);
 		return String.valueOf(result);
 	}
+	
+	/**
+	 * 커뮤니티 글 수정(조회수 갱신 board_hit:1)
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("inquiryUpdate")
+	public String inquiryUpdate(@RequestBody Map<String, Object> pMap) {
+		logger.info("inquiryUpdate 호출");
+		logger.info(pMap);
+		if(pMap.get("qna_no") != null) {
+			// NumberFormatException 방어코드(값에 null이 들어가지 않도록!)
+			int qna_no = Integer.parseInt(pMap.get("qna_no").toString());
+			pMap.put("qna_no", qna_no);
+		}
+		int result = 0;
+		result = supportLogic.inquiryUpdate(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
 
 	/**
 	 * 1대1문의 상세조회
