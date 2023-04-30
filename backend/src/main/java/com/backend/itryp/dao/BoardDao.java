@@ -196,7 +196,7 @@ public class BoardDao {
 		result = sqlSessionTemplate.update("replyDelete", pMap);
 		return result;
 	}
-
+	
 	/**
 	 * 신고 - 글:0 / 댓글:1 / 마켓글:2 / 리뷰:3(마켓에서 처리)
 	 * 

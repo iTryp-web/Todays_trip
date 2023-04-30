@@ -39,7 +39,7 @@
 			FROM TB_ORDER) order_count
          ,(SELECT count(qna_no)
 			FROM TB_QNA
-			WHERE qna_sort = 2 or qna_sort = 4) inquiry_count
+			WHERE (qna_sort = 2 or qna_sort = 4)) inquiry_count
 		FROM TB_MARKET m
 			, (SELECT COUNT(user_Id) qna_count, market_no
 			    FROM TB_QNA
@@ -69,7 +69,7 @@
             FROM TB_REPORT
             WHERE report_result = 0) report_new
 		  FROM TB_REPORT r, TB_USER u
-		  WHERE r.report_user = u.user_nickname
+		  WHERE r.report_user = u.user_id
 		  <if test='report_type != null and report_type == 4'>
 		  	AND r.report_type = 4
 		  </if>

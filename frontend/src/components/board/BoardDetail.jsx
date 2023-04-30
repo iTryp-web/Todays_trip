@@ -57,14 +57,14 @@ const BoardDetail = () => {
   /* db에서 상세보기 정보 가져오기 */
   useEffect(() => {
     const boardDetail = async() => {
-      let tempNick = ''
-      if(userNickname != null) {
-        tempNick = window.sessionStorage.getItem('user_nickname')
+      let tempId = ''
+      if(userId != null) {
+        tempId = window.sessionStorage.getItem('user_id')
       }
       const board = {
         board_no: bno,
         board_update: '상세보기',
-        user_nickname: tempNick
+        user_id: tempId
       }
       const res = await boardDetailDB(board)
       console.log(res.data)
@@ -76,6 +76,7 @@ const BoardDetail = () => {
         for(let i=1; i<jsonDoc[0].COMMENT_COUNT+1; i++) {
           const obj = {
             user_nickname: jsonDoc[i].USER_NICKNAME,
+            user_id: jsonDoc[i].USER_ID,
             comment_no: jsonDoc[i].COMMENT_NO,
             comment_step: jsonDoc[i].COMMENT_STEP,
             comment_content: jsonDoc[i].COMMENT_CONTENT,
@@ -93,6 +94,7 @@ const BoardDetail = () => {
       setDetailPost({
         board_no: jsonDoc[0].BOARD_NO,
         user_nickname: jsonDoc[0].USER_NICKNAME,
+        user_id: jsonDoc[0].USER_ID,
         board_category: jsonDoc[0].BOARD_CATEGORY,
         board_title: jsonDoc[0].BOARD_TITLE,
         board_content: jsonDoc[0].BOARD_CONTENT,
@@ -404,8 +406,8 @@ const BoardDetail = () => {
   const onClickBtnUser = () => {
     setIsClickBtnUser(!isClickBtnUser)
   }
-  const reportUser = (userNickname) => {
-    console.log('reportUser=> ' + userNickname);
+  const reportUser = (uId) => {
+    console.log('reportUser=> ' + uId);
     setIsUserReport(true)
     setIsClickBtnUser(false)
   }
@@ -446,14 +448,14 @@ const BoardDetail = () => {
                   <img className='userImg' src={profileImg[Math.floor(((new Date(detailPost.board_date).getSeconds())%10))]} alt="" />
                 </UserImg>
                 <UserWrap>
-                  <Username isUser={!userNickname || userNickname === detailPost.user_nickname ? false : true}
+                  <Username isUser={!userId || userId === detailPost.user_id ? false : true}
                     onClick={() => {
                       onClickBtnUser()
                     }}
                   >{detailPost.user_nickname}</Username>
-                  {isClickBtnUser && userNickname && userNickname !== detailPost.user_nickname ? (
+                  {isClickBtnUser && userId && userId !== detailPost.user_id ? (
                     <ModalUserDiv className='user'>
-                    <ModalUl onClick={() => reportUser(detailPost.user_nickname)}>신고하기</ModalUl>
+                    <ModalUl onClick={() => reportUser(detailPost.user_id)}>신고하기</ModalUl>
                     </ModalUserDiv>
                     ) : (
                     null
@@ -469,7 +471,7 @@ const BoardDetail = () => {
                         onChange={(e)=>{handleReportPost(e.target.value)}}>
                       </ReportText>
                       {/* type, group, step, 신고대상 */}
-                      <BtnReport onClick={() => report(4, -1, 0, detailPost.user_nickname)}>신고하기</BtnReport>
+                      <BtnReport onClick={() => report(4, -1, 0, detailPost.user_id)}>신고하기</BtnReport>
                     </ModalUserReport>
                     ) : null}
                   <User>
@@ -477,7 +479,7 @@ const BoardDetail = () => {
                     {detailPost.board_hit}
                   </User>
                 </UserWrap>
-                    {userNickname && (
+                    {userId && (
                   <BtnDot
                     onClick={() => {
                       onClickBtnDot();
@@ -487,7 +489,7 @@ const BoardDetail = () => {
                   </BtnDot>
                 )}
                 {is_ClickBtnDot ? (
-                  userNickname === detailPost.user_nickname ? (
+                  userId === detailPost.user_id ? (
                   <ModalDiv>
                       <ModalUl onClick={editPost}>수정하기</ModalUl>
                       <ModalUl onClick={deletePost}>삭제하기</ModalUl>
@@ -508,7 +510,7 @@ const BoardDetail = () => {
                         onChange={(e)=>{handleReportPost(e.target.value)}}>
                       </ReportText>
                       {/* type, group, step, 신고대상 */}
-                      <BtnReport onClick={() => report(0, -1, 0, detailPost.user_nickname)}>신고하기</BtnReport>
+                      <BtnReport onClick={() => report(0, -1, 0, detailPost.user_id)}>신고하기</BtnReport>
                     </ModalReport>
                     ) : null}
               </Profile>
@@ -524,7 +526,7 @@ const BoardDetail = () => {
               </section>
               <CountDiv>
                 <Like>
-                  {userNickname ? (
+                  {userId ? (
                     isLiked ? (
                     <lord-icon
                     onClick={() => {
@@ -629,15 +631,15 @@ const BoardDetail = () => {
                     </InputDiv>
                     ) : (
                     <CommentDiv>
-                      <CommentUser isCommentUser={!userNickname || userNickname === item.user_nickname ? false : true}
+                      <CommentUser isCommentUser={!userId || userId === item.user_id ? false : true}
                         onClick={() => {
                           onClickBtnCommentUser(item.comment_no, item.comment_step)
                         }}>
                       {item.user_nickname}
                     </CommentUser>
-                    {userNickname && commentUser.cno === item.comment_no && commentUser.cstep === item.comment_step && userNickname !== item.user_nickname ? (
+                    {userId && commentUser.cno === item.comment_no && commentUser.cstep === item.comment_step && userId !== item.user_id ? (
                     <ModalCommentUserDiv cstep={item.comment_step}>
-                    <ModalUl onClick={() => reportCommentUser(item.comment_no, item.comment_step, item.user_nickname)}>신고하기</ModalUl>
+                    <ModalUl onClick={() => reportCommentUser(item.comment_no, item.comment_step, item.user_id)}>신고하기</ModalUl>
                     </ModalCommentUserDiv>
                     ) : (
                     null
@@ -653,7 +655,7 @@ const BoardDetail = () => {
                         onChange={(e)=>{handleReportPost(e.target.value)}}>
                       </ReportText>
                       {/* type, group, step, 신고대상 */}
-                      <BtnReport onClick={() => report(4, item.comment_no, item.comment_step, item.user_nickname)}>신고하기</BtnReport>
+                      <BtnReport onClick={() => report(4, item.comment_no, item.comment_step, item.user_id)}>신고하기</BtnReport>
                     </ModalCommentUserReport>
                     ) : null}
 
@@ -673,7 +675,7 @@ const BoardDetail = () => {
                       {item.comment_status === 0 || item.comment_status === 3 ? (
                         <CommentLike iconColor={commentColor(item.comment_no, item.comment_step)}>
                           {/* <AiFillLike className='like-icon' /> */}
-                          {userNickname ? (
+                          {userId ? (
                             commentColor(item.comment_no, item.comment_step) ? (
                               <lord-icon
                                 onClick={() => {
@@ -741,7 +743,7 @@ const BoardDetail = () => {
                     </CommentDiv>
 
                     )}
-                    {userNickname  && (item.comment_status === 0 || item.comment_status === 3) ?(
+                    {userId  && (item.comment_status === 0 || item.comment_status === 3) ?(
                       <BtnDotComment
                         onClick={() => {
                           onClickCommentDot(item.comment_no, item.comment_step);
@@ -751,7 +753,7 @@ const BoardDetail = () => {
                       </BtnDotComment>
                     ) : null}
                   {commentDot.cno === item.comment_no && commentDot.cstep === item.comment_step ? (
-                    userNickname === item.user_nickname ? (
+                    userId === item.user_id ? (
                     <CommentModal>
                       <CommentModalUl onClick={() => 
                         {editComment(item.comment_no, item.comment_step)}}>
@@ -782,7 +784,7 @@ const BoardDetail = () => {
                         onChange={(e)=>{handleReportPost(e.target.value)}}>
                       </ReportText>
                       {/* type, group, step, 신고대상 */}
-                      <BtnReport onClick={() => report(1, item.comment_no, item.comment_step, item.user_nickname)}>신고하기</BtnReport>
+                      <BtnReport onClick={() => report(1, item.comment_no, item.comment_step, item.user_id)}>신고하기</BtnReport>
                     </ModalReport>
                     ) : null}
                   </CommentBox>

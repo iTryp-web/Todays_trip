@@ -128,15 +128,15 @@
 			    FROM TB_MARKET m, TB_M_FILE f
 			    WHERE m.market_no = f.market_no
 			    AND f.file_step = 1) f
-			 , (SELECT d.market_no, COUNT(r.user_id) r_count
-				FROM TB_M_REVIEW r, TB_ORDER_DETAIL d
-				WHERE r.market_no(+) = d.market_no
-				GROUP BY d.market_no) r
+			 , (SELECT d.order_no, COUNT(r.user_id) r_count
+                FROM TB_M_REVIEW r, TB_ORDER_DETAIL d
+                WHERE r.market_no(+) = d.market_no
+                GROUP BY d.order_no) r
 		WHERE o.order_no = c.order_no
 		AND o.order_no = c.order_no
 		AND o.order_no = d.order_no
 		AND d.market_no = f.market_no
-		AND r.market_no = d.market_no
+		AND r.order_no = o.order_no
 		AND o.user_id = #{user_id}
 		ORDER BY o.order_date DESC
 	</select>

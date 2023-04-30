@@ -76,12 +76,15 @@ const AdminLayout = () => {
         console.log(market_count);
         console.log(report_count);
         console.log(resign_count);
+        console.log(order_count);
         console.log(userBan_count);
         console.log(boardBan_count);
         console.log(commentBan_count);
+        console.log(inquiry_count);
         if(market_count > 0) {
           // 마켓문의 db 담기 - 새로운문의 qna_new
           const list1 = []
+          console.log(market_count);
           for(let i=0; i<market_count; i++) {
             const obj = {
               market_no: jsonDoc[i].MARKET_NO,
@@ -103,6 +106,8 @@ const AdminLayout = () => {
         if(report_count > 0) {
           // 신고 db 담기 - 새로운 신고 report_new
           const list2 = []
+          console.log(market_count);
+          console.log(market_count + report_count);
           for(let i=market_count; i<(market_count + report_count); i++) {
             const obj = {
               report_no: jsonDoc[i].REPORT_NO,
@@ -125,6 +130,8 @@ const AdminLayout = () => {
         if(resign_count > 0) {
           // 탈퇴신청 db 담기 - 새로운 탈퇴신청 resign_new
           const list3 = []
+          console.log(market_count + report_count);
+          console.log(market_count + report_count + resign_count);
           for(let i=(market_count + report_count); i<(market_count + report_count + resign_count); i++) {
             const obj = {
               user_id: jsonDoc[i].USER_ID,
@@ -147,6 +154,8 @@ const AdminLayout = () => {
         if(market_count > 0) {
           // 주문 목록 db 담기
           const list31 = []
+          console.log(market_count + report_count + resign_count);
+          console.log(market_count + report_count + resign_count + order_count);
           for(let i=(market_count + report_count + resign_count); i<(market_count + report_count + resign_count + order_count); i++) {
             const obj = {
               order_no: jsonDoc[i].ORDER_NO,
@@ -164,6 +173,8 @@ const AdminLayout = () => {
         if(userBan_count > 0) {
           // 차단 목록 담기 - 유저
           const list4 = []
+          console.log(market_count + report_count + resign_count + order_count);
+          console.log(market_count + report_count + resign_count + order_count + userBan_count);
           for(let i=(market_count + report_count + resign_count + order_count);
           i<(market_count + report_count + resign_count + order_count + userBan_count); i++) {
             const obj = {
@@ -182,6 +193,8 @@ const AdminLayout = () => {
         if(boardBan_count > 0) {
           // 차단 목록 담기 - 글
           const list5 = []
+          console.log(market_count + report_count + resign_count + order_count + userBan_count);
+          console.log(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count);
           for(let i=(market_count + report_count + resign_count + order_count + userBan_count);
           i<(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count); i++) {
             const obj = {
@@ -200,6 +213,8 @@ const AdminLayout = () => {
         if(commentBan_count > 0) {
           // 차단 목록 담기 - 댓글
           const list6 = []
+          console.log(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count);
+          console.log(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count + commentBan_count);
           for(let i=(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count);
           i<(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count + commentBan_count); i++) {
             const obj = {
@@ -219,6 +234,8 @@ const AdminLayout = () => {
         if(inquiry_count > 0) {
           // 1:1문의 목록 담기
           const list7 = []
+          console.log(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count + commentBan_count);
+          console.log(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count + commentBan_count + inquiry_count);
           for(let i=(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count + commentBan_count);
           i<(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count + commentBan_count + inquiry_count); i++) {
             const obj = {
