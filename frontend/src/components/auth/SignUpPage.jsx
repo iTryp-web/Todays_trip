@@ -86,6 +86,8 @@ const SignUpPage = () => {
   const [nicknametext, setNicknameText] = useState("");
   const [referrertext, setReferrerText] = useState("");
   const [pwCheck, setPwCheck] = useState(false);
+  const [nickCheck, setNickCheck] = useState(false);
+  const [phoneCheck, setPhoneCheck] = useState(false);
 
   //이메일 input박스 얇은 테두리색깔
   const [emailInputColor, setEmailInputColor] = useState("lightgray");
@@ -160,7 +162,7 @@ const SignUpPage = () => {
       console.log("닉네임 중복확인");
       //이전닉네임값
       const prevNicknameInput = nicknameInputRef.current;
-      const nickNameRegex = /^\S+$/;
+      const nickNameRegex = /^(?!\s)[^\s]{2,15}$/;
       const validNickInput = nickNameRegex.test(nicknameInput);
       let params;
       params = { user_nickname: memInfo["nickname"], type: "overlap" };
@@ -183,15 +185,18 @@ const SignUpPage = () => {
           setNicknameInputColor("#f77");
           setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setTextNickNameColor("#f77");
+          setNickCheck(false);
         } else if (nicknameInput.length == 0) {
           setNicknameText("필수항목입니다.");
           setNicknameInputColor("#f77");
           setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setTextNickNameColor("#f77");
+          setNickCheck(false);
         } else if (!validNickInput) {
-          setNicknameText("빈칸을 포함 할 수 없습니다.");
+          setNicknameText("조건을 만족하지 않습니다.");
           setNicknameInputColor("#f77");
           setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
+          setNickCheck(false);
         }
         //닉네임 중복아니어서 사용가능할때
         else {
@@ -199,6 +204,7 @@ const SignUpPage = () => {
           setNicknameInputColor("#4996f3");
           setNicknameShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
           setTextNickNameColor("black");
+          setNickCheck(true);
         }
       }
       nicknameInputRef.current = nicknameInput;
@@ -315,6 +321,7 @@ const SignUpPage = () => {
       const data = JSON.stringify(response.data);
       console.log(data);
       const jsonDoc = JSON.parse(data);
+      console.log(phoneCheck);
 
       if (phoneInput !== null && prevPhoneInput !== null) {
         if (jsonDoc && phoneInput.length > 0 && phValidInput) {
@@ -323,21 +330,25 @@ const SignUpPage = () => {
           setPhoneInputColor("#f77");
           setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setTextPhoneColor("#f77");
+          setPhoneCheck(false);
         } else if (phoneInput.length == 0) {
           setPhoneText("필수항목입니다.");
           setPhoneInputColor("#f77");
           setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setTextPhoneColor("#f77");
+          setPhoneCheck(false);
         } else if (!phValidInput) {
           setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setPhoneInputColor("#f77");
           setTextPhoneColor("#f77");
           setPhoneText("형식이 올바르지 않습니다.");
+          setPhoneCheck(false);
         } else {
           setPhoneInputShadowColor("0 0 0 2px rgba(73,150,243,0.5)");
           setPhoneInputColor("#4996f3");
           setTextPhoneColor("black");
           setPhoneText("");
+          setPhoneCheck(true);
         }
       }
       phoneInputRef.current = phoneInput;
@@ -689,6 +700,8 @@ const SignUpPage = () => {
       isRequiredChecked == true &&
       verifyEmail == true &&
       pwCheck == true &&
+      nickCheck == true &&
+      phoneCheck == true &&
       idInput !== "" &&
       pwInput !== "" &&
       phoneInput !== "" &&
@@ -710,6 +723,8 @@ const SignUpPage = () => {
       !nameInput ||
       !isRequiredChecked ||
       !pwCheck ||
+      !phoneCheck ||
+      !nickCheck ||
       idInput === "" ||
       pwInput === "" ||
       phoneInput === "" ||

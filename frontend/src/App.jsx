@@ -27,6 +27,7 @@ import SNSSignUp from "./components/auth/SNSSignUp";
 import NaverLogin from "./components/auth/NaverLogin";
 import MyOrderList from "./components/mypage/MyOrderList";
 import MyOrderDetail from "./components/mypage/MyOrderDetail";
+import MyInfoEdit from "./components/mypage/MyInfoEdit";
 
 function App({ authLogic }) {
   return (
@@ -48,13 +49,22 @@ function App({ authLogic }) {
         <Route path="/payResult" exact={true} element={<PaymentResult />} />
 
         <Route path="/myPage/:category" element={<MyPagePage />} />
-        <Route path="/myPage/orderlist" exact={true} element={<MyOrderList />} />
-        <Route path="/myPage/orderdetail/:ono" element={<MyOrderDetail/>} />
+        <Route
+          path="/myPage/orderlist"
+          exact={true}
+          element={<MyOrderList />}
+        />
+        <Route path="/myPage/orderdetail/:ono" element={<MyOrderDetail />} />
+        <Route path="/myPage/editInfo" element={<MyInfoEdit />} />
 
         <Route path="/signup" exact={true} element={<SignUpPage />} />
         <Route path="/signin" exact={true} element={<SignInPage />} />
         <Route path="/findEmail" exact={true} element={<FindUserPage />} />
-        <Route path="/auth/snsSignUp" exact={true} element={<SNSSignUp authLogic={authLogic} />} />
+        <Route
+          path="/auth/snsSignUp"
+          exact={true}
+          element={<SNSSignUp authLogic={authLogic} />}
+        />
         <Route path="/auth/kakao" exact={true} element={<KakaoLogin />} />
         <Route path="/auth/naver" exact={true} element={<NaverLogin />} />
 
@@ -65,8 +75,16 @@ function App({ authLogic }) {
         <Route path="/market/detail/:mno" element={<MarketDetail />} />
 
         <Route path="/support/:category" exact={true} element={<FaqPage />} />
-        <Route path="/support/inquiryBoard" exact={true} element={<InquiryList />} />
-        <Route path="/support/write" exact={true} element={<InquiryWriteForm />} />
+        <Route
+          path="/support/inquiryBoard"
+          exact={true}
+          element={<InquiryList />}
+        />
+        <Route
+          path="/support/write"
+          exact={true}
+          element={<InquiryWriteForm />}
+        />
       </Routes>
     </>
   );

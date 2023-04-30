@@ -135,6 +135,7 @@
 				,user_address_detail = #{user_address_detail}
 			</if>
 		</trim>
+		 WHERE user_id = #{user_id}
 	</update>
 
 	<!-- 자체 회원 임시 비밀번호로 변경 -->

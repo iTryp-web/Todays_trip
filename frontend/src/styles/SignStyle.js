@@ -738,3 +738,119 @@ export const JoinButton = styled.button`
     }
   }
 `;
+
+
+//===================회원 정보 수정 CSS======================
+export const EditDiv = styled.section`
+  max-width: 1344px;
+  height: 1200px;
+  margin-top: 10px;
+  padding: 10rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6em;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+`;
+
+export const EditBlock = styled.form`
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  letter-spacing: -1px;
+  position: absolute;
+  top: 10%;
+  margin: auto;
+  @media screen and (max-width: 767px) {
+    top: 10%;
+  }
+  h4 {
+    font-weight: 700;
+  }
+  hr {
+    color: gray;
+  }
+  h6 {
+    margin-left: 0.5%;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+  }
+  overflow-x: hidden;
+`;
+
+export const EditEmailBlock = styled.div`
+  input {
+    margin-left: 2px;
+    width: 98%;
+    height: 38px;
+    font-size: 14px;
+    border: 1.5px solid lightgray;
+    border-radius: 5px;
+    outline: none;
+    padding-left: 15px;
+  }
+  span {
+    margin: auto;
+    color: lightgray;
+  }
+`;
+
+export const AddressBlock = styled.div`
+input {
+  margin-left: 2px;
+  width: 98%;
+  height: 38px;
+  font-size: 14px;
+  border: 1.5px solid lightgray;
+  border-radius: 5px;
+  outline: none;
+  padding-left: 15px;
+}
+span {
+  margin: auto;
+}
+`
+
+export const SearchBlock = styled.div`
+  label {
+    width: 98%;
+    position: relative;
+
+    input {
+      margin-left: 1%;
+      margin-right: 1%;
+      width: 98%;
+      height: 38px;
+      font-size: 14px;
+      color: gray;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      padding-left: 15px;
+      &:focus {
+        outline: none;
+      }
+    }
+    button {
+      position: absolute;
+      width: 10%;
+      top: 4.5px;
+      right: 13px;
+      font-size: 15px;
+      border-radius: 5px;
+      outline: none;
+      background-color: #4996f3;
+      border: 1px solid #4996f3;
+      color: white;
+      &:hover {
+        background-color: #537fe7;
+        border: 1px solid #537fe7;
+      }
+      .search-icon {
+        margin-bottom: 1px;
+        font-size: 20px;
+      }
+    }
+  }
+`;
