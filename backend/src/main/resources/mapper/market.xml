@@ -371,15 +371,19 @@
 	</delete>
 	<!-- qna문의 글 조회 search조건검색 -->
 	<select id="qnaList" parameterType="map" resultType="map">
-		SELECT q.qna_no
+		 SELECT q.qna_no
 		, u.user_id
 		, u.user_nickname
 		, q.market_no
 		, q.qna_title
 		, q.qna_content
 		, q.qna_date
+		, COUNT(*) OVER() AS qna_count
 		FROM TB_QNA q, TB_USER u
 		WHERE q.user_id = u.user_id
+		and q.market_no=#{market_no}
+		and q.qna_step=0 
+		
 		<if test='search != null and search.equals("작성자")'>
 			AND u.user_nickname LIKE '%'||#{keyword}||'%'
 		</if>

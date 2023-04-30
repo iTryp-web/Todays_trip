@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { BsArrowReturnRight, BsBookmarkStar, BsBookmarkStarFill, BsThreeDotsVertical } from 'react-icons/bs';
-import { RiQuestionAnswerFill, RiQuestionAnswerLine } from 'react-icons/ri';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { TbLetterA, TbLetterQ } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -15,16 +15,14 @@ import { qnaData } from './MarketData';
   margin: 10px;
   color: #4996F3;
 `
-const Arrow=styled.span`
-  // display :flex;
-`
+
 const QnaRow = ({qna}) => {
   const navigate=useNavigate();
   // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
   // 아이디, 닉네임 담을 변수
   const [userId] = useState(window.sessionStorage.getItem('user_id'))
-  // const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
-  const userNickname = '물음표살인마'
+  const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+
 
   /* qna Dot버튼 */
   const [is_ClickBtnDot, setClickBtnDot] = useState(null);
@@ -33,14 +31,15 @@ const QnaRow = ({qna}) => {
   };
 
   // qna글 삭제 버튼
-  const qnaDelete = async () => {
-    console.log('qnaDelete' + qna.qna_no);
-    const qna = {
-      qna_no: qna.qna_no,
+  const qnaDelete = async (mno, qno) => {
+    console.log('qnaDelete' + qno);
+    const market = {
+      qna_no: qno,
+      market_no:mno
     }
-    const res = await qnaDeleteDB(qna)
+    const res = await qnaDeleteDB(market)
     console.log('qnaDelete=> ' + res.data);
-    navigate('/market/detail')
+    navigate('/market/detail/'+mno)
   }
   
   /* 버튼이 열리고 닫히는 상태에 대한 useState 기본값 false */
@@ -51,9 +50,32 @@ const QnaRow = ({qna}) => {
     setIsOpen(!isOpen);
   };
 
-  return (
-    <div>
+  const [Dshow, setDShow]=useState(false)//삭제모달창초기값
+  const DhandleClose=()=>setDShow(false)//삭제모달창닫기
+  const handleShowDelete=()=>setDShow(true)//삭제모달창보여주기
 
+  return (
+    
+    <>
+      
+    {/* ========================== [[ 삭제하기 Modal ]] ========================== */}
+    <Modal show={Dshow} onHide={DhandleClose} animation={true}>
+        <Modal.Header closeButton>
+          
+        </Modal.Header>
+        <Modal.Body>
+        삭제하시겠습니까?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={DhandleClose}>
+            닫기
+          </Button>
+          <Button variant="primary" onClick={()=>{DhandleClose(); qnaDelete(qna.market_no, qna.qna_no);}}>
+            삭제하기
+          </Button>
+        </Modal.Footer>
+      </Modal>     
+    {/* ========================== [[ 삭제하기 Modal ]] =========================>*/}
       <PostLi>
       <PostContent>
         {qna.qna_step === 1 ? (
@@ -95,7 +117,7 @@ const QnaRow = ({qna}) => {
             {is_ClickBtnDot ? (
               userNickname === qna.user_nickname ? (
                 <ModalDiv>
-                  <ModalUl onClick={qnaDelete}>삭제하기</ModalUl>
+                  <ModalUl onClick={handleShowDelete}>삭제하기</ModalUl>
                 </ModalDiv>
               ) : null
             ) : null}
@@ -121,7 +143,7 @@ const QnaRow = ({qna}) => {
       
                 </PostFooter>
     </PostLi>
-    </div>
+    </>
   )
 }
 
