@@ -169,6 +169,9 @@ const MyInfoEdit = () => {
   //휴대전화번호 input handler
   const handlePhone = (e) => {
     const Phone = e.target.value;
+    if (Phone === "") {
+      setPhoneCheck(true);
+    }
     setPhoneInput(Phone);
   };
 
@@ -241,12 +244,12 @@ const MyInfoEdit = () => {
           setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setTextPhoneColor("#f77");
           setPhoneCheck(false);
-        } else if (phoneInput.length == 0) {
+        } else if (phoneInput.length === 0) {
           setPhoneText("");
           setPhoneInputColor("lightgray");
           setPhoneInputShadowColor("none");
           setTextPhoneColor("black");
-          setPhoneCheck(true);
+          setPhoneCheck(true); // Set phoneCheck to true if input is empty
         } else if (!phValidInput) {
           setPhoneInputShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setPhoneInputColor("#f77");
@@ -260,6 +263,8 @@ const MyInfoEdit = () => {
           setPhoneText("");
           setPhoneCheck(true);
         }
+      } else if (phoneInput === "") {
+        setPhoneCheck(true); // Set phoneCheck to true if input is empty at the initial state
       }
       phoneInputRef.current = phoneInput;
     };
@@ -297,7 +302,7 @@ const MyInfoEdit = () => {
           setNicknameShadowColor("0 0 0 2px rgba(255,119,119,0.5)");
           setTextNickNameColor("#f77");
           setNickCheck(false);
-        } else if (nicknameInput.length == 0) {
+        } else if (nicknameInput.length === 0) {
           setNicknameText("");
           setNicknameInputColor("lightgray");
           setNicknameShadowColor("none");
@@ -317,6 +322,8 @@ const MyInfoEdit = () => {
           setTextNickNameColor("black");
           setNickCheck(true);
         }
+      } else if (nicknameInput === "") {
+        setNickCheck(true);
       }
       nicknameInputRef.current = nicknameInput;
     };
