@@ -136,6 +136,23 @@ public class MarketLogic {
 		logger.info("reviewList 호출");
 		List<Map<String,Object>> mList = new ArrayList<>();
 		mList= marketDao.reviewList(pMap);
+		
+		/*
+		 * // 사용자가 좋아요 누른 리뷰 - 판별용 List<Map<String, Object>> RLikedList =
+		 * marketDao.RLikedList(pMap); if(RLikedList != null && RLikedList.size() > 0) {
+		 * mList.addAll(RLikedList); }
+		 */
+		
+		return mList;
+	}
+	/**
+	 * 사용자가 좋아요 누른 리뷰 - 판별용
+	 * 
+	 */
+	public List<Map<String, Object>> RLikedList(Map<String, Object> pMap) {
+		logger.info("RLikedList 호출");
+		List<Map<String,Object>> mList = new ArrayList<>();
+		mList= marketDao.RLikedList(pMap);
 		return mList;
 	}
 	

@@ -250,7 +250,7 @@
   	  	ORDER BY m.review_date DESC
   	  </if>
   	  <if test='sort != null and sort.equals("like")'>
-  	  	ORDER BY l.like_count DESC
+  	  	ORDER BY l.like_count ASC
   	  </if>
   	  <if test='sort != null and sort.equals("high")'>
   	  	ORDER BY m.review_star DESC
@@ -300,6 +300,18 @@
 		WHERE review_no = #{review_no}
 			AND market_no = #{market_no}
 	</delete>
+	
+	<!-- 사용자가 좋아요 리뷰 조회 - 판별용 -->
+	<select id="RLikedList" parameterType="map" resultType="map">
+		SELECT 
+		  	l.like_no
+	       , l.like_group
+	   FROM TB_USER u, TB_LIKE l
+	  WHERE u.user_id = l.user_id
+      AND u.user_nickname = #{user_nickname}
+	    AND l.like_type = 2
+	    AND l.like_no = 0
+	</select>
 	
 	<!--리뷰 좋아요 - 글:0 / 댓글:1 / 리뷰:2(마켓에서 처리) like_group은 리뷰넘버 like_no는 마켓글번호 -->
 	<insert id="reviewLike" parameterType="map">

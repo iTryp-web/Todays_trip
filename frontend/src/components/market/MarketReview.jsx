@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { reviewListDB } from '../../service/marketLogic';
 import {  ParentContainer, ReviewUI, RSelectBlock, SelectBlock, Star } from '../../styles/MarketStyle';
 import Pagination from '../include/Pagination';
-import { reviewData } from './MarketData';
+
 import ReviewRow from './ReviewRow';
 
 const MarketReview = ({mno}) => {
@@ -78,19 +78,17 @@ const MarketReview = ({mno}) => {
       }
       list.push(obj)
       starList.push(item.REVIEW_STAR);
-      console.log("별점리스트"+starList);
-      console.log(list);//여기까지 나옴
-      //리뷰테이블 로우 갯수 어캐가져오냐
-      setRcount(item.REVIEW_COUNT)
-      console.log("리뷰갯수 잘가져오나?=>"+rcount);
-      console.log("별점평균 :"+item.AVG_REVIEW_STAR);
-      setReviews(list)
-      setRstar(reviews.review_star)  
-      setAvgStar(reviews.avg_review_star)
     })
+    setReviews(list)
+    setRcount(datas[0].REVIEW_COUNT)
+    setRstar(datas[0].REVIEW_STAR)
+    setAvgStar(datas[0].AVG_REVIEW_STAR)
+    console.log(list);
+    console.log("리뷰갯수 =>"+rcount);
+    console.log("별점평균 :"+avgStar);
   }
   reviewList()
-},[mno, filter, rcount, avgStar])
+},[mno, filter, rcount])
 console.log(reviews);
 
 

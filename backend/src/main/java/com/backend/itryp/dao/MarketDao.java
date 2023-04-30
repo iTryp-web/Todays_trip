@@ -163,6 +163,19 @@ public class MarketDao {
 		return result;
 	}
 	/**
+	 * 사용자가 좋아요 누른 리뷰 - 판별용
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public List<Map<String, Object>> RLikedList(Map<String, Object> pMap) {
+		logger.info("RLikedList 호출");
+		logger.info(pMap);
+		List<Map<String,Object>> RLList = null;
+		RLList = sqlSessionTemplate.selectList("RLikedList", pMap);
+		return RLList;
+	}
+	/**
 	 * 리뷰 좋아요
 	 * 
 	 * @param pMap

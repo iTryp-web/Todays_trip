@@ -243,11 +243,29 @@ public class MarketController {
 		logger.info("reviewList 호출");
 		logger.info(pMap);
 		String temp = null;
-		List<Map<String, Object>> bList = null;
-		bList = marketLogic.reviewList(pMap);
-		logger.info(bList);
+		List<Map<String, Object>> mList = null;
+		mList = marketLogic.reviewList(pMap);
+		logger.info(mList);
 		Gson g = new Gson();
-		temp = g.toJson(bList);		
+		temp = g.toJson(mList);		
+		return temp;
+	}
+	/**
+	 * 리뷰좋아요 판별
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@GetMapping("RLikedList")
+	public String RLikedList(@RequestParam Map<String, Object> pMap) {
+		logger.info("RLikedList 호출");
+		logger.info(pMap);
+		String temp = null;
+		List<Map<String, Object>> mList = null;
+		mList = marketLogic.RLikedList(pMap);
+		logger.info(mList);
+		Gson g = new Gson();
+		temp = g.toJson(mList);		
 		return temp;
 	}
 	

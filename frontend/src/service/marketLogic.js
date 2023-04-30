@@ -140,6 +140,23 @@ export const reviewInsertDB = (market) => {
   });
 };
 
+/* 리뷰수정 */
+export const reviewUpdateDB = (market) => {
+  console.log(market)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "market/reviewInsert",
+        data: market,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 /* 리뷰 삭제 */
 export const reviewDeleteDB = (market) => {
   console.log(market)
@@ -149,6 +166,22 @@ export const reviewDeleteDB = (market) => {
         method: "post",
         url: process.env.REACT_APP_SPRING_IP + "market/reviewDelete",
         data: market,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+/* 리뷰 좋아요 판별 */
+export const RLikedListDB = (market) => {
+  return new Promise((resolve, reject) => {
+    try {
+      // axios 비동기요청 처리(ajax - fetch[브라우저, 클라이언트사이드] - axios[NodeJS-오라클 서버연동, 서버사이드])
+      const response = axios({ // 3000번 서버에서 8000서버로 요청함 - 네트워크(다른서버-CORS이슈, 지연발생)
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "market/RLikedList",
+        params: market, // 스프링 부트와 연동시 @RequestParam 사용
       });
       resolve(response);
     } catch (error) {
