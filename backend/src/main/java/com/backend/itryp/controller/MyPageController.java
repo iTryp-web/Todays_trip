@@ -140,4 +140,21 @@ public class MyPageController {
 		temp = g.toJson(rmap);
 		return temp;
 	}
+	
+
+	/**
+	 * 리뷰 등록
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("reviewInsert")
+	public String myReviewInsert(@RequestBody Map<String, Object> pMap) {
+		log.info("myReviewInsert 호출");
+		log.info(pMap);
+		int result = 0;
+		result = mpLogic.myReviewInsert(pMap);
+		log.info(result);
+		return String.valueOf(result);
+	}
 }

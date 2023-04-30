@@ -14,6 +14,7 @@ import { Nav, Table } from "react-bootstrap";
 import Pagination from '../include/Pagination';
 import AdminBanList from './AdminBanList';
 import AdminOrderRow from './AdminOrderRow';
+import AdminInquiryRow from './AdminInquiryRow';
 
 const AdminLayout = () => {
   // 화면전환
@@ -44,6 +45,8 @@ const AdminLayout = () => {
   const [userBanList, setUserBanList] = useState([{}])
   const [boardBanList, setBoardBanList] = useState([{}])
   const [commentBanList, setCommentBanList] = useState([{}])
+  // 문의 목록 변수
+  const [inquiryList, setInquiryList] = useState([{}])
 
   /* 오버뷰 불러오기 - 새로운 업데이트 표시용 */
   useEffect(() => {
@@ -60,6 +63,7 @@ const AdminLayout = () => {
       let userBan_count = 0
       let boardBan_count = 0
       let commentBan_count = 0
+      let inquiry_count = 0
       if(jsonDoc.length > 0) {
         market_count = jsonDoc[0].MARKET_COUNT
         report_count = jsonDoc[0].REPORT_COUNT
@@ -68,6 +72,7 @@ const AdminLayout = () => {
         userBan_count = jsonDoc[0].USERBAN_COUNT
         boardBan_count = jsonDoc[0].BOARDBAN_COUNT
         commentBan_count = jsonDoc[0].COMMENTBAN_COUNT
+        inquiry_count = jsonDoc[0].INQUIRY_COUNT
         console.log(market_count);
         console.log(report_count);
         console.log(resign_count);
@@ -211,6 +216,24 @@ const AdminLayout = () => {
           }
           setCommentBanList(list6)
         }
+        if(inquiry_count > 0) {
+          // 1:1문의 목록 담기
+          const list7 = []
+          for(let i=(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count + commentBan_count);
+          i<(market_count + report_count + resign_count + order_count + userBan_count + boardBan_count + commentBan_count + inquiry_count); i++) {
+            const obj = {
+              qna_no: jsonDoc[i].QNA_NO,
+              qna_step: jsonDoc[i].QNA_STEP,
+              user_id: jsonDoc[i].USER_ID,
+              qna_title: jsonDoc[i].QNA_TITLE,
+              qna_date: jsonDoc[i].QNA_DATE,
+              inquiry_new: jsonDoc[i].INQUIRY_NEW,
+            }
+            console.log(obj)
+            list7.push(obj)
+          }
+          setInquiryList(list7)
+        }
       }
     }
     adminOverview()
@@ -275,6 +298,9 @@ const AdminLayout = () => {
                     {orderList.length > 0 && category.name === '주문' && orderList[0].order_new > 0 ? (
                       <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
                     ) : null}
+                    {inquiryList.length > 0 && category.name === '문의' && inquiryList[0].inquiry_new > 0 ? (
+                      <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
+                    ) : null}
                   </AdminCategoryLi>
                 );
               })}
@@ -301,9 +327,7 @@ const AdminLayout = () => {
                 return <AdminQnaRow key={qna.market_no} qna={qna} selectedMarket={selectedMarket} />
               })}
             </ul>
-          ) : (selected === '마켓' ? (
-            <NoneDiv>상품 목록이 없습니다.</NoneDiv>
-            ) : null)}
+          ) : null}
 
           {/* 주문 목록 */}
           {orderList.length > 0  && selected === '주문' ? (
@@ -337,9 +361,39 @@ const AdminLayout = () => {
               </tr>
               </Table>
             </ReportUl>
-          ) : (selected === '주문' ? (
-            <NoneDiv>주문 목록이 없습니다.</NoneDiv>
-            ) : null)}
+          ) : null}
+
+          {/* 문의 목록 */}
+          {inquiryList.length > 0  && selected === '문의' ? (
+            <ReportUl>
+              <Table>
+                <colgroup>
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "40%" }} />
+                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "15%" }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th className='reportTd'>번호</th>
+                    <th className='reportTd'>아이디</th>
+                    <th className='reportTd'>문의제목</th>
+                    <th className='reportTd'>문의날짜</th>
+                    <th className='reportTdLast'>문의상태</th>
+                  </tr>
+                </thead>
+              {inquiryList.slice(offset, offset + limit).map((inquiry) => {
+                return <AdminInquiryRow key={inquiry.qna_no} inquiry={inquiry} refresh={refresh} />
+              })}
+              <tr>
+                <td colSpan="5">
+              {inquiryList.length > limit ? (<Pagination total={inquiryList.length} limit={limit} page={page} setPage={setPage} />) : null}
+                </td>
+              </tr>
+              </Table>
+            </ReportUl>
+          ) : null}
 
           {/* 신고 목록 */}
           {reportList.length > 0  && selected === '신고' ? (
@@ -373,9 +427,7 @@ const AdminLayout = () => {
               </tr>
               </Table>
             </ReportUl>
-          ) : (selected === '신고' ? (
-            <NoneDiv>신고 목록이 없습니다.</NoneDiv>
-            ) : null)}
+          ) : null}
 
           {/* 차단 목록 */}
           {(userBanList.length > 0 || boardBanList.length > 0 || commentBanList.length > 0) && selected === '차단' ? (
@@ -426,9 +478,7 @@ const AdminLayout = () => {
             </tr>
             </Table>
             </ReportUl>
-          ) : (selected === '탈퇴' ? (
-            <NoneDiv>탈퇴 목록이 없습니다.</NoneDiv>
-            ) : null)}
+          ) : null}
         </AContentSection>
       </AdminSection>
     </>

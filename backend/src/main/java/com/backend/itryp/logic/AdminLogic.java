@@ -27,7 +27,7 @@ public class AdminLogic {
 	public List<Map<String, Object>> overview(Map<String, Object> pMap) {
 		logger.info("overview 호출");
 		List<Map<String,Object>> oList = new ArrayList<>();
-		// 새로운 문의
+		// 새로운 마켓 문의
 		List<Map<String,Object>> marketQnaList= adminDao.marketQnaList(pMap);
 		if(marketQnaList.size() > 0) {
 			oList.addAll(marketQnaList);			
@@ -59,6 +59,11 @@ public class AdminLogic {
 		List<Map<String,Object>> banCommentList = adminDao.banCommentList(pMap);
 		if(banCommentList.size() > 0) {
 			oList.addAll(banCommentList);			
+		}
+		// 새로운 문의
+		List<Map<String,Object>> adminInquiryList= adminDao.adminInquiryList(pMap);
+		if(adminInquiryList.size() > 0) {
+			oList.addAll(adminInquiryList);			
 		}
 		return oList;
 	}
@@ -187,5 +192,18 @@ public class AdminLogic {
 		List<Map<String,Object>> oList = new ArrayList<>();
 		oList = adminDao.orderDetail(pMap);
 		return oList;
+	}
+
+	/**
+	 * 주문 예약자 정보 수정
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int orderInfoUpdate(Map<String, Object> pMap) {
+		logger.info("orderInfoUpdate 호출");
+		int result = 0;
+		result = adminDao.orderInfoUpdate(pMap);
+		return result;
 	}
 }

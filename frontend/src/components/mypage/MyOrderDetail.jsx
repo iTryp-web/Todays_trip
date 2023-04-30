@@ -6,8 +6,8 @@ import { myOrderDetailDB } from '../../service/myPageLogic'
 import Header from '../include/Header'
 import Footer from '../include/Footer'
 import MyOrderDetailRow from './MyOrderDetailRow'
-import { OrderDetailSection, OrderDiv, OrderTotalSpan, OrderTotalDiv } from '../../styles/MypageStyle'
-import { LineHr, OrderListDiv, OrderCouponDiv, OrdererInfoDiv, OrdertyTitle, OrdertysTitle, OrderCalcDiv, OrdererTable, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderCouponTyDiv, OrdererTyContentTd } from '../../styles/OrderStyle'
+import { OrderDetailSection, OrderDiv, OrderTotalSpan, OrderTotalDiv, LineHr } from '../../styles/MypageStyle'
+import { OrderListDiv, OrderCouponDiv, OrdererInfoDiv, OrdertyTitle, OrdertysTitle, OrderCalcDiv, OrdererTable, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderCouponTyDiv, OrdererTyContentTd } from '../../styles/OrderStyle'
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 
@@ -26,6 +26,8 @@ const MyOrderDetail = () => {
   
   // 디테일 담을 변수
   const [orders, setOrders] = useState([{}])
+  // 새로고침용
+  const [start, setStart] = useState()
   
   // 정보 불러오기
   useEffect(() => {
@@ -34,6 +36,9 @@ const MyOrderDetail = () => {
       const detail = {
         order_no: ono,
         user_id: userId
+      }
+      if(userId == null) {
+        navigate('/')
       }
       const res = await myOrderDetailDB(detail)
       console.log(res.data);
@@ -51,6 +56,7 @@ const MyOrderDetail = () => {
             order_email: jsonDoc[i].ORDER_EMAIL,
             order_phone: jsonDoc[i].ORDER_PHONE,
             coupon_no: jsonDoc[i].COUPON_NO,
+            coupon_name: jsonDoc[i].COUPON_NAME,
             coupon_rate: jsonDoc[i].COUPON_RATE, // 쿠폰 할인율
             coupon_max: jsonDoc[i].COUPON_MAX, // 최대할인금액
             market_count: jsonDoc[i].MARKET_COUNT, // 상품수량
@@ -72,7 +78,7 @@ const MyOrderDetail = () => {
       }
     }
     orderDetail()
-  }, [ono])
+  }, [ono, start])
 
   // 페이지 이동
   const movePage = () => {
@@ -112,7 +118,7 @@ const MyOrderDetail = () => {
               </thead>
               <tbody>
                 {orders && orders.map((order) => (
-                  <MyOrderDetailRow key={order.detail_no} order={order} ono={ono} />
+                  <MyOrderDetailRow key={order.detail_no} order={order} setStart={setStart} />
                 ))}
               </tbody>
             </OrderTable>
@@ -130,11 +136,11 @@ const MyOrderDetail = () => {
             <OrderCouponTyDiv>
               <OrdertysTitle>쿠폰 할인</OrdertysTitle>
               <div style={{fontSize:'14px'}}>
-                {orders[0].coupon_no ? (
+                {orders[0].coupon_no && orders[0].coupon_name ? (
                   orders[0].order_total > orders[0].coupon_max ? (
-                    orders[0].coupon_max.toLocaleString('ko-KR') + '원'
+                    orders[0].coupon_name +' ' + orders[0].coupon_max.toLocaleString('ko-KR') + '원'
                   ) : (
-                    (orders[0].order_total/orders[0].coupon_rate).toLocaleString('ko-KR') + '원'
+                    (orders[0].coupon_name +' ' + orders[0].order_total/orders[0].coupon_rate).toLocaleString('ko-KR') + '원'
                   )
                 ) : (
                   '0원'

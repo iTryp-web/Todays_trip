@@ -35,7 +35,7 @@ const ToastDiv = styled.div`
   text-align: center;
   //font-weight: bold;
   font-size: 18px;
-  z-index: 99;
+  z-index: 999;
   background: rgba(0, 0, 0, 0.7);
   color: #ffffff;
   border-radius: 4px;

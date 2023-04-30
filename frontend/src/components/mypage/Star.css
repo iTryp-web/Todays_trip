@@ -1,0 +1,32 @@
+.star__rate{
+  background: url('/public/images/star/star-empty.png');
+  width: 32px;
+  height: 31px;
+  background-size: 100%;
+  display: inline-block;
+  vertical-align: -7px;
+  margin:0 2px;
+  cursor: pointer;
+}
+
+.star__rate.is-selected{
+  background: url('/public/images/star/star-full.png');
+  width: 32px;
+  height: 31px;
+  background-size: 100%;
+  display: inline-block;
+  vertical-align: -7px;
+  margin:0 2px;
+  cursor: pointer;
+}
+
+.star__rate.is-half-selected{
+  background: url('/public/images/star/star-half.png');
+  width: 32px;
+  height: 31px;
+  background-size: 100%;
+  display: inline-block;
+  vertical-align: -7px;
+  margin:0 2px;
+  cursor: pointer;
+}

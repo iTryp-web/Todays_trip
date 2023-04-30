@@ -106,13 +106,22 @@ public class MyPageLogic {
 	 */
 	public List<Map<String, Object>> myOrderDetail(Map<String, Object> pmap) {
 		log.info("myOrderDetail 호출");
-//		if(pmap.get("order_no") != null) {
-//			int order_no = Integer.parseInt(pmap.get("order_no").toString());
-//			pmap.put("order_no", order_no);
-//		}
 		List<Map<String, Object>> rList = new ArrayList<>();
 		rList = mpDao.myOrderDetail(pmap);
 		return rList;
+	}
+
+	/**
+	 * 리뷰 등록
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int myReviewInsert(Map<String, Object> pMap) {
+		log.info("myReviewInsert 호출");
+		int result = 0;
+		result = mpDao.myReviewInsert(pMap);
+		return result;
 	}
 
 }

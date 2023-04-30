@@ -5,10 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import AdminLayout from "../admin/AdminLayout";
-import { AdminH3, AdminHeader } from "../../styles/AdminStyle";
-import { useDispatch, useSelector } from "react-redux";
-import { setToastMsg } from "../../redux/toastStatus/action";
-import Toast from "../include/Toast";
+import { Body, Main } from "../../styles/FooterStyle";
 
 const AdminPage = () => {
   const navigate = useNavigate();

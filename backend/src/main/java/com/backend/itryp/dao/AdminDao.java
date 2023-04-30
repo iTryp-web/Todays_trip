@@ -259,7 +259,7 @@ public class AdminDao {
 	public int orderUpdate(Map<String, Object> pMap) {
 		logger.info("orderUpdate 호출");
 		int result = 0;
-		result = sqlSessionTemplate.update("orderUpdate", pMap);
+		result = sqlSessionTemplate.update("adminOrderUpdate", pMap);
 		return result;
 	}
 
@@ -272,7 +272,28 @@ public class AdminDao {
 	public List<Map<String, Object>> orderDetail(Map<String, Object> pMap) {
 		logger.info("orderDetail 호출");
 		logger.info(pMap);
-		List<Map<String,Object>> bList = sqlSessionTemplate.selectList("orderDetail", pMap);
+		List<Map<String,Object>> bList = sqlSessionTemplate.selectList("adminOrderDetail", pMap);
+		return bList;
+	}
+
+	/**
+	 * 주문 예약자 정보 수정
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int orderInfoUpdate(Map<String, Object> pMap) {
+		logger.info("orderInfoUpdate 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("adminOrderInfoUpdate", pMap);
+		return result;
+	}
+
+	// 새로운 문의
+	public List<Map<String, Object>> adminInquiryList(Map<String, Object> pMap) {
+		logger.info("adminInquiryList 호출");
+		List<Map<String,Object>> bList = null;
+		bList = sqlSessionTemplate.selectList("adminInquiryList", pMap);
 		return bList;
 	}
 }

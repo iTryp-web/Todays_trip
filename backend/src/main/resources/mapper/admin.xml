@@ -14,7 +14,7 @@
 		     , (SELECT COUNT(qna_no) qna_new
 		        FROM TB_QNA
 		        WHERE qna_step = 0
-		        AND qna_sort = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
 		        ) qna_new
 				 , NVL((SELECT SUM(market_count)
             FROM TB_ORDER_DETAIL
@@ -36,7 +36,10 @@
             FROM TB_QNA
             WHERE qna_sort = 3) resign_count
          , (SELECT COUNT(order_no)
-						FROM TB_ORDER) order_count
+			FROM TB_ORDER) order_count
+         ,(SELECT count(qna_no)
+			FROM TB_QNA
+			WHERE qna_sort = 2 or qna_sort = 4) inquiry_count
 		FROM TB_MARKET m
 			, (SELECT COUNT(user_Id) qna_count, market_no
 			    FROM TB_QNA
@@ -256,29 +259,84 @@
 	</select>
 	
 	<!-- 주문 상태 수정 예약0, 취소1, 판매2 -->
-	<update id="orderUpdate">
+	<update id="adminOrderUpdate">
 		UPDATE TB_ORDER
 		SET order_status = #{order_status}
 		WHERE order_no = #{order_no}
 		AND user_id = #{user_id}
 	</update>
 	
-		<!-- 주문 상세보기 출력 !!수정필요!! -->
-	<select id="orderDetail" parameterType="map" resultType="map">
+		<!-- 주문 상세보기 출력 -->
+	<select id="adminOrderDetail" parameterType="map" resultType="map">
 		SELECT d.detail_no
-		     , d.market_no
-		     , m.market_category
-		     , m.market_title
-		     , d.market_count
-		     , d.order_amount
-		     , o.order_payment
-		     , o.order_date
-		     , p.pay_method
-		     , o.order_status
-		FROM TB_ORDER o, TB_ORDER_DETAIL d, TB_MARKET m, TB_PAY p
-		WHERE o.order_no = d.order_no
-		AND m.market_no = d.market_no
-		AND p.order_no = d.order_no
+             , m.market_no
+             , m.market_title
+             , o.user_id
+             , o.order_name
+             , o.order_email
+             , o.order_phone
+             , o.coupon_no
+             , o.order_total
+             , c.coupon_name
+             , c.coupon_rate
+             , c.coupon_max
+             , d.market_count
+             , d.order_amount
+             , d.market_order_date
+             , p.pay_method
+             , p.pay_date
+             , p.pay_total
+             , f.file_url
+             , r_count
+         FROM TB_MARKET m
+            , TB_ORDER o
+            , TB_ORDER_DETAIL d
+            , TB_U_COUPON c
+            , TB_PAY p
+            , TB_M_FILE f
+            , (SELECT d.market_no, COUNT(r.user_id) r_count
+                FROM TB_M_REVIEW r, TB_ORDER_DETAIL d
+                WHERE r.market_no(+) = d.market_no
+                GROUP BY d.market_no) r
+        WHERE m.market_no = d.market_no
+        AND o.order_no = d.order_no
+        AND c.coupon_no(+) = o.coupon_no
+        AND p.order_no = o.order_no
+        AND f.market_no = m.market_no
+        AND r.market_no = d.market_no
 		AND o.order_no = #{order_no}
+	</select>
+	
+	<!-- 주문 예약자 정보 수정 -->
+	<update id="adminOrderInfoUpdate">
+		UPDATE TB_ORDER
+		<trim prefix="SET" prefixOverrides=",">
+		<if test="order_name != null and order_name.length() != 0">
+			  order_name = #{order_name}
+		</if>
+		<if test="order_phone != null and order_phone.length() != 0">
+			, order_phone = #{order_phone}
+		</if>
+		<if test="order_email != null and order_email.length() != 0">
+			, order_email = #{order_email}
+		</if>
+		</trim>
+		WHERE order_no = #{order_no}
+	</update>
+	
+	<!-- 새로운 1:1 문의 -->
+	<select id="adminInquiryList" parameterType="map" resultType="map">
+		SELECT qna_no
+			 , qna_step
+			 , user_id
+			 , qna_title
+			 , qna_date
+			 , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
+		FROM TB_QNA
+		WHERE (qna_sort = 2 or qna_sort = 4)
+		ORDER BY qna_date DESC
 	</select>
 </mapper>

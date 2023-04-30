@@ -109,4 +109,17 @@ public class MyPageDao {
 		rList = sst.selectList("myOrderDetail", pmap);
 		return rList;
 	}
+
+	/**
+	 * 리뷰 등록
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int myReviewInsert(Map<String, Object> pMap) {
+		log.info("myReviewInsert 호출");
+		int result = 0;
+		result = sst.update("myReviewInsert", pMap);
+		return result;
+	}
 }

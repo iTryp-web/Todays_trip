@@ -118,3 +118,20 @@ export const myOrderDetailDB = (detail) => {
     }
   });
 };
+
+/* 리뷰 등록 */
+export const myReviewDB = (review) => {
+  console.log(review);
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "mypage/reviewInsert",
+        data: review,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

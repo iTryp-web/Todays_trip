@@ -11,6 +11,11 @@ export const adminCategories = [
     img: '/images/admin/order.png'
   },
   {
+    name: '문의',
+    category: 'inquiry',
+    img: '/images/admin/inquiry.png'
+  },
+  {
     name: '신고',
     category: 'report',
     img: '/images/admin/report.png'

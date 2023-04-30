@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 /* 어드민 섹션 전체 */
 export const AdminSection = styled.section`
   max-width: 1344px;
-  min-height: 500px;
+  min-height: 650px;
   height: 100%;
   padding: 0 4rem;
   display: flex;
@@ -224,9 +224,18 @@ export const ReportUl = styled.ul`
     border-radius: 5px;
   }
   .reportTdLast {
+    font-size: 15px;
     background-color: #DBEAFD;
     border-radius: 5px;
     }
+  .reportTdPlus {
+    font-size: 15px;
+    font-weight: 700;
+    border-right: 2px solid white;
+    border-radius: 5px;
+    padding: 13px 5px;
+    cursor: pointer;
+  }
 `
 
   export const ReportTr = styled.tr`
@@ -255,7 +264,6 @@ export const ReportUl = styled.ul`
   }
 `
 
-
 export const ReportRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -278,3 +286,104 @@ export const ReportRow = styled.div`
     cursor: pointer;
   }
 `;
+
+/* AdminOrderDetail */
+export const OrdererInfoDiv = styled.div`
+  position: relative;
+  margin-bottom: 5%;
+  width: 100%;
+`;
+
+export const BtnEdit = styled.div`
+  position: absolute;
+  top: -5px;
+  right: 5px;
+  width: 85px;
+  height: 35px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4996F3;
+  color: white;
+  font-size: 14px;
+  font-weight: 600; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`
+
+export const EditModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+`
+
+export const ModalBody = styled.div`
+  position: absolute;
+  width: 300px;
+  height: 400px;
+  padding: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  font-size: 18px;
+  font-weight: 600;
+  .x-icon {
+    font-size: 30px;
+    color: #464646;
+    display: flex;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  div{
+    margin-top: -40px;
+  }
+`
+
+export const EditP = styled.p`
+  margin-bottom: 7px;
+  margin-top: 20px;
+  font-size: 15px;
+`
+
+export const EditInput = styled.input`
+  border: 1px solid #979797;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 15px;
+  padding: 3px;
+  :focus {
+    outline: none;
+  }
+`
+
+export const BtnEditDB = styled.div`
+  width: 90px;
+  height: 35px;
+  padding: 6px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-size: 14px;
+  font-weight: 600; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 35%;
+  bottom: 33px;
+  background-color: #4996F3;
+  cursor: pointer;
+`

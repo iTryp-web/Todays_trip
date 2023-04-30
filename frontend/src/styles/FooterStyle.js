@@ -5,6 +5,7 @@ export const FooterComponent = styled.footer`
   border-top: 1px solid #e1e1e1;
   color: #737373;
   margin-top: 100px;
+  transform: translatY(-100%);
   }
 `;
 

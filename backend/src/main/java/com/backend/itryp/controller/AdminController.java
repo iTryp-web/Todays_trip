@@ -160,4 +160,20 @@ public class AdminController {
 		temp = g.toJson(bList);
 		return temp;
 	}
+	
+	/**
+	 * 주문 예약자 정보 수정
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("orderInfoUpdate")
+	public String orderInfoUpdate(@RequestBody Map<String, Object> pMap) {
+		logger.info("orderInfoUpdate 호출");
+		logger.info(pMap);
+		int result = 0;
+		result = adminLogic.orderInfoUpdate(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
 }

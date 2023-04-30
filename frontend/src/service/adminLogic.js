@@ -99,3 +99,20 @@ export const adminOrderDetailDB = (detail) => {
     }
   });
 };
+
+/* 어드민 주문 예약자정보 수정 */
+export const adminOrderInfoEditDB = (editInfo) => {
+  console.log(editInfo)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "admin/orderInfoUpdate",
+        data: editInfo,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

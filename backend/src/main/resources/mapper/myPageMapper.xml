@@ -141,6 +141,7 @@
 		ORDER BY o.order_date DESC
 	</select>
 	
+	<!-- 주문 상세보기 -->
 	<select id="myOrderDetail" parameterType="map" resultType="map">
 		SELECT d.detail_no
              , m.market_no
@@ -151,6 +152,7 @@
              , o.order_phone
              , o.coupon_no
              , o.order_total
+             , c.coupon_name
              , c.coupon_rate
              , c.coupon_max
              , d.market_count
@@ -180,4 +182,23 @@
 		AND o.user_id = #{user_id}
 		AND o.order_no = #{order_no}
 	</select>
+	
+	<!-- 리뷰 등록 -->
+	<insert id="myReviewInsert" parameterType="map">
+		INSERT INTO TB_M_REVIEW
+		         (review_no
+		        , market_no
+		        , user_id
+		        , review_star
+		        , review_content
+		        , review_date
+		        )
+		VALUES (TB_M_REVIEW_NO_SEQ.NEXTVAL
+			    , #{market_no}
+			    , #{user_id}
+			    , #{review_star}
+			    , #{review_content}
+			    , TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
+				)
+	</insert>
 </mapper>
