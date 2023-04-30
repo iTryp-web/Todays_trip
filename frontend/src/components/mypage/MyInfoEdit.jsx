@@ -380,6 +380,7 @@ const MyInfoEdit = () => {
     }).open();
   };
 
+  const ssg = sessionStorage;
   //회원정보 수정 완료
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -403,6 +404,7 @@ const MyInfoEdit = () => {
       } else {
         const response = await memberUpdateDB(datas);
         console.log(response);
+        ssg.setItem("user_nickname", memInfo.nickname);
         if (response.data !== 1) {
           return "DB 오류: 관리자에게 연락바랍니다.";
         }
