@@ -61,16 +61,16 @@ public class MarketLogic {
 		result = marketDao.marketInsert(pMap);
 		pMap.put("market_no", result);
 		// Quill image가 있을 경우
-		if(pMap.get("mImageNames") != null) {
+		if(pMap.get("imageNames") != null) {
 			// 작성자가 선택한 이미지의 개수가 n개까지 올 수 있다
 			// -> 이미지 개수만큼, 3개에대한 업데이트가 n번 일어나야한다
 			// -> xml에서 forEach list로 받기에 해당 부분 처리가 필요함
-			result = marketDao.mImageUpdate(mImageNames(pMap));
-		}else {pMap.put("mImageNames","\\images\\market\\taj-mahal-g09f47c5ef_1280.jpg" );
-			//디폴트이미지 임의대로 넣어놓음-타지마할
-			result=marketDao.mImageUpdate(mImageNames(pMap));
-			
+			result = marketDao.mImageUpdate(imageNames(pMap));
 		}
+		pMap.put("file_url", "https://d2ur7st6jjikze.cloudfront.net/offer_photos/120370/671507_large_1661269680.jpg?1661269680");
+		pMap.put("file_step", 1);
+		int insertImage = marketDao.mImageInsert(pMap);
+		logger.info(insertImage);
 		return result;
 	}
 	
@@ -85,11 +85,11 @@ public class MarketLogic {
 		result = marketDao.marketUpdate(pMap);
 		//이미지수정
 		// Quill image가 있을 경우
-				if(pMap.get("mImageNames") != null) {
+				if(pMap.get("imageNames") != null) {
 					// 작성자가 선택한 이미지의 개수가 n개까지 올 수 있다
 					// -> 이미지 개수만큼, 3개에대한 업데이트가 n번 일어나야한다
 					// -> xml에서 forEach list로 받기에 해당 부분 처리가 필요함
-					result = marketDao.mImageUpdate(mImageNames(pMap));
+					result = marketDao.mImageUpdate(imageNames(pMap));
 				}
 		return result;
 	}
@@ -310,12 +310,12 @@ public class MarketLogic {
 	 * @param pMap
 	 * @return
 	 */
-	private List<Map<String, Object>> mImageNames(Map<String, Object> pMap) {
+	private List<Map<String, Object>> imageNames(Map<String, Object> pMap) {
 		logger.info("mImageNames");
 		List<Map<String, Object>> pList = new ArrayList<>();
 		// pMap.get("imageNames") 리턴형태는 배열 - ["man1.png", "man2.png"]
 		HashMap<String, Object> fMap = null;
-		String[] imageNames = pMap.get("mImageNames").toString().substring(1, pMap.get("mImageNames").toString().length()-1).split(",");
+		String[] imageNames = pMap.get("imageNames").toString().substring(1, pMap.get("imageNames").toString().length()-1).split(",");
 		for(int i=0; i<imageNames.length; i++) {
 			fMap = new HashMap<>();
 			fMap.put("file_name", imageNames[i]);

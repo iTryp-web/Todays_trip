@@ -89,6 +89,7 @@ const MarketQna = ({mno}) => {
         qna_no: item.QNA_NO,
         user_nickname: item.USER_NICKNAME,
         market_no:item.MARKET_NO,
+        qna_step:item.QNA_STEP,
         qna_title: item.QNA_TITLE,
         qna_content: item.QNA_CONTENT,
         qna_date  : item.QNA_DATE,
@@ -175,12 +176,11 @@ console.log(qnas);
          <ul>{qnas&&//데이터가 한건도 없는 경우를 고려
               qnas.slice(offset, offset + limit).map((qna)=>(
                 <QnaRow key={qna.qna_no} qna={qna}/>
-              ))
-                }
+              ))}
           </ul>
 
         
-        <Pagination total={qnaData.length} limit={limit} page={page} setPage={setPage} />
+        <Pagination total={qnas.length} limit={limit} page={page} setPage={setPage} />
       </ReviewUI>
     </>
   )

@@ -8,7 +8,7 @@ import { FontContent, Like, ModalDiv, ModalUl, } from '../../styles/BoardStyle';
 import { PostContent, PostLi, Star, PostFooter, BtnDot} from '../../styles/MarketStyle';
 
 
-const ReviewRow = ({review}) => {
+const ReviewRow = ({review, start, setStart}) => {
   const navigate=useNavigate();
   console.log(review);
 
@@ -17,6 +17,9 @@ const ReviewRow = ({review}) => {
   const [userId] = useState(window.sessionStorage.getItem('user_id'))
   const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
 
+   // 해시값으로 글번호 가져오기
+  const {mno} = useParams()
+  console.log("mno => " + mno);
 
   /* 리뷰 Dot버튼 */
   const [is_ClickBtnDot, setClickBtnDot] = useState(false);
@@ -33,14 +36,16 @@ const ReviewRow = ({review}) => {
     }
     const res = await reviewDeleteDB(market)
     console.log('reviewDelete=> ' + res.data);
-    navigate('/market/detail'+mno)
+    setStart(new Date())
   }
   // 리뷰 수정 버튼
   // Form 컴포넌트에서 받아온 리뷰 내용과 별점을 market 객체에 추가
   const [reviewContent, setReviewContent] = useState('');
-  const [reviewStar, setReviewStar] = useState(0);
+  const [reviewStar, setReviewStar] = useState(0.0);
   const reviewUpdate = async(mno, rno) => {
-
+    console.log(reviewContent)
+    console.log(reviewStar)
+    console.log(rno)
     const market = {
       review_content: reviewContent,
       review_star: reviewStar,
@@ -49,19 +54,14 @@ const ReviewRow = ({review}) => {
 
     const res = await reviewUpdateDB(market);
     console.log('reviewUpdate => ' + res.data);
-    navigate('/market/detail/' + mno);
+    setClickBtnDot(false)
+    setStart(new Date())
   };
   // 리뷰 좋아요 변수
   const [liked, setLiked] = useState([{}])
 
   // 좋아요 판별 변수
   const [isLiked, setIsLiked] = useState(false)
-  //좋아요 때문에 돌겠네... 낼 정윤언니한테 물어보기...
-  const rcount=review.review_count
-  // let [rcount,setRcount]=useState(parseInt(review.review_count))
-  const mno=review.like_no
-  const rno=review.like_group
-
 
   /* 좋아요 버튼 */  
   const reviewLike = async(mno, rno) => {
@@ -73,6 +73,7 @@ const ReviewRow = ({review}) => {
     const res = await likeDB(market)
     console.log('reviewLike=> ' + res.data);
     setIsLiked(true)
+    setStart(new Date())
     // if (rcount) {
     //   setRcount(prevCount => prevCount + 1);
     // }
@@ -86,26 +87,22 @@ const ReviewRow = ({review}) => {
     const res = await dislikeDB(market)
     console.log('reviewDislike=> ' + res.data);
     setIsLiked(false)
-    const reviewDislike = async(mno, rno) => {
-      const market= {
-        user_id: userId,
-        like_group:rno
+    setStart(new Date())
+  }
+  // 리뷰 좋아요 색 판별
+  const likeColor = (mno, rno) => {
+    let judge = 0
+    console.log(liked)
+    {liked && liked.map((item) => {
+      if(item.like_no === mno && item.like_group === rno) {
+        judge++
       }
-      const res = await dislikeDB(market)
-      console.log('reviewDislike=> ' + res.data);
-      setIsLiked(false)
-      // if (rcount > 0) {
-      //   setRcount(prevCount => prevCount - 1)
-      // }
+    })}
+    // 리뷰 좋아요 누른 기록이 있을 경우
+    if(judge > 0) {
+      return "#4996F3"
     }
   }
-  // 좋아요 설정???????????????like_no=market_no, like_group=review_no
-  useEffect(() => {
-    {liked && liked.map((item) => (
-       item.like_no === mno && item.like_group === rno ?
-      setIsLiked(true) : setIsLiked(false)
-    ))}
-  }, [liked,setIsLiked, mno, rno])
 
   // 별점
   let star=review.review_star;
@@ -117,12 +114,9 @@ const ReviewRow = ({review}) => {
   
   useEffect(() => {
     const reviewRow = async () => {
-      let tempNick = ''
-      if(userNickname != null) {
-        tempNick = window.sessionStorage.getItem('user_nickname')
-      }
       const market = {
-        user_nickname:tempNick
+        user_id: userId,
+        like_no: mno,
       }
       const res = await RLikedListDB(market)
       console.log(res.data)
@@ -131,22 +125,22 @@ const ReviewRow = ({review}) => {
       // 유저 좋아요확인 db 담기
       const list = []
       if(jsonDoc.length > 0) {
-        for(let i=rcount+1; i<jsonDoc.length; i++) {
+        for(let i=0; i<jsonDoc.length; i++) {
           const obj = {
             like_no: jsonDoc[i].LIKE_NO,
             like_group: jsonDoc[i].LIKE_GROUP,
           }
           list.push(obj)
-          if(obj.like_no === mno && obj.like_group === rno) {
+     /*      if(obj.like_no === mno && obj.like_group === rno) {
             setIsLiked(true)
-          }
+          } */
         }
       }
       setLiked(list)
     }
   
     reviewRow();
-  }, [mno, rno,rcount, userNickname]);
+  }, [mno, userNickname, start]);
 
   const [Ushow, setUShow]=useState(false)//수정모달창초기값
   const [Dshow, setDShow]=useState(false)//삭제모달창초기값
@@ -180,11 +174,11 @@ const ReviewRow = ({review}) => {
             <Form.Label className="col-sm-2 col-form-label">별점</Form.Label>
             <div className='col-sm-10'>
               <Form.Control as="select" name="reviewStar" onChange={handleUpdateForm}>
-                <option value="5">★★★★★</option>
-                <option value="4">★★★★☆</option>
-                <option value="3">★★★☆☆</option>
-                <option value="2">★★☆☆☆</option>
-                <option value="1">★☆☆☆☆</option>
+                <option value="5.0">★★★★★</option>
+                <option value="4.0">★★★★☆</option>
+                <option value="3.0">★★★☆☆</option>
+                <option value="2.0">★★☆☆☆</option>
+                <option value="1.0">★☆☆☆☆</option>
               </Form.Control>
             </div>
           </Form.Group>
@@ -284,7 +278,7 @@ const ReviewRow = ({review}) => {
         <ul className="list-count">
 
                 <Like>
-                {isLiked ? (
+                {likeColor(review.market_no, review.review_no) ? (
                   <lord-icon
                   onClick={() => {
                     {

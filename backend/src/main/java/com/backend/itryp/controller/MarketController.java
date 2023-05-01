@@ -144,7 +144,7 @@ public class MarketController {
 	 * @param image
 	 * @return
 	 */
-	@PostMapping("mUploadImage")
+	@PostMapping("uploadImage")
 	public String uploadImage(@RequestParam(value = "image", required = false) MultipartFile image) {
 		logger.info("mImageUpload 호출");
 		String filename = marketLogic.mImageInsert(image);
@@ -158,7 +158,7 @@ public class MarketController {
 	 * @param res
 	 * @return
 	 */
-	@GetMapping("mGetImage")
+	@GetMapping("getImage")
 	public Object getImage(HttpServletRequest req, HttpServletResponse res) {
 		// imageName 정보는 공통코드로 제공된 QuillEditor.jsx에서 파라미터로 넘어오는 값임
 		// imageUpload 메소드에서는 업로드된 파일 정보(파일명, 파일크기)가 리턴됨

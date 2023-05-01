@@ -37,9 +37,6 @@ const MyOrderDetail = () => {
         order_no: ono,
         user_id: userId
       }
-      if(userId == null) {
-        navigate('/')
-      }
       const res = await myOrderDetailDB(detail)
       console.log(res.data);
       const temp = JSON.stringify(res.data)
@@ -73,8 +70,6 @@ const MyOrderDetail = () => {
           list.push(obj)
         }
         setOrders(list)
-      } else {
-        navigate('/')
       }
     }
     orderDetail()

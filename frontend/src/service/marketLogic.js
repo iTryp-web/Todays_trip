@@ -76,7 +76,7 @@ export const mUploadImageDB = (file) => {
     try {
       const response = axios({
         method: "post",
-        url: process.env.REACT_APP_SPRING_IP + "market/mUploadImage",
+        url: process.env.REACT_APP_SPRING_IP + "market/uploadImage",
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -148,7 +148,7 @@ export const reviewUpdateDB = (market) => {
     try {
       const response = axios({
         method: "post",
-        url: process.env.REACT_APP_SPRING_IP + "market/reviewInsert",
+        url: process.env.REACT_APP_SPRING_IP + "market/reviewUpdate",
         data: market,
       });
       resolve(response);

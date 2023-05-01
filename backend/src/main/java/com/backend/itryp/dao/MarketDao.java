@@ -58,6 +58,7 @@ public class MarketDao {
 	 */
 	public int mImageInsert(Map<String, Object> pMap) {
 		logger.info("mImageInsert 호출");
+		logger.info(pMap);
 		int result = 0;
 		result = sqlSessionTemplate.update("mImageInsert", pMap);
 		return result;
@@ -146,6 +147,7 @@ public class MarketDao {
 	 */
 	public int reviewUpdate(Map<String, Object> pMap) {
 		logger.info("reviewUpdate 호출");
+		logger.info(pMap);
 		int result = 0;
 		result = sqlSessionTemplate.update("reviewUpdate", pMap);
 		return result;

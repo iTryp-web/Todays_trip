@@ -14,6 +14,9 @@ const MarketReview = ({mno}) => {
   //마켓글의 리뷰갯수
   let [rcount,setRcount]=useState(0);
   
+  // 리프레쉬용 변수
+  const [start, setStart] = useState()
+
 /*
   //리뷰하나의 별점 
   const star=0;
@@ -88,7 +91,7 @@ const MarketReview = ({mno}) => {
     console.log("별점평균 :"+avgStar);
   }
   reviewList()
-},[mno, filter, rcount])
+},[mno, filter, rcount, start])
 console.log(reviews);
 
 
@@ -149,7 +152,7 @@ console.log(reviews);
        {/* 리뷰 리스트  */}
          <ul>{reviews&&//데이터가 한건도 없는 경우를 고려
               reviews.slice(offset, offset + limit).map((review)=>(
-                <ReviewRow key={review.review_no} review={review}/>
+                <ReviewRow key={review.review_no} review={review} start={start} setStart={setStart}/>
               ))
           }
           </ul>

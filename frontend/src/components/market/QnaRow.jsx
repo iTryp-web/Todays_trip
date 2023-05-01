@@ -17,6 +17,7 @@ import { qnaData } from './MarketData';
 `
 
 const QnaRow = ({qna}) => {
+  console.log(qna)
   const navigate=useNavigate();
   // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
   // 아이디, 닉네임 담을 변수
@@ -99,8 +100,7 @@ const QnaRow = ({qna}) => {
                   ) : (
                     null
                     )}
-            &nbsp;{qna.qna_no}
-            &nbsp;&nbsp;{qna.user_nickname}
+            &nbsp;{qna.user_nickname}
 
           </div>
           {/* titleP가 click되면 handleClick이 호출됨 */}

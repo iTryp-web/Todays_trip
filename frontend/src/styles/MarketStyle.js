@@ -496,6 +496,7 @@ export const PostLi = styled.li`
         color: #4996F3;
         font-size:20px;
         font-weight: 600;
+        margin-bottom: 4px;
       }
     
     }

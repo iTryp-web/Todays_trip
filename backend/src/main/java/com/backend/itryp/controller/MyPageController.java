@@ -120,6 +120,7 @@ public class MyPageController {
 		String temp = null;
 		List<Map<String,Object>> rmap = null;
 		rmap = mpLogic.myOrderList(pmap);
+		log.info(rmap);
 		Gson g = new Gson();
 		temp = g.toJson(rmap);
 		return temp;
