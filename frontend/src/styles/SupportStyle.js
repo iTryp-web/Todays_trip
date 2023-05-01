@@ -435,4 +435,10 @@ export const InqCheckDiv = styled.div`
   border:none;
   background-color: ;
   margin-top: 15px;
+  `
+  
+  export const UnresponsedInquiry = styled.span`
+  font-weight: 600;
+  padding-right: 10px;
+  color : red;
 `

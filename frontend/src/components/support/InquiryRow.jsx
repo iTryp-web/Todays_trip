@@ -5,6 +5,7 @@ import {
   AnswerComplete,
   AnswerInput,
   AnswerText,
+  UnresponsedInquiry,
 } from "../../styles/SupportStyle";
 import { TableCell, TableRow } from "@material-ui/core";
 import { AiFillLock } from "react-icons/ai";
@@ -121,10 +122,15 @@ const InquiryRow = ({ qna, qnaList, setStart }) => {
               <span
                 className="questionText"
                 onClick={() =>
-                  handleClick(qna.user_id, qna.qna_no, qna.qna_sort == 4 || qna.qna_sort == 3)
+                  handleClick(
+                    qna.user_id,
+                    qna.qna_no,
+                    qna.qna_sort == 4 || qna.qna_sort == 3
+                  )
                 }
                 style={{ cursor: "pointer" }}
               >
+                {qna.qna_step === 0 && sessionStorage.getItem("user_role") == 2 ? <UnresponsedInquiry>[미처리 문의]</UnresponsedInquiry>: ""}
                 {qna.qna_sort === 4 ? <AiFillLock /> : null}
                 {qna.qna_sort === 3 ? (
                   <AnswerComplete>[탈퇴]</AnswerComplete>
@@ -132,18 +138,28 @@ const InquiryRow = ({ qna, qnaList, setStart }) => {
                 {qna.qna_step === 2 ? (
                   <AnswerComplete>[답변완료]</AnswerComplete>
                 ) : null}
-                {qna.qna_sort === (3 || 4) ? "비밀 문의글입니다." : qna.qna_title}
+                {qna.qna_sort === 3 || qna.qna_sort === 4
+                  ? "비밀글입니다."
+                  : qna.qna_title}
               </span>
             </div>
           </TableCell>
-          <TableCell align="center">{sessionStorage.getItem("user_role")===2 ? (qna.user_id) : hideChars(qna.user_id)}</TableCell>
+          {/* <TableCell align="center">{sessionStorage.getItem("user_role")===2 ? (qna.user_id) : (qna.user_nickname)}</TableCell> */}
+          <TableCell align="center">
+            {qna.qna_sort == 4 || qna.qna_sort==3                                           
+              ? sessionStorage.getItem("user_role") ||
+                qna.qna_id === sessionStorage.getItem("user_id")
+                ? qna.user_nickname
+                : "익명"
+              : qna.user_nickname}
+          </TableCell>
           <TableCell align="center">{qna.qna_date}</TableCell>
         </TableRow>
       )}
 
       {qna.qna_step === 1 ? null : (
         <TableRow>
-          <TableCell  style={{padding: "7px"}} colSpan={4}>
+          <TableCell style={{ padding: "7px" }} colSpan={4}>
             <AnswerText className={isOpen[qna.qna_no] ? "show" : ""}>
               {/* isOpen이 true일 때 qna_content를 볼 수 있음(visible) */}
               <p

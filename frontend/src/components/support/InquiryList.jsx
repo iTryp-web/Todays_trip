@@ -30,7 +30,7 @@ const InquiryList = () => {
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
   const [start, setStart] = useState();
-
+  const userId = sessionStorage.getItem("user_id");
   useEffect(() => {
     const inquiryList = async () => {
       let inquiry = {};
@@ -45,6 +45,7 @@ const InquiryList = () => {
         .map((item) => ({
           qna_no: item.QNA_NO,
           user_id: item.USER_ID,
+          user_nickname: item.USER_NICKNAME,
           qna_step: item.QNA_STEP,
           qna_title: item.QNA_TITLE,
           qna_content: item.QNA_CONTENT,
@@ -66,13 +67,17 @@ const InquiryList = () => {
       <InquirySection>
         <InquiryHeader>
           <InquiryH3>Q&A</InquiryH3>
-          <WriteButton
-            onClick={() => {
-              navigate("/support/write");
-            }}
-          >
-            문의하기
-          </WriteButton>
+          {userId ? (
+            <WriteButton
+              onClick={() => {
+                navigate("/support/write");
+              }}
+            >
+              문의하기
+            </WriteButton>
+          ) : (
+            null
+          )}
         </InquiryHeader>
         <Table>
           <TableHead>

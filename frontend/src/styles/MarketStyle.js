@@ -607,3 +607,7 @@ export const Navblock=styled.div`
     padding: 0 0;
   }
 `
+
+export const UserCard=styled.div`
+
+`

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Header from "../include/Header";
 import Footer from "../include/Footer";
 import { Dropdown, DropdownButton } from "react-bootstrap";
@@ -24,6 +24,7 @@ const InquiryWriteForm = () => {
   const [files, setFiles] = useState([]);
   const [isProtected, setIsProtected] = useState(false);
   const quillRef = useRef();
+  const [userId] = useState(sessionStorage.getItem("user_id"))
 
   const handleCategory = useCallback((e) => {
     console.log(e);
@@ -67,6 +68,13 @@ const InquiryWriteForm = () => {
     console.log(res.data);
     navigate("/support/inquiryBoard");
   };
+
+    // 로그인안했으면 접근불가
+    useEffect(() => {
+      if(!userId) {
+        navigate('/')
+      }
+    }, [userId])
 
   return (
     <>
