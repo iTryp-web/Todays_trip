@@ -13,16 +13,22 @@ import {
 } from "../../styles/SupportStyle";
 import { BsDot } from "react-icons/bs";
 import { inquiryInsertDB } from "../../service/supportLogic";
-import QCheckbox from "./QCheckbox";
 import InquiryRow from "./InquiryRow";
 
 const InquiryWriteForm = () => {
+  const [category] = useState(["일반", "탈퇴"]);
+  const [selected, setSelected] = useState("일반");
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
   const [isProtected, setIsProtected] = useState(false);
   const quillRef = useRef();
+
+  const handleCategory = useCallback((e) => {
+    console.log(e);
+    setSelected(e);
+  }, []);
 
   const handleTitle = useCallback((e) => {
     console.log(e);
@@ -50,12 +56,11 @@ const InquiryWriteForm = () => {
     console.log("inquiryInsert");
     console.log(files);
     const inquiry = {
-      // user_id: sessionStorage.getItem("user_id"),
-      user_id: "user",
+      user_id: sessionStorage.getItem("user_id"),
       qna_title: title,
       qna_content: content,
       qna_step: 0,
-      qna_sort: isProtected ? 4 : 2, // isProtected의 값을 기준으로 qna_sort를 설정합니다
+      qna_sort: selected === "탈퇴" ? 3 : isProtected ? 4 : 2, // isProtected의 값을 기준으로 qna_sort를 설정합니다
       imageNames: files,
     };
     const res = await inquiryInsertDB(inquiry);
@@ -78,18 +83,37 @@ const InquiryWriteForm = () => {
           있습니다.
         </InquiryP>
         <InqDiv>
+          <div>
+            <DropdownButton
+              className="categoryDropdown"
+              variant=""
+              title={selected}
+            >
+              {category.map((item, index) => (
+                <Dropdown.Item
+                  as="button"
+                  key={index}
+                  onClick={() => {
+                    handleCategory(item);
+                  }}
+                >
+                  {item}
+                </Dropdown.Item>
+              ))}
+            </DropdownButton>
+          </div>
           <input
             type="text"
             id="inquiry_title"
             maxLength="60"
-            placeholder="문의 글 제목을 작성해주세요"
+            placeholder={selected === "탈퇴" ? "탈퇴 글 제목을 작성해주세요." :"문의 글 제목을 작성해주세요"}
             autoComplete="off"
             onChange={(e) => {
               handleTitle(e.target.value);
             }}
           />
           <div className="inqInnerDiv">
-            <InqCheckDiv>
+          {selected === "탈퇴" ? null : <InqCheckDiv>
               <label>
                 <input
                   type="checkbox"
@@ -98,7 +122,7 @@ const InquiryWriteForm = () => {
                 />
                 비밀글
               </label>
-            </InqCheckDiv>
+            </InqCheckDiv>}
             <button
               className="btnInsert"
               onClick={(e) => {
@@ -116,7 +140,6 @@ const InquiryWriteForm = () => {
           files={files}
           handleFiles={handleFiles}
         />
-        <InquiryRow inquiryInsert={inquiryInsert}/>
       </InquirySection>
       <Footer />
     </>

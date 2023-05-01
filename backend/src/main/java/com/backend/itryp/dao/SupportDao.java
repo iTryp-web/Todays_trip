@@ -105,6 +105,26 @@ public class SupportDao {
 		result = sqlSessionTemplate.update("inquiryInsert", pMap);
 		return result;
 	}
+	
+	/**
+	 * 1대1문의 글작성
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int answerInsert(Map<String, Object> pMap) {
+		logger.info("answerInsert 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("answerInsert", pMap);
+		return result;
+	}
+	
+	/**
+	 * 1대1문의 글 삭제
+	 * 
+	 * @param pMap
+	 * @return
+	 */
 	public int inquiryDelete(Map<String, Object> pMap) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -191,11 +211,11 @@ public class SupportDao {
 	
 	/**
 	 */
-	public int inquiryUpdate(Map<String, Object> pList) {
-		logger.info("imageUpdate 호출");
-		logger.info(pList);
+	public int inquiryUpdate(Map<String, Object> pMap) {
+		logger.info("inquiryUpdate 호출");
+		logger.info(pMap);
 		int result = 0;
-		result = sqlSessionTemplate.update("imageUpdate", pList);
+		result = sqlSessionTemplate.update("inquiryUpdate", pMap);
 		return result;
 	}
 

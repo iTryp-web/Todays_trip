@@ -418,13 +418,21 @@ export const InqCheckDiv = styled.div`
   border-radius: 6px;
   background-color: #f7f9fa;
   margin: 0px 15px;
-`;
-
-export const AnswerComplete = styled.span`
+  `;
+  
+  export const AnswerComplete = styled.span`
   font-weight: 600;
   padding-right: 10px;
-`
-
-export const InquiryAnswerButton = styled.button`
+  `
   
+  export const InquiryAnswerButton = styled.button`
+  
+  `
+  
+  export const AnswerInput = styled.input`
+  width : 100%;
+  border-radius: 25px;
+  border:none;
+  background-color: ;
+  margin-top: 15px;
 `

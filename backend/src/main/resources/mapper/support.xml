@@ -137,6 +137,30 @@
 		HH24:MI:SS')
 		)
 	</insert>
+	
+	<!-- 1대1 문의 답글 작성 step=0:문의글 step=1:문의답글cert -->
+	<insert id="answerInsert" parameterType="map">
+		INSERT INTO TB_QNA(
+		qna_no,
+		qna_step,
+		user_id,
+		qna_title,
+		qna_content,
+		qna_sort,
+		qna_date
+		)
+		VALUES(
+		#{qna_no},
+		1,
+		#{user_id},
+		#{qna_title},
+		#{qna_content},
+		#{qna_sort},
+		TO_CHAR(sysdate,
+		'YYYY-MM-DD
+		HH24:MI:SS')
+		)
+	</insert>
 
 	<!-- Quill image 추가 - 이미지 선택할때마다 인서트 -->
 	<insert id="qImageInsert" parameterType="map">
@@ -178,12 +202,12 @@
 
 	<!-- 1대1 문의 글 수정 / step 업데이트 -->
 	<update id="inquiryUpdate" parameterType="map">
-		UPDATE TB_BOARD
+		UPDATE TB_QNA
 		<trim prefix="SET" prefixOverrides=",">
-			<if test="qna_step != null and qna_step.length() != 0">
+			<if test="qna_step != null and qna_step > -1">
 				, qna_step = #{qna_step}
 			</if>
-			<if test="qna_sort != null and qna_sort.length() != 0">
+			<if test="qna_sort != null and qna_sort > -1">
 				, qna_sort = #{qna_sort}
 			</if>
 			<if test="qna_title != null and qna_title.length() != 0">
@@ -193,7 +217,7 @@
 				, qna_content = #{qna_content}
 			</if>
 		</trim>
-		WHERE qna_no = #{qna_no}
+		WHERE qna_no = #{qna_no} AND qna_step = 0
 	</update>
 
 	<!-- 1대1 문의 글 삭제 -->

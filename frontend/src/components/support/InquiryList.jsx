@@ -25,13 +25,10 @@ const InquiryList = () => {
   const [inquiryData, setInquiryData] = useState([]); // 문의 데이터
   const qcount = inquiryData.length;
   // 페이지넘기기
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
-
-
-
-
+  const [start, setStart] = useState()
 
   useEffect(() => {
     const inquiryList = async () => {
@@ -40,7 +37,7 @@ const InquiryList = () => {
       console.log(res.data);
       const datas = res.data;
       const list = datas
-        .filter(item => item.QNA_SORT === 2 || item.QNA_SORT === 4) // QNA_SORT가 2 또는 4인 데이터만 걸러냅니다.
+        .filter(item => item.QNA_SORT === 2 || item.QNA_SORT === 3 || item.QNA_SORT === 4) // QNA_SORT가 2 또는 4인 데이터만 걸러냅니다.
         .map(item => ({
           qna_no: item.QNA_NO,
           user_id: item.USER_ID,
@@ -52,15 +49,16 @@ const InquiryList = () => {
           file_exist: item.FILE_EXIST,
         }));
       setInquiryData(list);
+      console.log("==================")
+      console.log(list)
+      console.log("==================")
     };
     inquiryList();
-  }, []);
+  }, [start]);
   
-
   return (
     <>
       <Header />
-
       <InquirySection>
         <InquiryHeader>
           <InquiryH3>Q&A</InquiryH3>
@@ -86,7 +84,7 @@ const InquiryList = () => {
               inquiryData
                 .slice(offset, offset + limit)
                 .map((qna) => (
-                  <InquiryRow key={inquiryData.qna_no} qna={qna} qnaList={inquiryData}/>
+                  <InquiryRow key={inquiryData.qna_no} qna={qna} qnaList={inquiryData} setStart={setStart}/>
                 ))}
           </TableBody>
         </Table>

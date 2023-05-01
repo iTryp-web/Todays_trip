@@ -52,6 +52,23 @@ export const inquiryInsertDB = (support) => {
   });
 };
 
+/* 1대1문의 답글쓰기 */
+export const answerInsertDB = (support) => {
+  console.log(support)
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "support/answerInsert",
+        data: support,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 /* 1대1문의글 글 수정 */
 export const InquiryUpdateDB = (support) => {
   console.log(support)

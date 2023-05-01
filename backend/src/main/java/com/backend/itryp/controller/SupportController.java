@@ -141,6 +141,22 @@ public class SupportController {
 	}
 	
 	/**
+	 * 1:1문의 글 작성
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	@PostMapping("answerInsert")
+	public String answerInsert(@RequestBody Map<String, Object> pMap) {
+		logger.info("answerInsert 호출");
+		logger.info(pMap);
+		int result = 0;
+		result = supportLogic.answerInsert(pMap);
+		logger.info(result);
+		return String.valueOf(result);
+	}
+	
+	/**
 	 * 커뮤니티 글 수정(조회수 갱신 board_hit:1)
 	 * 
 	 * @param pMap
