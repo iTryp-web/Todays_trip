@@ -28,9 +28,9 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const SignInPage = () => {
-  const status = useSelector(store => store.toastStatus.status)
-  console.log(status)
-  const dispatch = useDispatch()
+  const status = useSelector((store) => store.toastStatus.status);
+  console.log(status);
+  const dispatch = useDispatch();
   const [idInput, setIdInput] = useState("");
   const [pwInput, setPwInput] = useState("");
 
@@ -71,7 +71,7 @@ const SignInPage = () => {
       navigate("/");
       alert("로그인 완료되었습니다.");
     } else if (!jsonDoc) {
-      dispatch(setToastMsg('아이디 혹은 비밀번호가 틀렸습니다.'));
+      dispatch(setToastMsg("아이디 혹은 비밀번호가 틀렸습니다."));
     }
   };
 
@@ -194,7 +194,14 @@ const SignInPage = () => {
               />
             </div>
           </SocialBlock>
-          <p><a href="/support/:category">로그인에 문제가 있으신가요?</a></p>
+          <p>
+            <a
+              href="/support/:category"
+              style={{color: "gray", fontWeight: 200, fontSize : "13px", textDecoration :"none"}}
+            >
+              로그인에 문제가 있으신가요?
+            </a>
+          </p>
         </LoginFormBlock>
       </SignDiv>
     </>
