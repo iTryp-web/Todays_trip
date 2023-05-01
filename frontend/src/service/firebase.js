@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
+  // https://today-s-trip-default-rtdb.asia-southeast1.firebasedatabase.app/
   apiKey: process.env.REACT_APP_FS_APIKEY,
   authDomain: process.env.REACT_APP_FS_AUTHDOMAIN,
   databaseURL: process.env.REACT_APP_FS_DATABASEURL,

@@ -4,18 +4,17 @@ import Header from '../include/Header';
 import Footer from '../include/Footer';
 import {  Row, WriteSection } from '../../styles/BoardStyle';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { marketInsertDB } from '../../service/marketLogic';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { Button, Form, Modal, Table } from 'react-bootstrap'
 import MQuillEditor from './MQuillEditor';
 import Datetime from 'react-datetime';
-
+//파이어 베이스 실시간 디비
 import { database } from '../../service/firebase'
-import { off, onValue, ref, set} from 'firebase/database'
+import { off, onValue, ref, remove, set} from 'firebase/database'
 import styled from 'styled-components';
 import { useEffect } from 'react';
-import { Input } from 'semantic-ui-react';
 
 const DateContainer=styled.div`/* 일정등록버튼 */
 .btnInsert{
@@ -48,6 +47,9 @@ const MarketWrite = () => {
   const [show, setShow]=useState(false)//모달창초기값
   const handleClose=()=>setShow(false)//모달창닫기
   const handleShow=()=>setShow(true)//모달창보여주기
+  //마켓넘버-시퀀스로 넣어줌...갔다와,....일단보류
+  // const {mno}=useParams()
+
     //사용자로부터 입력받은 값-상태훅으로 관리하기
     const [s_no,setM_no]=useState(0)//식별자
     const [buy_no,setM_count]=useState(0)//가능한갯수
@@ -65,6 +67,14 @@ const MarketWrite = () => {
    const valid = (current) => {
      return current.isAfter(yesterday);
    }
+
+   //실시간 디비 삭제
+   const dateDelete=(event)=>{
+    event.preventDefault()
+    remove(ref(database,'market/'))
+    navigate('/memo')
+  }
+
    //시작날짜시간
    const handleStart=(date)=>{
     console.log(date);
@@ -77,9 +87,9 @@ const MarketWrite = () => {
     console.log(date);
     const m_end=moment(date._d).format('YYYY-MM-DD')
     console.log(m_end);
-    setM_start(m_end)
+    setM_end(m_end)
   }
-  //화면에 입력받은 정보 담기
+  //화면에 입력받은 정보 담기-가능수량, 
   const handleChangeForm=(event)=>{
     if(event.currentTarget==null){
      return
@@ -94,12 +104,12 @@ const MarketWrite = () => {
    console.log(fdata)
  }
    //일정등록하기구현
-   const dateAdd=(event)=>{
+   const dateAdd=(event)=>{//파이어 베이스에서 insertm update 같다
     //버튼이기때문에 이벤트 버블링 사전처리
       event.preventDefault()
     
       const fdata={
-        s_no:0,//일정넘버
+        // s_no:0,//일정넘버
         market_no:0,//마켓넘버
         buy_no:'',//예약가능 티켓수
         start_date:start_date,//시작날짜
@@ -107,14 +117,15 @@ const MarketWrite = () => {
       }
       console.log(fdata);
       //파이어베이스 실시간 디비넣기
-     set(ref(database,'market/'+fdata.market_no), fdata);
+     set(ref(database,'market/all'), fdata);
       handleClose()
     }
 
      //일정정보가져오기
      const [fdatas,setFdatas]=useState({})
+
      useEffect(()=>{
-       const startCountRef=ref(database,'fdata')
+       const startCountRef=ref(database,'market')
        onValue(startCountRef,(snapshot)=>{
          const data=snapshot.val()
          setFdatas(data)
@@ -122,16 +133,17 @@ const MarketWrite = () => {
        })
      },[])
 
+
      //화면에 입력받은 가격정보 담기
-  const handlePriceForm=(e)=>{
-      const { name, value } = e.target;
-      
-        if (name === 'price') {
-          setPrice(value);
-        } else {
-         
+    const handlePriceForm=(e)=>{
+        const { name, value } = e.target;
+        
+          if (name === 'price') {
+            setPrice(value);
+          } else {
+          setPrice(0)
+          }
         }
-      }
   
   const handleCategory = useCallback((e) => {
     setSelected(e);
@@ -190,7 +202,11 @@ const MarketWrite = () => {
           <Form.Group className="mb-3 row" controlId="mTitle">
             <Form.Label className="col-sm-2 col-form-label">일정번호</Form.Label>
             <div className='col-sm-10'>
-            <Form.Control className='form-control form-control-sm' type="number" name="scheduleNo" onChange={handleChangeForm} placeholder="Enter 일정번호" />
+            <Form.Control 
+                className='form-control form-control-sm' 
+                type="number" name="scheduleNo" 
+                onChange={handleChangeForm} 
+                placeholder="Enter 일정번호" />
             </div>
           </Form.Group>
           <Form.Group className="mb-3 row" controlId="boardWriter">
@@ -202,14 +218,22 @@ const MarketWrite = () => {
           <Form.Group className="mb-3 row" controlId="edit-start">
             <Form.Label className="col-sm-2 col-form-label">일정시작</Form.Label>
             <div className='col-sm-10'>
-            <Datetime dateFormat='YYYY-MM-DD' isValiDate={valid} name="startDate" onChange={handleStart}/>
+            <Datetime 
+                dateFormat='YYYY-MM-DD' 
+                isValiDate={valid} 
+                name="startDate" 
+                onChange={handleStart}/>
             </div>
           </Form.Group>
           <Form.Group className="mb-3 row" controlId="edit-end">
             <Form.Label className="col-sm-2 col-form-label">일정끝</Form.Label>
             <div className='col-sm-10'>
               {/* 페이지 이동 처리? onChange로 하려고 datetime 씀? 이종간이다...*/}
-            <Datetime dateFormat='YYYY-MM-DD' isValiDate={valid}  name="finishDate" onChange={handleEnd}/>
+            <Datetime 
+                dateFormat='YYYY-MM-DD' 
+                isValiDate={valid}  
+                name="finishDate" 
+                onChange={handleEnd}/>
             </div>
           </Form.Group>
          

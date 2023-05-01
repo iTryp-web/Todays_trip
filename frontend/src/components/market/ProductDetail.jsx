@@ -143,6 +143,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
               </Btnwrap>
         </Modal.Body>
         </Modal>
+        {/* 장바구니 모달창 끝 */}
         
           <div className='container'>
             <div  className='imgarea'>
@@ -155,8 +156,8 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                       <img src={url} />
                       ))}
                   {/* 내용 */}
-                  <p>{detailPost.market_content}</p>
-                {/* <DetailContent dangerouslySetInnerHTML={{__html:detailPost.board_content}}></DetailContent> */}
+                  {/* <p>{detailPost.market_content}</p> */}
+                <DetailContent dangerouslySetInnerHTML={{__html:detailPost.market_content}}></DetailContent>
             </div>
 
             <div className='menu'>
@@ -175,7 +176,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                       {/* 카운트 버튼 */}
                         <div className='count'>
 
-                        <img src={ minus_img} alt="minus" 
+                        <img src={minus_img} alt="minus" 
                             onClick={() => {
                               if (count === 1) {
                                 return 1;
