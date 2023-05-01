@@ -196,7 +196,7 @@ const SignInPage = () => {
           </SocialBlock>
           <p>
             <a
-              href="/support/:category"
+              href="/support/all"
               style={{color: "gray", fontWeight: 200, fontSize : "13px", textDecoration :"none"}}
             >
               로그인에 문제가 있으신가요?

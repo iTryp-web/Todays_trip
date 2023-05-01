@@ -121,7 +121,7 @@ const InquiryRow = ({ qna, qnaList, setStart }) => {
               <span
                 className="questionText"
                 onClick={() =>
-                  handleClick(qna.user_id, qna.qna_no, qna.qna_sort == 4)
+                  handleClick(qna.user_id, qna.qna_no, qna.qna_sort == 4 || qna.qna_sort == 3)
                 }
                 style={{ cursor: "pointer" }}
               >
@@ -132,11 +132,11 @@ const InquiryRow = ({ qna, qnaList, setStart }) => {
                 {qna.qna_step === 2 ? (
                   <AnswerComplete>[답변완료]</AnswerComplete>
                 ) : null}
-                {qna.qna_sort === 3 || 4 ? "비밀 문의글입니다." : qna.qna_title}
+                {qna.qna_sort === (3 || 4) ? "비밀 문의글입니다." : qna.qna_title}
               </span>
             </div>
           </TableCell>
-          <TableCell align="center">{hideChars(qna.user_id)}</TableCell>
+          <TableCell align="center">{sessionStorage.getItem("user_role")===2 ? (qna.user_id) : hideChars(qna.user_id)}</TableCell>
           <TableCell align="center">{qna.qna_date}</TableCell>
         </TableRow>
       )}

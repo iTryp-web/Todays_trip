@@ -18,6 +18,7 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
+import Footer from "../include/Footer";
 
 const InquiryList = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const InquiryList = () => {
   const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
-  const [start, setStart] = useState()
+  const [start, setStart] = useState();
 
   useEffect(() => {
     const inquiryList = async () => {
@@ -37,8 +38,11 @@ const InquiryList = () => {
       console.log(res.data);
       const datas = res.data;
       const list = datas
-        .filter(item => item.QNA_SORT === 2 || item.QNA_SORT === 3 || item.QNA_SORT === 4) // QNA_SORT가 2 또는 4인 데이터만 걸러냅니다.
-        .map(item => ({
+        .filter(
+          (item) =>
+            item.QNA_SORT === 2 || item.QNA_SORT === 3 || item.QNA_SORT === 4
+        ) // QNA_SORT가 2 또는 4인 데이터만 걸러냅니다.
+        .map((item) => ({
           qna_no: item.QNA_NO,
           user_id: item.USER_ID,
           qna_step: item.QNA_STEP,
@@ -49,13 +53,13 @@ const InquiryList = () => {
           file_exist: item.FILE_EXIST,
         }));
       setInquiryData(list);
-      console.log("==================")
-      console.log(list)
-      console.log("==================")
+      console.log("==================");
+      console.log(list);
+      console.log("==================");
     };
     inquiryList();
   }, [start]);
-  
+
   return (
     <>
       <Header />
@@ -84,7 +88,12 @@ const InquiryList = () => {
               inquiryData
                 .slice(offset, offset + limit)
                 .map((qna) => (
-                  <InquiryRow key={inquiryData.qna_no} qna={qna} qnaList={inquiryData} setStart={setStart}/>
+                  <InquiryRow
+                    key={inquiryData.qna_no}
+                    qna={qna}
+                    qnaList={inquiryData}
+                    setStart={setStart}
+                  />
                 ))}
           </TableBody>
         </Table>
@@ -95,6 +104,7 @@ const InquiryList = () => {
           setPage={setPage}
         />
       </InquirySection>
+      <Footer />
     </>
   );
 };
