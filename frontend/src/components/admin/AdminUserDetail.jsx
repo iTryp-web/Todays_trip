@@ -34,8 +34,8 @@ const AdminUserDetail = () => {
   let {user} = useParams()
   console.log(user);
   // 글과 댓글 담을 변수
-  const [boardList, setBoardList] = useState([{}])
-  const [commentList, setCommentList] = useState([{}])
+  const [boardList, setBoardList] = useState([])
+  const [commentList, setCommentList] = useState([])
   // 카테고리
   const [selected, setSelected] = useState('글')
   const changeCategory = (item) => {

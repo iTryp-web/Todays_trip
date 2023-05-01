@@ -39,7 +39,8 @@
 			FROM TB_ORDER) order_count
          ,(SELECT count(qna_no)
 			FROM TB_QNA
-			WHERE (qna_sort = 2 or qna_sort = 4)) inquiry_count
+			WHERE (qna_sort = 2 or qna_sort = 4)
+			AND (qna_step = 0 or qna_step = 2)) inquiry_count
 		FROM TB_MARKET m
 			, (SELECT COUNT(user_Id) qna_count, market_no
 			    FROM TB_QNA
@@ -337,6 +338,7 @@
 	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
 		FROM TB_QNA
 		WHERE (qna_sort = 2 or qna_sort = 4)
-		ORDER BY qna_date DESC
+		AND (qna_step = 0 or qna_step = 2)
+		ORDER BY qna_no DESC
 	</select>
 </mapper>

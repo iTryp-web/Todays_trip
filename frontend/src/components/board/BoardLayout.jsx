@@ -78,7 +78,7 @@ const btnSearch =  useCallback((e) => {
 
 /* 글 목록 */
 // 게시글 담을 객체배열
-const [posts, setPosts] = useState([{}])
+const [posts, setPosts] = useState([])
 //선택한 카테고리에따라 글목록 출력
 useEffect(() => {
   console.log(searchStart)

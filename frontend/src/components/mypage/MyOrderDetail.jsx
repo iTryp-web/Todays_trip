@@ -70,6 +70,8 @@ const MyOrderDetail = () => {
           list.push(obj)
         }
         setOrders(list)
+      } else {
+        navigate('/')
       }
     }
     orderDetail()

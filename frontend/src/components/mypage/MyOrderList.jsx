@@ -27,7 +27,7 @@ const MyOrderList = () => {
   }, [userId])
 
   // 주문 목록 담을 변수
-  const [orderList, setOrderList] = useState([{}])
+  const [orderList, setOrderList] = useState([])
   
   useEffect(() => {
     const myOrderList = async() => {
@@ -85,19 +85,16 @@ const MyOrderList = () => {
         </thead>
 
         <tbody>
-          {
-            orderList.length > 0
-            ?
+          {orderList && orderList.length > 0 ? (
             orderList.map((order) => (
-              <MyOrderRow key={order.order_no} order={order} />
-            ))
-            :
+              <MyOrderRow key={order.order_no} order={order} />))
+            ) : (
             <tr style={{textAlign:"center"}}>
               <OrderTd colSpan={4}>
                 <NoneDiv>주문내역이 없습니다.</NoneDiv>
               </OrderTd>
             </tr>
-          }
+            )}
         </tbody>
       </OrderTable>
     </OrderSection>

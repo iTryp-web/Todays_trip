@@ -34,19 +34,19 @@ const AdminLayout = () => {
   console.log(category);
 
   // 마켓목록(새로운 문의) 변수
-  const [qnaList, setQnaList] = useState([{}])
+  const [qnaList, setQnaList] = useState([])
   // 신고 목록(새로운 신고) 변수
-  const [reportList, setReportList] = useState([{}])
+  const [reportList, setReportList] = useState([])
   // 탈퇴 목록(새로운 신청) 변수
-  const [resignList, setResignList] = useState([{}])
+  const [resignList, setResignList] = useState([])
   // 주문 목록(새로운 주문) 변수
-  const [orderList, setOrderList] = useState([{}])
+  const [orderList, setOrderList] = useState([])
   // 차단 목록변수
-  const [userBanList, setUserBanList] = useState([{}])
-  const [boardBanList, setBoardBanList] = useState([{}])
-  const [commentBanList, setCommentBanList] = useState([{}])
+  const [userBanList, setUserBanList] = useState([])
+  const [boardBanList, setBoardBanList] = useState([])
+  const [commentBanList, setCommentBanList] = useState([])
   // 문의 목록 변수
-  const [inquiryList, setInquiryList] = useState([{}])
+  const [inquiryList, setInquiryList] = useState([])
 
   /* 오버뷰 불러오기 - 새로운 업데이트 표시용 */
   useEffect(() => {
@@ -327,7 +327,7 @@ const AdminLayout = () => {
         {/* 오른쪽 글 내용 */}
         <AContentSection className='content'>
           {/* 마켓 목록 */}
-          {qnaList.length > 0 && selected === '마켓' ? (
+          {selected === '마켓' ? (
             <ul>
               <Nav className='qnaNav' fill variant="tabs">
                 {aMarketCategories && aMarketCategories.map((marketCategory) => (
@@ -347,7 +347,7 @@ const AdminLayout = () => {
           ) : null}
 
           {/* 주문 목록 */}
-          {orderList.length > 0  && selected === '주문' ? (
+          {selected === '주문' ? (
             <ReportUl>
               <Table>
                 <colgroup>
@@ -381,7 +381,7 @@ const AdminLayout = () => {
           ) : null}
 
           {/* 문의 목록 */}
-          {inquiryList.length > 0  && selected === '문의' ? (
+          {selected === '문의' ? (
             <ReportUl>
               <Table>
                 <colgroup>
@@ -413,7 +413,7 @@ const AdminLayout = () => {
           ) : null}
 
           {/* 신고 목록 */}
-          {reportList.length > 0  && selected === '신고' ? (
+          {selected === '신고' ? (
             <ReportUl>
               <Table>
                 <colgroup>
@@ -447,7 +447,7 @@ const AdminLayout = () => {
           ) : null}
 
           {/* 차단 목록 */}
-          {(userBanList.length > 0 || boardBanList.length > 0 || commentBanList.length > 0) && selected === '차단' ? (
+          {selected === '차단' ? (
             <ul>
               <Nav className='qnaNav' fill variant="tabs">
                 {aBanCategories && aBanCategories.map((banCategory) => (
@@ -464,7 +464,7 @@ const AdminLayout = () => {
           ) : null}
 
           {/* 탈퇴 목록 */}
-          {resignList.length > 0 && selected === '탈퇴' ? (
+          {selected === '탈퇴' ? (
             <ReportUl>
             <Table>
               <colgroup>
