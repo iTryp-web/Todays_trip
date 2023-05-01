@@ -29,6 +29,7 @@ import MyOrderList from "./components/mypage/MyOrderList";
 import MyOrderDetail from "./components/mypage/MyOrderDetail";
 import MyInfoEdit from "./components/mypage/MyInfoEdit";
 import MyInfoPw from "./components/mypage/MyInfoPw";
+import RealTimeSchedule from "./components/market/RealTimeSchedule";
 
 function App({ authLogic }) {
   return (
@@ -75,6 +76,7 @@ function App({ authLogic }) {
         <Route path="/market/review" exact={true} element={<MarketReview />} />
         <Route path="/market/write" exact={true} element={<MarketWrite />} />
         <Route path="/market/detail/:mno" element={<MarketDetail />} />
+        <Route path="/market/write/schedule" element={<RealTimeSchedule />} />
 
         <Route path="/support/:category" exact={true} element={<FaqPage />} />
         <Route
