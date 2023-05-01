@@ -76,7 +76,9 @@ const RealTimeSchedule = () => {
    const dateDelete=(event)=>{
     event.preventDefault()
     remove(ref(database,'market/'))
-    navigate('/memo')
+    // navigate('/market/write/shcedule')
+    alert('일정삭제성공!')
+    setStart(new Date())//리프레쉬용
   }
 
    //시작날짜시간
@@ -143,7 +145,6 @@ const RealTimeSchedule = () => {
      console.log(fdatas);
   
    
-
   return (
     <>
       <Header/>
@@ -240,6 +241,9 @@ const RealTimeSchedule = () => {
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button onClick={(e) => { dateAdd() }}>
               일정등록
+            </Button>
+            <Button onClick={(e) => { dateDelete(e) }}>
+              일정삭제
             </Button>
           </div>
         </div>

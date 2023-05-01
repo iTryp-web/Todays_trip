@@ -1,4 +1,4 @@
-import { ref, remove } from '@firebase/database'
+import { child, ref, remove } from '@firebase/database'
 import React from 'react'
 import { useState } from 'react'
 import { Button } from 'react-bootstrap'
@@ -11,12 +11,23 @@ const ScheduleRow = ({fdata, setStart}) => {
   
 
     //실시간 디비 삭제
-    const dateDelete=(event)=>{
-      event.preventDefault()
+    const dateDelete=()=>{
+      // event.preventDefault()
       remove(ref(database,'market/'))
       // navigate('/market/write')
       // setStart(new Date())//리프레쉬용
     }
+
+    // const deleteData = () => {
+    //   const databaseRef = ref(database); // DB root 경로
+    //   const sRef = child(databaseRef, "s_no"); // market 경로
+    //   const sNo = fdata.s_no;
+    //   const dataRef = ref(sRef, `market/${sNo}`); // market_no_0 경로 (데이터 경로)
+    
+    //   remove(dataRef)
+    //     .then(() => console.log("데이터 삭제 성공"))
+    //     .catch((error) => console.log("데이터 삭제 실패", error));
+    // };
 
   return (
       <>
@@ -27,7 +38,7 @@ const ScheduleRow = ({fdata, setStart}) => {
           <td>{`${fdata.start_date}~${fdata.finish_date}`}</td>
           <td>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={(e)=>{dateDelete(e)}}>삭제</Button>
+            {/* <Button onClick={(e)=>{dateDelete()}}>모두삭제</Button> */}
             </div>
           </td>
         </tr>
