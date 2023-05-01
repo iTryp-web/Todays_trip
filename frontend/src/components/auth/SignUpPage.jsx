@@ -1172,11 +1172,8 @@ const SignUpPage = () => {
                   boxShadow: referrerShadowColor,
                 }}
               />
-              <button>
-                <GoSearch
-                  className="search-icon"
-                  onClick={(e) => CheckUser(e)}
-                />
+              <button onClick={(e) => CheckUser(e)}>
+                <GoSearch className="search-icon" />
               </button>
             </label>
             {referrertext !== "" && (

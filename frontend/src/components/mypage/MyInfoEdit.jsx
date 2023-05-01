@@ -602,8 +602,8 @@ const MyInfoEdit = () => {
                     border: "1px solid lightgray",
                   }}
                 />
-                <button>
-                  <GoSearch className="search-icon" onClick={openZipcode} />
+                <button onClick={(e) => openZipcode(e)} >
+                  <GoSearch className="search-icon"/>
                 </button>
               </label>
             </SearchBlock>
