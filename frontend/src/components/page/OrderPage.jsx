@@ -290,7 +290,7 @@ const OrderPage = () => {
   return (
     <>
       <Header/>
-      <OrderDiv>
+      <OrderDiv style={{height: "100%"}}>
         <OrderTitle>예약하기</OrderTitle>
         <OrderListDiv>
           <OrdertyTitle>주문 정보</OrdertyTitle>
@@ -423,7 +423,7 @@ const OrderPage = () => {
           <PaymentButton onClick={onClickPayment}>결제하기</PaymentButton>
         </OrderButtonDiv>
       </OrderDiv>
-      <Footer/>
+      <Footer style={{position:"relative", transform:"translateY(-100%)"}}/>
     </>
   )
 }
