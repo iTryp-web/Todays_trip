@@ -4,23 +4,26 @@ import styled, { css } from "styled-components";
 /* 어드민 섹션 전체 */
 export const AdminSection = styled.section`
   max-width: 1344px;
+  min-height: 650px;
+  height: 100%;
   padding: 0 4rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   background: white;
   margin: 0 auto;
-  margin-top: 7em;
+  margin-top: 7.5em;
   margin-bottom: 6em;
+  position: relative;
 `;
 
 /* 카테고리 전체 */
 export const AdminCategory = styled.nav`
   display: flex;
   flex-direction: column;
-  width: 150px;
+  width: 200px;
   position: absolute;
-  top: 170px;
+  top: -50px;
+  left: 50px;
   ul {
     margin: 0;
     padding: 0;
@@ -67,7 +70,9 @@ export const AdminCategoryLi = styled.li`
     `}
   img {
     width: 24px;
+    height: 24px;
     margin-right: 12px;
+    margin-bottom: 2px;
   }
   .icon {
     color: #e87676;
@@ -84,8 +89,8 @@ export const AdminCategoryLi = styled.li`
 /* 어드민 글목록 부분 */
 export const AContentSection = styled.section`
   flex: 1;
-  max-width: 960px;
-  margin-left: 230px;
+  max-width: 920px;
+  margin-left: 270px;
   h3 {
     font-size: 18px;
     font-weight: 700;
@@ -113,14 +118,15 @@ export const QnaCategory = styled.span`
 
 /********** AdminQnaRow 스타일 **********/
 export const QnaLi = styled.li`
+  position: relative;
   list-style: none;
-  padding: 25px 8px;
+  padding: 20px 8px;
   margin-right: 3em;
   border-bottom: 1px solid #f4f4f4;
   font-size: 14px;
   .categoryQ {
     display: inline-block;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     padding: 2px 8px;
     border-radius: 4px;
     background: #dbeafd;
@@ -132,10 +138,23 @@ export const QnaLi = styled.li`
   .dateQ {
     font-size: 12px;
     color: #888;
-    margin-left: 10px;
+    margin-left: 15px;
+    margin-bottom: 0px;
   }
-  .newQna {
+  .titleP {
+    max-width: 100%;
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 2px 8px 2px 5px;
+    border-radius: 4px;
+    background: #dbeafd;
+    color: #4a71a4;
+    font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
+    font-style: italic
+    text-overflow: ellipsis;
+    word-break: break-all;
   }
 `;
 
@@ -161,14 +180,15 @@ export const QnaImg = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 85px;
-  height: 85px;
+  width: 44px;
+  height: 44px;
   border: 1px solid #e1e1e1;
   border-radius: 8px;
   margin-right: 20px;
+  margin-top: 3px;
   .qnaImg {
-    width: 85px;
-    height: 85px;
+    width: 44px;
+    height: 44px;
     border-radius: 5px;
   }
 `;
@@ -180,10 +200,9 @@ export const QnaDiv = styled.div`
 export const QnaMarketTitle = styled.div`
   font-weight: 600;
   color: black;
-  margin-top: 3px;
+  font-size: 14px;
+  margin: 5px 0 0 0;
   padding-right: 5px;
-  margin-top: 6px;
-  margin-bottom: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-all;
@@ -191,14 +210,30 @@ export const QnaMarketTitle = styled.div`
 
 export const QnaMarketContent = styled.div`
   margin: 8px 0 5px 0;
-  word-break: break-all;
   overflow: hidden;
   padding-right: 16px;
   text-overflow: ellipsis;
   word-break: break-all;
   color: #888;
   font-weight: 500;
+  margin: 4px 0 0 0;
 `;
+
+export const BtnEdit = styled.div`
+  position: absolute;
+  top: 17px;
+  right: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  padding: 6px;
+  width: 70px;
+  height: 33px;
+  border-radius: 5px;
+  background: #dbeafd;
+  color: #4a71a4;
+  cursor: pointer;
+`
 
 
 /* AdminReportRow */
@@ -220,10 +255,9 @@ export const ReportUl = styled.ul`
 `
 
   export const ReportTr = styled.tr`
-  background-color: ${({ result }) => (result == 0 ? "#EDF5FE" : "white")};;
   font-size: 14px;
   font-weight: 500;
-  color: ${({ result }) => (result > 0 ? "#979797" : "#4B4B4B")};
+  height: 80px;
   th{
     padding: 10px 1px;
     border-bottom: 1px solid #DBEAFD;
@@ -231,17 +265,16 @@ export const ReportUl = styled.ul`
   .reportItemTd{
     cursor: pointer;
   }
-  .btnApply {
-    cursor: pointer;
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    background-color: #84B6F7;
-    margin: 0 auto;
-    width: 55px;
+  .icon { 
+    color: #4996F3;
+    padding: 0;
+    margin: 0 3px 0 10px;
+  }
+  .text { 
+    padding: 0;
+    margin: 0;
+    margin-left: 4px;
+    color: #4996F3;
   }
 `
 

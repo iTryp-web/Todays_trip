@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { BButton, Row, WriteSection } from '../../styles/BoardStyle';
 import Header from '../include/Header';
 import Footer from '../include/Footer';
@@ -16,6 +16,18 @@ const BoardWriteForm = () => {
   const[content, setContent]= useState('');
   const[files, setFiles]= useState([]);
   const quillRef = useRef();
+
+  // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
+  // 아이디, 닉네임 담을 변수
+  const [userId] = useState(window.sessionStorage.getItem('user_id'))
+  const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+  const [userRole] = useState(window.sessionStorage.getItem('user_role'))
+  
+  useEffect(() => {
+    if(!userId) {
+      navigate('/')
+    }
+  }, [userId])
 
   const handleCategory = useCallback((e) => {
     console.log(e);

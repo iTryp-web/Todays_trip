@@ -26,44 +26,58 @@ public class AdminLogic {
 	 */
 	public List<Map<String, Object>> overview(Map<String, Object> pMap) {
 		logger.info("overview 호출");
+		logger.info(pMap);
 		List<Map<String,Object>> oList = new ArrayList<>();
-		// 새로운 마켓 문의
-		List<Map<String,Object>> marketQnaList= adminDao.marketQnaList(pMap);
-		if(marketQnaList.size() > 0) {
-			oList.addAll(marketQnaList);			
+		if(pMap.get("category").toString().equals("마켓")) {
+			// 새로운 마켓 문의
+			List<Map<String,Object>> marketQnaList= adminDao.marketQnaList(pMap);
+			if(marketQnaList.size() > 0) {
+				oList.addAll(marketQnaList);			
+			}
 		}
-		// 새로운 신고
-		List<Map<String,Object>> reportList = adminDao.reportList(pMap);
-		if(reportList.size() > 0) {
-			oList.addAll(reportList);			
+		else if (pMap.get("category").toString().equals("주문")) {
+			// 주문 목록
+			List<Map<String,Object>> adminOrderList = adminDao.adminOrderList(pMap);
+			if(adminOrderList.size() > 0) {
+				oList.addAll(adminOrderList);			
+			}
 		}
-		// 새로운 신청
-		List<Map<String,Object>> resignList = adminDao.resignList(pMap);
-		if(resignList.size() > 0) {
-			oList.addAll(resignList);			
+		else if (pMap.get("category").toString().equals("문의")) {
+			// 새로운 문의
+			List<Map<String,Object>> adminInquiryList= adminDao.adminInquiryList(pMap);
+			if(adminInquiryList.size() > 0) {
+				oList.addAll(adminInquiryList);			
+			}
+			return oList;
 		}
-		// 주문 목록
-		List<Map<String,Object>> adminOrderList = adminDao.adminOrderList(pMap);
-		if(adminOrderList.size() > 0) {
-			oList.addAll(adminOrderList);			
+		else if (pMap.get("category").toString().equals("신고")) {
+			// 새로운 신고
+			List<Map<String,Object>> reportList = adminDao.reportList(pMap);
+			if(reportList.size() > 0) {
+				oList.addAll(reportList);			
+			}
 		}
-		// 차단 목록
-		List<Map<String,Object>> banUserList = adminDao.banUserList(pMap);
-		if(banUserList.size() > 0) {
-			oList.addAll(banUserList);			
+		else if (pMap.get("category").toString().equals("차단")) {
+			// 차단 목록
+			List<Map<String,Object>> banUserList = adminDao.banUserList(pMap);
+			if(banUserList.size() > 0) {
+				oList.addAll(banUserList);			
+			}
+			List<Map<String,Object>> banBoardList = adminDao.banBoardList(pMap);
+			if(banBoardList.size() > 0) {
+				oList.addAll(banBoardList);			
+			}
+			List<Map<String,Object>> banCommentList = adminDao.banCommentList(pMap);
+			if(banCommentList.size() > 0) {
+				oList.addAll(banCommentList);			
+			}
 		}
-		List<Map<String,Object>> banBoardList = adminDao.banBoardList(pMap);
-		if(banBoardList.size() > 0) {
-			oList.addAll(banBoardList);			
-		}
-		List<Map<String,Object>> banCommentList = adminDao.banCommentList(pMap);
-		if(banCommentList.size() > 0) {
-			oList.addAll(banCommentList);			
-		}
-		// 새로운 문의
-		List<Map<String,Object>> adminInquiryList= adminDao.adminInquiryList(pMap);
-		if(adminInquiryList.size() > 0) {
-			oList.addAll(adminInquiryList);			
+		else if (pMap.get("category").toString().equals("탈퇴")) {
+			// 새로운 신청
+			List<Map<String,Object>> resignList = adminDao.resignList(pMap);
+			if(resignList.size() > 0) {
+				oList.addAll(resignList);			
+			}
 		}
 		return oList;
 	}

@@ -63,8 +63,7 @@ const BoardUpdateForm = () => {
       setSelected(jsonDoc[0].BOARD_CATEGORY)
       setTitle(jsonDoc[0].BOARD_TITLE)
       setContent(jsonDoc[0].BOARD_CONTENT)
-      if(jsonDoc[0].USER_NICKNAME !== userNickname) {
-        alert('작성자가 아닙니다');
+      if(jsonDoc[0].USER_ID !== userId) {
         navigate('/board/all?page=1')
       }
     }

@@ -19,28 +19,6 @@
 				 , NVL((SELECT SUM(market_count)
             FROM TB_ORDER_DETAIL
             WHERE market_no = m.market_no), 0) sales_count
-		     , (SELECT COUNT(market_no)
-         		FROM TB_MARKET) market_count
-         , (SELECT COUNT(report_no)
-            FROM TB_REPORT) report_count
-         , (SELECT COUNT(user_id)
-           FROM TB_USER
-           WHERE status = 2) userBan_count
-         , (SELECT COUNT(board_no)
-           FROM TB_BOARD
-           WHERE board_status = 1) boardBan_count  
-         , (SELECT COUNT(board_no)
-           FROM TB_B_COMMENT
-           WHERE comment_status = 2) commentBan_count
-         , (SELECT count(qna_no)
-            FROM TB_QNA
-            WHERE qna_sort = 3) resign_count
-         , (SELECT COUNT(order_no)
-			FROM TB_ORDER) order_count
-         ,(SELECT count(qna_no)
-			FROM TB_QNA
-			WHERE (qna_sort = 2 or qna_sort = 4)
-			AND (qna_step = 0 or qna_step = 2)) inquiry_count
 		FROM TB_MARKET m
 			, (SELECT COUNT(user_Id) qna_count, market_no
 			    FROM TB_QNA
@@ -120,6 +98,15 @@
 		     , user_phone
 		     , user_level
 		     , status
+		     , (SELECT COUNT(user_id)
+	           FROM TB_USER
+	           WHERE status = 2) userBan_count
+	         , (SELECT COUNT(board_no)
+	           FROM TB_BOARD
+	           WHERE board_status = 1) boardBan_count  
+	         , (SELECT COUNT(board_no)
+	           FROM TB_B_COMMENT
+	           WHERE comment_status = 2) commentBan_count
 		FROM TB_USER
 		WHERE status = 2
 	</select>
@@ -132,6 +119,15 @@
 		     , board_title
 		     , board_date
 		     , board_status
+		     , (SELECT COUNT(user_id)
+	           FROM TB_USER
+	           WHERE status = 2) userBan_count
+	         , (SELECT COUNT(board_no)
+	           FROM TB_BOARD
+	           WHERE board_status = 1) boardBan_count  
+	         , (SELECT COUNT(board_no)
+	           FROM TB_B_COMMENT
+	           WHERE comment_status = 2) commentBan_count
 		FROM TB_BOARD
 		WHERE board_status = 1
 	</select>
@@ -145,6 +141,15 @@
 		     , comment_content
 		     , comment_date
 		     , comment_status
+		     , (SELECT COUNT(user_id)
+	           FROM TB_USER
+	           WHERE status = 2) userBan_count
+	         , (SELECT COUNT(board_no)
+	           FROM TB_BOARD
+	           WHERE board_status = 1) boardBan_count  
+	         , (SELECT COUNT(board_no)
+	           FROM TB_B_COMMENT
+	           WHERE comment_status = 2) commentBan_count
 		FROM TB_B_COMMENT 
 		WHERE comment_status = 2
 	</select>
