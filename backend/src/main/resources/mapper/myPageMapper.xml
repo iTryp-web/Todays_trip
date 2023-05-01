@@ -12,11 +12,12 @@
 				b.board_hit,
 				b.type_board,
          		c.comment_count,
-         		l.like_count
+         		l.like_count,
+         		f.file_count
 		  FROM TB_BOARD b,
-				(SELECT COUNT(user_id) comment_count, board_no FROM TB_B_COMMENT GROUP BY board_no) c,
-				(SELECT COUNT(user_id) like_count, like_no FROM TB_LIKE GROUP BY like_no) l,
-				(SELECT COUNT(file_no) file_count, file_no, board_no FROM TB_B_FILE GROUP BY board_no, file_no) f
+				(SELECT COUNT(*) comment_count, board_no FROM TB_B_COMMENT WHERE comment_status = 0 OR comment_status = 3 GROUP BY board_no) c,
+				(SELECT COUNT(*) like_count, like_no FROM TB_LIKE GROUP BY like_no) l,
+				(SELECT COUNT(*) file_count, file_no, board_no FROM TB_B_FILE GROUP BY board_no, file_no) f
 		 WHERE b.user_id = #{user_id}
 				AND b.board_no = c.board_no(+)
 				AND b.board_no = l.like_no(+)
