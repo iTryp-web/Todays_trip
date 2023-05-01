@@ -16,7 +16,7 @@ const MarketPage = () => {
     <PowerSlider/>
       <ProductList/>
       <ProductItem/>
-    <Footer />
+    {/* <Footer /> */}
   </>
   )
 }

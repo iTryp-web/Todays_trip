@@ -34,7 +34,10 @@ const DateContainer=styled.div`/* 일정등록버튼 */
 
 const MarketWrite = () => {
   const navigate = useNavigate()
-  const [category] = useState(['패키지','투어', '한인택시', '숙소', '렌트카'])
+  // 리프레쉬용 변수
+  const [start, setStart] = useState()
+
+  const [category] = useState(['패키지','투어', '티켓', '교통', '숙소'])
   const [selected, setSelected] = useState('투어')
   const[title, setTitle]= useState('');
   const[content, setContent]= useState('');
@@ -55,12 +58,12 @@ const MarketWrite = () => {
     const [buy_no,setM_count]=useState(0)//가능한갯수
     const [start_date,setM_start]=useState('')
     const [finish_date, setM_end]=useState('')
-  const [fdata, setFdata]=useState({
-    m_no:0,//마켓넘버
-    m_count:'',//예약가능 티켓수
-    m_start:'',//시작날짜
-    m_end:''//끝날짜
-  })
+    const [fdata, setFdata]=useState({
+      m_no:0,//마켓넘버
+      m_count:'',//예약가능 티켓수
+      m_start:'',//시작날짜
+      m_end:''//끝날짜
+    })
 
    //오늘 이전날짜 비활성화 처리하기
    const yesterday = moment().subtract(1, 'day')
@@ -78,28 +81,30 @@ const MarketWrite = () => {
    //시작날짜시간
    const handleStart=(date)=>{
     console.log(date);
-    const m_start=moment(date._d).format('YYYY-MM-DD')
+    const m_start=moment(date._d).format('YYYY-MM-DD, a h:mm')
     console.log(m_start);
     setM_start(m_start)
   }
   //끝날짜시간
   const handleEnd=(date)=>{
     console.log(date);
-    const m_end=moment(date._d).format('YYYY-MM-DD')
+    const m_end=moment(date._d).format('YYYY-MM-DD, a h:mm')
     console.log(m_end);
     setM_end(m_end)
   }
   //화면에 입력받은 정보 담기-가능수량, 
   const handleChangeForm=(event)=>{
-    if(event.currentTarget==null){
+    console.log(event)
+    setM_count(event)
+    if(event==null){
      return
     }
    //  console.log('폼내용 변경 발생 name:',event.target.name);
    //  console.log('폼내용 변경 발생 value:',event.target.value);
    setFdata({
      ...fdata,
-     m_no:Date.now(),//디비에서 가져오기ㅜㅠ
-     [event.target.name]:event.target.value
+     s_no:Date.now(),//십진수 날짜 정보 안겹치는 번호를 넣어줌 
+    //  [event.target.name]:event.target.value
    })
    console.log(fdata)
  }
@@ -109,15 +114,15 @@ const MarketWrite = () => {
       event.preventDefault()
     
       const fdata={
-        // s_no:0,//일정넘버
-        market_no:0,//마켓넘버
-        buy_no:'',//예약가능 티켓수
+        s_no:Date.now(),//일정넘버
+        market_no:-1,//마켓넘버
+        buy_no:Number(buy_no),//예약가능 티켓수
         start_date:start_date,//시작날짜
         finish_date:finish_date,//끝날짜
       }
       console.log(fdata);
       //파이어베이스 실시간 디비넣기
-     set(ref(database,'market/all'), fdata);
+     set(ref(database,'market/'+fdata.s_no), fdata);
       handleClose()
     }
 
@@ -180,7 +185,7 @@ const MarketWrite = () => {
         const res = await marketInsertDB(market)
         console.log(res.data)
         alert('글쓰기 성공!');
-        navigate('/market/write')
+        setStart(new Date())//리프레쉬용
       }
 
   return (
@@ -204,15 +209,20 @@ const MarketWrite = () => {
             <div className='col-sm-10'>
             <Form.Control 
                 className='form-control form-control-sm' 
-                type="number" name="scheduleNo" 
-                onChange={handleChangeForm} 
+                type="number" 
+                name="scheduleNo" 
+                value={fdata.s_no}
                 placeholder="Enter 일정번호" />
             </div>
           </Form.Group>
           <Form.Group className="mb-3 row" controlId="boardWriter">
             <Form.Label className="col-sm-2 col-form-label">가능수량</Form.Label>
             <div className='col-sm-10'>
-            <Form.Control type="number" name="buyNo" onChange={handleChangeForm} className='form-control form-control-sm' placeholder="Enter 가능수량" />
+            <Form.Control 
+                type="number" 
+                name="buycount"
+                value={fdata.buy_no} 
+                onChange={(e) => handleChangeForm(e.target.value)} className='form-control form-control-sm' placeholder="Enter 가능수량" />
             </div>
           </Form.Group>
           <Form.Group className="mb-3 row" controlId="edit-start">
