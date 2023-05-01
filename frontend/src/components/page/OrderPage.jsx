@@ -18,12 +18,17 @@ const OrderPage = () => {
   const navigate = useNavigate();
   const [ cookies, setCookies, removeCookies ] = useCookies(['cart']);
 
-  if(sessionStorage.getItem("user_id") === undefined || sessionStorage.getItem("user_id") === null || sessionStorage.getItem("user_id").length < 1)
-    navigate("/");
-
   //주문 상품 정보 받아오기
   const location = useLocation();
   const [ orderItems ] = useState(location.state?.orderItems);
+
+  useEffect(() => {
+    if(sessionStorage.getItem("user_id") === undefined || sessionStorage.getItem("user_id") === null || sessionStorage.getItem("user_id").length < 1)
+      navigate("/signin");
+    if(orderItems === undefined || orderItems === null || orderItems.size < 1){
+      navigate("/cart");
+    }
+  }, [])
 
   console.log(orderItems)
 
@@ -282,7 +287,7 @@ const OrderPage = () => {
     IMP.request_pay(paymentData, callback);
   }
 
-  return defer(
+  return (
     <>
       <Header/>
       <OrderDiv>
