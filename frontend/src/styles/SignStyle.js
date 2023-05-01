@@ -854,3 +854,21 @@ export const SearchBlock = styled.div`
     }
   }
 `;
+
+//======================회원정보수정 CSS 끝 =====================//
+
+
+//======================회원정보 수정전에 비밀번호 입력 CSS ==============//
+
+export const PasswordBlock = styled.section`
+  max-width: 500px;
+  padding: 10rem;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-top : 5%;
+
+  h5{
+    font-weight : 700;
+  }
+`;

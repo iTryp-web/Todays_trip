@@ -28,6 +28,7 @@ import NaverLogin from "./components/auth/NaverLogin";
 import MyOrderList from "./components/mypage/MyOrderList";
 import MyOrderDetail from "./components/mypage/MyOrderDetail";
 import MyInfoEdit from "./components/mypage/MyInfoEdit";
+import MyInfoPw from "./components/mypage/MyInfoPw";
 
 function App({ authLogic }) {
   return (
@@ -56,6 +57,7 @@ function App({ authLogic }) {
         />
         <Route path="/myPage/orderdetail/:ono" element={<MyOrderDetail />} />
         <Route path="/myPage/editInfo" element={<MyInfoEdit />} />
+        <Route path="/myPage/userCheck" element={<MyInfoPw />}/>
 
         <Route path="/signup" exact={true} element={<SignUpPage />} />
         <Route path="/signin" exact={true} element={<SignInPage />} />
