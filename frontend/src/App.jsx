@@ -30,6 +30,7 @@ import MyOrderDetail from "./components/mypage/MyOrderDetail";
 import MyInfoEdit from "./components/mypage/MyInfoEdit";
 import MyInfoPw from "./components/mypage/MyInfoPw";
 import RealTimeSchedule from "./components/market/RealTimeSchedule";
+import MyPageLayout from "./components/mypage/MyPageLayout";
 
 function App() {
   return (
@@ -50,7 +51,8 @@ function App() {
         <Route path="/order" exact={true} element={<OrderPage />} />
         <Route path="/payResult" exact={true} element={<PaymentResult />} />
 
-        <Route path="/mypage/:category" element={<MyPagePage />} />
+        <Route path="/mypage" exact={true} element={<MyPagePage />} />
+        <Route path="/mypage/:category" element={<MyPageLayout />} />
         <Route path="/mypage/orderlist" exact={true} element={<MyOrderList />} />
         <Route path="/mypage/orderdetail/:ono" element={<MyOrderDetail />} />
         <Route path="/mypage/editInfo" exact={true} element={<MyInfoEdit />} />

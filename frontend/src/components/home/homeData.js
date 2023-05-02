@@ -1,19 +1,19 @@
 export const HomeImages = [
   {
     id: 0,
-    src: '/images/home/banner0.jpg',
+    src: '/images/home/banner0.png',
   },
   {
     id: 1,
-    src: '/images/home/banner1.jpg',
+    src: '/images/home/banner1.png',
   },
   {
     id: 2,
-    src: '/images/home/banner2.jpg',
+    src: '/images/home/banner2.png',
   },
   {
     id: 3,
-    src: '/images/home/banner3.jpg',
+    src: '/images/home/banner3.png',
   },
 ]
 

@@ -227,19 +227,12 @@ export const NoneDiv = styled.div`
 export const SliderBlock = styled(Slider)`
   text-align: center;
   overflow: hidden;
-  height: 470px;
+  height: 500px;
   .slick-dots {
     position: absolute;
-    bottom: 1rem;
+    bottom: 2.5rem;
   }
   .slick-dots li button:before {
-    color: white;
+    color: gray;
   }
-`;
-
-export const ImageBlock = styled.img`
-  margin-top: 15px;
-  height: 450px;
-  object-fit: cover;
-  max-width: 1920px;
 `;

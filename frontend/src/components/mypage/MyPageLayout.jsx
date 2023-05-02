@@ -15,6 +15,8 @@ import MyPageReviewRow from './MyPageReviewRow';
 import MyPageQnaRow from './MyPageQnaRow';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { TopText } from '../../styles/MypageStyle';
+import Header from '../include/Header';
+import Footer from '../include/Footer';
 
 const MyPageLayout = () => {
   // 화면전환
@@ -204,6 +206,7 @@ const MyPageLayout = () => {
   
   return (
     <>
+      <Header />
       <AdminSection>
         {/* 왼쪽 카테고리 */}
         <AdminCategory>
@@ -343,6 +346,7 @@ const MyPageLayout = () => {
           ) : null}
         </AContentSection>
       </AdminSection>
+      <Footer />
     </>
   );
 };

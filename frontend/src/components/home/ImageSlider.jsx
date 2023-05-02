@@ -18,7 +18,7 @@ const ImageSlider = () => {
       <SliderBlock {...settings}>
         {HomeImages &&
           HomeImages.map((item) => (
-            <ImageBlock key={item.id} src={item.src} />
+            <img key={item.id} src={item.src} />
           ))}
       </SliderBlock>
     </>
