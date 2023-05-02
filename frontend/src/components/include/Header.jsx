@@ -89,7 +89,7 @@ const Header = () => {
               관리자 페이지
             </Link>
               ) : (
-            <Link to="/mypage" className="signout button">
+            <Link to="/mypage/all" className="signout button">
               마이 페이지
             </Link>
               )

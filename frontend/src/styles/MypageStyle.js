@@ -296,3 +296,40 @@ export const BtnReview = styled.div`
   background-color: ${({ content }) => (content >= 10 ? "#4996F3" : "#979797")};
   cursor: ${({ content }) => (content >= 10 ? "pointer" : "default")};
 `
+
+/*================================= MyPageLayout Style Start =================================*/
+export const MyPageContainer = styled.section`
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+width : 80%;
+
+`
+
+export const UserInfo = styled.div`
+
+`
+
+export const QuickMenu = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+`
+
+export const QElements = styled.div`
+display: flex;
+flex-direction: row;
+`
+
+export const MenuElement = styled.div`
+width: 100px;
+height: 100px;
+background-color: blue;
+cursor: pointer;
+transition: all 0.3s ease;
+&:hover {
+  transform: scale(1.1);
+}
+`
+
+/*================================= MyPageLayout Style Start =================================*/

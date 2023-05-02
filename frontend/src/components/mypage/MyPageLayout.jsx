@@ -344,7 +344,7 @@ const MyPageLayout = () => {
         </AContentSection>
       </AdminSection>
     </>
-  )
-}
+  );
+};
 
-export default MyPageLayout
+export default MyPageLayout;
