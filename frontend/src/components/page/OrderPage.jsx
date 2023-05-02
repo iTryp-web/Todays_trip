@@ -6,12 +6,14 @@ import { OrderDiv, OrderTitle, LineHr, OrderListDiv, OrderAddressDiv, OrderCoupo
          OrdererTable, ConfirmButton, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderItemTitle, OrderTotalSpan, OrderTotalDiv, 
          PointUseDiv, ConfirmSpan, OrderCouponTyDiv, OrderAgreeDiv, OrderAgreeTyDiv, OrderCancelDiv, OrderCancelTitle, CancelSpan, CancelP, OrdererTyContentTd, AgreeAllCheckDiv, 
          InputAllCheck, AddressTable, AddressTitleTd, AddressButton, AddressInput, AgreeCheckDiv } from '../../styles/OrderStyle'
-import { defer, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { Modal } from 'react-bootstrap'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { getOrderPage, setOrderTable, updatePayFail, updatePaymentInfo } from '../../service/orderLogic'
 import { Form } from 'react-bootstrap'
 import { cancelMsg, failValue } from '../order/constants'
+import DaumPostcode from 'react-daum-postcode';
 
 const OrderPage = () => {
 
@@ -139,9 +141,20 @@ const OrderPage = () => {
     console.log(orderInfo)
   }, [orderInfo])
 
-  //주소 찾기용 / 구현 미정
-  const getPostCode = () => {
-  }
+  //주소창 모달
+  const [Dshow, setDShow]=useState(false)
+  const DhandleClose=()=>setDShow(false)
+  const handleShowDelete=()=>setDShow(true)
+
+  //주소 찾기
+  const getPostCode = (data) => {
+    setUserInfo(prevState => ({
+      ...prevState,
+      user_zipcode: data.zonecode,
+      user_address: data.address,
+    }))
+    DhandleClose();
+  };
 
   //결제하기 버튼 클릭 후 처리
   const onClickPayment = () => {
@@ -161,6 +174,7 @@ const OrderPage = () => {
                 market_no: item.marketNum,
                 market_count: item.marketCnt,
                 order_amount: item.marketPrice * item.marketCnt,
+                market_order_date: item.marketOption,
               }];
           });
     setOrderDetailInfo(detailItem);
@@ -280,7 +294,6 @@ const OrderPage = () => {
       }
 
     }
-
     console.log(paymentData);
 
     //결제 실행
@@ -290,6 +303,16 @@ const OrderPage = () => {
   return (
     <>
       <Header/>
+      {/* ========================== [[ 주소창 입력 Modal ]] ========================== */}
+      <Modal show={Dshow} onHide={DhandleClose} animation={true}>
+        <Modal.Header closeButton>
+          주소 찾기
+        </Modal.Header>
+        <Modal.Body>
+          <DaumPostcode autoClose onComplete={getPostCode} />
+        </Modal.Body>
+      </Modal>     
+      {/* ========================== [[ 주소창 입력 Modal ]] =========================>*/}
       <OrderDiv style={{height: "100%"}}>
         <OrderTitle>예약하기</OrderTitle>
         <OrderListDiv>
@@ -371,7 +394,7 @@ const OrderPage = () => {
               </tr>
               <tr>
                 <AddressTitleTd rowSpan={3}>주소</AddressTitleTd>
-                <td><AddressButton onClick={getPostCode}>주소찾기</AddressButton><AddressInput type="text" id="shipping_zipcode" onChange={e => handleInput(e)} style={{width:"166px"}} defaultValue={userInfo.user_zipcode || ''} disabled/></td>
+                <td><AddressButton onClick={handleShowDelete}>주소찾기</AddressButton><AddressInput type="text" id="shipping_zipcode" onChange={e => handleInput(e)} style={{width:"166px"}} defaultValue={userInfo.user_zipcode || ''} disabled/></td>
               </tr>
               <tr>
                 <td><AddressInput type="text" id="shipping_address" onChange={e => handleInput(e)} style={{width:"100%", maxWidth:"400px"}} defaultValue={userInfo.user_address || ''} disabled/></td>

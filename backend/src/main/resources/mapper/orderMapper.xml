@@ -59,13 +59,15 @@
 										order_no,
 										market_no,
 										market_count,
-										order_amount)
+										order_amount,
+										market_order_date)
 							VALUES (
 										TB_ORDER_DETAIL_NO_SEQ.NEXTVAL,
 										#{order_no},
 										#{market_no},
 										#{market_count},
-										#{order_amount})
+										#{order_amount},
+										#{market_order_date})
 	</insert>
 	
 	<!-- 주문시 사용한 쿠폰 정보 업데이트 -->	
