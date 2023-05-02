@@ -58,8 +58,8 @@ public class MarketLogic {
 	public int marketInsert(Map<String, Object> pMap) {
 		logger.info("marketInsert 호출");
 		int result = 0;
-		result = marketDao.marketInsert(pMap);
-		pMap.put("market_no", result);
+		result = marketDao.marketInsert(pMap);//성공시 1이다.
+		logger.info("성공!"+result);
 		// Quill image가 있을 경우
 		if(pMap.get("imageNames") != null) {
 			// 작성자가 선택한 이미지의 개수가 n개까지 올 수 있다

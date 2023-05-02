@@ -237,12 +237,17 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                           name={'구매하기'}
                           onClick={() => {
                             navigate('/order', { state: { orderItems:[{
-                                marketName: detailPost.market_title,
-                                marketOption:filter,
-                                id: detailPost.user_id,
-                                count: count,
-                                price: detailPost.market_price,
-                                totalPrice: detailPost.market_price* count
+                                "marketNum": detailPost.market_no,
+                                "marketImg": thumbnailUrl,//썸네일
+                                "marketName": detailPost.market_title,
+                                "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스....ㅠㅠ
+                                "marketCnt": count,//사용자가 선택한 갯수
+                                "marketPrice": detailPost.market_price
+                                // marketName: detailPost.market_title,
+                                // marketOption:filter,
+                                // count: count,
+                                // price: detailPost.market_price,
+                                // totalPrice: detailPost.market_price* count
                             }] 
                           }})
                         }}

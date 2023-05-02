@@ -2,14 +2,30 @@ import moment from 'moment';
 import React, { useCallback, useRef, useState } from 'react'
 import Header from '../include/Header';
 import Footer from '../include/Footer';
-import { Row, WriteSection } from '../../styles/BoardStyle';
+import { Row } from '../../styles/BoardStyle';
 import { marketInsertDB } from '../../service/marketLogic';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { Form} from 'react-bootstrap'
 import MQuillEditor from './MQuillEditor';
 import { useNavigate } from 'react-router';
+import styled from 'styled-components';
+import { useEffect } from 'react';
 
-
+ const WriteSection = styled.section`
+  max-width: 1344px;
+  padding: 0 5rem;
+  margin: 0 auto;
+  margin-top: 2.5em;
+  margin-bottom: 6em;
+  .titleP {
+    color: black;
+    overflow: hidden;
+    padding-right: 5px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  
+  }
+`;
 
 const MarketWrite = () => {
   const navigate=useNavigate();
@@ -47,12 +63,18 @@ const MarketWrite = () => {
       setFiles([...files, value]); // 깊은복사
   },[files]);
 
+  const [mno, setMno]=useState(0)
+  useEffect(()=>{
+    setMno(Date.now())
+  },[])
+  console.log(mno);
 
       const marketInsert = async() => {
         console.log('marketInsert');
         console.log(files)
         const market = {
           // user_id: sessionStorage.getItem('user_id'),
+          market_no:mno,
           user_id: 'admin',
           market_category: selected,
           market_title: title,
@@ -83,6 +105,7 @@ const MarketWrite = () => {
   
 
     <WriteSection>
+            <p className='titleP'>마켓넘버  {mno}</p>
         <Form.Group className="mb-3 row" controlId="boardWriter">
             <Form.Label className="col-sm-2 col-form-label">가격</Form.Label>
             <div className='col-sm-10'>
@@ -110,7 +133,7 @@ const MarketWrite = () => {
             autoComplete="off"
             onChange={(e)=>{handleTitle(e.target.value)}}
           />
-          <button className='btnInsert' onClick={(e)=>{marketInsert(); navigate('/market/write/schedule')}}>등록</button>
+          <button className='btnInsert' onClick={(e)=>{marketInsert(); navigate('/market/write/schedule',{state:{market_no:mno}})}}>등록</button>
         </Row>
         <MQuillEditor value={content} handleContent={handleContent} quillRef={quillRef} files={files} handleFiles={handleFiles}/>
         </WriteSection>

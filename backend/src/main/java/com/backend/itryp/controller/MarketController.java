@@ -84,11 +84,13 @@ public class MarketController {
 	@PostMapping("marketInsert")
 	public String marketInsert(@RequestBody Map<String, Object> pMap) {
 		logger.info("marketInsert 호출");
-		logger.info(pMap);
+		logger.info(pMap.get("market_no"));
+		logger.info(pMap.get("market_no").toString());
+		logger.info(Long.parseLong(pMap.get("market_no").toString()));
 		if(pMap.get("market_no") != null) {
 			// NumberFormatException 방어코드(값에 null이 들어가지 않도록!)
-			int market_no = Integer.parseInt(pMap.get("market_no").toString());
-			pMap.put("market_no", market_no);
+			long market_no = Long.parseLong(pMap.get("market_no").toString());
+			pMap.put("market_no   ", market_no);
 		}
 		int result = 0;
 		result =marketLogic.marketInsert(pMap);

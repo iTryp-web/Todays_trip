@@ -107,7 +107,8 @@
 							 ,market_price    
 							 ,market_date 
 		            )
-		    VALUES (TB_MARKET_NO_SEQ.NEXTVAL
+		    VALUES (
+				 #{market_no}
 	            , #{user_id}
 	            , #{market_category}
 	            , #{market_title}
@@ -117,7 +118,7 @@
 		          )
 	</insert>
 	
-	<!-- 판매자가 가능 날짜 갯수 넣음-firebase 실시간 디비 쓸 예정...? -->
+	<!-- 판매자가 가능 날짜 갯수 넣음-firebase 실시간 디비에서 market_no로 꺼내옴 -->
 	
 	
 	<!-- Quill image 추가 - 이미지 선택할때마다 인서트 -->
