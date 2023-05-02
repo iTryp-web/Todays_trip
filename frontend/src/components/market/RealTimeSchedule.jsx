@@ -10,7 +10,7 @@ import Datetime from 'react-datetime';
 import { database } from '../../service/firebase'
 import { off, onValue, ref, remove, set} from 'firebase/database'
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 import ScheduleRow from './ScheduleRow';
 
@@ -45,26 +45,24 @@ const RealTimeSchedule = () => {
   // 리프레쉬용 변수
   const [start, setStart] = useState()
 
-  //사용자가 선택한 로우 m_no
-  // const {s_no}=useParams()
-
+ 
   /* 실시간 데이터 베이스 */
  
-  //마켓넘버-시퀀스로 넣어줌...갔다와,....일단보류
-  // const {mno}=useParams()
-
+  //마켓넘버-navigate('/market/write/schedule',{state:{market_no:mno}})
+    const location = useLocation();
+    const tempMno = useState(location.state?.market_no);
+    console.log(tempMno[0])
+  
     //사용자로부터 입력받은 값-상태훅으로 관리하기
-    const [s_no,setM_no]=useState(0)//식별자
+    const [s_no,setS_no]=useState(0)//식별자
+    useEffect(()=>{
+      setS_no(Date.now())
+    },[])
     const [buy_no,setM_count]=useState(0)//가능한갯수
     
     const [start_date,setM_start]=useState('')
     const [finish_date, setM_end]=useState('')
-    const [fdata, setFdata]=useState({
-      m_no:0,//마켓넘버
-      m_count:'',//예약가능 티켓수
-      m_start:'',//시작날짜
-      m_end:''//끝날짜
-    })
+    const [fdata, setFdata]=useState({})
 
    //오늘 이전날짜 비활성화 처리하기
    const yesterday = moment().subtract(1, 'day')
@@ -99,26 +97,20 @@ const RealTimeSchedule = () => {
   const handleChangeForm=(event)=>{
     console.log(event)
     setM_count(event)
-    if(event==null){
-     return
-    }
-   //  console.log('폼내용 변경 발생 name:',event.target.name);
-   //  console.log('폼내용 변경 발생 value:',event.target.value);
-   setFdata({
-     ...fdata,
-     s_no:Date.now(),//십진수 날짜 정보 안겹치는 번호를 넣어줌 
-    //  [event.target.name]:event.target.value
-   })
-   console.log(fdata)
- }
+  
+  //  setFdata({
+  //    ...fdata,
+  //   //  s_no:Date.now(),//십진수 날짜 정보 안겹치는 번호를 넣어줌 
+  //   //  [event.target.name]:event.target.value
+  //  })
+  //  console.log(fdata)
+  }
    //일정등록하기구현
-   const dateAdd=(event)=>{//파이어 베이스에서 insertm update 같다
-    //버튼이기때문에 이벤트 버블링 사전처리
-      // event.preventDefault();
-    
+   const dateAdd=()=>{//파이어 베이스에서 insertm update 같다
+   
       const fdata={
-        s_no:Date.now(),//일정넘버
-        market_no:0,//마켓넘버
+        s_no:s_no,//일정넘버
+        market_no:tempMno[0],//마켓넘버
         buy_no:Number(buy_no),//예약가능 티켓수
         start_date:start_date,//시작날짜
         finish_date:finish_date,//끝날짜
@@ -126,6 +118,7 @@ const RealTimeSchedule = () => {
       console.log(fdata);
       //파이어베이스 실시간 디비넣기
      set(ref(database,'market/'+fdata.s_no), fdata);
+    
     }
 
      //일정정보가져오기
@@ -165,11 +158,12 @@ const RealTimeSchedule = () => {
               className="form-control form-control-sm"
               type="number"
               name="scheduleNo"
-              value={fdata.s_no}
-              placeholder="Enter 일정번호"
+              value={s_no}
+              placeholder=" 일정번호 자동생성 "
               onChange={(e) =>
                 handleChangeForm(e.target.value, 's_no')
               }
+              disabled
               />
           </div>
         </Form.Group>
@@ -217,39 +211,39 @@ const RealTimeSchedule = () => {
           </Form>
   
 
-      <div className="book-list">
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>마켓번호</th>
-              <th>일정번호</th>
-              <th>수량</th>
-              <th>일정시간</th>
-              <th>삭제하기</th>
-            </tr>
-          </thead>
-          <tbody>
-            {fdatas&&//데이터가 한건도 없는 경우를 고려
-            Object.keys(fdatas).map((key)=>(
-              <ScheduleRow key={key} fdata={fdatas[key]} setStart={setStart}/>
-              ))
-            }
-          </tbody>
-        </Table>
-        <hr />
-        <div className="booklist-footer">
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button onClick={(e) => { dateAdd() }}>
-              일정등록
-            </Button>
-            <Button onClick={(e) => { dateDelete(e) }}>
-              일정삭제
-            </Button>
+        <div className="book-list">
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>마켓번호</th>
+                <th>일정번호</th>
+                <th>수량</th>
+                <th>일정시간</th>
+                <th>삭제하기</th>
+              </tr>
+            </thead>
+            <tbody>
+              {fdatas&&//데이터가 한건도 없는 경우를 고려
+              Object.keys(fdatas).map((key)=>(
+                <ScheduleRow key={key} fdata={fdatas[key]} setStart={setStart}/>
+                ))
+              }
+            </tbody>
+          </Table>
+          <hr />
+          <div className="booklist-footer">
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              {/* <Button onClick={()=>{dateAdd()}}> */}
+              <Button onClick={dateAdd}>
+                일정등록
+              </Button>
+              <Button onClick={()=>{navigate('/market/all')}} style={{ marginLeft: '1rem' }}>
+                마켓글쓰기 완료
+              </Button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-
-            </WriteSection> 
+        </WriteSection> 
       <Footer/>
     </>
   )

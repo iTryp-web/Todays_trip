@@ -23,7 +23,7 @@ const ProductItem = ({items}) => {
             <div className="body">
               <span className="category">{item.market_category}</span>
               <span className="title">{item.market_title}</span>
-           
+             {/* 할인률 줘도되고 안줘도되고 */}
               <span className="discount">20%</span>
               <span className="price">{item.market_price}</span>
 

@@ -24,8 +24,10 @@ const Btnwrap=styled.div`
   margin: 10px 0 40px 0;
   line-height: 30px;
   font-size: 15px;
+  text-align: center; /* 가운데 정렬 */
   img {
     max-width: 100%;
+    
   }
 `;
 
@@ -63,29 +65,27 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
 
   /* 장바구니 */
   const [cookies, setCookies] = useCookies(['cart']);
-  let cartList=[];
+  let cartList=[]
   const [cartAdd, setCartAdd]=useState({});
-  // const countRef=useRef(0)
  
-  //////////////////////////////////////////////////쿠키조건문 안먹음. 은재언니 도움!!!!! 새로고침하면 쿠키가 날아가 왜그러지???
   //쿠키에 장바구니 담기 함수
   const cookieAdd=() => {
     console.log("cookieAdd")//여기까지 멀쩡;;
     // 쿠키에서 기존 장바구니 가져오기
     const existingCart = cookies?.cart ?? [];
     cartList = [...existingCart, cartAdd];
-    //여러개 담기는듯...?? 해결된듯 cookies.cart문제. 얘가 정확히 뭔지 물어보기
+    // //여러개 담기는듯...?? 해결된듯 cookies.cart문제. 얘가 정확히 뭔지 물어보기
     console.log(cartList)
 
     // if(cookies===undefined){//장바구니 없는 경우
-        //앞의 키값은 바꾸지 않기! 은재언니가 씀 뒤에는 변수로 연결
-        // cartList.push(cartAdd)
-        // console.log(cartList)
-      // }else{//장바구니 이미 있는 경우
-      //   cartList=[...cookies.cart,cartAdd]
-      //   console.log(cookies);
-      //   console.log(cookies.cart);
-      // }
+    //     // 앞의 키값은 바꾸지 않기! 은재언니가 씀 뒤에는 변수로 연결
+    //     cartList.push(cartAdd)
+    //     console.log(cartList)
+    //   }else{//장바구니 이미 있는 경우
+    //     cartList=[...cookies.cart,cartAdd]
+    //     console.log(cookies);
+    //     console.log(cookies.cart);
+    //   }
 
       //장바구니 리셋
       //Date.now() + 259200000의 값을 expires에 할당하면 3일 후 만료되는 쿠키를 설정할 수 있습니다.
@@ -151,10 +151,11 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
               <img src={thumbnailUrl} />
       
               <h4 className='title'>상세보기</h4>
-              {/* 상세보기 이미지 여러개 */}
-              {detailImageUrls.map((url) => (
+              {/* 상세보기 이미지 여러개- 퀼에디터 아닌 그냥 이미지 넣을경우 */}
+              {/* {detailImageUrls.map((url) => (
                       <img src={url} />
-                      ))}
+                      ))} */}
+
                   {/* 내용 */}
                   {/* <p>{detailPost.market_content}</p> */}
                 <DetailContent dangerouslySetInnerHTML={{__html:detailPost.market_content}}></DetailContent>
@@ -226,13 +227,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                           className='sale'
                           onClick={handleClick}
                         >장바구니</Button>
-                        
-                        {/* <Button
-                          name={'장바구니'}
-                          className='sale'
-                          onClick={(e) => {handleShow(); Object.entries(cookieAdd)
-                          }}
-                        >장바구니</Button> */}
+
                         <Button
                           name={'구매하기'}
                           onClick={() => {
@@ -243,11 +238,6 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                                 "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스....ㅠㅠ
                                 "marketCnt": count,//사용자가 선택한 갯수
                                 "marketPrice": detailPost.market_price
-                                // marketName: detailPost.market_title,
-                                // marketOption:filter,
-                                // count: count,
-                                // price: detailPost.market_price,
-                                // totalPrice: detailPost.market_price* count
                             }] 
                           }})
                         }}
@@ -255,22 +245,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                       </div>
                     )}            
               </div>
-            </div>{/* end of menu */}
-                      {/*  [
-      { "marketNum" : 11,
-       "marketImg" : "/images/naver-icon.png",
-       "marketName" : "상품명1",
-       "marketOption" : "2023-05-30 3PM",
-       "marktetCnt" : 5,
-       "marketPrice" : 7000 },
-       { "marketNum" : 22,
-       "marketImg" : "/images/naver-icon.png",
-       "marketName" : "상품명2",
-       "marketOption" : "2023-05-31 5PM",
-       "marktetCnt" : 2,
-       "marketPrice" : 3000 }
-    ] */}
-
+            </div>
           </div>{/* end of container */}
         </div>
       </DetailBlock>
