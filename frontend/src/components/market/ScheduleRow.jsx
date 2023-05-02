@@ -38,7 +38,7 @@ const ScheduleRow = ({fdata, setStart}) => {
           <td>{`${fdata.start_date}~${fdata.finish_date}`}</td>
           <td>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={dateDelete}>모두삭제</Button>
+            <Button onClick={dateDelete}>삭제</Button>
             </div>
           </td>
         </tr>

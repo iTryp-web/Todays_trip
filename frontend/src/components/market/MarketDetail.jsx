@@ -86,16 +86,6 @@ const MarketDetail = () => {
      
       const temp = JSON.stringify(res.data)
       const jsonDoc = JSON.parse(temp)
-      
-      // //쿠키에 상품정보담기
-      // setCartAdd({
-      //   "marketNum" : jsonDoc[0].MARKET_NO, 
-      //   "marketImg" : "대표이미지.png",//프론트에서 대표이미지 처리 할예정
-      //   "marketName" : jsonDoc[0].MARKET_TITLE,
-      //   "marketOption" : "시간선택",//프론트에서 시간선택 처리 할예정
-      //   "marketCnt" : count,//사용자가 선택한 갯수
-      //   "marketPrice" : jsonDoc[0].MARKET_PRICE 
-      // })
      
       // 상세보기 db 담기
       setDetailPost({
