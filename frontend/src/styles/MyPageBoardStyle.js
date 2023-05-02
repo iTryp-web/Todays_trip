@@ -247,6 +247,8 @@ export const ReportUl = styled.ul`
     background-color: #DBEAFD;
     border-right: 2px solid white;
     border-radius: 5px;
+    text-overflow: ellipsis;
+    word-break: break-all;
   }
   .reportTdLast {
     background-color: #DBEAFD;
@@ -264,6 +266,9 @@ export const ReportUl = styled.ul`
   }
   .reportItemTd{
     cursor: pointer;
+    padding: 0 21px;
+    text-overflow: ellipsis;
+    word-break: break-all;
   }
   .icon { 
     color: #4996F3;

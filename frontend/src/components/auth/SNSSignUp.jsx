@@ -14,7 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToastMsg } from "../../redux/toastStatus/action";
 import Toast from "../include/Toast";
 
-const SNSSignUp = ({ authLogic, kakaoData, naverData }) => {
+const SNSSignUp = ({ kakaoData, naverData }) => {
+  const userAuth = useSelector((state) => state.userAuth);
   const status = useSelector((store) => store.toastStatus.status);
   console.log(status);
   const dispatch = useDispatch();
@@ -178,7 +179,8 @@ const SNSSignUp = ({ authLogic, kakaoData, naverData }) => {
   [naverData] = useState(location.state?.naverData);
   [kakaoData] = useState(location.state?.kakaoData);
   const signup = async ({ kakaoData, naverData }) => {
-    const auth = authLogic.getUserAuth();
+    // const auth = authLogic.getUserAuth();
+    const auth = userAuth.auth;
     const user = await onAuthChange(auth);
     console.log("SNS 회원가입 구현");
     try {

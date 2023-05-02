@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Header from '../include/Header';
 import Footer from '../include/Footer';
-import { NoneDiv, OrderSection, OrderTable, OrderTd, OrderTh } from '../../styles/MypageStyle';
+import { NoneDiv, OrderSection, OrderTable, OrderTd, OrderTh, TopText } from '../../styles/MypageStyle';
 import MyOrderRow from './MyOrderRow';
 import { myOrderListDB } from '../../service/myPageLogic';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 const MyOrderList = () => {
   // 화면전환
@@ -64,9 +65,10 @@ const MyOrderList = () => {
     <>
     <Header />
     <OrderSection>
-      <p className='topText'>
+      <TopText onClick={() => navigate('/mypage')}>
+      <AiOutlineArrowLeft className='topIcon' />
         내 주문 목록
-      </p>
+      </TopText>
       <OrderTable>
         <colgroup>
           <col style={{ width: "15%" }} />

@@ -26,7 +26,7 @@ root.render(
     <CookiesProvider>
       <Provider store={store}>
       <BrowserRouter>
-        <App authLogic={authLogic} />
+        <App />
       </BrowserRouter>
       </Provider>
     </CookiesProvider>

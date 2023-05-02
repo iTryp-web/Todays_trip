@@ -13,6 +13,8 @@ import { AContentSection, AdminCategory, AdminCategoryLi, AdminCategoryUl, Admin
 import { Nav, Table } from 'react-bootstrap';
 import MyPageReviewRow from './MyPageReviewRow';
 import MyPageQnaRow from './MyPageQnaRow';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
+import { TopText } from '../../styles/MypageStyle';
 
 const MyPageLayout = () => {
   // 화면전환
@@ -205,9 +207,10 @@ const MyPageLayout = () => {
       <AdminSection>
         {/* 왼쪽 카테고리 */}
         <AdminCategory>
-          <AdminPageUl onClick={() => navigate('/mypage/board')}>
+          <TopText onClick={() => navigate('/mypage')}>
+            <AiOutlineArrowLeft className='topIcon' />
             작성글 목록
-          </AdminPageUl>
+          </TopText>
           <AdminCategoryUl>
             {mypageCategories &&
               mypageCategories.map((category) => {
@@ -315,9 +318,9 @@ const MyPageLayout = () => {
                 </thead>
                 <colgroup>
                   <col style={{ width: "35%" }} />
-                  <col style={{ width: "35%" }} />
+                  <col style={{ width: "40%" }} />
                   <col style={{ width: "15%" }} />
-                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "10%" }} />
                 </colgroup>
                 <thead>
                   <tr>

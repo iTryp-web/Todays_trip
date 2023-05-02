@@ -31,7 +31,7 @@ import MyInfoEdit from "./components/mypage/MyInfoEdit";
 import MyInfoPw from "./components/mypage/MyInfoPw";
 import RealTimeSchedule from "./components/market/RealTimeSchedule";
 
-function App({ authLogic }) {
+function App() {
   return (
     <>
       <Routes>
@@ -50,16 +50,16 @@ function App({ authLogic }) {
         <Route path="/order" exact={true} element={<OrderPage />} />
         <Route path="/payResult" exact={true} element={<PaymentResult />} />
 
-        <Route path="/myPage/:category" element={<MyPagePage />} />
-        <Route path="/myPage/orderlist" exact={true} element={<MyOrderList />} />
-        <Route path="/myPage/orderdetail/:ono" element={<MyOrderDetail />} />
-        <Route path="/myPage/editInfo" element={<MyInfoEdit />} />
-        <Route path="/myPage/userCheck" element={<MyInfoPw />}/>
+        <Route path="/mypage/:category" element={<MyPagePage />} />
+        <Route path="/mypage/orderlist" exact={true} element={<MyOrderList />} />
+        <Route path="/mypage/orderdetail/:ono" element={<MyOrderDetail />} />
+        <Route path="/mypage/editInfo" exact={true} element={<MyInfoEdit />} />
+        <Route path="/mypage/userCheck" exact={true} element={<MyInfoPw />}/>
 
         <Route path="/signup" exact={true} element={<SignUpPage />} />
         <Route path="/signin" exact={true} element={<SignInPage />} />
         <Route path="/findEmail" exact={true} element={<FindUserPage />} />
-        <Route path="/auth/snsSignUp" exact={true} element={<SNSSignUp authLogic={authLogic} />} />
+        <Route path="/auth/snsSignUp" exact={true} element={<SNSSignUp />} />
         <Route path="/auth/kakao" exact={true} element={<KakaoLogin />} />
         <Route path="/auth/naver" exact={true} element={<NaverLogin />} />
 
@@ -70,7 +70,7 @@ function App({ authLogic }) {
         <Route path="/market/detail/:mno" element={<MarketDetail />} />
         <Route path="/market/write/schedule" element={<RealTimeSchedule />} />
 
-        <Route path="/support/:category" exact={true} element={<FaqPage />} />
+        <Route path="/support/:category" element={<FaqPage />} />
         <Route path="/support/inquiryBoard" exact={true} element={<InquiryList />} />
         <Route path="/support/write" exact={true} element={<InquiryWriteForm />} />
       </Routes>

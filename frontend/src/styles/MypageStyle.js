@@ -119,6 +119,20 @@ export const OrderDetailSection = styled.section`
   }
 `
 
+export const TopText = styled.div`
+  margin-bottom: 15px;
+  margin-left: 30px;
+  font-size: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  .topIcon {
+    margin: 0 5px 7px 0;
+  }
+  &:hover {
+    color: #4996F3;
+  }
+`;
+
 export const OrderDiv = styled.div`
   padding: 0 50px;
   margin: 0;

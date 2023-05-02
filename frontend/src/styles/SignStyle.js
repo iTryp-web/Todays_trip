@@ -766,7 +766,11 @@ export const EditBlock = styled.form`
     top: 10%;
   }
   h4 {
+    cursor: pointer;
     font-weight: 700;
+    &:hover {
+      color: #4996F3;
+    }
   }
   hr {
     color: gray;

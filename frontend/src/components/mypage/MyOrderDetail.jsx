@@ -6,7 +6,7 @@ import { myOrderDetailDB } from '../../service/myPageLogic'
 import Header from '../include/Header'
 import Footer from '../include/Footer'
 import MyOrderDetailRow from './MyOrderDetailRow'
-import { OrderDetailSection, OrderDiv, OrderTotalSpan, OrderTotalDiv, LineHr } from '../../styles/MypageStyle'
+import { OrderDetailSection, OrderDiv, OrderTotalSpan, OrderTotalDiv, LineHr, TopText } from '../../styles/MypageStyle'
 import { OrderListDiv, OrderCouponDiv, OrdererInfoDiv, OrdertyTitle, OrdertysTitle, OrderCalcDiv, OrdererTable, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderCouponTyDiv, OrdererTyContentTd } from '../../styles/OrderStyle'
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 
@@ -77,19 +77,14 @@ const MyOrderDetail = () => {
     orderDetail()
   }, [ono, start])
 
-  // 페이지 이동
-  const movePage = () => {
-    navigate('/mypage/orderlist')
-  }
-
   return (
     <>
       <Header />
       <OrderDetailSection>
-        <p className='topText' onClick={() => movePage()}>
+        <TopText className='topText' onClick={() => navigate('/mypage/orderlist')}>
           <AiOutlineArrowLeft className='topIcon' />
           주문 목록
-        </p>
+        </TopText>
         <OrderDiv>
           <OrderListDiv>
             <OrdertyTitle>주문 정보</OrdertyTitle>

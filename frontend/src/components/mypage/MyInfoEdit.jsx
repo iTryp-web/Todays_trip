@@ -20,6 +20,8 @@ import { useEffect } from "react";
 import { checkInfoDB, memberUpdateDB } from "../../service/memberLogic";
 import { GoSearch } from "react-icons/go";
 import { setToastMsg } from "../../redux/toastStatus/action";
+import { TopText } from "../../styles/MypageStyle";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 const MyInfoEdit = () => {
   const navigate = useNavigate();
@@ -420,7 +422,10 @@ const MyInfoEdit = () => {
       {status && <Toast />}
       <EditDiv>
         <EditBlock>
-          <h4>회원정보 수정</h4>
+          <h4 onClick={() => navigate('/mypage')}>
+            <AiOutlineArrowLeft style={{margin: '0 5px 7px 0'}}  />
+            회원정보 수정
+          </h4>
           <hr />
           <h6>이메일</h6>
           <EditEmailBlock>
