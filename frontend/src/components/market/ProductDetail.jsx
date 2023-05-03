@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { Button, Modal,Form} from 'react-bootstrap'
 import { useCookies } from 'react-cookie';
+import { BsOption } from 'react-icons/bs';
 
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
@@ -56,7 +57,11 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   console.log(count)
   
   /* 품절여부 */
-  const isSoldOut=0;
+  const [isSoldOut, setIsSoldout]=useState(0);
+  /* 실시간남아있는 갯수-선택한갯수 */
+  const fCount=isSoldOut-count;
+  console.log(fCount)
+
 
   //아이콘 이미지
   const plus_img = "/images/plus.png";
@@ -148,20 +153,24 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
     const startCountRef=ref(database,'market/'+filter)
     onValue(startCountRef,(snapshot)=>{
       const data=snapshot.val()
-      setFdata(data)
+      setFdata(data);
+      setIsSoldout(data?.s_count??null);
       return()=>off(startCountRef)
     })
   },[filter])
   console.log(fdata);
+  console.log(isSoldOut)
+
+  
   //파이어베이스에서 수정 업데이트 똑같다
   const countUpdate=(event)=>{
-    event.preventDefault()
+    // event.preventDefault()
     const nfdata={
-      s_no:s_no,//일정넘버
+      s_no:fdata.s_no,//일정넘버
       market_no:mno,//마켓넘버
-      s_count:Number(s_count),//예약가능 티켓수
-      start_date:start_date,//시작날짜
-      finish_date:finish_date,//끝날짜
+      s_count:Number(fCount),//예약가능 티켓수
+      start_date:fdata.start_date,//시작날짜
+      finish_date:fdata.finish_date,//끝날짜
     }
     console.log(nfdata);
     set(ref(database,'market/'+fdata.s_no), nfdata);
@@ -267,7 +276,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                             <option value="3">23.12.20</option>
                         </Form.Select>  */}
                        
-                       <Form.Select style={{width:'250px', height:'40px', fontSize:'1rem', textOverflow: 'ellipsis'}} onChange={(e) => handleFilter(e.target.value, '일정번호')}>
+                       <Form.Select style={{width:'150px', height:'40px', fontSize:'1rem', textOverflow: 'ellipsis', textAlign: 'center'}} onChange={(e) => handleFilter(e.target.value, '일정번호')}>
                         <option>일정선택</option>
                             {fdatas.map((fdata) => (
                               <option value={fdata.s_no}>{fdata.start_date}~{fdata.finish_date}</option>
@@ -282,8 +291,8 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                         <p>₩ {detailPost.market_price?(detailPost.market_price * count).toLocaleString('ko-KR'):0}원</p>
                     </div>
                   </div>
-                  {/* 품절이면 0 아니면 다른거.... */}
-                  {isSoldOut===1 ? (
+                  {/* 초기값 null. 품절이면 0 아니면 수량이 들어있다.... */}
+                  {isSoldOut===0 ? (
                       <div className='button'>
                         <Button name={'품절'} className='soldout' disabled={true} >품절</Button>
                       </div>
@@ -297,7 +306,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
 
                         <Button
                           name={'구매하기'}
-                          onClick={() => {
+                          onClick={(e) => {
                             navigate('/order', { state: { orderItems:[{
                                 "marketNum": detailPost.market_no,
                                 "marketImg": thumbnailUrl,//썸네일
@@ -305,8 +314,9 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                                 "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스
                                 "marketCnt": count,//사용자가 선택한 갯수
                                 "marketPrice": detailPost.market_price
-                            }] 
-                          }})
+                              }] 
+                            }});
+                            countUpdate();
                         }}
                         >구매하기</Button>
                       </div>

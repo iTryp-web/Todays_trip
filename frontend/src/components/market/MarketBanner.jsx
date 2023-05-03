@@ -63,7 +63,19 @@ p{
 const MarketBanner = () => {
   const [close, setClose] = useState(false);
   // 사용자 정보 받아와서 처리할예정
-  const auth=1;
+  // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
+  // 아이디, 닉네임 담을 변수
+  const [userId] = useState(window.sessionStorage.getItem('user_id'))
+  const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+
+  const auth=useState(1)
+  const isAuth=()=>{
+    if(userId=='admin'){
+      auth=0;
+    }else{
+      auth=1;
+    }
+  };
   const navigate=useNavigate();
 
   return (

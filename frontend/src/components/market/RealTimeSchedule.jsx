@@ -44,7 +44,7 @@ const RealTimeSchedule = () => {
   const navigate = useNavigate()
   // 리프레쉬용 변수
   const [start, setStart] = useState()
-
+  
  
   /* 실시간 데이터 베이스 */
  
@@ -70,14 +70,6 @@ const RealTimeSchedule = () => {
      return current.isAfter(yesterday);
    }
 
-   //실시간 디비 삭제
-   const dateDelete=(event)=>{
-    event.preventDefault()
-    remove(ref(database,'market/'))
-    // navigate('/market/write/shcedule')
-    alert('일정삭제성공!')
-    setStart(new Date())//리프레쉬용
-  }
 
    //시작날짜시간
    const handleStart=(date)=>{
@@ -118,7 +110,7 @@ const RealTimeSchedule = () => {
       console.log(fdata);
       //파이어베이스 실시간 디비넣기
      set(ref(database,'market/'+fdata.s_no), fdata);
-    
+      window.location.reload()
     }
 
      //일정정보가져오기
@@ -233,8 +225,11 @@ const RealTimeSchedule = () => {
           <hr />
           <div className="booklist-footer">
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              {/* <Button onClick={()=>{dateAdd()}}> */}
               <Button onClick={dateAdd}>
+              {/* <Button onClick={(e) => {
+                    dateAdd();
+                    setStart();
+                  }}> */}
                 일정등록
               </Button>
               <Button onClick={()=>{navigate('/market/all')}} style={{ marginLeft: '1rem' }}>
