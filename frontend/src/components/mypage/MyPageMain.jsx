@@ -10,19 +10,15 @@ const MyPageMain = () => {
         <UserInfo></UserInfo>
         <QuickMenu>
           <QElements>
-            <MenuElement>
-              <button onClick={navigate("/")}>Element1</button>
+            <MenuElement onClick={navigate("/orderlist")}>
             </MenuElement>
-            <MenuElement>
-              <button onClick={navigate("/")}>Element2</button>
+            <MenuElement onClick={navigate("/mypage/userCheck")}>
             </MenuElement>
           </QElements>
           <QElements>
-            <MenuElement>
-              <button onClick={navigate("/")}>Element3</button>
+            <MenuElement onClick={navigate("/orderlist")}>
             </MenuElement>
-            <MenuElement>
-              <button onClick={navigate("/")}>Element4</button>
+            <MenuElement onClick={navigate("/orderlist")}>
             </MenuElement>
           </QElements>
         </QuickMenu>

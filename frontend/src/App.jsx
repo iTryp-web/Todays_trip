@@ -30,7 +30,7 @@ import MyOrderDetail from "./components/mypage/MyOrderDetail";
 import MyInfoEdit from "./components/mypage/MyInfoEdit";
 import MyInfoPw from "./components/mypage/MyInfoPw";
 import RealTimeSchedule from "./components/market/RealTimeSchedule";
-import MyPageLayout from "./components/mypage/MyPageLayout";
+import MyPageLayout from "./components/mypage/MyPageLayout"; 
 
 function App() {
   return (
