@@ -31,6 +31,7 @@ import MyInfoEdit from "./components/mypage/MyInfoEdit";
 import MyInfoPw from "./components/mypage/MyInfoPw";
 import RealTimeSchedule from "./components/market/RealTimeSchedule";
 import MyPageLayout from "./components/mypage/MyPageLayout"; 
+import MyInfoSNSEdit from "./components/mypage/MyInfoSNSEdit";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
         <Route path="/mypage/orderdetail/:ono" element={<MyOrderDetail />} />
         <Route path="/mypage/editInfo" exact={true} element={<MyInfoEdit />} />
         <Route path="/mypage/userCheck" exact={true} element={<MyInfoPw />}/>
+        <Route path="/mypage/editSNSInfo" exact={true} element={<MyInfoSNSEdit/>} />
 
         <Route path="/signup" exact={true} element={<SignUpPage />} />
         <Route path="/signin" exact={true} element={<SignInPage />} />

@@ -65,6 +65,7 @@ const KakaoLogin = () => {
           ssg.setItem("user_email", jsonDoc[0].USER_EMAIL);
           ssg.setItem("user_id", jsonDoc[0].USER_ID);
           ssg.setItem("user_role", jsonDoc[0].ROLE);
+          ssg.setItem("user_provider",jsonDoc[0].PROVIDER);
           navigate("/");
         }
       }

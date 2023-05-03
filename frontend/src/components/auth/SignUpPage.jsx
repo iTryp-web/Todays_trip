@@ -789,6 +789,7 @@ const SignUpPage = () => {
         ssg.setItem("user_email", jsonDoc[0].USER_EMAIL);
         ssg.setItem("user_id", jsonDoc[0].USER_ID);
         ssg.setItem("user_role", jsonDoc[0].ROLE);
+        ssg.setItem("user_provider", jsonDoc[0].PROVIDER);
       }
       //오라클서버의 회원집합에 uid가 존재하지 않으면
       // const result = await loginGoogle(authLogic.getUserAuth(), authLogic.getGoogleAuthProvider()) 변경

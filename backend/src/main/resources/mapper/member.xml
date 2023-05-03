@@ -67,6 +67,7 @@
 		,user_name
 		,user_email
 		,role
+		,provider
 		from TB_USER
 		WHERE
 		user_id=#{user_id}
