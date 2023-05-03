@@ -348,7 +348,7 @@ const MyPageLayout = () => {
       </AdminSection>
       <Footer />
     </>
-  );
-};
+  )
+}
 
 export default MyPageLayout;

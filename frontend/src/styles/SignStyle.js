@@ -619,6 +619,12 @@ export const EmailInputBox = styled.div`
       }
     }
   }
+  .point{
+    cursor: pointer;
+    :hover {
+      color: #4996F3;
+    }
+  }
 `;
 
 export const ConfirmButton = styled.button`

@@ -7,7 +7,7 @@ const MyPagePage = () => {
   return (
     <>
       <Header />
-      <MyPageMain/>
+        <MyPageMain/>
       <Footer />
     </>
   )

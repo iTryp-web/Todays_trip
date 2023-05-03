@@ -6,6 +6,7 @@ import Header from '../include/Header';
 import { Div, EmailInputBox, PasswordBlock } from '../../styles/SignStyle';
 import { setToastMsg } from '../../redux/toastStatus/action';
 import { useNavigate } from 'react-router-dom';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 const MyInfoPw = () => {
   const status = useSelector((store) => store.toastStatus.status);
@@ -45,7 +46,10 @@ const MyInfoPw = () => {
       <Div>
         <PasswordBlock>
           <EmailInputBox>
-            <h5>회원 정보 수정</h5>
+            <h5 className='point' onClick={() => navigate('/mypage')}>
+              <AiOutlineArrowLeft style={{margin: '0 5px 7px 0'}}  />
+              회원 정보 수정
+            </h5>
             <hr/>
             <p>비밀번호를 입력해주세요</p>
             <label>

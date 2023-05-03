@@ -10,15 +10,19 @@ const MyPageMain = () => {
         <UserInfo></UserInfo>
         <QuickMenu>
           <QElements>
-            <MenuElement onClick={navigate("/orderlist")}>
+            <MenuElement onClick={() => navigate("/mypage/orderlist")}>
+              주문 목록
             </MenuElement>
-            <MenuElement onClick={navigate("/mypage/userCheck")}>
+            <MenuElement onClick={() => navigate("/mypage/board")}>
+              작성글 목록
             </MenuElement>
           </QElements>
           <QElements>
-            <MenuElement onClick={navigate("/orderlist")}>
+            <MenuElement onClick={() => navigate("/mypage/userCheck")}>
+              회원정보 수정
             </MenuElement>
-            <MenuElement onClick={navigate("/orderlist")}>
+            <MenuElement onClick={() => navigate("/cart")}>
+              장바구니
             </MenuElement>
           </QElements>
         </QuickMenu>

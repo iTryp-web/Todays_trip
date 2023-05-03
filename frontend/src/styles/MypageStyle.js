@@ -297,13 +297,19 @@ export const BtnReview = styled.div`
   cursor: ${({ content }) => (content >= 10 ? "pointer" : "default")};
 `
 
-/*================================= MyPageLayout Style Start =================================*/
+/*================================= MyPageMain Style Start =================================*/
 export const MyPageContainer = styled.section`
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-width : 80%;
-
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  max-width: 1344px;
+  min-height: 500px;
+  height: 100%;
+  padding: 0 4rem;
+  background: white;
+  margin: 0 auto;
+  margin-top: 5em;
+  margin-bottom: 6em;
 `
 
 export const UserInfo = styled.div`
@@ -318,15 +324,23 @@ justify-content: space-between;
 
 export const QElements = styled.div`
 display: flex;
-flex-direction: row;
+flex-direction: column;
 `
 
 export const MenuElement = styled.div`
-width: 100px;
-height: 100px;
-background-color: blue;
+width: 120px;
+height: 120px;
+margin: 20px;
+font-size: 16px;
+font-weight: 600;
+color: white;
+background-color: #4996F3;
 cursor: pointer;
 transition: all 0.3s ease;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 5px;
 &:hover {
   transform: scale(1.1);
 }
