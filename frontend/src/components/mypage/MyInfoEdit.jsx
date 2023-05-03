@@ -411,6 +411,7 @@ const MyInfoEdit = () => {
           return "DB 오류: 관리자에게 연락바랍니다.";
         }
         alert("회원정보 수정 완료");
+        navigate('/mypage')
       }
     } catch (error) {
       console.log(error + " 오류: 관리자에게 연락바랍니다.");

@@ -16,7 +16,7 @@ const MyPageMain = () => {
         </UserInfo>
         <QuickMenu>
           <QElements>
-            <MenuElement onClick={() => navigate("/mypage/all")}>
+            <MenuElement onClick={() => navigate("/mypage/board")}>
               <TextBox>
               <h4 style={{ fontWeight: "bold" }}>작성글 목록</h4>
               <h1 style={{ fontWeight: "bold", color: "#f7f9fa"  }}>My Posts</h1>

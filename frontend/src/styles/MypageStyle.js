@@ -301,18 +301,6 @@ export const BtnReview = styled.div`
 export const MyPageContainer = styled.section`
   display: flex;
   flex-direction: row;
-<<<<<<< Updated upstream
-  justify-content: space-evenly;
-  max-width: 1344px;
-  min-height: 500px;
-  height: 100%;
-  padding: 0 4rem;
-  background: white;
-  margin: 0 auto;
-  margin-top: 5em;
-  margin-bottom: 6em;
-`
-=======
   justify-content: space-between;
   width: 50%;
   top: 0;
@@ -323,7 +311,6 @@ export const MyPageContainer = styled.section`
   margin-top: 25px;
   height: 80%;
 `;
->>>>>>> Stashed changes
 
 export const UserInfo = styled.div`
   border-radius: 30px;
@@ -355,31 +342,6 @@ export const QuickMenu = styled.div`
   justify-content: space-between;
 `;
 
-<<<<<<< Updated upstream
-export const QElements = styled.div`
-display: flex;
-flex-direction: column;
-`
-
-export const MenuElement = styled.div`
-width: 120px;
-height: 120px;
-margin: 20px;
-font-size: 16px;
-font-weight: 600;
-color: white;
-background-color: #4996F3;
-cursor: pointer;
-transition: all 0.3s ease;
-display: flex;
-justify-content: center;
-align-items: center;
-border-radius: 5px;
-&:hover {
-  transform: scale(1.1);
-}
-`
-=======
 export const QElements = styled.div``;
 export const TextBox = styled.div``;
 
@@ -400,7 +362,6 @@ export const MenuElement = styled.div`
   }
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 설정 */
 `;
->>>>>>> Stashed changes
 
 export const MIcon = styled.img`
 width: 100px;
