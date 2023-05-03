@@ -34,7 +34,7 @@ const ScheduleRow = ({fdata, setStart}) => {
         <tr>
           <td>{fdata.market_no}</td>
           <td>{fdata.s_no}</td>
-          <td>{fdata.buy_no}</td>
+          <td>{fdata.s_count}</td>
           <td>{`${fdata.start_date}~${fdata.finish_date}`}</td>
           <td>
           <div style={{ display: 'flex', justifyContent: 'center' }}>

@@ -50,7 +50,7 @@ const RealTimeSchedule = () => {
  
   //마켓넘버-navigate('/market/write/schedule',{state:{market_no:mno}})
     const location = useLocation();
-    const tempMno = useState(location.state?.market_no);
+    const tempMno = useState(location.state?.market_no);//넘어와서 숫자 고정
     console.log(tempMno[0])
   
     //사용자로부터 입력받은 값-상태훅으로 관리하기
@@ -58,7 +58,7 @@ const RealTimeSchedule = () => {
     useEffect(()=>{
       setS_no(Date.now())
     },[])
-    const [buy_no,setM_count]=useState(0)//가능한갯수
+    const [s_count,setS_count]=useState(0)//가능한갯수
     
     const [start_date,setM_start]=useState('')
     const [finish_date, setM_end]=useState('')
@@ -96,7 +96,7 @@ const RealTimeSchedule = () => {
   //화면에 입력받은 정보 담기-가능수량, 
   const handleChangeForm=(event)=>{
     console.log(event)
-    setM_count(event)
+    setS_count(event)
   
   //  setFdata({
   //    ...fdata,
@@ -111,7 +111,7 @@ const RealTimeSchedule = () => {
       const fdata={
         s_no:s_no,//일정넘버
         market_no:tempMno[0],//마켓넘버
-        buy_no:Number(buy_no),//예약가능 티켓수
+        s_count:Number(s_count),//예약가능 티켓수
         start_date:start_date,//시작날짜
         finish_date:finish_date,//끝날짜
       }
@@ -175,9 +175,9 @@ const RealTimeSchedule = () => {
             <Form.Control
               type="number"
               name="buycount"
-              value={fdata.buy_no}
+              value={fdata.s_count}
               onChange={(e) =>
-                handleChangeForm(e.target.value, 'buy_no')
+                handleChangeForm(e.target.value, 's_count')
               }
               className="form-control form-control-sm"
               placeholder="Enter 가능수량"

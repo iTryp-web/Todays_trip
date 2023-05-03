@@ -324,7 +324,7 @@
 			AND market_no = #{market_no}
 	</delete>
 	
-	<!-- 사용자가 좋아요 리뷰 조회 - 판별용 -->
+	<!-- 사용자가 좋아요한 리뷰 조회 - 판별용 -->
 	<select id="RLikedList" parameterType="map" resultType="map">
 		SELECT 
 		  	l.like_no

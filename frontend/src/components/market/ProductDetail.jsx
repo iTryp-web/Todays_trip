@@ -1,13 +1,13 @@
+import { off, onValue, ref, set } from '@firebase/database';
 import React, { useState } from 'react'
-import { useRef } from 'react';
-import { useCallback } from 'react';
+
 import { useEffect } from 'react';
 import { Button, Modal,Form} from 'react-bootstrap'
 import { useCookies } from 'react-cookie';
 
-import { BsFillCartCheckFill } from 'react-icons/bs'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
+import { database } from '../../service/firebase';
 import { DetailBlock } from '../../styles/MarketStyle'
 
 const Btnwrap=styled.div`
@@ -36,16 +36,24 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   const [show, setShow]=useState(false)//모달창초기값
   const handleClose=()=>setShow(false)//모달창닫기
   const handleShow=()=>setShow(true)//모달창보여주기
+  /* 파이어 베이스 선언 */
+  const [s_count,setS_count]=useState(0)//가능한갯수
+  const [s_no,setS_no]=useState(0)//식별자
+  const [start_date,setM_start]=useState('')
+  const [finish_date, setM_end]=useState('')
+  const [fdata, setFdata]=useState({})
+  const mno=detailPost.market_no
+  console.log(mno);
 
   /* 장바구니버튼 클릭 */
   const handleClick = () => {
     handleShow();
     cookieAdd();
-    // countRef.current++;
   };
 
   /* 선택갯수 */
   const [count, setCount] = useState(1);
+  console.log(count)
   
   /* 품절여부 */
   const isSoldOut=0;
@@ -54,14 +62,10 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   const plus_img = "/images/plus.png";
   const minus_img = "/images/minus2.png";
 
-  console.log(detailPost);//무한루프....
+  console.log(detailPost);//무한루프....해결 안나오는데?
 
-  //날짜필터선택
-  let [filter,setFilter]=useState('1');
+  
 
-  const handleFilter=(select)=>{
-    setFilter(select.target.value)
-  }
 
   /* 장바구니 */
   const [cookies, setCookies] = useCookies(['cart']);
@@ -108,7 +112,63 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
     });
   }, [count, detailPost.market_no, detailPost.market_price, detailPost.market_title, thumbnailUrl]);
   
+
+  /* 파이어베이스 일정정보 다 가져오기 - 마켓넘버 일치하는것만 가져와라*/
+  const [fdatas,setFdatas]=useState([{}])
+
+  useEffect(()=>{
+    console.log('useEffect');
+    const startCountRef=ref(database,'market')
+    onValue(startCountRef,(snapshot)=>{
+      const data=snapshot.val()
+      console.log(data)//나옴
+      console.log(mno)//나옴
+    //filter()메소드로 거르기
+      const filteredData = Object.values(data).filter((item) => item.market_no == mno);//타입 조심
+      console.log(filteredData);
+      setFdatas(filteredData);
+      return()=>off(startCountRef)
+    })
+  },[mno])
+  console.log(fdatas);
   
+
+  /*화면에 입력받은 정보 담기*/
+   //일정필터선택
+  let [filter,setFilter]=useState('0');
+  const handleFilter=(event)=>{
+    console.log(event)
+    setFilter(event)
+  }
+  console.log(filter);//선택한 s_no(식별자)
+
+  /* 실시간 디비 수량 업데이트 */
+  //선택 한 값 하나만 가져오기 
+  useEffect(()=>{
+    const startCountRef=ref(database,'market/'+filter)
+    onValue(startCountRef,(snapshot)=>{
+      const data=snapshot.val()
+      setFdata(data)
+      return()=>off(startCountRef)
+    })
+  },[filter])
+  console.log(fdata);
+  //파이어베이스에서 수정 업데이트 똑같다
+  const countUpdate=(event)=>{
+    event.preventDefault()
+    const nfdata={
+      s_no:s_no,//일정넘버
+      market_no:mno,//마켓넘버
+      s_count:Number(s_count),//예약가능 티켓수
+      start_date:start_date,//시작날짜
+      finish_date:finish_date,//끝날짜
+    }
+    console.log(nfdata);
+    set(ref(database,'market/'+fdata.s_no), nfdata);
+   
+  }
+
+
   return (
     <>
     
@@ -199,14 +259,21 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
 
                         <p>일정선택</p>
                        
-                        <Form.Select defaultValue="1" onChange={handleFilter} style={{width:'150px', height:'40px'}}>
+                        {/* <Form.Select defaultValue="1" onChange={handleFilter} style={{width:'150px', height:'40px'}}>
                             <option>날짜선택</option>
                             <option value="1">23.10.19</option>
+                             <option value="1">{fdatas.s_no}</option> 
                             <option value="2">23.11.10</option>
                             <option value="3">23.12.20</option>
+                        </Form.Select>  */}
+                       
+                       <Form.Select style={{width:'250px', height:'40px', fontSize:'1rem', textOverflow: 'ellipsis'}} onChange={(e) => handleFilter(e.target.value, '일정번호')}>
+                        <option>일정선택</option>
+                            {fdatas.map((fdata) => (
+                              <option value={fdata.s_no}>{fdata.start_date}~{fdata.finish_date}</option>
+                            ))}
                         </Form.Select>
-                   
-                    
+
                     </div>
 
                     <div className='totalprice'>
@@ -235,7 +302,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                                 "marketNum": detailPost.market_no,
                                 "marketImg": thumbnailUrl,//썸네일
                                 "marketName": detailPost.market_title,
-                                "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스....ㅠㅠ
+                                "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스
                                 "marketCnt": count,//사용자가 선택한 갯수
                                 "marketPrice": detailPost.market_price
                             }] 
