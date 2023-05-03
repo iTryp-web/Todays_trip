@@ -57,11 +57,22 @@ const SignInPage = () => {
 
     const data = JSON.stringify(response.data);
     const jsonDoc = JSON.parse(data);
+    console.log(data)
+    
+    const result = jsonDoc[0].result;
 
-    if (jsonDoc && idInput.length > 0 && pwInput.length > 0) {
+    if(result==1){
+      dispatch(setToastMsg("비밀번호가 틀렸습니다."));
+    }else if(result==0){
+      dispatch(setToastMsg("아이디가 틀렸습니다."));
+    }else if(!pwInput>0 || !idInput>0){
+      dispatch(setToastMsg("값을 입력해주세요."));
+    }
+    else{
       const res = await sessionListDB({ user_id: idInput });
       const temp = JSON.stringify(res.data);
       const jsonDoc = JSON.parse(temp);
+      console.log(temp);
       ssg.setItem("user_name", jsonDoc[0].USER_NAME);
       ssg.setItem("user_nickname", jsonDoc[0].USER_NICKNAME);
       ssg.setItem("user_email", jsonDoc[0].USER_EMAIL);
@@ -70,9 +81,9 @@ const SignInPage = () => {
 
       navigate("/");
       alert("로그인 완료되었습니다.");
-    } else if (!jsonDoc) {
-      dispatch(setToastMsg("아이디 혹은 비밀번호가 틀렸습니다."));
     }
+      
+    
   };
 
   //구글 로그인(정보 없으면 회원가입)

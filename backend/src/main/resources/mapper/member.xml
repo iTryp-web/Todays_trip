@@ -47,6 +47,7 @@
 	<select id="memberList" parameterType="map" resultType="map">
 		SELECT
 		user_id
+		,user_pw
 		,user_nickname
 		,user_name
 		,user_phone
@@ -56,7 +57,7 @@
 		from TB_USER
 		WHERE
 		user_id=#{user_id} AND
-		user_pw=#{user_pw} AND status = 0
+		status = 0
 	</select>
 
 	<!-- 로그인시 세션 정보 저장용(아이디, 이메일, 닉네임, 이름) -->
