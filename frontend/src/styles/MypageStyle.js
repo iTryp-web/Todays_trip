@@ -18,34 +18,34 @@ export const OrderSection = styled.section`
     font-size: 22px;
     font-weight: 600;
   }
-`
+`;
 
 export const OrderTable = styled.table`
-  border-top: 4px solid #DBEAFD;
+  border-top: 4px solid #dbeafd;
   display: table;
   width: 100%;
   border-collapse: separate;
   text-indent: initial;
   margin-top: 15px;
   margin-bottom: 15px;
-`
+`;
 
 export const OrderTh = styled.th`
   border-radius: 5px;
-  background: #EDF5FE;
+  background: #edf5fe;
   height: 60px;
   padding: 10px;
   text-align: center;
   color: #4a71a4;
   font-weight: 600;
   font-size: 18px;
-`
+`;
 
 export const OrderTd = styled.td`
   border-bottom: 1px solid #e6e6e6;
   height: 55px;
   padding: 5px 20px;
-`
+`;
 
 export const NoneDiv = styled.div`
   font-size: 18px;
@@ -53,7 +53,7 @@ export const NoneDiv = styled.div`
   color: #979797;
   text-align: center;
   padding: 100px 0;
-`
+`;
 
 /* MyOrderRow 스타일 */
 export const OrderRowTd = styled.td`
@@ -64,16 +64,16 @@ export const OrderRowTd = styled.td`
   cursor: pointer;
   font-size: 15px;
   font-weight: 600;
-  color: #3D3D3D;
+  color: #3d3d3d;
   div {
-    color: #4996F3;
-    .icon{
+    color: #4996f3;
+    .icon {
       font-size: 17px;
       margin-bottom: 2px;
       margin-right: 3px;
     }
   }
-`
+`;
 
 export const OrderSpan = styled.span`
   display: flex;
@@ -81,9 +81,9 @@ export const OrderSpan = styled.span`
   height: 100%;
   align-items: center;
   :hover {
-    color: #4996F3;
+    color: #4996f3;
   }
-`
+`;
 
 export const OrderImg = styled.img`
   margin-right: 20px;
@@ -92,7 +92,7 @@ export const OrderImg = styled.img`
   border-radius: 5px;
   object-fit: cover;
   float: left;
-`
+`;
 
 /* MyOrderDetail */
 export const OrderDetailSection = styled.section`
@@ -114,10 +114,10 @@ export const OrderDetailSection = styled.section`
       margin: 0 5px 7px 0;
     }
     &:hover {
-      color: #4996F3;
+      color: #4996f3;
     }
   }
-`
+`;
 
 export const TopText = styled.div`
   margin-bottom: 15px;
@@ -129,7 +129,7 @@ export const TopText = styled.div`
     margin: 0 5px 7px 0;
   }
   &:hover {
-    color: #4996F3;
+    color: #4996f3;
   }
 `;
 
@@ -183,8 +183,8 @@ export const DetailTd = styled.td`
   div {
     cursor: pointer;
     font-weight: 600;
-    color: #4996F3;
-    .icon{
+    color: #4996f3;
+    .icon {
       font-size: 17px;
       margin-bottom: 2px;
       margin-right: 3px;
@@ -196,10 +196,10 @@ export const DetailTd = styled.td`
     color: #979797;
   }
   .admin {
-    color: #4996F3;
+    color: #4996f3;
     cursor: default;
   }
-`
+`;
 
 export const DetailTitleTd = styled.td`
   padding-bottom: 10px;
@@ -207,9 +207,9 @@ export const DetailTitleTd = styled.td`
   font-weight: 600;
   cursor: pointer;
   :hover {
-    color: #4996F3;
+    color: #4996f3;
   }
-`
+`;
 
 // 리뷰쓰기
 export const ReviewModal = styled.div`
@@ -223,7 +223,7 @@ export const ReviewModal = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 99;
-`
+`;
 
 export const ModalBody = styled.div`
   position: absolute;
@@ -258,10 +258,10 @@ export const ModalBody = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-  .title{
+  .title {
     margin-bottom: 5px;
   }
-`
+`;
 
 export const ReviewText = styled.textarea`
   height: 260px;
@@ -276,7 +276,7 @@ export const ReviewText = styled.textarea`
   &:focus {
     outline: none;
   }
-`
+`;
 
 export const BtnReview = styled.div`
   width: 100px;
@@ -286,7 +286,7 @@ export const BtnReview = styled.div`
   border: none;
   color: white;
   font-size: 15px;
-  font-weight: 600; 
+  font-weight: 600;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -295,12 +295,13 @@ export const BtnReview = styled.div`
   bottom: 21px;
   background-color: ${({ content }) => (content >= 10 ? "#4996F3" : "#979797")};
   cursor: ${({ content }) => (content >= 10 ? "pointer" : "default")};
-`
+`;
 
 /*================================= MyPageMain Style Start =================================*/
 export const MyPageContainer = styled.section`
   display: flex;
   flex-direction: row;
+<<<<<<< Updated upstream
   justify-content: space-evenly;
   max-width: 1344px;
   min-height: 500px;
@@ -311,17 +312,50 @@ export const MyPageContainer = styled.section`
   margin-top: 5em;
   margin-bottom: 6em;
 `
+=======
+  justify-content: space-between;
+  width: 50%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  margin-top: 25px;
+  height: 80%;
+`;
+>>>>>>> Stashed changes
 
 export const UserInfo = styled.div`
+  border-radius: 30px;
+  background-color: #f7f9fa;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 설정 */
+  margin: 25px;
+  height: 500px;
+  width: 350px;
+  text-align: center;
+  padding : 25px;
+`;
 
-`
+export const NameSpace = styled.h1`
+font-weight : 900;
+display: block;
+color: #4996f3;
+letter-spacing: 1.5px;
+`;
+
+export const DescSpace = styled.h4`
+font-size: 25px;
+margin-top : 10px;
+display: block;
+`;
 
 export const QuickMenu = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 
+<<<<<<< Updated upstream
 export const QElements = styled.div`
 display: flex;
 flex-direction: column;
@@ -345,5 +379,32 @@ border-radius: 5px;
   transform: scale(1.1);
 }
 `
+=======
+export const QElements = styled.div``;
+export const TextBox = styled.div``;
 
+export const MenuElement = styled.div`
+  margin: 25px;
+  border-radius: 30px;
+  width: 450px;
+  height: 150px;
+  padding: 20px;
+  background-color: #f7f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content : space-between;
+  &:hover {
+    transform: scale(1.1);
+    background-color: #4996f3;
+  }
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 설정 */
+`;
+>>>>>>> Stashed changes
+
+export const MIcon = styled.img`
+width: 100px;
+style={{ flexGrow: 1 }};
+margin-right : 25px;
+`
 /*================================= MyPageLayout Style Start =================================*/
