@@ -406,12 +406,14 @@ const MyInfoEdit = () => {
       } else {
         const response = await memberUpdateDB(datas);
         console.log(response);
-        ssg.setItem("user_nickname", memInfo.nickname);
+        if (memInfo.nickname !== "") {
+          ssg.setItem("user_nickname", memInfo.nickname);
+        }
         if (response.data !== 1) {
           return "DB 오류: 관리자에게 연락바랍니다.";
         }
         alert("회원정보 수정 완료");
-        navigate('/mypage')
+        navigate("/mypage");
       }
     } catch (error) {
       console.log(error + " 오류: 관리자에게 연락바랍니다.");
@@ -423,8 +425,8 @@ const MyInfoEdit = () => {
       {status && <Toast />}
       <EditDiv>
         <EditBlock>
-          <h4 onClick={() => navigate('/mypage')}>
-            <AiOutlineArrowLeft style={{margin: '0 5px 7px 0'}}  />
+          <h4 onClick={() => navigate("/mypage")}>
+            <AiOutlineArrowLeft style={{ margin: "0 5px 7px 0" }} />
             회원정보 수정
           </h4>
           <hr />
@@ -608,8 +610,8 @@ const MyInfoEdit = () => {
                     border: "1px solid lightgray",
                   }}
                 />
-                <button onClick={(e) => openZipcode(e)} >
-                  <GoSearch className="search-icon"/>
+                <button onClick={(e) => openZipcode(e)}>
+                  <GoSearch className="search-icon" />
                 </button>
               </label>
             </SearchBlock>
