@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImageBlock, SliderBlock } from '../../styles/HomeStyle'
+import { SliderImg, SliderBlock } from '../../styles/HomeStyle'
 import { HomeImages } from './homeData'
 
 const ImageSlider = () => {
@@ -18,7 +18,7 @@ const ImageSlider = () => {
       <SliderBlock {...settings}>
         {HomeImages &&
           HomeImages.map((item) => (
-            <img key={item.id} src={item.src} />
+            <SliderImg key={item.id} src={item.src} />
           ))}
       </SliderBlock>
     </>

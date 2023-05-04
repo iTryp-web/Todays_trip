@@ -38,7 +38,7 @@ const Header = () => {
     window.sessionStorage.clear();
     window.location.reload()
   }
-  
+
   return (
     <>
       <HeaderBlock>

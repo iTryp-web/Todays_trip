@@ -236,3 +236,12 @@ export const SliderBlock = styled(Slider)`
     color: gray;
   }
 `;
+
+export const SliderImg = styled.img`
+  height: 500px;
+  max-width: 2000px;
+  object-fit: fill;
+  @media only screen and (max-width: 1500px) {
+    object-fit: cover;
+  }
+`

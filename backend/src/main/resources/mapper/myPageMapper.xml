@@ -167,6 +167,7 @@ SELECT b.board_no,
              , o.order_phone
              , o.coupon_no
              , o.order_total
+             , o.order_status
              , c.coupon_name
              , c.coupon_rate
              , c.coupon_max

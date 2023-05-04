@@ -327,7 +327,7 @@ const AdminLayout = () => {
                     <th className='reportTd'>주문번호</th>
                     <th className='reportTd'>아이디</th>
                     <th className='reportTd'>결제액</th>
-                    <th className='reportTd'>결제일</th>
+                    <th className='reportTd'>주문일</th>
                     <th className='reportTd'>주문상태</th>
                     <th className='reportTdLast'>적용</th>
                   </tr>

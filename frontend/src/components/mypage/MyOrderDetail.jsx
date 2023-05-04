@@ -60,6 +60,7 @@ const MyOrderDetail = () => {
             order_amount: jsonDoc[i].ORDER_AMOUNT, // 상세 주문금액
             market_order_date: jsonDoc[i].MARKET_ORDER_DATE, // 예약 날짜
             order_total: jsonDoc[i].ORDER_TOTAL, // 주문 총금액
+            order_status: jsonDoc[i].ORDER_STATUS, // 주문 상태
             pay_method: jsonDoc[i].PAY_METHOD, // 0카드 1카카페 2무통장 3가상계좌
             pay_date: jsonDoc[i].PAY_DATE,
             pay_total: jsonDoc[i].PAY_TOTAL, // 결제 총금액
@@ -99,15 +100,15 @@ const MyOrderDetail = () => {
                 <col style={{ width: "10%" }} />
               </colgroup>
               <thead>
-                <tr>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
+                <tr style={{color: '#979797'}}>
+                  <th colSpan="2">상품</th>
+                  <th>예약일</th>
+                  <th>개수</th>
+                  <th>결제액</th>
+                  <th>리뷰</th>
                 </tr>
               </thead>
+              <br />
               <tbody>
                 {orders && orders.map((order) => (
                   <MyOrderDetailRow key={order.detail_no} order={order} setStart={setStart} />

@@ -12,11 +12,6 @@ const MyOrderRow = ({order}) => {
     navigate('/mypage/orderdetail/'+ono)
   }
 
-  // 리뷰쓰기
-  const review = () => {
-
-  }
-
   return (
     <>
       <tr onClick={() => toDetail(order.order_no)}>
