@@ -17,7 +17,8 @@ const Image=styled.img`
 `
 
 const BannerBlock = styled.div`
-  display: block;
+  // display: block;
+  display: flex;
   width: 100%;
   height: 50px;
   background: #4996F3;
@@ -62,35 +63,45 @@ p{
 
 const MarketBanner = () => {
   const [close, setClose] = useState(false);
-  // 사용자 정보 받아와서 처리할예정
-  // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
-  // 아이디, 닉네임 담을 변수
-  const [userId] = useState(window.sessionStorage.getItem('user_id'))
-  const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+ 
+  // 관리자 구분-세션스토리지 꺼내오기
+  const [userRole] = useState(window.sessionStorage.getItem('user_role'))
+  console.log(userRole)
+  
 
-  const auth=useState(1)
-  const isAuth=()=>{
-    if(userId=='admin'){
-      auth=0;
-    }else{
-      auth=1;
-    }
-  };
   const navigate=useNavigate();
 
   return (
     <BannerBlock close={close}>
-      {auth===1?
-      <Coupon onClick={() => navigate('/signin')}>
-        <Banner>
-          <Image src="/images/voucher.png" />&nbsp;
-          <p>오늘의 여행 첫구매 쿠폰받기!</p>
-        </Banner>
-        </Coupon>:
-        <Button onClick={() => navigate('/market/write')} >
-          지금 판매자 글쓰기!
-        </Button> 
-}
+      {
+      userRole==2?
+          (<Button onClick={() => navigate('/market/write')} style={{  marginBottom: '5px ' }} >
+            <lord-icon
+                src="https://cdn.lordicon.com/frjgvxce.json"
+                trigger="hover"
+                colors="primary:#ffffff"
+                state="hover-1"
+                style={{width:"30px", height:"30px", marginRight: '5px', marginTop: '5px'}}>
+            </lord-icon>
+            지금 판매자 글쓰기!
+          </Button> ):
+          (userRole==0?(<Coupon onClick={() => navigate('/mypage')}>
+            <Banner>
+               <Image src="/images/voucher.png" />&nbsp;
+                <p>친구에게 추천하고 10%할인받자!</p>
+            </Banner>
+          </Coupon>):
+          (
+            <Coupon onClick={() => navigate('/signin')}>
+            <Banner>
+               <Image src="/images/voucher.png" />&nbsp;
+                <p>오늘의 여행 회원가입 쿠폰받기!</p>
+            </Banner>
+          </Coupon>
+          )
+          )
+        
+      }
       <CgClose onClick={() => setClose(true)} />
     </BannerBlock>
   );

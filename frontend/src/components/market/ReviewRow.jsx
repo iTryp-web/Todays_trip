@@ -1,11 +1,18 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal, ModalBody } from 'react-bootstrap';
 import { BsBookmarkStar, BsBookmarkStarFill, BsFillEyeFill, BsThreeDotsVertical } from 'react-icons/bs';
+import { HiOutlineX } from 'react-icons/hi';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RLikedListDB, dislikeDB, likeDB, reviewDeleteDB, reviewUpdateDB } from '../../service/marketLogic';
 import { FontContent, Like, ModalDiv, ModalUl, } from '../../styles/BoardStyle';
-import { PostContent, PostLi, Star, PostFooter, BtnDot} from '../../styles/MarketStyle';
+// import { PostContent, PostLi, Star, PostFooter, BtnDot} from '../../styles/MarketStyle';
+import { Star, PostContent, PostLi, PostFooter, BtnDot, RModalBody, BtnReview, ReviewModal, ReviewText} from '../../styles/MarketStyle';
+
+import RStar from '../mypage/Star'
+
+
+
 
 
 const ReviewRow = ({review, start, setStart}) => {
@@ -42,21 +49,56 @@ const ReviewRow = ({review, start, setStart}) => {
   // Form 컴포넌트에서 받아온 리뷰 내용과 별점을 market 객체에 추가
   const [reviewContent, setReviewContent] = useState('');
   const [reviewStar, setReviewStar] = useState(0.0);
-  const reviewUpdate = async(mno, rno) => {
-    console.log(reviewContent)
-    console.log(reviewStar)
-    console.log(rno)
-    const market = {
-      review_content: reviewContent,
-      review_star: reviewStar,
-      review_no: rno,
-    }
+  // const reviewUpdate = async(mno, rno) => {
+  //   console.log(reviewContent)
+  //   console.log(reviewStar)
+  //   console.log(rno)
+  //   const market = {
+  //     review_content: reviewContent,
+  //     review_star: reviewStar,
+  //     review_no: rno,
+  //   }
 
-    const res = await reviewUpdateDB(market);
-    console.log('reviewUpdate => ' + res.data);
-    setClickBtnDot(false)
-    setStart(new Date())
-  };
+  //   const res = await reviewUpdateDB(market);
+  //   console.log('reviewUpdate => ' + res.data);
+  //   setClickBtnDot(false)
+  //   setStart(new Date())
+  // };
+
+  // 리뷰 DB등록 버튼
+  const sendReview = () => {
+    if(reviewContent.length >= 10) {
+      console.log(review.review_content);
+      
+      let star = 0.0
+      if(state.rating == 2) {
+        star = state.idx + 1
+      } else if (state.rating == 1) {
+        star = state.idx + 0.5
+      }
+      console.log(star);
+      // db전송
+      const reviewUpdate = async() => {
+        // review.market_no, review.review_no
+        const market = {
+          review_content: reviewContent,
+          review_star: star,
+          review_no: review.review_no,
+        }
+    
+        const res = await reviewUpdateDB(market);
+        console.log('reviewUpdate => ' + res.data);
+        setClickBtnDot(false)
+        setStart(new Date())
+      };
+      reviewUpdate()
+      // 모달 리셋
+      resetModal()
+      // 새로고침
+      setStart(new Date())
+    }
+  }
+
   // 리뷰 좋아요 변수
   const [liked, setLiked] = useState([{}])
 
@@ -74,9 +116,7 @@ const ReviewRow = ({review, start, setStart}) => {
     console.log('reviewLike=> ' + res.data);
     setIsLiked(true)
     setStart(new Date())
-    // if (rcount) {
-    //   setRcount(prevCount => prevCount + 1);
-    // }
+  
   }
   // 좋아요 취소
   const reviewDislike = async(mno, rno) => {
@@ -131,9 +171,7 @@ const ReviewRow = ({review, start, setStart}) => {
             like_group: jsonDoc[i].LIKE_GROUP,
           }
           list.push(obj)
-     /*      if(obj.like_no === mno && obj.like_group === rno) {
-            setIsLiked(true)
-          } */
+   
         }
       }
       setLiked(list)
@@ -149,21 +187,74 @@ const ReviewRow = ({review, start, setStart}) => {
   const handleShowUpdate=()=>setUShow(true)//수정모달창보여주기
   const handleShowDelete=()=>setDShow(true)//삭제모달창보여주기
 
-
-  const handleUpdateForm = (e) => {
-    const { name, value } = e.target;
-    
-      if (name === 'reviewContent') {
-        setReviewContent(value);
-      } else if (name === 'reviewStar') {
-        setReviewStar(value);
-      }
-    }
   
+  /* 리뷰 별점 멋있게 주기 */
+  // 모달창 표시 변수
+  const [isView, setIsView] = useState(false)
+ 
+
+     // 리뷰모달 닫기
+  const resetModal = () => {
+    setIsView(false)
+    setReviewContent('')
+   
+    setState({
+      idx: 0,
+      rating: 0,
+      cacheIdx: 0,
+      cacheRating: 0
+    })
+  }
+
+  // 별점 상태
+  const [state, setState] = useState({
+    idx: 0,
+    rating: 0,
+    cacheIdx: 0,
+    cacheRating: 0
+  })
+  // 마우스오버 메소드
+  const mouseOver = (e, i) => {
+    e.persist();
+    let offsetX = e.nativeEvent.offsetX;
+    let clientX = e.target.clientWidth;
+
+    if (offsetX > clientX / 2) {
+      let value = 2;
+      setState({
+        idx: i,
+        rating: value
+      });
+    } else {
+      let value = 1;
+      setState({
+        idx: i,
+        rating: value
+      });
+    }
+  };
+  // 상태변화 저장 메소드
+  const handleChange = (i, v) => {
+    setState({
+      idx: 0,
+      rating: 0,
+      cacheIdx: i,
+      cacheRating: v
+    });
+  };
+  // 리뷰내용 담는 메소드
+  const handleReviewContent = (e) => {
+    console.log(e);
+    setReviewContent(e)
+  }
+  //리뷰모달보이게
+  const newReview = () => {
+    setIsView(!isView)
+  }
 
   return (
-    <>
-        {/* ========================== [[ 리뷰 수정하기 Modal ]] ========================== */}
+    <>{/* 
+         ========================== [[ 리뷰 수정하기 Modal ]] ========================== 
         <Modal show={Ushow} onHide={UhandleClose} animation={true}>
         <Modal.Header closeButton>
           <Modal.Title>리뷰수정</Modal.Title>
@@ -199,7 +290,45 @@ const ReviewRow = ({review, start, setStart}) => {
           </Button>
         </Modal.Footer>
       </Modal>     
-    {/* ========================== [[ 수정하기 Modal ]] =========================>*/}
+     ========================== [[ 수정하기 Modal ]] =========================>
+  */}
+    
+    
+    {/*============================ 멋진별점 리뷰수정 =============================*/}
+    {isView&&
+      <ReviewModal onClick={() => newReview()}>
+        {/* <ReviewModal > */}
+          <RModalBody onClick={(e) => e.stopPropagation()}>
+            <HiOutlineX className='x-icon' onClick={() => resetModal()} />
+            <div className='market_title'>{review.market_title}</div>
+            <div className='title'>
+              상품은 만족하셨나요?
+            </div>
+            <RStar
+              mouseOver={mouseOver}
+              onChange={handleChange}
+              idx={state.idx}
+              rating={state.rating}
+              cacheIdx={state.cacheIdx}
+              cacheRating={state.cacheRating}
+            />
+            <ReviewText
+              type="text"
+              minLength="10"
+              maxLength="252"
+              defaultValue={review.review_content}
+              autoComplete="off"
+              onChange={(e)=>{handleReviewContent(e.target.value)}}>
+            </ReviewText>
+            <BtnReview content={reviewContent.length} onClick={() => sendReview()}>등록하기</BtnReview>
+          </RModalBody>
+        </ReviewModal>
+    }
+    {/*============================ 멋진별점 리뷰수정 =============================*/}
+    
+    
+    
+    
     {/* ========================== [[ 삭제하기 Modal ]] ========================== */}
     <Modal show={Dshow} onHide={DhandleClose} animation={true}>
         <Modal.Header closeButton>
@@ -261,9 +390,9 @@ const ReviewRow = ({review, start, setStart}) => {
             {is_ClickBtnDot ? (
               userNickname === review.user_nickname ? (
                 <ModalDiv>
-                   <ModalUl onClick={() => {
-                      handleShowUpdate();
-                    }}>수정하기</ModalUl>
+                   <ModalUl onClick={() => 
+                      setIsView(true)
+                    }>수정하기</ModalUl>
                   <ModalUl onClick={()=>{
                     handleShowDelete();
                   }}>삭제하기</ModalUl>

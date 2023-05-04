@@ -4,7 +4,9 @@ import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { Button, Modal,Form} from 'react-bootstrap'
 import { useCookies } from 'react-cookie';
-import { BsOption } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import { setToastMsg } from '../../redux/toastStatus/action';
+import Toast from '../include/Toast';
 
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
@@ -12,14 +14,12 @@ import { database } from '../../service/firebase';
 import { DetailBlock } from '../../styles/MarketStyle'
 
 const Btnwrap=styled.div`
-
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px 20px 10px 20px;
   gap: 10px;
-
 `
  const DetailContent = styled.div`
   margin: 10px 0 40px 0;
@@ -34,14 +34,29 @@ const Btnwrap=styled.div`
 
 const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   const navigate=useNavigate();
+
+   // 로그인 한 아이디
+   const [userId] = useState(window.sessionStorage.getItem('user_id'))
+
+  // 리덕스
+  const status = useSelector(store => store.toastStatus.status)
+  console.log(status)
+  const dispatch = useDispatch()
+  const [toast, setToast] = useState(false)
+  const loginToast = () => {
+    setToast(!toast)
+  }
+  useEffect (() => {
+    if(toast) {
+      dispatch(setToastMsg('로그인이 필요합니다.'))
+      setToast(!toast)
+    }
+  }, [toast])
+
   const [show, setShow]=useState(false)//모달창초기값
   const handleClose=()=>setShow(false)//모달창닫기
   const handleShow=()=>setShow(true)//모달창보여주기
   /* 파이어 베이스 선언 */
-  const [s_count,setS_count]=useState(0)//가능한갯수
-  const [s_no,setS_no]=useState(0)//식별자
-  const [start_date,setM_start]=useState('')
-  const [finish_date, setM_end]=useState('')
   const [fdata, setFdata]=useState({})
   const mno=detailPost.market_no
   console.log(mno);
@@ -180,9 +195,9 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
 
   return (
     <>
+       {/* 토스트 메시지 */}
+       {loginToast && status && <Toast />}
     
-    
-      
       <hr/>
       <DetailBlock>
         <div className='detail'>
@@ -292,35 +307,58 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                     </div>
                   </div>
                   {/* 초기값 null. 품절이면 0 아니면 수량이 들어있다.... */}
-                  {isSoldOut===0 ? (
-                      <div className='button'>
-                        <Button name={'품절'} className='soldout' disabled={true} >품절</Button>
-                      </div>
-                    ) : (
-                      <div className='button'>
-                        <Button
-                          name={'장바구니'}
-                          className='sale'
-                          onClick={handleClick}
-                        >장바구니</Button>
+                  {userId?(
+                      isSoldOut===0 ? (
+                          <div className='button'>
+                            <Button name={'품절'} className='soldout' disabled={true} >품절</Button>
+                          </div>
+                        ) : (
+                          <div className='button'>
+                            <Button
+                              name={'장바구니'}
+                              className='sale'
+                              onClick={handleClick}
+                            >장바구니</Button>
 
-                        <Button
-                          name={'구매하기'}
-                          onClick={(e) => {
-                            navigate('/order', { state: { orderItems:[{
-                                "marketNum": detailPost.market_no,
-                                "marketImg": thumbnailUrl,//썸네일
-                                "marketName": detailPost.market_title,
-                                "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스
-                                "marketCnt": count,//사용자가 선택한 갯수
-                                "marketPrice": detailPost.market_price
-                              }] 
-                            }});
-                            countUpdate();
-                        }}
-                        >구매하기</Button>
-                      </div>
-                    )}            
+                            <Button
+                              name={'구매하기'}
+                              onClick={(e) => {
+                                navigate('/order', { state: { orderItems:[{
+                                    "marketNum": detailPost.market_no,
+                                    "marketImg": thumbnailUrl,//썸네일
+                                    "marketName": detailPost.market_title,
+                                    "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스
+                                    "marketCnt": count,//사용자가 선택한 갯수
+                                    "marketPrice": detailPost.market_price
+                                  }] 
+                                }});
+                                countUpdate();
+                            }}
+                            >구매하기</Button>
+                          </div>
+                        )
+                    ):
+                    (
+                      isSoldOut===0 ? (
+                        <div className='button'>
+                          <Button name={'품절'} className='soldout' disabled={true} >품절</Button>
+                        </div>
+                      ) : (
+                        <div className='button'>
+                          <Button
+                            name={'장바구니'}
+                            className='sale'
+                            onClick={handleClick}
+                          >장바구니</Button>
+
+                          <Button
+                            name={'구매하기'}
+                            onClick={loginToast}
+                          >구매하기</Button>
+                        </div>
+                      )
+                    )
+                    }{/* end of 버튼 조건 */}            
               </div>
             </div>
           </div>{/* end of container */}
