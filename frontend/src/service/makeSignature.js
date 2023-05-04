@@ -22,18 +22,4 @@ export const makeSignature = (time) => {
   const hash = hmac.finalize();
 
   return hash.toString(CryptoJS.enc.Base64);
-
-  // const headers = [];
-  // const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
-
-  // headers.push(method);
-  // headers.push(space);
-  // headers.push(url);
-  // headers.push(newLine);
-  // headers.push(time);
-  // console.log(hmac);
-  // headers.push(newLine);
-  // headers.push(accessKey);
-
-  // return headers.toString(CryptoJS.enc.Base64);
 };
