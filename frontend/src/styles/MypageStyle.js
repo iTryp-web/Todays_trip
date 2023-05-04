@@ -365,6 +365,7 @@ export const MenuElement = styled.div`
 
 export const MIcon = styled.img`
 width: 100px;
+height: auto;
 style={{ flexGrow: 1 }};
 margin-right : 25px;
 `

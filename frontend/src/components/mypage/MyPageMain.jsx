@@ -43,7 +43,7 @@ const MyPageMain = () => {
                   My Posts
                 </h1>
               </TextBox>
-              <MIcon src="/images/mypage/1.png" />
+              <MIcon src="/images/mypage/icon_post.png" />
             </MenuElement>
             <MenuElement onClick={handleMenuClick}>
               <TextBox>
@@ -52,7 +52,7 @@ const MyPageMain = () => {
                   Edit Me
                 </h1>
               </TextBox>
-              <MIcon src="/images/mypage/2.png" />
+              <MIcon src="/images/mypage/icon_edit.png" />
             </MenuElement>
             <MenuElement onClick={() => navigate("/mypage/orderlist")}>
               <TextBox>
@@ -61,7 +61,7 @@ const MyPageMain = () => {
                   My Order
                 </h1>
               </TextBox>
-              <MIcon src="/images/mypage/icon-bill.png" />
+              <MIcon src="/images/mypage/icon_order.png" />
             </MenuElement>
           </QElements>
         </QuickMenu>
