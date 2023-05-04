@@ -13,6 +13,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setToastMsg } from "../../redux/toastStatus/action";
 import Toast from "../include/Toast";
+import { sendSmsLogic } from './../../service/smsSendLogic';
 
 const SNSSignUp = ({ kakaoData, naverData }) => {
   const userAuth = useSelector((state) => state.userAuth);
@@ -36,6 +37,9 @@ const SNSSignUp = ({ kakaoData, naverData }) => {
   const [nameInputShadowColor, setNameInputShadowColor] = useState("none");
   const [nametext, setNameText] = useState("");
   const [checkNm, setCheckNm] = useState(false);
+  const [checkPhoneNo, setCheckPhoneNo] = useState(false);
+  const [checkPhoneResult, setCheckPhoneResult] = useState(false);
+  const [ranNo, setRanNo] = useState(0);
 
   const handleNickNameChange = (e) => {
     setNickNameInput(e.target.value);
@@ -174,6 +178,29 @@ const SNSSignUp = ({ kakaoData, naverData }) => {
     }
   };
 
+  //sms전송
+  const sendPhoneSms = () => {
+    let phoneNo = document.getElementById("phone").value;
+    setRanNo(sendSmsLogic(phoneNo));
+    console.log(ranNo)
+    if(ranNo === "fail") {
+      alert("핸드폰 번호를 확인해주세요.");
+      return;
+    }
+    setCheckPhoneNo(true);
+  }
+
+  //인증번호 확인
+  const checkPhoneSms = () => {
+    let pcNo = document.getElementById("phone_check_no").value;
+    setCheckPhoneNo(false);
+    if(ranNo === pcNo) {
+      document.getElementById('phone').disabled = true;
+      setCheckPhoneResult(true);
+    }
+  }
+  
+
   //구글 회원가입
   const location = useLocation();
   [naverData] = useState(location.state?.naverData);
@@ -305,6 +332,7 @@ const SNSSignUp = ({ kakaoData, naverData }) => {
             <label>
               <input
                 type="text"
+                id="phone"
                 value={phoneInput}
                 placeholder="휴대전화번호"
                 onFocus={handlePhoneFocus}
@@ -329,6 +357,19 @@ const SNSSignUp = ({ kakaoData, naverData }) => {
                   {`${phonetext}`}
                 </p>
               )}
+              <div>{checkPhoneNo ?
+              (!checkPhoneResult ? 
+                <div style={{marginTop:"5px"}}>
+                  <input id="phone_check_no" placeholder="인증 번호 입력" style={{marginBottom:"5px"}}/>
+                  <input type="button" value={"확인"} onClick={checkPhoneSms}/>
+                </div>:
+                <div></div>)
+               :
+              (!checkPhoneResult ? 
+                <input type="button" id="sendButton" value={"인증 요청"} onClick={sendPhoneSms} style={{marginTop:"10px"}}/>:
+                <input type="button" id="sendButton" value={"인증 완료"} onClick={sendPhoneSms} style={{marginTop:"5px"}} disabled/>
+              )
+              }</div>
             </label>
             <JoinButton type="submit" onClick={handleSubmit}>
               회원가입 완료

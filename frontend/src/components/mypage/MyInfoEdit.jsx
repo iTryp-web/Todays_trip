@@ -22,6 +22,7 @@ import { GoSearch } from "react-icons/go";
 import { setToastMsg } from "../../redux/toastStatus/action";
 import { TopText } from "../../styles/MypageStyle";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import { sendSmsLogic } from './../../service/smsSendLogic';
 
 const MyInfoEdit = () => {
   const navigate = useNavigate();
@@ -42,6 +43,9 @@ const MyInfoEdit = () => {
   const [pwCheck, setPwCheck] = useState(false);
   const [phoneCheck, setPhoneCheck] = useState(false);
   const [nickCheck, setNickCheck] = useState(false);
+  const [checkPhoneNo, setCheckPhoneNo] = useState(false);
+  const [checkPhoneResult, setCheckPhoneResult] = useState(false);
+  const [ranNo, setRanNo] = useState(0);
 
   const [textPwColor, setTextPwColor] = useState("black");
   const [textPwCheckColor, setTextPwCheckColor] = useState("black");
@@ -382,6 +386,28 @@ const MyInfoEdit = () => {
     }).open();
   };
 
+    //sms전송
+    const sendPhoneSms = () => {
+      let phoneNo = document.getElementById("phone").value;
+      setRanNo(sendSmsLogic(phoneNo));
+      console.log(ranNo)
+      if(ranNo === "fail") {
+        alert("핸드폰 번호를 확인해주세요.");
+        return;
+      }
+      setCheckPhoneNo(true);
+    }
+  
+    //인증번호 확인
+    const checkPhoneSms = () => {
+      let pcNo = document.getElementById("phone_check_no").value;
+      setCheckPhoneNo(false);
+      if(ranNo === pcNo) {
+        document.getElementById('phone').disabled = true;
+        setCheckPhoneResult(true);
+      }
+    }
+
   const ssg = sessionStorage;
   //회원정보 수정 완료
   const handleSubmit = async (e) => {
@@ -487,6 +513,19 @@ const MyInfoEdit = () => {
                 {`${phonetext}`}
               </p>
             )}
+            <div>{checkPhoneNo ?
+              (!checkPhoneResult ? 
+                <div style={{marginTop:"5px"}}>
+                  <input id="phone_check_no" placeholder="인증 번호 입력" style={{marginBottom:"5px"}}/>
+                  <input type="button" value={"확인"} onClick={checkPhoneSms}/>
+                </div>:
+                <div></div>)
+               :
+              (!checkPhoneResult ? 
+                <input type="button" id="sendButton" value={"인증 요청"} onClick={sendPhoneSms} style={{marginTop:"10px"}}/>:
+                <input type="button" id="sendButton" value={"인증 완료"} onClick={sendPhoneSms} style={{marginTop:"5px"}} disabled/>
+              )
+              }</div>
           </NamenPhoneBlock>
           <PWnNickBlock>
             <h6 style={{ color: textPwColor }}>비밀번호</h6>
