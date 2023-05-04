@@ -105,6 +105,9 @@ const CartPage = () => {
       alert('주문하실 상품을 선택해주세요');
       return;
     }
+    //개수 확인해서 초과시에 돌려보내기
+    //아니면 DB 개수 차감하고 다음 작업
+
     //체크된 상품 아이디 정보 -> 새 배열에 담아서 orderPage로 넘겨주기
     let orderItems = [];
     cartList.forEach((cart, index) => {

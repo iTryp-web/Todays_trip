@@ -39,7 +39,11 @@
 								order_total,
 								order_discount,
 								order_payment,
-								order_date)
+								order_date,
+								order_name,
+								order_phone,
+								order_email
+								)
 					VALUES (
 								TB_ORDER_NO_SEQ.NEXTVAL, 
 								#{user_id},
@@ -49,7 +53,10 @@
 								#{order_total},
 								#{order_discount},
 								#{order_payment},
-								TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS'))
+								TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS'),
+								#{reserve_name},
+								#{reserve_phone},
+								#{reserve_email})
 	</insert>
 	
 	<!-- 주문 상세 내역 DB에 저장 -->
