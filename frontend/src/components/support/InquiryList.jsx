@@ -40,7 +40,8 @@ const InquiryList = () => {
       const list = datas
         .filter(
           (item) =>
-            item.QNA_SORT === 2 || item.QNA_SORT === 3 || item.QNA_SORT === 4
+            // item.QNA_SORT === 2 || item.QNA_SORT === 3 || item.QNA_SORT === 4
+            item.QNA_SORT === 2 || item.QNA_SORT === 4
         ) // QNA_SORT가 2 또는 4인 데이터만 걸러냅니다.
         .map((item) => ({
           qna_no: item.QNA_NO,
