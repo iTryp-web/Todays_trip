@@ -132,7 +132,7 @@ const InquiryRow = ({ qna, qnaList, setStart }) => {
               >
                 {qna.qna_step === 0 && sessionStorage.getItem("user_role") == 2 ? <UnresponsedInquiry>[미처리 문의]</UnresponsedInquiry>: ""}
                 {qna.qna_sort === 4 ? <AiFillLock /> : null}
-                {qna.qna_sort === 3 ? (
+                {qna.qna_sort === 3 && sessionStorage.getItem("user_role") == 2 ? (
                   <AnswerComplete>[탈퇴]</AnswerComplete>
                 ) : null}
                 {qna.qna_step === 2 ? (
