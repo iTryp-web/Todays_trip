@@ -39,6 +39,7 @@ import {
   couponInsertDB,
   referrerCouponInsertDB,
 } from "../../service/couponLogic";
+import { sendSmsLogic } from './../../service/smsSendLogic';
 
 const SignUpPage = () => {
   const userAuth = useSelector((state) => state.userAuth);
@@ -88,6 +89,9 @@ const SignUpPage = () => {
   const [pwCheck, setPwCheck] = useState(false);
   const [nickCheck, setNickCheck] = useState(false);
   const [phoneCheck, setPhoneCheck] = useState(false);
+  const [checkPhoneNo, setCheckPhoneNo] = useState(false);
+  const [checkPhoneResult, setCheckPhoneResult] = useState(false);
+  const [ranNo, setRanNo] = useState(0);
 
   //이메일 input박스 얇은 테두리색깔
   const [emailInputColor, setEmailInputColor] = useState("lightgray");
@@ -536,6 +540,28 @@ const SignUpPage = () => {
     setReferrerInput(e.target.value);
   };
 
+  //sms전송
+  const sendPhoneSms = () => {
+    let phoneNo = document.getElementById("phone").value;
+    setRanNo(sendSmsLogic(phoneNo));
+    console.log(ranNo)
+    if(ranNo === "fail") {
+      alert("핸드폰 번호를 확인해주세요.");
+      return;
+    }
+    setCheckPhoneNo(true);
+  }
+
+  //인증번호 확인
+  const checkPhoneSms = () => {
+    let pcNo = document.getElementById("phone_check_no").value;
+    setCheckPhoneNo(false);
+    if(ranNo === pcNo) {
+      document.getElementById('phone').disabled = true;
+      setCheckPhoneResult(true);
+    }
+  }
+
   //==================focus, blur handler 시작===================//
   //email input focus handler
   const handleEmailFocus = () => {
@@ -702,6 +728,7 @@ const SignUpPage = () => {
       pwCheck == true &&
       nickCheck == true &&
       phoneCheck == true &&
+      checkPhoneResult == true &&
       idInput !== "" &&
       pwInput !== "" &&
       phoneInput !== "" &&
@@ -1066,6 +1093,19 @@ const SignUpPage = () => {
                 {`${phonetext}`}
               </p>
             )}
+            <div>{checkPhoneNo ?
+              (!checkPhoneResult ? 
+                <div style={{marginTop:"5px"}}>
+                  <input id="phone_check_no" placeholder="인증 번호 입력" style={{marginBottom:"5px"}}/>
+                  <input type="button" value={"확인"} onClick={checkPhoneSms}/>
+                </div>:
+                <div></div>)
+               :
+              (!checkPhoneResult ? 
+                <input type="button" id="sendButton" value={"인증 요청"} onClick={sendPhoneSms} style={{marginTop:"10px"}}/>:
+                <input type="button" id="sendButton" value={"인증 완료"} onClick={sendPhoneSms} style={{marginTop:"5px"}} disabled/>
+              )
+              }</div>
           </NamenPhoneBlock>
           <PWnNickBlock>
             <h6 style={{ color: textPwColor }}>비밀번호</h6>
