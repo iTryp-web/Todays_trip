@@ -11,11 +11,10 @@ const makeNumber = () => {
 
 export const sendSmsLogic = (phoneNo) => {
   const ranNo = makeNumber();
-  let rMap = [];
   const data = {
     type: "SMS",
     from: process.env.REACT_APP_SMS_FROM,
-    content: "[오늘의 여행] 인증번호 [" + ranNo + "]를 입력해주세요.", //내용
+    content: "[오늘의 여행] 인증번호 [" + ranNo + "] 를 입력해주세요.", //내용
     messages: [
       {
         to: phoneNo, //수신번호
