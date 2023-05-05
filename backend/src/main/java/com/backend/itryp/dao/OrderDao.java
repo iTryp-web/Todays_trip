@@ -125,4 +125,17 @@ public class OrderDao {
 		return result;
 	}
 
+	/**
+	 * couponUpdate
+	 * 
+	 * @param pmap 
+	 * @return result 결과값
+	 */
+	public int couponUpdate(Map<String, Object> pmap) {
+		log.info("couponUpdate 호출");
+		int result = 0;
+		result = sst.update("updateCouponInfo", pmap);
+		return result;
+	}
+
 }

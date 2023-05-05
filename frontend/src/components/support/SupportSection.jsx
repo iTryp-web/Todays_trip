@@ -5,6 +5,7 @@ import { CustomerService, QMark } from "../../styles/SupportStyle";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import { useState } from "react";
+import ChatBotPage from './ChatBotPage';
 
 const SupportSection = () => {
   const [userId] = useState(window.sessionStorage.getItem("user_id"));
@@ -12,6 +13,11 @@ const SupportSection = () => {
     window.sessionStorage.getItem("user_nickname")
   );
   const [userRole] = useState(window.sessionStorage.getItem("user_role"));
+  const [isModal, setModal] = useState(false);
+
+  const openChat = () => {
+    setModal(true)
+  }
 
   const navigate = useNavigate();
 
@@ -75,6 +81,8 @@ const SupportSection = () => {
                 >
                   1:1 문의하기
                 </button>
+                <button className="btnContact" style={{marginTop:"5px"}} onClick={openChat}>챗봇 상담하기</button>
+                <ChatBotPage isModal={isModal} setModal={setModal} />
                 <a href="/"></a>
               </div>
             </div>

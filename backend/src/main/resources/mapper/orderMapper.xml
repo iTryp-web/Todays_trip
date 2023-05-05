@@ -13,6 +13,7 @@
 				coupon_valid
 		  FROM TB_U_COUPON
 		 WHERE user_id = #{user_id}
+  <![CDATA[AND (TO_DATE(coupon_date, 'YYYY-MM-DD HH24:MI:SS') + coupon_valid) > SYSDATE]]>
 		   AND coupon_exp = 0
 	</select>
 	
@@ -33,7 +34,7 @@
 		INSERT INTO TB_ORDER (
 								order_no,
 								user_id,
-							<if test="coupon_no != null and coupon_no > 0">
+							<if test="coupon_no != null">
 								coupon_no,
 							</if>
 								order_total,
@@ -47,7 +48,7 @@
 					VALUES (
 								TB_ORDER_NO_SEQ.NEXTVAL, 
 								#{user_id},
-							<if test="coupon_no != null and coupon_no > 0">
+							<if test="coupon_no != null">
 								#{coupon_no},
 							</if>
 								#{order_total},

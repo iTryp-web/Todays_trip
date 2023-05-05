@@ -32,8 +32,6 @@ const OrderPage = () => {
     }
   }, [])
 
-  console.log(orderItems)
-
   const [ orderDetailInfo, setOrderDetailInfo ] = useState([]);
   let order_no;
   let paymentData = {};
@@ -57,7 +55,7 @@ const OrderPage = () => {
   //주문 정보
   const [ orderInfo, setOrderInfo ] = useState({
     order_no: 0,
-    user_id: sessionStorage.getItem('user_id') || "test1",
+    user_id: sessionStorage.getItem('user_id'),
     reserve_name: "",
     reserve_phone: "",
     reserve_email: "",
@@ -78,12 +76,21 @@ const OrderPage = () => {
       navigate("/signin");
     }
     const getUserInfo = async () => {
-      const user = { user_id: sessionStorage.getItem('user_id') || "test1" };
+      const user = { user_id: sessionStorage.getItem('user_id')};
       await getOrderPage(user).then((res) => {
         if(res.data != null){
           setUserInfo(res.data.userInfo);
-          setCList(res.data.couponList);
-        }
+          let ccList = res.data.couponList.filter(coupon => coupon.COUPON_MIN <= price);
+          setCList(ccList)
+          if(ccList != null && ccList.length > 0){
+            console.log(ccList)
+            if((price * ccList[0].COUPON_RATE / 100) >= ccList[0].COUPON_MAX) setDiscount(ccList[0].COUPON_MAX);
+            else setDiscount(price * ccList[0].COUPON_RATE / 100);
+            setOrderInfo(prevState => ({
+              ...prevState,
+              coupon_no: ccList[0].COUPON_NO,
+            }))
+          }}
       })
     }
     getUserInfo();
@@ -133,6 +140,19 @@ const OrderPage = () => {
     setOrderInfo(prevState => ({
       ...prevState,
       [e.target.id]: e.target.value,
+    }))
+  }
+
+  //쿠폰 반영
+  const setCoupon = (index) => {
+    if((price * cList[index].COUPON_RATE / 100) >= cList[index].COUPON_MAX) setDiscount(cList[index].COUPON_MAX);
+    else setDiscount(price * cList[index].COUPON_RATE / 100);
+    setOrderInfo(prevState => ({
+      ...prevState,
+      coupon_no: cList[index].COUPON_NO,
+      order_total: price,
+      order_discount: discount,
+      order_payment: price - discount,
     }))
   }
 
@@ -189,8 +209,13 @@ const OrderPage = () => {
 
     //DB에 orderInfo값 저장하고 order_no 받아오기
     const getOrderNo = async() => {
+      console.log(orderInfo)
       const orderData = {
-        orderInfo: orderInfo,
+        orderInfo: {...orderInfo,
+          order_total: price,
+          order_discount: discount,
+          order_payment: price - discount,
+        },
         orderDetailInfo: orderDetailInfo,
       };
       await setOrderTable(orderData).then((res) => {
@@ -240,11 +265,12 @@ const OrderPage = () => {
 
         const updatePayInfo = async() => {
           const payData = {
-            user_id: sessionStorage.getItem('user_id') || "test1",
+            user_id: sessionStorage.getItem('user_id'),
             order_no: order_no,
             pay_method: 0,
             pay_total: price - discount,
-            pay_check: 1
+            pay_check: 1,
+            coupon_no: orderInfo.coupon_no,
           };
           console.log(payData);
           await updatePaymentInfo(payData).then((res) => {
@@ -343,11 +369,11 @@ const OrderPage = () => {
           <LineHr/>
           <OrderCouponTyDiv>
             <OrdertysTitle>쿠폰 할인</OrdertysTitle>
-            <Form.Select style={{width: "330px"}}>
+            <Form.Select style={{width: "350px"}} id="couponSelect" onChange={e => setCoupon(e.currentTarget.value)}>
               { cList.length > 0 ? 
-                cList.map((coupon, index) => (
-                  <option key={index}>{coupon.COUPON_NAME} ({coupon.COUPON_DATE})</option>
-                ))
+                  (cList.map((coupon, index) => (
+                    <option key={index} value={index}>{coupon.COUPON_NAME} ({coupon.COUPON_RATE}% , 최대 {coupon.COUPON_MAX}원)</option>
+                )))
                 : 
                 <option>사용 가능한 쿠폰이 존재하지 않습니다.</option>
               }
@@ -355,7 +381,7 @@ const OrderPage = () => {
             <OrdertysTitle>포인트</OrdertysTitle>
             <div>{`사용 가능 포인트　${0} 점`}</div>
             <PointUseDiv>
-              <span><Form.Control type='text' placeholder='0' style={{ width: "330px" }} disabled /></span><ConfirmSpan><ConfirmButton>모두 사용</ConfirmButton></ConfirmSpan>
+              <span><Form.Control type='text' placeholder='0' style={{ width: "350px" }} disabled /></span><ConfirmSpan><ConfirmButton disabled>모두 사용</ConfirmButton></ConfirmSpan>
             </PointUseDiv>
           </OrderCouponTyDiv>
         </OrderCouponDiv>
@@ -410,9 +436,9 @@ const OrderPage = () => {
         <OrderCalcDiv>
           <OrdertyTitle>결제 정보</OrdertyTitle>
           <OrderCalcTyDiv>
-            <OrderCalcListDiv>{`주문 금액　${price} 원　ㅡ　할인 금액　${0} 원`}</OrderCalcListDiv>
+            <OrderCalcListDiv>{`주문 금액　${price} 원　ㅡ　할인 금액　${discount} 원`}</OrderCalcListDiv>
             <OrderCalcResultDiv>
-              <span>{`결제 금액　${price} 원`}</span>
+              <span>{`결제 금액　${price - discount} 원`}</span>
             </OrderCalcResultDiv>
           </OrderCalcTyDiv>
         </OrderCalcDiv>
