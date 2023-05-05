@@ -199,7 +199,6 @@ const SNSSignUp = ({ kakaoData, naverData }) => {
       setCheckPhoneResult(true);
     }
   }
-  
 
   //구글 회원가입
   const location = useLocation();
@@ -255,6 +254,7 @@ const SNSSignUp = ({ kakaoData, naverData }) => {
       phoneInput !== null &&
       checkNick == true &&
       checkPh == true &&
+      checkPhoneResult == true &&
       checkNm == true
     ) {
       signup({ kakaoData, naverData });
@@ -361,12 +361,12 @@ const SNSSignUp = ({ kakaoData, naverData }) => {
               (!checkPhoneResult ? 
                 <div style={{marginTop:"5px"}}>
                   <input id="phone_check_no" placeholder="인증 번호 입력" style={{marginBottom:"5px"}}/>
-                  <input type="button" value={"확인"} onClick={checkPhoneSms}/>
+                  <input type="button" value={"확인"} onClick={checkPhoneSms} style={{color:"#4996F3", backgroundColor:"#FFFFFF"}}/>
                 </div>:
                 <div></div>)
                :
               (!checkPhoneResult ? 
-                <input type="button" id="sendButton" value={"인증 요청"} onClick={sendPhoneSms} style={{marginTop:"10px"}}/>:
+                <input type="button" id="sendButton" value={"인증 요청"} onClick={sendPhoneSms} style={{marginTop:"10px", color:"#4996F3", backgroundColor:"#FFFFFF"}}/>:
                 <input type="button" id="sendButton" value={"인증 완료"} onClick={sendPhoneSms} style={{marginTop:"5px"}} disabled/>
               )
               }</div>
