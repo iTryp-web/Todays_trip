@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment';
+import 'moment/locale/ko';
 import { useCallback, useRef, useState } from 'react'
 import Header from '../include/Header';
 import Footer from '../include/Footer';
@@ -74,14 +75,14 @@ const RealTimeSchedule = () => {
    //시작날짜시간
    const handleStart=(date)=>{
     console.log(date);
-    const m_start=moment(date._d).format('YYYY-MM-DD, a h:mm')
+    const m_start=moment(date._d).format('YYYY-MM-DD a h:mm')
     console.log(m_start);
     setM_start(m_start)
   }
   //끝날짜시간
   const handleEnd=(date)=>{
     console.log(date);
-    const m_end=moment(date._d).format('YYYY-MM-DD, a h:mm')
+    const m_end=moment(date._d).format('YYYY-MM-DD a h:mm')
     console.log(m_end);
     setM_end(m_end)
   }

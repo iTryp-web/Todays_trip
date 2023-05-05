@@ -17,31 +17,7 @@ import DetailNav from './DetailNav';
 const MarketDetail = () => {
   
   const navigate = useNavigate()
-  // /* 장바구니 */
-  // const [cookies, setCookies] = useCookies(['cart']);
-  // let cartList=[];
-  // const [cartAdd, setCartAdd]=useState({});
-  // let count=0;
   
-  
-  // //쿠키에 장바구니 담기 함수
-  // const cookieAdd=()=>{
-  //   console.log("cookieAdd")
-  //   if(cookies===undefined){//장바구니 없는 경우
-  //       //앞의 키값은 바꾸지 않기! 은재언니가 씀 뒤에는 변수로 연결
-  //       cartList.push(cartAdd)
-  //     }else{//장바구니 이미 있는 경우
-  //       cartList=[...cookies.cart,cartAdd]
-  //       console.log(cookies.cart);
-  //     }
-  //     //3600000초 후에 없어지기-장바구니 리셋
-  //     //Date.now() + 259200000의 값을 expires에 할당하면 3일 후 만료되는 쿠키를 설정할 수 있습니다.
-  //     setCookies('cart', 
-  //       cartList, {expires: new Date(Date.now() +259200000)}
-  //       )
-
-  // }
-
    // 해시값으로 글번호 가져오기
   const {mno} = useParams()
   console.log("mno => " + mno);
@@ -55,10 +31,7 @@ const MarketDetail = () => {
   // 상세보기 정보  변수 - file_exist(파일존재여부), liked(좋아요 누른 게시물인지 아닌지 판별) 고려하기!!
   const [detailPost, setDetailPost] = useState({})
   console.log(detailPost);
-  // const detailPost=detailPosts.map((product)=>(
-  //   console.log(product)
-  // ))
-  
+ 
   // useEffect 실행용 변수
   const [start, setStart] = useState('')
 
@@ -151,7 +124,6 @@ const MarketDetail = () => {
     <>
     <Header />
       <MarketCategory />
-      {/* <ProductDetail detailPost={detailPost} thumbnailUrl={thumbnailUrl} detailImageUrls={detailImageUrls} cookieAdd={cookieAdd}/> */}
       <ProductDetail detailPost={detailPost} thumbnailUrl={thumbnailUrl} detailImageUrls={detailImageUrls}/>
         <DetailNav  mno={mno}/>
     <Footer />

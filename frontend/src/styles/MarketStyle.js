@@ -24,14 +24,14 @@ export const ItemBlock = styled.div`
     margin-bottom: 0.3rem;
     border-radius: 5px;
     position: relative;
+    &:hover {
+      transform: scale(1.05);
+      transition: transform 0.5s;
+    }
     img {
       background-size:cover;
       width: 100%;
       height: 100%;
-      &:hover {
-        transform: scale(1.1);
-        transition: transform 0.5s;
-      }
     }
     .mark {
       position: absolute;
@@ -613,3 +613,89 @@ export const Navblock=styled.div`
 export const UserCard=styled.div`
 
 `
+/* 리뷰 모달 */
+// 리뷰쓰기
+export const ReviewModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+`;
+
+export const RModalBody = styled.div`
+  position: absolute;
+  width: 350px;
+  height: 500px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  font-size: 18px;
+  font-weight: 600;
+  .x-icon {
+    font-size: 30px;
+    color: #464646;
+    display: flex;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  .market_title {
+    font-size: 14px;
+    color: gray;
+    font-style: italic;
+    margin-top: -25px;
+    margin-bottom: 3px;
+    padding: 0 50px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .title {
+    margin-bottom: 5px;
+  }
+`;
+
+export const ReviewText = styled.textarea`
+  height: 260px;
+  width: 288px;
+  margin: 20px 10px 5px 0;
+  padding: 5px;
+  resize: none;
+  border-radius: 5px;
+  font-size: 13px;
+  overflow: hidden;
+  border: 1px solid #e1e1e1;
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const BtnReview = styled.div`
+  width: 100px;
+  height: 40px;
+  padding: 6px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 36%;
+  bottom: 21px;
+  background-color: ${({ content }) => (content >= 10 ? "#4996F3" : "#979797")};
+  cursor: ${({ content }) => (content >= 10 ? "pointer" : "default")};
+`;

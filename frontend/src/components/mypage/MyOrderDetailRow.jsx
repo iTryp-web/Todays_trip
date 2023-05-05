@@ -169,15 +169,19 @@ const MyOrderDetailRow = ({order, setStart}) => {
           {order.market_count && (order.order_amount * order.market_count).toLocaleString('ko-KR')}원
         </DetailTd>
         <DetailTd>
-          {order.r_count == 1 ? (
+          {order.order_status == 2 && order.r_count > 0 ? (
             <div className='done' >
               작성완료
             </div>
-          ) : (
+          ) : ( order.order_status == 2 && order.r_count === 0 ? (
             <div onClick={() => newReview(order.detail_no, order.user_id, order.market_title, order.market_no)}>
               <BiAddToQueue className='icon' />
                 리뷰작성
             </div>
+          ) : (
+            order.order_status == 0 ? '예약중' : (
+              order.order_status == 1 ? '취소' : (
+                order.order_status == 3 ? '결제실패' : null)))
           )}
         </DetailTd>
       </tr>

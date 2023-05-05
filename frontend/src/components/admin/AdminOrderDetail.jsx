@@ -152,15 +152,15 @@ const AdminOrderDetail = () => {
                 <col style={{ width: "10%" }} />
               </colgroup>
               <thead>
-                <tr>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
+                <tr style={{color: '#979797'}}>
+                  <th colSpan="2">상품</th>
+                  <th>예약일</th>
+                  <th>개수</th>
+                  <th>결제액</th>
+                  <th>리뷰</th>
                 </tr>
               </thead>
+              <br />
               <tbody>
                 {orders && orders.map((order) => (
                   <AdminOrderDetailRow key={order.detail_no} order={order} />
