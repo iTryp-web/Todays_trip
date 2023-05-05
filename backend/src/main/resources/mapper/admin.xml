@@ -8,22 +8,36 @@
 		     , m.market_category
 		     , m.market_title
 		     , m.market_price
-         , m.market_date
-         , f.file_url
+	         , m.market_date
+	         , f.file_url
 		     , NVL(q.qna_count, 0) qna_count
 		     , (SELECT COUNT(qna_no) qna_new
 		        FROM TB_QNA
 		        WHERE qna_step = 0
 		        AND (qna_sort = 0 or qna_sort = 1)
 		        ) qna_new
-				 , NVL((SELECT SUM(market_count)
-            FROM TB_ORDER_DETAIL
-            WHERE market_no = m.market_no), 0) sales_count
-		FROM TB_MARKET m
-			, (SELECT COUNT(user_Id) qna_count, market_no
+			 , NVL((SELECT SUM(market_count)
+               FROM TB_ORDER_DETAIL
+               WHERE market_no = m.market_no), 0) sales_count
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
 			    FROM TB_QNA
 			    WHERE qna_step = 0
-			    GROUP BY market_no) q
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
+		FROM TB_MARKET m
+			, (SELECT COUNT(user_Id) qna_count, market_no
+			   FROM TB_QNA
+			   WHERE qna_step = 0
+			   GROUP BY market_no) q
 			, TB_M_FILE f
 		WHERE m.market_no = q.market_no(+)
 			AND (q.market_no IS NOT NULL OR q.market_no IS NULL)
@@ -44,9 +58,25 @@
              , r.report_reason
              , r.report_date
              , r.report_result
-         , (SELECT count(report_no)
-            FROM TB_REPORT
-            WHERE report_result = 0) report_new
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
 		  FROM TB_REPORT r, TB_USER u
 		  WHERE r.report_user = u.user_id
 		  <if test='report_type != null and report_type == 4'>
@@ -107,6 +137,25 @@
 	         , (SELECT COUNT(board_no)
 	           FROM TB_B_COMMENT
 	           WHERE comment_status = 2) commentBan_count
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
 		FROM TB_USER
 		WHERE status = 2
 	</select>
@@ -128,6 +177,25 @@
 	         , (SELECT COUNT(board_no)
 	           FROM TB_B_COMMENT
 	           WHERE comment_status = 2) commentBan_count
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
 		FROM TB_BOARD
 		WHERE board_status = 1
 	</select>
@@ -150,6 +218,25 @@
 	         , (SELECT COUNT(board_no)
 	           FROM TB_B_COMMENT
 	           WHERE comment_status = 2) commentBan_count
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
 		FROM TB_B_COMMENT 
 		WHERE comment_status = 2
 	</select>
@@ -181,14 +268,29 @@
 		     , q.qna_title
 		     , q.qna_content
 		     , q.qna_date
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
 		     , (SELECT count(qna_no)
-				    FROM TB_QNA
-				    WHERE qna_step = 0
-				    AND qna_sort = 3) resign_new
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
 		FROM TB_USER u, TB_QNA q
 		WHERE u.user_id = q.user_id
 			AND q.qna_sort = 3
- ORDER BY q.qna_date DESC
+ 		ORDER BY q.qna_date DESC
 	</select>
 	
 		<!-- 탈퇴(신청) 회원 상태 수정 탈퇴1 -->
@@ -258,10 +360,26 @@
 		     , REGEXP_REPLACE(REVERSE(REGEXP_REPLACE(REVERSE(TO_CHAR(order_payment)), '(\d{3})','\1,')), '^,','') order_payment
 		     , order_date
 		     , order_status
-		     , (SELECT COUNT(order_no)
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
 		        FROM TB_ORDER
 		        WHERE order_status = 0) order_new
-		FROM TB_ORDER
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
+			FROM TB_ORDER
 	</select>
 	
 	<!-- 주문 상태 수정 예약0, 취소1, 판매2 -->

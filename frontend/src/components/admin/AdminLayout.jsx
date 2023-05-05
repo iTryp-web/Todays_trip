@@ -47,6 +47,14 @@ const AdminLayout = () => {
   const [commentBanList, setCommentBanList] = useState([])
   // 문의 목록 변수
   const [inquiryList, setInquiryList] = useState([])
+  // 새로운 알림 변수
+  const [newList, setNewList] = useState([{
+    qna_new: 0, // 새로운 마켓 문의
+    report_new: 0, // 새로운 신고
+    resign_new: 0, // 새로운 탈퇴
+    order_new: 0, // 새로운 주문
+    inquiry_new: 0, // 새로운 문의
+    }])
 
   /* 왼쪽 카테고리 */
   // 선택한 카테고리 담기
@@ -88,6 +96,15 @@ const AdminLayout = () => {
       const jsonDoc = JSON.parse(temp)
       if(jsonDoc.length > 0) {
         const list = []
+        // 새로운 문의 담기
+        setNewList([{
+          qna_new: jsonDoc[0].QNA_NEW,
+          report_new: jsonDoc[0].REPORT_NEW,
+          resign_new: jsonDoc[0].RESIGN_NEW,
+          order_new: jsonDoc[0].ORDER_NEW,
+          inquiry_new: jsonDoc[0].INQUIRY_NEW,
+        }])
+        console.log(newList)
         if(selected === '마켓') {
           // 마켓문의 db 담기 - 새로운문의 qna_new
           for(let i=0; i<jsonDoc.length; i++) {
@@ -100,8 +117,14 @@ const AdminLayout = () => {
               market_date: jsonDoc[i].MARKET_DATE,
               file_url: jsonDoc[i].FILE_URL,
               sales_count: jsonDoc[i].SALES_COUNT,
-              qna_new: jsonDoc[i].QNA_NEW, // 새로운 문의 수
               qna_count: jsonDoc[i].QNA_COUNT, // 해당글 문의 수
+            }
+            const newAlert = {
+              qna_new: jsonDoc[i].QNA_NEW, // 새로운 마켓 문의
+              report_new: jsonDoc[i].REPORT_NEW, // 새로운 신고
+              resign_new: jsonDoc[i].RESIGN_NEW, // 새로운 탈퇴
+              order_new: jsonDoc[i].ORDER_NEW, // 새로운 주문
+              inquiry_new: jsonDoc[i].INQUIRY_NEW, // 새로운 문의
             }
             console.log(obj);
             list.push(obj)
@@ -267,19 +290,19 @@ const AdminLayout = () => {
                     >
                     <img src={category.img} alt={category.category} />
                     {category.name}
-                    {qnaList.length > 0 && category.name === '마켓' && qnaList[0].qna_new > 0 ? (
+                    {newList.length > 0 && category.name === '마켓' && newList[0].qna_new > 0 ? (
                       <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
                     ) : null}
-                    {reportList.length > 0 && category.name === '신고' && reportList[0].report_new > 0 ? (
+                    {newList.length > 0 && category.name === '신고'  && newList[0].report_new > 0 ? (
                       <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
                     ) : null}
-                    {resignList.length > 0 && category.name === '탈퇴' && resignList[0].resign_new > 0 ? (
+                    {newList.length > 0 && category.name === '탈퇴'  && newList[0].resign_new > 0 ? (
                       <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
                     ) : null}
-                    {orderList.length > 0 && category.name === '주문' && orderList[0].order_new > 0 ? (
+                    {newList.length > 0 && category.name === '주문'  && newList[0].order_new > 0 ? (
                       <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
                     ) : null}
-                    {inquiryList.length > 0 && category.name === '문의' && inquiryList[0].inquiry_new > 0 ? (
+                    {newList.length > 0 && category.name === '문의'  && newList[0].inquiry_new > 0 ? (
                       <AiFillPlusSquare key={category.name} active={category.name === selected} className='icon' />
                     ) : null}
                   </AdminCategoryLi>
