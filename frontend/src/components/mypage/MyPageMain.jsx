@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   DescSpace,
   MIcon,
@@ -18,6 +18,13 @@ const MyPageMain = () => {
   const userId = sessionStorage.getItem("user_id");
   const provider = window.sessionStorage.getItem("user_provider");
 
+  // 로그아웃시 페이지이동
+  useEffect(() => {
+    if(userName === null) {
+      navigate('/')
+    }
+  }, [userId])
+
   const handleMenuClick = () => {
     console.log(provider);
     if (provider === "TDT") {
@@ -26,6 +33,7 @@ const MyPageMain = () => {
       navigate("/mypage/editSNSInfo");
     }
   };
+
   return (
     <>
       <MyPageContainer>

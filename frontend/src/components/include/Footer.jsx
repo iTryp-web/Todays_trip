@@ -34,7 +34,7 @@ const Footer = () => {
               <FcNext className="icon" />
             </a>
               <p className="contact">1544-9970</p>
-              <p className="hour">09:00 - 19:00</p>
+              <p className="hour">09:00 - 18:00</p>
               <p>평일: 전체 문의 상담 가능</p>
               <p className="bottom-text">주말, 공휴일: 오늘의여행 직접배송 문의 상담 가능</p>
             </div>

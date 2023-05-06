@@ -106,14 +106,16 @@
 							user_id,
 							pay_method,
 							pay_total,
-							pay_check)
+							pay_check,
+							pay_date)
 					VALUES (
 							TB_PAY_NO_SEQ.NEXTVAL,
 							#{order_no},
 							#{user_id},
 							#{pay_method},
 							#{pay_total},
-							#{pay_check}
+							#{pay_check},
+							TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 					)
 	</insert>
 	

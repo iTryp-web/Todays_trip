@@ -179,7 +179,7 @@ const MyOrderDetail = () => {
             <OrderCalcTyDiv>
               <OrderCalcListDiv style={{fontSize:'14px'}}>
                 {`주문 금액 ${orders[0].order_total && orders[0].order_total.toLocaleString('ko-KR')}원
-                - 할인 금액 ${orders[0].coupon_no ? (
+                - 할인 금액 ${orders[0].coupon_no != 0 ? (
                   orders[0].order_total > orders[0].coupon_max ? (
                     orders[0].coupon_max.toLocaleString('ko-KR') + '원'
                   ) : (
