@@ -7,7 +7,7 @@ import ChatBotData from "./ChatBotData.js"
 const Closebtn = styled.img`
   position: absolute;
   top: 2.2%;
-  right: 3%;
+  right: 10%;
   z-index: 1000;
   &:hover {
     cursor: pointer;
