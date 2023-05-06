@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.itryp">
+	<!-- 회원가입 -->
+	<insert id="memberInsert" parameterType="map">
+		INSERT INTO TB_USER(
+		user_id
+		,user_pw
+		,user_nickname
+		,user_name
+		,user_phone
+		,user_email
+		,provider
+		,salt
+		)
+		VALUES(
+		<if test='user_id!= null'>
+			#{user_id}
+		</if>
+		<if test='user_pw!= null'>
+			,#{user_pw}
+		</if>
+		<if test='user_nickname!= null'>
+			,#{user_nickname}
+		</if>
+		<if test='user_name!= null'>
+			,#{user_name}
+		</if>
+		<if test='user_phone!= null'>
+			,#{user_phone}
+		</if>
+		<if test='user_email != null and user_email.indexOf("@") != -1'>
+			, #{user_email}
+		</if>
+		<if test='user_email != null and user_email.indexOf("@") == -1'>
+			, #{user_id}
+		</if>
+		<if test='provider!= null'>
+			,#{provider}
+		</if>
+		,123
+		)
+	</insert>
+
+
+	<!-- 로그인, 회원정보 조회용 쿼리문 -->
+	<select id="memberList" parameterType="map" resultType="map">
+		SELECT
+		user_id
+		,user_pw
+		,user_nickname
+		,user_name
+		,user_phone
+		,user_zipcode
+		,user_address
+		,user_address_detail
+		from TB_USER
+		WHERE
+		user_id=#{user_id} AND
+		status = 0
+	</select>
+
+	<!-- 로그인시 세션 정보 저장용(아이디, 이메일, 닉네임, 이름) -->
+	<select id="sessionList" parameterType="map" resultType="map">
+		SELECT
+		user_id
+		,user_nickname
+		,user_name
+		,user_email
+		,role
+		,provider
+		from TB_USER
+		WHERE
+		user_id=#{user_id}
+	</select>
+
+	<!-- 중복검사(아이디, 닉네임, 핸드폰번호), 이메일 찾기용 쿼리문 -->
+	<select id="checkInfo" parameterType="map" resultType="map">
+		SELECT
+		<if test='user_id!= null'>
+			user_id
+		</if>
+		<if test='user_nickname!= null'>
+			user_nickname
+		</if>
+		<if test='user_phone!= null'>
+			user_phone
+		</if>
+		FROM TB_USER
+		<where>
+			<if test='user_id!= null and user_id.length()>0'>
+				user_id = #{user_id} or user_email = #{user_id}
+			</if>
+			<!-- 닉네임 중복검사 -->
+			<if test='user_nickname!= null and user_nickname.length()>0'>
+				user_nickname = #{user_nickname}
+			</if>
+			<!-- 핸드폰 중복검사 -->
+			<if test='user_phone!= null and user_phone.length()>0'>
+				user_phone = #{user_phone}
+			</if>
+		</where>
+	</select>
+
+	<!-- 추천인 조회용 -->
+	<select id="referrer" parameterType="map" resultType="map">
+		SELECT
+		user_id
+		,user_nickname
+		from TB_USER
+		WHERE
+		user_nickname=#{user_nickname}
+	</select>
+
+
+	<!-- 회원정보 수정 : 수정가능한 정보 : 닉네임, 비밀번호, 핸드폰번호, 주소 -->
+	<update id="memberUpdate" parameterType="map">
+		update TB_USER
+		<trim prefix="SET" prefixOverrides=",">
+			<if test='user_nickname!=null and user_nickname.length>0'>
+				user_nickname = #{user_nickname}
+			</if>
+			<if test='user_pw !=null and user_pw.length()>0'>
+				,user_pw = #{user_pw}
+			</if>
+			<if test='user_phone!=null and user_phone.length()>0'>
+				,user_phone = #{user_phone}
+			</if>
+			<if test='user_zipcode!=null and user_zipcode.length()>0'>
+				,user_zipcode = #{user_zipcode}
+			</if>
+			<if test='user_address!=null and user_address.length()>0'>
+				,user_address = #{user_address}
+			</if>
+			<if
+				test='user_address_detail!=null and user_address_detail.length()>0'>
+				,user_address_detail = #{user_address_detail}
+			</if>
+		</trim>
+		 WHERE user_id = #{user_id}
+	</update>
+
+	<!-- 자체 회원 임시 비밀번호로 변경 -->
+	<update id="resetPassWord" parameterType="map">
+		update TB_USER
+		<set>
+			<if test='user_pw !=null and user_pw.length()>0'>
+				user_pw = #{user_pw}
+			</if>
+		</set>
+		WHERE user_id = #{user_id}
+	</update>
+
+	<!-- 이메일(아이디) 조회 + 자체회원/소셜회원 구분 -->
+	<select id="findUser" parameterType="map" resultType="map">
+		SELECT
+		user_email
+		,provider
+		from TB_USER
+		WHERE
+		user_email=#{user_email}
+	</select>
+
+
+	<!-- 회원 탈퇴 (바로 삭제 X, status를 1로 변경) -->
+	<update id="memberDelete" parameterType="map">
+		update TB_USER
+		set status
+		= 1
+		WHERE user_id = #{user_id}
+	</update>
+
+
+</mapper>

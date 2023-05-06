@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.itryp">
+	
+	<!-- 주문 페이지로 이동할 때 쿠폰 정보 가져오기 -->
+	<select id="getOrderPage" parameterType="map" resultType="map">
+		SELECT coupon_no,
+				coupon_name,
+				coupon_rate, 
+				coupon_min, 
+				coupon_max, 
+				coupon_date, 
+				coupon_valid
+		  FROM TB_U_COUPON
+		 WHERE user_id = #{user_id}
+  <![CDATA[AND (TO_DATE(coupon_date, 'YYYY-MM-DD HH24:MI:SS') + coupon_valid) > SYSDATE]]>
+		   AND coupon_exp = 0
+	</select>
+	
+	<!-- 주문 페이지로 이동할 때 필요한 유저 정보 가져오기 -->
+	<select id="getUserInfo" parameterType="map" resultType="com.backend.itryp.vo.TbUserVO">
+		SELECT user_name, 
+				user_phone, 
+				user_zipcode, 
+				user_address, 
+				user_address_detail,
+				user_email
+		  FROM TB_USER u
+		 WHERE u.user_id = #{user_id}
+	</select>
+	
+	<!-- 주문 완료 후 주문 내역 DB에 저장 -->
+	<insert id="InsertOrder" parameterType="map">
+		INSERT INTO TB_ORDER (
+								order_no,
+								user_id,
+							<if test="coupon_no != null">
+								coupon_no,
+							</if>
+								order_total,
+								order_discount,
+								order_payment,
+								order_date,
+								order_name,
+								order_phone,
+								order_email
+								)
+					VALUES (
+								TB_ORDER_NO_SEQ.NEXTVAL, 
+								#{user_id},
+							<if test="coupon_no != null">
+								#{coupon_no},
+							</if>
+								#{order_total},
+								#{order_discount},
+								#{order_payment},
+								TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS'),
+								#{reserve_name},
+								#{reserve_phone},
+								#{reserve_email})
+	</insert>
+	
+	<!-- 주문 상세 내역 DB에 저장 -->
+	<insert id="InsertOrderDetail" parameterType="map">
+		INSERT INTO TB_ORDER_DETAIL (
+										detail_no,
+										order_no,
+										market_no,
+										market_count,
+										order_amount,
+										market_order_date)
+							VALUES (
+										TB_ORDER_DETAIL_NO_SEQ.NEXTVAL,
+										#{order_no},
+										#{market_no},
+										#{market_count},
+										#{order_amount},
+										#{market_order_date})
+	</insert>
+	
+	<!-- 주문시 사용한 쿠폰 정보 업데이트 -->	
+	<update id="updateCouponInfo" parameterType="map">
+		UPDATE TB_U_COUPON SET coupon_exp = 1 WHERE coupon_no = #{coupon_no}
+	</update>
+	
+	<!-- 결제 실패시 주문 정보 업데이트 -->
+	<update id="failPayment" parameterType="map">
+		UPDATE TB_ORDER SET order_status = #{order_status} WHERE order_no = #{order_no}		
+	</update>
+	
+	<!-- 주문 내역 DB에 저장한 후 저장한 주문 번호 읽어오기 -->
+	<select id="getOrderNo" parameterType="map" resultType="int">
+		SELECT * 
+		  FROM (SELECT order_no 
+	  			  FROM TB_ORDER 
+      			 WHERE user_id = #{user_id}
+      			 ORDER BY order_no DESC) 
+		 WHERE ROWNUM = 1
+	</select>
+	
+	<!-- 결제 완료 후 결제 내역 DB에 저장 -->
+	<insert id="InsertPay" parameterType="map">
+		INSERT INTO TB_PAY (
+							pay_no,
+							order_no,
+							user_id,
+							pay_method,
+							pay_total,
+							pay_check)
+					VALUES (
+							TB_PAY_NO_SEQ.NEXTVAL,
+							#{order_no},
+							#{user_id},
+							#{pay_method},
+							#{pay_total},
+							#{pay_check}
+					)
+	</insert>
+	
+	<!-- 주문 내역 리스트 가져오기 -->
+	<select id="getOrderList" parameterType="map" resultType="map">
+		SELECT
+				order_no,
+				user_id,
+				coupon_no,
+				order_total,
+				order_discount,
+				order_payment,
+				order_date
+		  FROM TB_ORDER
+		 WHERE USER_ID = #{user_id}
+		 ORDER BY DESC
+	</select>
+	
+	<!-- 주문 상세 내역 가져오기 -->
+	<select id="getOrderDetail" parameterType="map" resultType="map">
+		SELECT
+				c.coupon_no,
+				c.coupon_rate,
+				c.coupon_min,
+				c.coupon_max,
+				c.coupon_date,
+				c.coupon_valid
+				u.user_name,
+				u.user_phone,
+				u.user_zipcode,
+				u.user_address,
+				u.user_address_detail
+		  FROM TB_U_COUPON c, TB_USER u
+		 WHERE c.user_id = #{user_id}
+		   AND u.user_id = #{user_id}
+	</select>
+	
+	<!-- 주문 취소 건 주문 내역 DB에 반영 -->
+	<update id="cancelOrder" parameterType="map">
+		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
+	</update>
+	
+	<!-- 주문 취소 건 결제 내역 DB에 반영 -->
+	<update id="cancelPay" parameterType="map">
+		SELECT to_char(sysdate, 'YYYY-MM-DD HH:MM:SS') FROM dual
+	</update>
+	
+</mapper>

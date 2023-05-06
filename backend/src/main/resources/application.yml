@@ -15,6 +15,8 @@ spring:
       suffix: .jsp
       
   datasource:
+#    url: jdbc:oracle:thin:@192.168.10.72:1521/orcl11
+# 집에서 테스트할때는 아래의 주소로 해주세요
     url: jdbc:oracle:thin:@localhost:1521/orcl11
     username: itryp
     password: itryp0509
@@ -31,6 +33,9 @@ spring:
   servlet:
     multipart:
       enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 20MB
+      max-request-size: 20MB
       
 mybatis:
-  mapper-locations: mapper/*.xml
+  mapper-locations: mapper/**/*.xml

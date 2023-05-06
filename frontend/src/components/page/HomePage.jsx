@@ -1,13 +1,14 @@
 import React from 'react'
-import Bottom from '../include/Bottom'
 import Header from '../include/Header'
+import Footer from '../include/Footer'
+import HomeLayout from '../home/HomeLayout'
 
 const HomePage = () => {
   return (
     <>
     <Header />
-    <div>HomePage</div>
-    <Bottom />
+      <HomeLayout />
+    <Footer />
     </>
   )
 }

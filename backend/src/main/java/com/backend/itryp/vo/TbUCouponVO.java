@@ -16,5 +16,8 @@ public class TbUCouponVO {
 	private int coupon_rate;
 	private int coupon_min;
 	private int coupon_max;
+	private String coupon_date;
+	private int coupon_valid;
+	private int coupon_exp;
 
 }

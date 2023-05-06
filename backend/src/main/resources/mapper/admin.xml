@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.itryp">
+	<!-- 판매목록(+새로운 문의) 조회 -->
+	<select id="marketQnaList" parameterType="map" resultType="map">
+		SELECT m.market_no
+		     , m.user_id
+		     , m.market_category
+		     , m.market_title
+		     , m.market_price
+	         , m.market_date
+	         , f.file_url
+		     , NVL(q.qna_count, 0) qna_count
+		     , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+			 , NVL((SELECT SUM(market_count)
+               FROM TB_ORDER_DETAIL
+               WHERE market_no = m.market_no), 0) sales_count
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
+		FROM TB_MARKET m
+			, (SELECT COUNT(user_Id) qna_count, market_no
+			   FROM TB_QNA
+			   WHERE qna_step = 0
+			   GROUP BY market_no) q
+			, TB_M_FILE f
+		WHERE m.market_no = q.market_no(+)
+			AND (q.market_no IS NOT NULL OR q.market_no IS NULL)
+      AND m.market_no = f.market_no
+      AND f.file_step = 1
+	ORDER BY qna_count DESC, sales_count DESC
+	</select>
+	
+	<!-- 신고 목록 조회(회원4, 글0, 댓글1) -->
+	<select id="reportList" parameterType="map" resultType="map">
+				SELECT r.report_no
+             , r.user_id
+             , r.report_type
+             , r.report_num
+             , r.report_group
+             , r.report_step
+             , u.user_id report_user
+             , r.report_reason
+             , r.report_date
+             , r.report_result
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
+		  FROM TB_REPORT r, TB_USER u
+		  WHERE r.report_user = u.user_id
+		  <if test='report_type != null and report_type == 4'>
+		  	AND r.report_type = 4
+		  </if>
+		  <if test='report_type != null and report_type == 0'>
+		  	AND r.report_type = 0
+		  </if>
+		  <if test='report_type != null and report_type == 1'>
+		  	AND r.report_type = 1
+		  </if>
+		  ORDER BY report_date DESC
+	</select>
+	
+	<!-- 신고 상태 수정 - 미처리0 차단1 취소2 -->
+	<update id="reportUpdate" parameterType="map">
+		UPDATE TB_REPORT
+		SET report_result = #{report_result}
+		WHERE report_no = #{report_no}
+	</update>
+	
+	<!-- 회원 상태 수정 - 기본0 차단2 -->
+	<update id="userStatusUpdate" parameterType="map">
+		UPDATE TB_USER
+		SET status = #{status}
+		WHERE user_id = #{user_id}
+	</update>
+	
+	<!-- 글 상태 수정 - 기본0 차단1 -->
+	<update id="boardStatusUpdate" parameterType="map">
+		UPDATE TB_BOARD
+		SET board_status = #{board_status}
+		WHERE board_no = #{board_no}
+	</update>
+	
+	<!-- 댓글 상태 수정 - 기본0 차단2 -->
+	<update id="commentStatusUpdate" parameterType="map">
+		UPDATE TB_B_COMMENT
+		SET comment_status = #{comment_status}
+		WHERE comment_no = #{comment_no}
+		AND comment_step = #{comment_step}
+	</update>
+	
+	<!-- 차단 회원 목록 조회 -->
+	<select id="banUserList" parameterType="map" resultType="map">
+		SELECT user_id
+		     , user_nickname
+		     , user_name
+		     , user_phone
+		     , user_level
+		     , status
+		     , (SELECT COUNT(user_id)
+	           FROM TB_USER
+	           WHERE status = 2) userBan_count
+	         , (SELECT COUNT(board_no)
+	           FROM TB_BOARD
+	           WHERE board_status = 1) boardBan_count  
+	         , (SELECT COUNT(board_no)
+	           FROM TB_B_COMMENT
+	           WHERE comment_status = 2) commentBan_count
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
+		FROM TB_USER
+		WHERE status = 2
+	</select>
+	
+	<!-- 차단 글 목록 조회 -->
+	<select id="banBoardList" parameterType="map" resultType="map">
+		SELECT board_no
+		     , user_id
+		     , board_category
+		     , board_title
+		     , board_date
+		     , board_status
+		     , (SELECT COUNT(user_id)
+	           FROM TB_USER
+	           WHERE status = 2) userBan_count
+	         , (SELECT COUNT(board_no)
+	           FROM TB_BOARD
+	           WHERE board_status = 1) boardBan_count  
+	         , (SELECT COUNT(board_no)
+	           FROM TB_B_COMMENT
+	           WHERE comment_status = 2) commentBan_count
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
+		FROM TB_BOARD
+		WHERE board_status = 1
+	</select>
+	
+	<!-- 차단 댓글 목록 조회 -->
+	<select id="banCommentList" parameterType="map" resultType="map">
+		SELECT board_no
+		     , user_id
+		     , comment_no
+		     , comment_step
+		     , comment_content
+		     , comment_date
+		     , comment_status
+		     , (SELECT COUNT(user_id)
+	           FROM TB_USER
+	           WHERE status = 2) userBan_count
+	         , (SELECT COUNT(board_no)
+	           FROM TB_BOARD
+	           WHERE board_status = 1) boardBan_count  
+	         , (SELECT COUNT(board_no)
+	           FROM TB_B_COMMENT
+	           WHERE comment_status = 2) commentBan_count
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
+		FROM TB_B_COMMENT 
+		WHERE comment_status = 2
+	</select>
+
+	<!-- 차단 글 삭제== -->
+	<delete id="banBoardDelete" parameterType="map">
+		DELETE FROM TB_BOARD
+		WHERE board_no = #{board_no}
+		AND board_status = 1
+	</delete>
+	
+	<!-- 차단 댓글 삭제==-->
+	<delete id="banCommentDelete" parameterType="map">
+		DELETE FROM TB_B_COMMENT
+		WHERE comment_no = #{comment_no}
+		AND comment_step = #{comment_step}
+		AND comment_status = 2
+	</delete>
+	
+	<!-- 탈퇴(신청) 회원 목록 조회 -->
+	<select id="resignList" parameterType="map" resultType="map">
+		SELECT u.user_id
+		     , u.user_nickname
+		     , u.user_name 
+		     , u.user_phone
+		     , u.user_level
+		     , u.status
+		     , q.qna_no
+		     , q.qna_title
+		     , q.qna_content
+		     , q.qna_date
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
+		FROM TB_USER u, TB_QNA q
+		WHERE u.user_id = q.user_id
+			AND q.qna_sort = 3
+ 		ORDER BY q.qna_date DESC
+	</select>
+	
+		<!-- 탈퇴(신청) 회원 상태 수정 탈퇴1 -->
+	<update id="resignUpdate" parameterType="map">
+		UPDATE TB_USER
+		SET status = #{status}
+		WHERE user_id = #{user_id}
+	</update>
+	
+	<!-- 탈퇴문의 상태 수정 -->
+	<update id="resignQnaUpdate">
+		UPDATE TB_QNA
+		SET qna_step = #{qna_step}
+		WHERE qna_no = #{qna_no}
+		AND user_id = #{user_id}
+	</update>
+	
+	<!-- 탈퇴1, 차단2 회원 삭제==  -->
+	<delete id="resignDelete" parameterType="map">
+		DELETE FROM TB_USER
+		WHERE user_id = #{user_id}
+		AND status > 0
+	</delete>
+	
+	<!-- 신고당한 회원 글 출력 -->
+	<select id="userBoardDetail" parameterType="map" resultType="map">
+		SELECT b.board_no
+		     , b.type_board
+		     , b.board_title
+		     , b.board_date
+		     , b.board_status
+		     , (SELECT COUNT(user_id)
+		        FROM TB_BOARD
+		        WHERE user_id = #{user_id}) board_count
+  		   , (SELECT COUNT(user_id)
+			     FROM TB_B_COMMENT
+			     WHERE user_id = #{user_id}) comment_count
+		FROM TB_USER u, TB_BOARD b
+		WHERE u.user_id = #{user_id}
+		AND u.user_id = b.user_id
+	</select>
+	
+	<!-- 신고당한 회원 댓글 출력 -->
+	<select id="userCommentDetail" parameterType="map" resultType="map">
+		SELECT c.board_no
+		     , c.comment_no
+		     , c.comment_step
+		     , c.type_comment
+		     , c.comment_content
+		     , c.comment_date
+		     , c.comment_status
+ 		     , (SELECT COUNT(user_id)
+				    FROM TB_BOARD
+				    WHERE user_id = #{user_id}) board_count
+  		   , (SELECT COUNT(user_id)
+			     FROM TB_B_COMMENT
+			     WHERE user_id = #{user_id}) comment_count
+		FROM TB_USER u, TB_B_COMMENT c
+		WHERE u.user_id = #{user_id}
+		AND u.user_id = c.user_id
+	</select>
+	
+	<!-- 주문 목록 출력 -->
+	<select id="adminOrderList" parameterType="map" resultType="map">
+		SELECT order_no
+		     , user_id
+		     , REGEXP_REPLACE(REVERSE(REGEXP_REPLACE(REVERSE(TO_CHAR(order_payment)), '(\d{3})','\1,')), '^,','') order_payment
+		     , order_date
+		     , order_status
+             , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
+			FROM TB_ORDER
+	</select>
+	
+	<!-- 주문 상태 수정 예약0, 취소1, 판매2 -->
+	<update id="adminOrderUpdate">
+		UPDATE TB_ORDER
+		SET order_status = #{order_status}
+		WHERE order_no = #{order_no}
+		AND user_id = #{user_id}
+	</update>
+	
+		<!-- 주문 상세보기 출력 -->
+	<select id="adminOrderDetail" parameterType="map" resultType="map">
+		SELECT d.detail_no
+             , m.market_no
+             , m.market_title
+             , o.user_id
+             , o.order_name
+             , o.order_email
+             , o.order_phone
+             , o.coupon_no
+             , o.order_total
+             , c.coupon_name
+             , c.coupon_rate
+             , c.coupon_max
+             , d.market_count
+             , d.order_amount
+             , d.market_order_date
+             , p.pay_method
+             , p.pay_date
+             , p.pay_total
+             , f.file_url
+             , r_count
+         FROM TB_MARKET m
+            , TB_ORDER o
+            , TB_ORDER_DETAIL d
+            , TB_U_COUPON c
+            , TB_PAY p
+            , TB_M_FILE f
+            , (SELECT d.market_no, COUNT(r.user_id) r_count
+                FROM TB_M_REVIEW r, TB_ORDER_DETAIL d
+                WHERE r.market_no(+) = d.market_no
+                GROUP BY d.market_no) r
+        WHERE m.market_no = d.market_no
+        AND o.order_no = d.order_no
+        AND c.coupon_no(+) = o.coupon_no
+        AND p.order_no = o.order_no
+        AND f.market_no = m.market_no
+        AND r.market_no = d.market_no
+		AND o.order_no = #{order_no}
+	</select>
+	
+	<!-- 주문 예약자 정보 수정 -->
+	<update id="adminOrderInfoUpdate">
+		UPDATE TB_ORDER
+		<trim prefix="SET" prefixOverrides=",">
+		<if test="order_name != null and order_name.length() != 0">
+			  order_name = #{order_name}
+		</if>
+		<if test="order_phone != null and order_phone.length() != 0">
+			, order_phone = #{order_phone}
+		</if>
+		<if test="order_email != null and order_email.length() != 0">
+			, order_email = #{order_email}
+		</if>
+		</trim>
+		WHERE order_no = #{order_no}
+	</update>
+	
+	<!-- 새로운 1:1 문의 -->
+	<select id="adminInquiryList" parameterType="map" resultType="map">
+		SELECT qna_no
+			 , qna_step
+			 , user_id
+			 , qna_title
+			 , qna_date
+			 , (SELECT count(qna_no)
+	            FROM TB_QNA
+	            WHERE qna_step = 0
+	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
+		FROM TB_QNA
+		WHERE (qna_sort = 2 or qna_sort = 4)
+		AND (qna_step = 0 or qna_step = 2)
+		ORDER BY qna_no DESC
+	</select>
+</mapper>
