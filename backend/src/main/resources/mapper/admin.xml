@@ -198,6 +198,7 @@
 	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
 		FROM TB_BOARD
 		WHERE board_status = 1
+		ORDER BY board_no
 	</select>
 	
 	<!-- 차단 댓글 목록 조회 -->
@@ -239,6 +240,7 @@
 	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
 		FROM TB_B_COMMENT 
 		WHERE comment_status = 2
+		ORDER BY comment_no
 	</select>
 
 	<!-- 차단 글 삭제== -->
@@ -331,6 +333,7 @@
 		FROM TB_USER u, TB_BOARD b
 		WHERE u.user_id = #{user_id}
 		AND u.user_id = b.user_id
+		ORDER BY board_no DESC
 	</select>
 	
 	<!-- 신고당한 회원 댓글 출력 -->
@@ -351,6 +354,7 @@
 		FROM TB_USER u, TB_B_COMMENT c
 		WHERE u.user_id = #{user_id}
 		AND u.user_id = c.user_id
+		ORDER BY comment_date DESC
 	</select>
 	
 	<!-- 주문 목록 출력 -->
@@ -380,6 +384,7 @@
 	            WHERE qna_step = 0
 	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new
 			FROM TB_ORDER
+			ORDER BY order_no DESC
 	</select>
 	
 	<!-- 주문 상태 수정 예약0, 취소1, 판매2 -->
@@ -401,6 +406,7 @@
              , o.order_phone
              , o.coupon_no
              , o.order_total
+             , o.order_status
              , c.coupon_name
              , c.coupon_rate
              , c.coupon_max
@@ -411,23 +417,24 @@
              , p.pay_date
              , p.pay_total
              , f.file_url
-             , r_count
+             , NVL(r.r_count, 0) r_count
          FROM TB_MARKET m
             , TB_ORDER o
             , TB_ORDER_DETAIL d
             , TB_U_COUPON c
             , TB_PAY p
             , TB_M_FILE f
-            , (SELECT d.market_no, COUNT(r.user_id) r_count
+            , (SELECT d.market_no, r.user_id, COUNT(r.user_id) r_count
                 FROM TB_M_REVIEW r, TB_ORDER_DETAIL d
                 WHERE r.market_no(+) = d.market_no
-                GROUP BY d.market_no) r
+                GROUP BY d.market_no, r.user_id) r
         WHERE m.market_no = d.market_no
         AND o.order_no = d.order_no
         AND c.coupon_no(+) = o.coupon_no
         AND p.order_no = o.order_no
         AND f.market_no = m.market_no
         AND r.market_no = d.market_no
+        AND r.user_id(+) = o.user_id
 		AND o.order_no = #{order_no}
 	</select>
 	
@@ -455,7 +462,22 @@
 			 , user_id
 			 , qna_title
 			 , qna_date
-			 , (SELECT count(qna_no)
+			 , (SELECT COUNT(qna_no) qna_new
+		        FROM TB_QNA
+		        WHERE qna_step = 0
+		        AND (qna_sort = 0 or qna_sort = 1)
+		        ) qna_new
+             , (SELECT count(report_no)
+               FROM TB_REPORT
+               WHERE report_result = 0) report_new
+             , (SELECT count(qna_no)
+			    FROM TB_QNA
+			    WHERE qna_step = 0
+			    AND qna_sort = 3) resign_new
+			 , (SELECT COUNT(order_no)
+		        FROM TB_ORDER
+		        WHERE order_status = 0) order_new
+		     , (SELECT count(qna_no)
 	            FROM TB_QNA
 	            WHERE qna_step = 0
 	            AND (qna_sort = 2 or qna_sort = 4)) inquiry_new

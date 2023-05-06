@@ -22,7 +22,13 @@ const MyPageReviewRow = ({review}) => {
           </span>
         </th>
         <th className='reportItemTd'>
-          {new Date(review.review_date).toLocaleString('ko-KR')}
+          {new Date(review.review_date).toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          })}
+          <br />
+          {new Date(review.review_date).toLocaleTimeString('ko-KR')}
         </th>
         <th className='reportItemTd'>
           {review.review_star}

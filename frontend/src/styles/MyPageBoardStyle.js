@@ -266,7 +266,7 @@ export const ReportUl = styled.ul`
   }
   .reportItemTd{
     cursor: pointer;
-    padding: 0 21px;
+    padding: 0 15px;
     text-overflow: ellipsis;
     word-break: break-all;
   }

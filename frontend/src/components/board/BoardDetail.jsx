@@ -616,7 +616,7 @@ const BoardDetail = () => {
                       <img className='commentImg' src={profileImg[Math.floor(((new Date(item.comment_date).getSeconds())%10))]} alt="" />
                     </CommentImg>
                     {isCommentEdit && commentEdit.cno === item.comment_no && commentEdit.cstep === item.comment_step ? (
-                      <InputDiv>
+                      <InputDiv comment={'Y'}>
                       <CommentInput
                         id='commentInput'
                         onChange={(e)=>{handleNewComment(e.target.value)}}

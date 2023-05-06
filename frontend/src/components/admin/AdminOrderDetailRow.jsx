@@ -31,15 +31,15 @@ const AdminOrderDetailRow = ({order}) => {
           {order.market_count && (order.order_amount * order.market_count).toLocaleString('ko-KR')}원
         </DetailTd>
         <DetailTd>
-          {order.r_count == 1 ? (
+          {order.order_status == 2 && order.r_count > 0 ? (
             <div className='done' >
               작성완료
             </div>
-          ) : (
+          ) : ( order.order_status == 2 && order.r_count === 0 ? (
             <div className='admin'>
                 작성가능
             </div>
-          )}
+          ) : null)}
         </DetailTd>
       </tr>
     </>

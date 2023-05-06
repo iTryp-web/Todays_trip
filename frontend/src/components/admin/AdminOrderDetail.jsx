@@ -65,6 +65,7 @@ const AdminOrderDetail = () => {
             order_amount: jsonDoc[i].ORDER_AMOUNT, // 상세 주문금액
             market_order_date: jsonDoc[i].MARKET_ORDER_DATE, // 예약 날짜
             order_total: jsonDoc[i].ORDER_TOTAL, // 주문 총금액
+            order_status: jsonDoc[i].ORDER_STATUS,
             pay_method: jsonDoc[i].PAY_METHOD, // 0카드 1카카페 2무통장 3가상계좌
             pay_date: jsonDoc[i].PAY_DATE,
             pay_total: jsonDoc[i].PAY_TOTAL, // 결제 총금액

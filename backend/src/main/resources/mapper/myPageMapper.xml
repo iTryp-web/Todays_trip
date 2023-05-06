@@ -72,7 +72,7 @@
 	<!-- 사용자가 좋아요한 글 목록 불러오기 -->
 	<!-- 글 제목 / (글 내용) / 작성일 / 조회수 / 좋아요? -->
 	<select id="getMyLikeList" parameterType="map" resultType="map">
-SELECT b.board_no,
+		SELECT b.board_no,
                 b.board_category,
                 b.board_title,
                 b.board_date,
@@ -197,8 +197,8 @@ SELECT b.board_no,
         AND r.market_no(+) = d.market_no
         AND f.file_step = 1
         AND r.user_id(+) = #{user_id}
-				AND o.user_id = #{user_id}
-				AND o.order_no = #{order_no}
+		AND o.user_id = #{user_id}
+		AND o.order_no = #{order_no}
 	</select>
 	
 	<!-- 리뷰 등록 -->

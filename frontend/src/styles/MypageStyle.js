@@ -61,7 +61,7 @@ export const OrderRowTd = styled.td`
   height: 55px;
   padding: 10px 20px;
   text-align: center;
-  cursor: pointer;
+  cursor: ${({ status }) => (status < 3 ? "pointer" : "default")};
   font-size: 15px;
   font-weight: 600;
   color: #3d3d3d;
@@ -81,7 +81,7 @@ export const OrderSpan = styled.span`
   height: 100%;
   align-items: center;
   :hover {
-    color: #4996f3;
+    color: ${({ status }) => (status < 3 ? "#4996f3" : "#3d3d3d")};
   }
 `;
 

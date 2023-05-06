@@ -479,7 +479,7 @@ export const DetailSection = styled.section`
   padding: 0 5rem;
   margin: 0 auto;
   margin-top: 2em;
-  margin-bottom: 6em;
+  margin-bottom: 8em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -783,6 +783,8 @@ export const InputDiv = styled.div`
   margin-bottom: 5px;
   padding: 8px;
   border-radius: 10px;
+  width: ${({ comment }) => (comment === 'Y' ? "90%" : "100%")};
+
   svg {
     width: 17px;
     height: 17px;
@@ -793,7 +795,7 @@ export const InputDiv = styled.div`
 `;
 
 export const CommentInput = styled.textarea`
-  width: 93%;
+  width: 100%;
   height: 40px;
   padding: 10px;
   font-size: 14px;
