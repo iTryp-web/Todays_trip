@@ -2,8 +2,8 @@ import React from 'react'
 import { CartTr, ImgDiv } from '../../styles/cartStyle'
 import { useCookies } from 'react-cookie';
 
-const CartRow = ({ cart, index, handleChecked, checkedItems, handleDeleteChecked }) => {
-
+const CartRow = ({ cart, index, handleChecked, checkedItems, handleDeleteChecked, maxCnt }) => {
+  console.log(maxCnt)
   //아이콘 이미지
   const plus_img = "/images/add.png";
   const minus_img = "/images/minus.png";
@@ -61,8 +61,10 @@ const CartRow = ({ cart, index, handleChecked, checkedItems, handleDeleteChecked
   return (
     <>
       <CartTr>
-        <td className='check_box'>
+        <td className='check_box'>{maxCnt && cart.marketCnt > maxCnt ? 
+          <input type="checkbox" id={cart.marketNum} value={cart.marketNum} onChange={handleClick} checked={checkedItems.includes(index)} disabled />:
           <input type="checkbox" id={cart.marketNum} value={cart.marketNum} onChange={handleClick} checked={checkedItems.includes(index)} />
+        }
         </td>
         <td>
           <ImgDiv>

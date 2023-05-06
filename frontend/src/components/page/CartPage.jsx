@@ -1,21 +1,24 @@
+import { off, onValue, ref, set } from '@firebase/database';
+import { database } from '../../service/firebase';
 import React, { useState } from 'react'
 import Header from '../include/Header'
 import '../../styles/cartStyle'
 import { CartButton, CartButtonDiv, CartCalcDiv, CartDiv, CartItemTitle, CartListDiv, CartTable, CartTitle, EmptySpan, LineHr, 
-         NoticeDiv, ResultDiv } from '../../styles/cartStyle'
+          NoticeDiv, ResultDiv } from '../../styles/cartStyle'
 import CartRow from '../cart/CartRow'
 import Footer from '../include/Footer'
 import { useCookies } from 'react-cookie'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 
 const CartPage = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
   const [cookies, setCookies, removeCookies] = useCookies(['cart']);
 
   //쿠키에서 장바구니 목록 가져오기
-  const cartList = cookies.cart;
+  let cartList = cookies.cart;
 
   const [price, setPrice] = useState(0);
   const [count, setCount] = useState(0);
@@ -23,6 +26,32 @@ const CartPage = () => {
   //체크 박스 관리용
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
+  
+  //실시간 DB 해당 상품 수량 불러오기
+  const [itemsMaxCnt, setItemsMaxCnt] = useState([]);
+
+  // const getMaxCnt = () => {
+  //   console.log(cartList)
+  //   cartList.forEach((cart, index) => {
+  //     let temp_cnt = [];
+  //     const startCountRef = ref(database,'market')
+  //     onValue(startCountRef,(snapshot) => {
+  //       const datas = snapshot.val()
+  //       Object.values(datas).forEach((data, index) => {
+  //         if(data.market_no == cart.marketNum){
+  //           // if(data.start_date == cart.marketOption) {//옵션 값 확인
+  //             temp_cnt = [...temp_cnt, data.s_count]
+  //           // }
+  //         }
+  //       })
+  //       setItemsMaxCnt(temp_cnt)
+  //     })
+  //   })
+  // }
+
+  // useEffect(() => {
+  //   getMaxCnt();
+  // }, [])
 
   //체크 박스 전체 선택시 처리
   const handleAllChecked = (e) => {
@@ -72,6 +101,7 @@ const CartPage = () => {
     if(cartList && cartList.length === checkedItems.length) setIsAllChecked(true);
     else setIsAllChecked(false);
     handleTotal();
+    // getMaxCnt();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkedItems])
 
@@ -101,12 +131,41 @@ const CartPage = () => {
 
   //주문하기 처리
   const handleOrder = () => {
+    cartList = cookies.cart;
     if(checkedItems === undefined || checkedItems.length < 1) {
       alert('주문하실 상품을 선택해주세요');
       return;
     }
     //개수 확인해서 초과시에 돌려보내기
     //아니면 DB 개수 차감하고 다음 작업
+    // checkedItems.forEach((checked, index) => {
+    //   const startCountRef = ref(database,'market')
+    //   onValue(startCountRef,(snapshot) => {
+    //     const datas = snapshot.val()
+    //     Object.values(datas).forEach((data, index) => {
+    //       console.log(cartList[index]);
+    //       if(data.market_no == cartList[index].marketNum){
+    //         // if(data.start_date == cart.marketOption) {//옵션 값 확인
+    //           if(data.s_count < cartList[index].marketCnt) {
+    //             alert("구매 가능한 수량을 초과한 상품이 존재합니다.");
+    //             location.reload();
+    //             return;
+    //           } else {
+    //             const upData = {
+    //               s_no : data.s_no,
+    //               market_no : data.market_no,
+    //               s_count : Number(data.s_count - cartList[index].marketCnt),
+    //               start_date : data.start_date,
+    //               finish_date : data.finish_date,
+    //             }
+    //             console.log(upData);
+    //             set(ref(database,'market/' + data.s_no), upData);
+    //           }
+    //         // }
+    //       }
+    //     })
+    //   })
+    // })
 
     //체크된 상품 아이디 정보 -> 새 배열에 담아서 orderPage로 넘겨주기
     let orderItems = [];
@@ -141,7 +200,7 @@ const CartPage = () => {
             <tbody>
               {
                 cartList.map((cart, index) => (
-                 <CartRow key={cart.marketNum} cart={cart} index={index} handleChecked={handleChecked} checkedItems={checkedItems} handleDeleteChecked={handleDeleteChecked} />
+                  <CartRow key={cart.marketNum} cart={cart} index={index} handleChecked={handleChecked} checkedItems={checkedItems} handleDeleteChecked={handleDeleteChecked} maxCnt={itemsMaxCnt[index]} />
                 ))
               }
             </tbody>
