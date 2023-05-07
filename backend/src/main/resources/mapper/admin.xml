@@ -433,8 +433,7 @@
         AND c.coupon_no(+) = o.coupon_no
         AND p.order_no = o.order_no
         AND f.market_no = m.market_no
-        AND r.market_no = d.market_no
-        AND r.user_id(+) = o.user_id
+        AND r.market_no(+) = d.market_no
 		AND o.order_no = #{order_no}
 	</select>
 	

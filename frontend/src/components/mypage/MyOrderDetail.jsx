@@ -133,7 +133,7 @@ const MyOrderDetail = () => {
                   orders[0].order_total > orders[0].coupon_max ? (
                     orders[0].coupon_name +' ' + orders[0].coupon_max.toLocaleString('ko-KR') + '원'
                   ) : (
-                    (orders[0].coupon_name +' ' + orders[0].order_total/orders[0].coupon_rate).toLocaleString('ko-KR') + '원'
+                    (orders[0].coupon_name +' ' + (orders[0].order_total/100*orders[0].coupon_rate).toLocaleString('ko-KR')) + '원'
                   )
                 ) : (
                   '0원'

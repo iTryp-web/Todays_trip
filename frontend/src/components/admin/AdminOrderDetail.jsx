@@ -3,10 +3,9 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { adminOrderDetailDB, adminOrderInfoEditDB } from '../../service/adminLogic'
-import { OrderDiv } from '../../styles/OrderStyle'
 import Header from '../include/Header'
 import Footer from '../include/Footer'
-import { OrderDetailSection, OrderTotalSpan, OrderTotalDiv, LineHr, OrderCalcDiv } from '../../styles/MypageStyle'
+import { OrderDetailSection, OrderTotalSpan, OrderTotalDiv, LineHr, OrderCalcDiv, OrderDiv } from '../../styles/MypageStyle'
 import { OrderListDiv, OrderCouponDiv, OrdertyTitle, OrdertysTitle, OrdererTable, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderCouponTyDiv, OrdererTyContentTd } from '../../styles/OrderStyle'
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import AdminOrderDetailRow from './AdminOrderDetailRow'
@@ -186,7 +185,7 @@ const AdminOrderDetail = () => {
                   orders[0].order_total > orders[0].coupon_max ? (
                     orders[0].coupon_name +' ' + orders[0].coupon_max.toLocaleString('ko-KR') + '원'
                   ) : (
-                    (orders[0].coupon_name +' ' + orders[0].order_total/orders[0].coupon_rate).toLocaleString('ko-KR') + '원'
+                    (orders[0].coupon_name +' ' + (orders[0].order_total/100*orders[0].coupon_rate).toLocaleString('ko-KR')) + '원'
                   )
                 ) : (
                   '0원'
@@ -264,7 +263,6 @@ const AdminOrderDetail = () => {
         <EditModal onClick={() => setIsView(false)}>
           <ModalBody onClick={(e) => e.stopPropagation()}>
             <div>
-
             <HiOutlineX className='x-icon' onClick={() => setIsView(false)} />
             <EditP>예약자 이름</EditP>
             <EditInput type="text" onChange={(e) => handleName(e.target.value)} defaultValue={orders[0].order_name} />

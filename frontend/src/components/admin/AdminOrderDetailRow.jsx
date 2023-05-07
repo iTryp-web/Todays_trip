@@ -31,15 +31,20 @@ const AdminOrderDetailRow = ({order}) => {
           {order.market_count && (order.order_amount * order.market_count).toLocaleString('ko-KR')}원
         </DetailTd>
         <DetailTd>
-          {order.order_status == 2 && order.r_count > 0 ? (
+        {order.order_status == 2 && order.r_count > 0 ? (
             <div className='done' >
               작성완료
             </div>
           ) : ( order.order_status == 2 && order.r_count === 0 ? (
-            <div className='admin'>
-                작성가능
+            <div>
+              <BiAddToQueue className='icon' />
+                리뷰작성
             </div>
-          ) : null)}
+          ) : (
+            order.order_status == 0 ? '예약중' : (
+              order.order_status == 1 ? '취소' : (
+                order.order_status == 3 ? '결제실패' : null)))
+          )}
         </DetailTd>
       </tr>
     </>
