@@ -32,7 +32,7 @@ const OrderPage = () => {
     }
   }, [])
 
-  const [ orderDetailInfo, setOrderDetailInfo ] = useState([]);
+  let orderDetailInfo = [];
   let order_no;
   let paymentData = {};
 
@@ -197,7 +197,7 @@ const OrderPage = () => {
                 market_order_date: item.marketOption,
               }];
           });
-    setOrderDetailInfo(detailItem);
+    orderDetailInfo = detailItem;
 
     //orderInfo 값 null 체크
     for(let key in orderInfo){
