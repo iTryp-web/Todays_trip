@@ -16,21 +16,16 @@ import styled from 'styled-components';
 import ScheduleRow from './ScheduleRow';
 
 const DateContainer=styled.div`/* 일정등록제목 */
-.btnInsert{
-  // margin-left: 15%;
-  // display:flex;
+  margin-left: 25%;
   text-align:center;
-  margin-right: 0.7em;
-  padding: 0 0.9rem;
   border: none;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 2rem;
   font-weight: 600;
-  height:2.7em;
-  width: 8em;
+  width: 50%;
   background: #4996f3;
   color: white;
-  }
+  
   `
 
   const WriteSection = styled.section`
@@ -111,10 +106,11 @@ const RealTimeSchedule = () => {
       console.log(fdata);
       //파이어베이스 실시간 디비넣기
      set(ref(database,'market/'+fdata.s_no), fdata);
+ 
       window.location.reload()
     }
 
-     //일정정보가져오기
+     //일정정보가져오기-market_no일치하는것만
      const [fdatas,setFdatas]=useState({})
 
      useEffect(()=>{
@@ -123,11 +119,14 @@ const RealTimeSchedule = () => {
        onValue(startCountRef,(snapshot)=>{
          const data=snapshot.val()
          console.log(data)
-         setFdatas(data)
-         //console.log(fdatas);
-         return()=>off(startCountRef)
+         console.log(s_no)
+          //filter()메소드로 거르기
+          const filteredData = Object.values(data).filter((item) => item.market_no == tempMno[0]);//타입 조심
+          console.log(filteredData);
+          setFdatas(filteredData);
+          return()=>off(startCountRef)
        })
-     },[]) //fdatas
+     },[s_no]) //fdatas
      console.log(fdatas);
   
    
@@ -136,7 +135,7 @@ const RealTimeSchedule = () => {
       <Header/>
       <hr/>
       <DateContainer>
-      <h2>마켓글작성 - 일정등록</h2>
+      마켓글작성 - 일정등록
       </DateContainer>
 
     <WriteSection>

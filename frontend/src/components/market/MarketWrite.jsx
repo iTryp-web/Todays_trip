@@ -29,6 +29,11 @@ import { useEffect } from 'react';
 
 const MarketWrite = () => {
   const navigate=useNavigate();
+
+  // 관리자 구분-세션스토리지 꺼내오기
+  const [userRole] = useState(window.sessionStorage.getItem('user_role'))
+  const [userID] = useState(window.sessionStorage.getItem('user_id'))
+  console.log(userID)
   
   // 리프레쉬용 변수
   const [start, setStart] = useState()
@@ -38,9 +43,15 @@ const MarketWrite = () => {
   const[title, setTitle]= useState('');
   const[content, setContent]= useState('');
   const[files, setFiles]= useState([]);
+  const [price,setPrice]=useState(0)
   const quillRef = useRef();
 
-  const [price,setPrice]=useState(0)
+  // 관리자 제외 URL차단
+  useEffect(() => {
+    if(userRole != 2) {
+      navigate('/')
+    }
+  }, [userID, userRole])
 
   
   
@@ -73,9 +84,8 @@ const MarketWrite = () => {
         console.log('marketInsert');
         console.log(files)
         const market = {
-          // user_id: sessionStorage.getItem('user_id'),
+          user_id: userID,
           market_no:mno,
-          user_id: 'admin',
           market_category: selected,
           market_title: title,
           market_content: content,

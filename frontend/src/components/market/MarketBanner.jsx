@@ -76,6 +76,7 @@ const MarketBanner = () => {
       {
       userRole==2?
           (<Button onClick={() => navigate('/market/write')}  >
+            <div style={{display:"flex"}}>
             <lord-icon
                 src="https://cdn.lordicon.com/frjgvxce.json"
                 trigger="hover"
@@ -83,9 +84,8 @@ const MarketBanner = () => {
                 state="hover-1"
                 style={{width:"30px", height:"30px", marginRight: '5px', marginTBottom: '10px'}}>
             </lord-icon>
-            <span style={{ marginBottom: '100px', marginTop: '1px'}}>
               지금 판매자 글쓰기!
-              </span>
+              </div>
           </Button> ):
           (userRole==0?(<Coupon onClick={() => navigate('/mypage')}>
             <Banner>

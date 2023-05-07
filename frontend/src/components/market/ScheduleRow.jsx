@@ -18,17 +18,6 @@ const ScheduleRow = ({fdata, setStart}) => {
       // setStart(new Date())//리프레쉬용
     }
 
-    // const deleteData = () => {
-    //   const databaseRef = ref(database); // DB root 경로
-    //   const sRef = child(databaseRef, "s_no"); // market 경로
-    //   const sNo = fdata.s_no;
-    //   const dataRef = ref(sRef, `market/${sNo}`); // market_no_0 경로 (데이터 경로)
-    
-    //   remove(dataRef)
-    //     .then(() => console.log("데이터 삭제 성공"))
-    //     .catch((error) => console.log("데이터 삭제 실패", error));
-    // };
-
   return (
       <>
         <tr>
