@@ -41,6 +41,14 @@ const AdminResignRow = ({resign, refresh}) => {
     refresh()
   }
 
+  const removeTag = (content) => {
+    if(content) {
+      const newText = content.replace(/(<([^>]+)>)/gi,'');
+      console.log(newText)
+      return newText
+    }
+  }
+
   return (
     <>
       <ReportTr result={resign.status}>
@@ -51,7 +59,7 @@ const AdminResignRow = ({resign, refresh}) => {
           {resign.qna_title}
         </th>
         <th>
-          {resign.qna_content}
+          {removeTag(resign.qna_content)}
         </th>
         <th>
           {resign.qna_date}
