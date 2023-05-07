@@ -7,7 +7,7 @@
 		     , m.market_category
 		     , m.market_title
 		     , m.market_date
-		     , d.market_count
+		     , NVL(d.market_count, 0) market_count
 		     , f.file_url
 		     , (SELECT COUNT(market_no)
             FROM TB_MARKET) m_count
@@ -30,7 +30,7 @@
       AND m.market_no = f.market_no
       AND f.file_step = 1
 		AND ROWNUM <![CDATA[<=]]> 5
-		ORDER BY d.market_count DESC
+		ORDER BY NVL(d.market_count, 0) DESC
 	</select>
 	
 	<!-- 마켓 신규글 -->

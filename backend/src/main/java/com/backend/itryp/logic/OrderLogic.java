@@ -89,7 +89,7 @@ public class OrderLogic {
 	public int paymentUpdate(Map<String, Object> pmap) {
 		log.info("paymentUpdate 호출");
 		int result = 0;
-		if(Integer.parseInt(pmap.get("coupon_no").toString()) != 0)
+		if(pmap.get("coupon_no").toString().length() > 1)
 			result = odao.couponUpdate(pmap);
 		result = odao.paymentUpdate(pmap);
 		return result;

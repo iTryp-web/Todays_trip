@@ -24,6 +24,7 @@ export const ItemBlock = styled.div`
     margin-bottom: 0.3rem;
     border-radius: 5px;
     position: relative;
+    object-fit: cover;
     &:hover {
       transform: scale(1.05);
       transition: transform 0.5s;
