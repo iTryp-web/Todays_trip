@@ -64,6 +64,10 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
 
   /* 장바구니버튼 클릭 */
   const handleClick = () => {
+    if(fdata==null){
+      alert('일정과 수량을 선택하세요')
+      return;
+    }
     handleShow();
     cookieAdd();
   };
@@ -318,6 +322,10 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                             <Button
                               name={'구매하기'}
                               onClick={(e) => {
+                                if(fdata==null){
+                                  alert('일정과 수량을 선택하세요')
+                                  return;
+                                }
                                 navigate('/order', { state: { orderItems:[{
                                     "marketNum": detailPost.market_no,
                                     "marketImg": thumbnailUrl,//썸네일
