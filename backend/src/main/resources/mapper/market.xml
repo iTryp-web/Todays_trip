@@ -375,8 +375,13 @@
 		           	, qna_date
 		            , qna_sort
 			          )
-			    VALUES(
-								TB_QNA_NO_SEQ.NEXTVAL,
+			    VALUES(     
+	            <if test="qna_no == null">
+				    		 TB_QNA_NO_SEQ.NEXTVAL,
+							</if>
+	            <if test="qna_no != null">
+				    		 #{qna_no},
+							</if>
 								#{qna_step},
 								#{market_no},
 								#{user_id},

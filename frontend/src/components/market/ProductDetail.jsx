@@ -120,7 +120,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
       "marketPrice": detailPost.market_price
     });
   }, [count, detailPost.market_no, detailPost.market_price, detailPost.market_title, thumbnailUrl]);
-  
+
 
   /* 파이어베이스 일정정보 다 가져오기 - 마켓넘버 일치하는것만 가져와라*/
   const [fdatas,setFdatas]=useState([{}])

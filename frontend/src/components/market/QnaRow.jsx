@@ -80,11 +80,11 @@ const QnaRow = ({qna}) => {
           setQnaContent(value);
         }
       }
-   
+   /* 문의답글쓰기 */
    const qnaInsert = async (mno, qno) => {
     console.log('qnaInsert 마켓번호 : ' + mno);
     const market = {
-      qna_no:qno,////////////////////////////////////문제있음
+      qna_no:qno,
       qna_step:1,
       market_no:mno,
       user_id:userId,
