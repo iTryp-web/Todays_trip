@@ -8,7 +8,7 @@ email.properties
 .env
 
 #이미지파일 제외
-pds/
+#pds/
 
 # Created by https://www.toptal.com/developers/gitignore/api/eclipse,java,gradle,yarn,react,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,java,gradle,yarn,react,visualstudiocode
