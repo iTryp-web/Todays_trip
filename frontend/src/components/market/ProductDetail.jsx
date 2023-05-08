@@ -60,6 +60,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   const [fdata, setFdata]=useState({})
   const mno=detailPost.market_no
   console.log(mno);
+  
 
   /* 장바구니버튼 클릭 */
   const handleClick = () => {
@@ -110,16 +111,18 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
 
   //쿠키에 상품정보담기
   useEffect(() => {
-    //쿠키에 상품정보담기
-    setCartAdd({
-      "marketNum": detailPost.market_no,
-      "marketImg": thumbnailUrl,//썸네일
+    if(fdata != null) {
+      //쿠키에 상품정보담기
+      setCartAdd({
+        "marketNum": detailPost.market_no,
+        "marketImg": thumbnailUrl,//썸네일
       "marketName": detailPost.market_title,
-      "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스....ㅠㅠ
+      "marketOption": fdata.start_date,
       "marketCnt": count,//사용자가 선택한 갯수
       "marketPrice": detailPost.market_price
     });
-  }, [count, detailPost.market_no, detailPost.market_price, detailPost.market_title, thumbnailUrl]);
+  }
+  }, [count, detailPost.market_no, detailPost.market_price, detailPost.market_title, thumbnailUrl, fdata]);
 
 
   /* 파이어베이스 일정정보 다 가져오기 - 마켓넘버 일치하는것만 가져와라*/
@@ -254,6 +257,10 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
 
                         <img src={minus_img} alt="minus" 
                             onClick={() => {
+                              if(fdata==null){
+                                alert('일정을 선택해주세요.')
+                                return;
+                              }
                               if (count === 1) {
                                 return 1;
                               }
@@ -264,6 +271,10 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                           <p>{count}</p>
                           <img src={plus_img} alt="plus" 
                             onClick={() => {
+                              if(fdata==null){
+                                alert('일정을 선택해주세요.')
+                                return;
+                              }
                               setCount(count + 1);
                             }}
                           />
@@ -332,7 +343,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                           <Button
                             name={'장바구니'}
                             className='sale'
-                            onClick={handleClick}
+                            onClick={()=>handleClick(fdata.start_date)}
                           >장바구니</Button>
 
                           <Button

@@ -241,6 +241,7 @@ export const SliderImg = styled.img`
   height: 500px;
   max-width: 2000px;
   object-fit: fill;
+  cursor: pointer;
   @media only screen and (max-width: 1500px) {
     object-fit: cover;
   }

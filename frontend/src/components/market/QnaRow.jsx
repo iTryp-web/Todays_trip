@@ -168,7 +168,7 @@ const QnaRow = ({qna}) => {
         <div className='QNA'>
         
           <div className='qnaTspace'>
-            {qna.qna_step === 0 ? (
+            {qna.qna_step === 0 || qna.qna_step === 2 ? (
                 <TbLetterQ className='letterIcon' />
                   
                 ) : qna.qna_step === 1 ? (
@@ -177,7 +177,7 @@ const QnaRow = ({qna}) => {
                   ) : (
                     null
                     )}
-            &nbsp;{qna.user_nickname}
+            &nbsp;{qna.qna_step === 0 || qna.qna_step === 2 ? (qna.user_nickname) : ('관리자')}
 
           </div>
           {/* titleP가 click되면 handleClick이 호출됨 */}
