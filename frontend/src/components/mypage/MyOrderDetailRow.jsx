@@ -160,7 +160,9 @@ const MyOrderDetailRow = ({order, setStart}) => {
           {order.market_title}
         </DetailTitleTd>
         <DetailTd>
-          {order.market_order_date}
+          {order.market_order_date && order.market_order_date.substring(0, order.market_order_date.indexOf(' ')).substring(0, order.market_order_date.indexOf(' '))}
+          <br />
+          {order.market_order_date && order.market_order_date.substring(order.market_order_date.indexOf('~')+2).substring(order.market_order_date.indexOf(' '))}
         </DetailTd>
         <DetailTd>
           {order.market_count}개

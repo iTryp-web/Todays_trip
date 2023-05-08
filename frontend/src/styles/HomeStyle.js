@@ -104,8 +104,8 @@ export const MarketList = styled.ul`
   }
   em {
     position: absolute;
-    right: 5px;
-    bottom: -17px;
+    right: 7px;
+    bottom: -27px;
     color: #737373;
     font-size: 12px;
   }
