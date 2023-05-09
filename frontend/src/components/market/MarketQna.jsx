@@ -168,9 +168,10 @@ console.log(qnas);
             <RiQuestionnaireFill size='30' color='#4996F3'/>
             &nbsp;&nbsp;문의&nbsp;{qcount}</h5>
           &nbsp;&nbsp;
-          { userRole==2? 
-            <button className='qnaButton' onClick={handleShow}>문의답글</button>:
-               <button className='qnaButton' onClick={handleShow}>문의하기</button>}
+          {/* { userRole==2?  */}
+            {/* <button className='qnaButton' onClick={handleShow}>문의답글</button>: */}
+               <button className='qnaButton' onClick={handleShow}>문의하기</button>
+               {/* } */}
          
         </div>
           
