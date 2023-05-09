@@ -427,8 +427,8 @@
 	
 	<!-- qna 답변달리면 업데이트 -->
 	<update id="qnaUpdate" parameterType="map">
-		UPDATE TB_QNA SET
-					qna_step = 2
+		UPDATE TB_QNA
+		SET qna_step = 2
 		WHERE qna_no = #{qna_no}
 		AND qna_step = 0
 	</update>	
