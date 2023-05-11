@@ -231,16 +231,16 @@ const AdminOrderDetail = () => {
             <OrdertyTitle>결제 정보</OrdertyTitle>
             <OrderCalcTyDiv>
               <OrderCalcListDiv style={{fontSize:'14px'}}>
-                {`주문 금액 ${orders[0].order_total && orders[0].order_total.toLocaleString('ko-KR')}원
-                - 할인 금액 ${orders[0].coupon_no ? (
+              {`주문 금액 ${orders[0].order_total && orders[0].order_total.toLocaleString('ko-KR')}원
+                - 할인 금액 ${orders[0].coupon_no && orders[0].coupon_name ? (
                   orders[0].order_total > orders[0].coupon_max ? (
                     orders[0].coupon_max.toLocaleString('ko-KR') + '원'
                   ) : (
-                    (orders[0].order_total/orders[0].coupon_rate).toLocaleString('ko-KR') + '원'
+                    (orders[0].order_total/100*orders[0].coupon_rate).toLocaleString('ko-KR') + '원'
                   )
                 ) : (
-                  '0'
-                )}원`}
+                  '0원'
+                )}`}
               </OrderCalcListDiv>
               <OrderCalcListDiv style={{fontSize:'14px'}}>
                 {`결제 방식: ${orders[0].pay_method == 0 ? '카드' : (
