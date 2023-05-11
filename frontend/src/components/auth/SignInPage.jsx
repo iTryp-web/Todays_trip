@@ -57,18 +57,17 @@ const SignInPage = () => {
 
     const data = JSON.stringify(response.data);
     const jsonDoc = JSON.parse(data);
-    console.log(data)
-    
+    console.log(data);
+
     const result = jsonDoc[0].result;
 
-    if(result==1){
+    if (result == 1) {
       dispatch(setToastMsg("비밀번호가 틀렸습니다."));
-    }else if(result==0){
+    } else if (result == 0) {
       dispatch(setToastMsg("아이디가 틀렸습니다."));
-    }else if(!pwInput>0 || !idInput>0){
+    } else if (!pwInput > 0 || !idInput > 0) {
       dispatch(setToastMsg("값을 입력해주세요."));
-    }
-    else{
+    } else {
       const res = await sessionListDB({ user_id: idInput });
       const temp = JSON.stringify(res.data);
       const jsonDoc = JSON.parse(temp);
@@ -78,12 +77,11 @@ const SignInPage = () => {
       ssg.setItem("user_email", jsonDoc[0].USER_EMAIL);
       ssg.setItem("user_id", jsonDoc[0].USER_ID);
       ssg.setItem("user_role", jsonDoc[0].ROLE);
+      ssg.setItem("user_provider", jsonDoc[0].PROVIDER);
 
       navigate("/");
       alert("로그인 완료되었습니다.");
     }
-      
-    
   };
 
   //구글 로그인(정보 없으면 회원가입)
@@ -209,7 +207,12 @@ const SignInPage = () => {
           <p>
             <a
               href="/support/all"
-              style={{color: "gray", fontWeight: 200, fontSize : "13px", textDecoration :"none"}}
+              style={{
+                color: "gray",
+                fontWeight: 200,
+                fontSize: "13px",
+                textDecoration: "none",
+              }}
             >
               로그인에 문제가 있으신가요?
             </a>

@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router';
 import { qnaInsertDB, qnaListDB } from '../../service/marketLogic';
 import { ReviewUI } from '../../styles/MarketStyle'
 import Pagination from '../include/Pagination';
-import { qnaData } from './MarketData';
 import QnaRow from './QnaRow';
 
 const MarketQna = ({mno}) => {
@@ -16,8 +15,12 @@ const MarketQna = ({mno}) => {
   // 로그인할때 세션스토리지에 담았다가 꺼낼 것!
   // 아이디, 닉네임 담을 변수
   const [userId] = useState(window.sessionStorage.getItem('user_id'))
-  // const [userNickname] = useState(window.sessionStorage.getItem('user_nickname'))
+   // 관리자 구분-세션스토리지 꺼내오기
+   const [userRole] = useState(window.sessionStorage.getItem('user_role'))
+   console.log(userRole)
 
+   // 리프레쉬용 변수
+  const [start, setStart] = useState()
 
   //문의글 갯수
   const [qcount, setQnacount]=useState(0);
@@ -34,12 +37,12 @@ const MarketQna = ({mno}) => {
    // 문의 하기 버튼
   // Form 컴포넌트에서 받아온 제목, 내용을 market 객체에 추가
   const [qnaContent, setQnaContent] = useState('');
-  const [qnaTitle, setQnaTitile] = useState('');
+  const [qnaTitle, setQnaTitle] = useState('');
 
     const handleChangeForm=(e)=>{
       const { name, value } = e.target;
         if (name === 'title') {
-          setQnaTitile(value);
+          setQnaTitle(value);
         } else if (name === 'content') {
           setQnaContent(value);
         }
@@ -58,16 +61,12 @@ const MarketQna = ({mno}) => {
     }
     const res = await qnaInsertDB(market)
     console.log('qnaInsert=> ' + res.data);
-    navigate('/market/detail/'+mno)
+    setQnaTitle(''); // 입력값 초기화
+    setQnaContent(''); // 입력값 초기화
+    // setStart(new Date())//리프레쉬용
+    window.location.reload('/market/detail/'+mno)
   }
-  /*  (qna_no
-			          , qna_step
-			          , market_no
-		            , user_id
-		            , qna_title
-		            , qna_content
-		           	, qna_date
-		            , qna_sort */
+ 
    /* 리뷰내용 가져오기 */
   //리뷰 배열
   const [qnas, setQnas]=useState([{}])
@@ -169,7 +168,11 @@ console.log(qnas);
             <RiQuestionnaireFill size='30' color='#4996F3'/>
             &nbsp;&nbsp;문의&nbsp;{qcount}</h5>
           &nbsp;&nbsp;
-          <button className='qnaButton' onClick={handleShow}>문의하기</button>
+          {/* { userRole==2?  */}
+            {/* <button className='qnaButton' onClick={handleShow}>문의답글</button>: */}
+               <button className='qnaButton' onClick={handleShow}>문의하기</button>
+               {/* } */}
+         
         </div>
           
         {/* 문의 리스트 */}

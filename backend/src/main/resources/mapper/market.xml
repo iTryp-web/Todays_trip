@@ -375,8 +375,13 @@
 		           	, qna_date
 		            , qna_sort
 			          )
-			    VALUES(
-								TB_QNA_NO_SEQ.NEXTVAL,
+			    VALUES(     
+	            <if test="qna_no == null">
+				    		 TB_QNA_NO_SEQ.NEXTVAL,
+							</if>
+	            <if test="qna_no != null">
+				    		 #{qna_no},
+							</if>
 								#{qna_step},
 								#{market_no},
 								#{user_id},
@@ -406,7 +411,7 @@
         FROM TB_QNA q, TB_USER u
         WHERE q.user_id = u.user_id
         and q.market_no=#{market_no}
-        ORDER BY q.qna_no DESC, q.qna_step ASC
+        ORDER BY q.qna_no DESC, q.qna_step DESC
 		<!-- 
 		<if test='search != null and search.equals("작성자")'>
 			AND u.user_nickname LIKE '%'||#{keyword}||'%'
@@ -420,4 +425,11 @@
 		ORDER BY q.qna_no ASC -->
 	</select>
 	
+	<!-- qna 답변달리면 업데이트 -->
+	<update id="qnaUpdate" parameterType="map">
+		UPDATE TB_QNA
+		SET qna_step = 2
+		WHERE qna_no = #{qna_no}
+		AND qna_step = 0
+	</update>	
 </mapper>

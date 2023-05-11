@@ -31,18 +31,21 @@ const HomeLayout = () => {
       let m_count = 0;
       let bHot_count = 0;
       let bNew_count = 0;
+      let temp_m_count = 0;
+      let temp_bHot_count = 0;
+      let temp_bNew_count = 0;
       if(jsonDoc.length > 0) {
         m_count = jsonDoc[0].M_COUNT
         bHot_count = jsonDoc[0].BHOT_COUNT
         bNew_count = jsonDoc[0].BNEW_COUNT
         if(m_count > 5) { 
-          m_count = 5
+          temp_m_count = 5
         }
         if(bHot_count > 4) { 
-          bHot_count = 4
+          temp_bHot_count = 4
         }
         if(bNew_count > 4) { 
-          bNew_count = 4
+          temp_bNew_count = 4
         }
         console.log(m_count)
         console.log(bHot_count)
@@ -55,7 +58,7 @@ const HomeLayout = () => {
         const list4 = []
         if(m_count > 0) {
           // 마켓 인기
-          for(let i=0; i<m_count; i++) {
+          for(let i=0; i<temp_m_count; i++) {
             const obj = {
               market_no: jsonDoc[i].MARKET_NO,
               market_category: jsonDoc[i].MARKET_CATEGORY,
@@ -69,7 +72,7 @@ const HomeLayout = () => {
           }
           setMarketHot(list1)
           // 마켓 신규
-          for(let i=m_count; i<m_count+m_count; i++) {
+          for(let i=m_count; i<m_count+temp_m_count; i++) {
             const obj = {
               market_no: jsonDoc[i].MARKET_NO,
               market_category: jsonDoc[i].MARKET_CATEGORY,
@@ -83,7 +86,7 @@ const HomeLayout = () => {
           }
           setMarketNew(list2)
           // 커뮤 인기
-          for(let i=m_count+m_count; i<m_count+m_count+bHot_count; i++) {
+          for(let i=m_count+m_count; i<m_count+m_count+temp_bHot_count; i++) {
             const obj = {
               board_no: jsonDoc[i].BOARD_NO,
               board_category: jsonDoc[i].BOARD_CATEGORY,
@@ -98,7 +101,7 @@ const HomeLayout = () => {
           }
           setBoardHot(list3)
           // 커뮤 신규
-          for(let i=m_count+m_count+bHot_count; i<m_count+m_count+bHot_count+bNew_count; i++) {
+          for(let i=m_count+m_count+bHot_count; i<m_count+m_count+bHot_count+temp_bNew_count; i++) {
             const obj = {
               board_no: jsonDoc[i].BOARD_NO,
               board_category: jsonDoc[i].BOARD_CATEGORY,

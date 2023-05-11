@@ -34,7 +34,13 @@ const MyPageQnaRow = ({qna, selectedQna}) => {
           {removeTag(qna.qna_content)}
         </th>
         <th className='reportItemTd'>
-          {new Date(qna.qna_date).toLocaleString('ko-KR')}
+          {new Date(qna.qna_date).toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          })}
+          <br />
+          {new Date(qna.qna_date).toLocaleTimeString('ko-KR')}
         </th>
         <th className='reportItemTd'>
           {qna.qna_step === 0 ? '미답변' : '답변완료'}

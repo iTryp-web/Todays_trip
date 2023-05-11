@@ -156,26 +156,6 @@ console.log(reviews);
               ))
           }
           </ul>
-        
-           {/* <!-- Add review --> 마이페이지로 가야될듯
-        <form className='reviewAdd'>
-          <h5>리뷰쓰기</h5>            
-          <div >
-            <span>별점</span>           
-              <input className="dis-none" type="number" name="rating"/>
-                          
-            </div>
-
-              <div className="row p-b-25">
-                <div className="col-12 p-b-5">
-                  <label>리뷰</label>
-                  <textarea className="review"></textarea>
-                </div>
-              </div>
-        </form>
-          <Button >
-            리뷰등록
-          </Button> */}
 
         <Pagination total={reviews.length} limit={limit} page={page} setPage={setPage} />
       </ReviewUI>

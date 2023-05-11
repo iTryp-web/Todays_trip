@@ -246,5 +246,18 @@ public class MarketDao {
 		mList = sqlSessionTemplate.selectList("qnaList", pMap);
 		return mList;
 	}
+	
+	/**
+	 * 문의글 상태 업데이트
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	public int qnaUpdate(Map<String, Object> pMap) {
+		logger.info("qnaUpdate 호출");
+		int result = 0;
+		result = sqlSessionTemplate.update("qnaUpdate", pMap);
+		return result;
+	}
 
 }

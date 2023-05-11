@@ -60,9 +60,14 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
   const [fdata, setFdata]=useState({})
   const mno=detailPost.market_no
   console.log(mno);
+  
 
   /* 장바구니버튼 클릭 */
   const handleClick = () => {
+    if(fdata==null){
+      alert('일정과 수량을 선택하세요')
+      return;
+    }
     handleShow();
     cookieAdd();
   };
@@ -100,17 +105,6 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
     cartList = [...existingCart, cartAdd];
     // //여러개 담기는듯...?? 해결된듯 cookies.cart문제. 얘가 정확히 뭔지 물어보기
     console.log(cartList)
-
-    // if(cookies===undefined){//장바구니 없는 경우
-    //     // 앞의 키값은 바꾸지 않기! 은재언니가 씀 뒤에는 변수로 연결
-    //     cartList.push(cartAdd)
-    //     console.log(cartList)
-    //   }else{//장바구니 이미 있는 경우
-    //     cartList=[...cookies.cart,cartAdd]
-    //     console.log(cookies);
-    //     console.log(cookies.cart);
-    //   }
-
       //장바구니 리셋
       //Date.now() + 259200000의 값을 expires에 할당하면 3일 후 만료되는 쿠키를 설정할 수 있습니다.
       setCookies('cart', 
@@ -121,17 +115,19 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
 
   //쿠키에 상품정보담기
   useEffect(() => {
-    //쿠키에 상품정보담기
-    setCartAdd({
-      "marketNum": detailPost.market_no,
-      "marketImg": thumbnailUrl,//썸네일
+    if(fdata != null) {
+      //쿠키에 상품정보담기
+      setCartAdd({
+        "marketNum": detailPost.market_no,
+        "marketImg": thumbnailUrl,//썸네일
       "marketName": detailPost.market_title,
-      "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스....ㅠㅠ
+      "marketOption": fdata.start_date,
       "marketCnt": count,//사용자가 선택한 갯수
       "marketPrice": detailPost.market_price
     });
-  }, [count, detailPost.market_no, detailPost.market_price, detailPost.market_title, thumbnailUrl]);
-  
+  }
+  }, [count, detailPost.market_no, detailPost.market_price, detailPost.market_title, thumbnailUrl, fdata]);
+
 
   /* 파이어베이스 일정정보 다 가져오기 - 마켓넘버 일치하는것만 가져와라*/
   const [fdatas,setFdatas]=useState([{}])
@@ -174,7 +170,9 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
     })
   },[filter])
   console.log(fdata);
+  // console.log(fdata.start_date);
   console.log(isSoldOut)
+
 
   
   //파이어베이스에서 수정 업데이트 똑같다
@@ -263,6 +261,10 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
 
                         <img src={minus_img} alt="minus" 
                             onClick={() => {
+                              if(fdata==null){
+                                alert('일정을 선택해주세요.')
+                                return;
+                              }
                               if (count === 1) {
                                 return 1;
                               }
@@ -273,6 +275,10 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                           <p>{count}</p>
                           <img src={plus_img} alt="plus" 
                             onClick={() => {
+                              if(fdata==null){
+                                alert('일정을 선택해주세요.')
+                                return;
+                              }
                               setCount(count + 1);
                             }}
                           />
@@ -283,18 +289,11 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
 
                         <p>일정선택</p>
                        
-                        {/* <Form.Select defaultValue="1" onChange={handleFilter} style={{width:'150px', height:'40px'}}>
-                            <option>날짜선택</option>
-                            <option value="1">23.10.19</option>
-                             <option value="1">{fdatas.s_no}</option> 
-                            <option value="2">23.11.10</option>
-                            <option value="3">23.12.20</option>
-                        </Form.Select>  */}
-                       
                        <Form.Select style={{width:'150px', height:'40px', fontSize:'1rem', textOverflow: 'ellipsis', textAlign: 'center'}} onChange={(e) => handleFilter(e.target.value, '일정번호')}>
                         <option>일정선택</option>
                             {fdatas.map((fdata) => (
-                              <option value={fdata.s_no}>{fdata.start_date}~{fdata.finish_date}</option>
+                              <option value={fdata.s_no}>{fdata.start_date}</option>
+                              // <option value={fdata.s_no}>{fdata.start_date}~{fdata.finish_date}</option>
                             ))}
                         </Form.Select>
 
@@ -323,11 +322,15 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                             <Button
                               name={'구매하기'}
                               onClick={(e) => {
+                                if(fdata==null){
+                                  alert('일정과 수량을 선택하세요')
+                                  return;
+                                }
                                 navigate('/order', { state: { orderItems:[{
                                     "marketNum": detailPost.market_no,
                                     "marketImg": thumbnailUrl,//썸네일
                                     "marketName": detailPost.market_title,
-                                    "marketOption": "시간선택",//프론트에서 시간선택 처리 할예정-파이어베이스
+                                    "marketOption": `${fdata.start_date}~${fdata.finish_date}`,//프론트에서 선택한 일정정보
                                     "marketCnt": count,//사용자가 선택한 갯수
                                     "marketPrice": detailPost.market_price
                                   }] 
@@ -348,7 +351,7 @@ const ProductDetail = ({detailPost, thumbnailUrl, detailImageUrls}) => {
                           <Button
                             name={'장바구니'}
                             className='sale'
-                            onClick={handleClick}
+                            onClick={()=>handleClick(fdata.start_date)}
                           >장바구니</Button>
 
                           <Button

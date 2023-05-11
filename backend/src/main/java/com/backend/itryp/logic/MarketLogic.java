@@ -226,6 +226,10 @@ public class MarketLogic {
 		logger.info("qnaInsert 호출");
 		int result = 0;
 		result = marketDao.qnaInsert(pMap);	
+		if(pMap.get("qna_step").toString().equals("1")) {
+			int update = marketDao.qnaUpdate(pMap);
+			logger.info(update);
+		}
 		return result;
 	} 
 	/**

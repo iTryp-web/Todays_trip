@@ -1,8 +1,10 @@
 import React from 'react'
 import { SliderImg, SliderBlock } from '../../styles/HomeStyle'
 import { HomeImages } from './homeData'
+import { useNavigate } from 'react-router-dom'
 
 const ImageSlider = () => {
+  const navigate = useNavigate()
   const settings = {
     dots: true,
     infinite: true,
@@ -18,7 +20,7 @@ const ImageSlider = () => {
       <SliderBlock {...settings}>
         {HomeImages &&
           HomeImages.map((item) => (
-            <SliderImg key={item.id} src={item.src} />
+            <SliderImg key={item.id} src={item.src} onClick={() => navigate(item.url)} />
           ))}
       </SliderBlock>
     </>

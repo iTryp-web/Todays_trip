@@ -15,7 +15,6 @@ const MarketPage = () => {
     <MarketBanner/>
     <PowerSlider/>
       <ProductList/>
-      <ProductItem/>
     {/* <Footer /> */}
   </>
   )

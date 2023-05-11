@@ -75,20 +75,22 @@ const MarketBanner = () => {
     <BannerBlock close={close}>
       {
       userRole==2?
-          (<Button onClick={() => navigate('/market/write')} style={{  marginBottom: '5px ' }} >
+          (<Button onClick={() => navigate('/market/write')}  >
+            <div style={{display:"flex"}}>
             <lord-icon
                 src="https://cdn.lordicon.com/frjgvxce.json"
                 trigger="hover"
                 colors="primary:#ffffff"
                 state="hover-1"
-                style={{width:"30px", height:"30px", marginRight: '5px', marginTop: '5px'}}>
+                style={{width:"30px", height:"30px", marginRight: '5px', marginTBottom: '10px'}}>
             </lord-icon>
-            지금 판매자 글쓰기!
+              지금 판매자 글쓰기!
+              </div>
           </Button> ):
           (userRole==0?(<Coupon onClick={() => navigate('/mypage')}>
             <Banner>
                <Image src="/images/voucher.png" />&nbsp;
-                <p>친구에게 추천하고 10%할인받자!</p>
+                <p>친구에게 추천하고 10% 할인받자!</p>
             </Banner>
           </Coupon>):
           (

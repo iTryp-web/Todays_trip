@@ -2,18 +2,22 @@ export const HomeImages = [
   {
     id: 0,
     src: '/images/home/banner0.png',
+    url: '/market/detail/1683511984353',
   },
   {
     id: 1,
     src: '/images/home/banner1.png',
+    url: '/market/detail/1683509618614',
   },
   {
     id: 2,
     src: '/images/home/banner2.png',
+    url: '/market/detail/1683510293802',
   },
   {
     id: 3,
     src: '/images/home/banner3.png',
+    url: '/market/detail/1683511059394',
   },
 ]
 

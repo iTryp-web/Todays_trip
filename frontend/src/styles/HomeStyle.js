@@ -104,8 +104,8 @@ export const MarketList = styled.ul`
   }
   em {
     position: absolute;
-    right: 5px;
-    bottom: -17px;
+    right: 7px;
+    bottom: -27px;
     color: #737373;
     font-size: 12px;
   }
@@ -241,6 +241,7 @@ export const SliderImg = styled.img`
   height: 500px;
   max-width: 2000px;
   object-fit: fill;
+  cursor: pointer;
   @media only screen and (max-width: 1500px) {
     object-fit: cover;
   }

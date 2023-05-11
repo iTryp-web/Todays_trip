@@ -3,7 +3,7 @@ import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { marketListDB } from '../../service/marketLogic';
 import { BtnSearch, SearchInput } from '../../styles/BoardStyle';
-import { ProductListBlock, SearchDiv, SelectBlock } from '../../styles/MarketStyle';
+import { ContentsBlock, ProductListBlock, SearchDiv, SelectBlock } from '../../styles/MarketStyle';
 import { categories, search } from './MarketData';
 import ProductItem from './ProductItem';
 
@@ -22,6 +22,9 @@ const ProductList = () => {
   /* 판매글 목록 */
     // 판매글 담을 객체배열
     const [items, setItems]=useState([{}]);
+    
+
+    
 
     // 파라미터의 카테고리값
     let {category} = useParams()
@@ -90,39 +93,25 @@ useEffect(() => {
     console.log(res.data)
     const list = []
     const datas = res.data
+    setItems(res.data)
     console.log(datas);
-    datas.forEach((item) => {
-      console.log(item)
-      // DB에서 받은 데이터
-      const obj = {
-        market_no: item.MARKET_NO,
-        user_nickname: item.USER_NICKNAME,
-        type_market: item.TYPE_MARKET,
-        market_category: item.MARKET_CATEGORY,
-        market_title: item.MARKET_TITLE,
-        market_content: item.MARKET_CONTENT,
-        market_price: item.MARKET_PRICE,
-        market_date: item.MARKET_DATE,
-        review_count:item.REVIEW_COUNT,
-        star_avg:item.STAR_AVG,
-        file_url:item.FILE_URL,
-        file_step:item.FILE_STEP,
-      }
-      
-      list.push(obj)
-      
-    })
-    setItems(list)
+
+   
     setKeyword('')
     const keywordInput = document.getElementById('keyword')
     keywordInput.value = '' // 키워드 input창 초기화
   }
   marketList()
+  // console.log(items.star_avg)//null
 }, [selected, searchStart, filter])
+console.log(items)
+
+
 
   return (
     <>
-     <div style={{'align-items': 'center'}}>
+     {/* <div style={{'align-items': 'center'}}> */}
+     <div>
           {/* 마켓검색 */}
           <SearchDiv className='searchDiv'>
             <DropdownButton className='searchDropdown' variant="" title={searchVal}>
@@ -163,9 +152,11 @@ useEffect(() => {
             </option>
           </SelectBlock>
         </div>
-
-          <ProductItem items={items}/>
-    
+        <ContentsBlock>
+              {items.map((item,index)=>(
+                <ProductItem key={index} item={item}/>
+              ))}
+        </ContentsBlock>
         </ProductListBlock>
     </>
   )

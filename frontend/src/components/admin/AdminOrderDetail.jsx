@@ -3,10 +3,9 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { adminOrderDetailDB, adminOrderInfoEditDB } from '../../service/adminLogic'
-import { OrderDiv } from '../../styles/OrderStyle'
 import Header from '../include/Header'
 import Footer from '../include/Footer'
-import { OrderDetailSection, OrderTotalSpan, OrderTotalDiv, LineHr, OrderCalcDiv } from '../../styles/MypageStyle'
+import { OrderDetailSection, OrderTotalSpan, OrderTotalDiv, LineHr, OrderCalcDiv, OrderDiv } from '../../styles/MypageStyle'
 import { OrderListDiv, OrderCouponDiv, OrdertyTitle, OrdertysTitle, OrdererTable, OrdererTytd, OrderCalcTyDiv, OrderCalcListDiv, OrderCalcResultDiv, OrderTable, OrderCouponTyDiv, OrdererTyContentTd } from '../../styles/OrderStyle'
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import AdminOrderDetailRow from './AdminOrderDetailRow'
@@ -65,6 +64,7 @@ const AdminOrderDetail = () => {
             order_amount: jsonDoc[i].ORDER_AMOUNT, // 상세 주문금액
             market_order_date: jsonDoc[i].MARKET_ORDER_DATE, // 예약 날짜
             order_total: jsonDoc[i].ORDER_TOTAL, // 주문 총금액
+            order_status: jsonDoc[i].ORDER_STATUS,
             pay_method: jsonDoc[i].PAY_METHOD, // 0카드 1카카페 2무통장 3가상계좌
             pay_date: jsonDoc[i].PAY_DATE,
             pay_total: jsonDoc[i].PAY_TOTAL, // 결제 총금액
@@ -185,7 +185,7 @@ const AdminOrderDetail = () => {
                   orders[0].order_total > orders[0].coupon_max ? (
                     orders[0].coupon_name +' ' + orders[0].coupon_max.toLocaleString('ko-KR') + '원'
                   ) : (
-                    (orders[0].coupon_name +' ' + orders[0].order_total/orders[0].coupon_rate).toLocaleString('ko-KR') + '원'
+                    (orders[0].coupon_name +' ' + (orders[0].order_total/100*orders[0].coupon_rate).toLocaleString('ko-KR')) + '원'
                   )
                 ) : (
                   '0원'
@@ -231,16 +231,16 @@ const AdminOrderDetail = () => {
             <OrdertyTitle>결제 정보</OrdertyTitle>
             <OrderCalcTyDiv>
               <OrderCalcListDiv style={{fontSize:'14px'}}>
-                {`주문 금액 ${orders[0].order_total && orders[0].order_total.toLocaleString('ko-KR')}원
-                - 할인 금액 ${orders[0].coupon_no ? (
+              {`주문 금액 ${orders[0].order_total && orders[0].order_total.toLocaleString('ko-KR')}원
+                - 할인 금액 ${orders[0].coupon_no && orders[0].coupon_name ? (
                   orders[0].order_total > orders[0].coupon_max ? (
                     orders[0].coupon_max.toLocaleString('ko-KR') + '원'
                   ) : (
-                    (orders[0].order_total/orders[0].coupon_rate).toLocaleString('ko-KR') + '원'
+                    (orders[0].order_total/100*orders[0].coupon_rate).toLocaleString('ko-KR') + '원'
                   )
                 ) : (
-                  '0'
-                )}원`}
+                  '0원'
+                )}`}
               </OrderCalcListDiv>
               <OrderCalcListDiv style={{fontSize:'14px'}}>
                 {`결제 방식: ${orders[0].pay_method == 0 ? '카드' : (
@@ -263,7 +263,6 @@ const AdminOrderDetail = () => {
         <EditModal onClick={() => setIsView(false)}>
           <ModalBody onClick={(e) => e.stopPropagation()}>
             <div>
-
             <HiOutlineX className='x-icon' onClick={() => setIsView(false)} />
             <EditP>예약자 이름</EditP>
             <EditInput type="text" onChange={(e) => handleName(e.target.value)} defaultValue={orders[0].order_name} />

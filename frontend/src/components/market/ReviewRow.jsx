@@ -253,46 +253,7 @@ const ReviewRow = ({review, start, setStart}) => {
   }
 
   return (
-    <>{/* 
-         ========================== [[ 리뷰 수정하기 Modal ]] ========================== 
-        <Modal show={Ushow} onHide={UhandleClose} animation={true}>
-        <Modal.Header closeButton>
-          <Modal.Title>리뷰수정</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <Form id="f_memo">         
-          <Form.Group className="mb-3 row" controlId="mStar">
-            <Form.Label className="col-sm-2 col-form-label">별점</Form.Label>
-            <div className='col-sm-10'>
-              <Form.Control as="select" name="reviewStar" onChange={handleUpdateForm}>
-                <option value="5.0">★★★★★</option>
-                <option value="4.0">★★★★☆</option>
-                <option value="3.0">★★★☆☆</option>
-                <option value="2.0">★★☆☆☆</option>
-                <option value="1.0">★☆☆☆☆</option>
-              </Form.Control>
-            </div>
-          </Form.Group>
-          <Form.Group className="mb-3 row" controlId="mContent">
-            <Form.Label className="col-sm-2 col-form-label">내용</Form.Label>
-            <div className='col-sm-10'>
-              <Form.Control name="reviewContent" onChange={handleUpdateForm} as="textarea" rows={3} className='form-control form-control-sm' placeholder="리뷰 내용을 입력하세요." />
-            </div>
-          </Form.Group>
-        </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={UhandleClose}>
-            닫기
-          </Button>
-          <Button variant="primary" onClick={()=>{UhandleClose(); reviewUpdate(review.market_no, review.review_no);}}>
-            수정하기
-          </Button>
-        </Modal.Footer>
-      </Modal>     
-     ========================== [[ 수정하기 Modal ]] =========================>
-  */}
-    
+    <>
     
     {/*============================ 멋진별점 리뷰수정 =============================*/}
     {isView&&

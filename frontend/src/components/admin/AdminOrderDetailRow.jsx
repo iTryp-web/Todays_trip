@@ -22,7 +22,9 @@ const AdminOrderDetailRow = ({order}) => {
           {order.market_title}
         </DetailTitleTd>
         <DetailTd>
-          {order.market_order_date}
+          {order.market_order_date && order.market_order_date.substring(0, order.market_order_date.indexOf(' ')).substring(0, order.market_order_date.indexOf(' '))}
+          <br />
+          {order.market_order_date && order.market_order_date.substring(order.market_order_date.indexOf('~')+2).substring(order.market_order_date.indexOf(' '))}
         </DetailTd>
         <DetailTd>
           {order.market_count}개
@@ -31,14 +33,19 @@ const AdminOrderDetailRow = ({order}) => {
           {order.market_count && (order.order_amount * order.market_count).toLocaleString('ko-KR')}원
         </DetailTd>
         <DetailTd>
-          {order.r_count == 1 ? (
+        {order.order_status == 2 && order.r_count > 0 ? (
             <div className='done' >
               작성완료
             </div>
-          ) : (
-            <div className='admin'>
-                작성가능
+          ) : ( order.order_status == 2 && order.r_count === 0 ? (
+            <div>
+              <BiAddToQueue className='icon' />
+                리뷰작성
             </div>
+          ) : (
+            order.order_status == 0 ? '예약중' : (
+              order.order_status == 1 ? '취소' : (
+                order.order_status == 3 ? '결제실패' : null)))
           )}
         </DetailTd>
       </tr>
