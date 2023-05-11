@@ -2,6 +2,7 @@
   
 ### ✈ 오늘의 여행 Todays_trip ✈
 <br><br>
+👇 아래 이미지를 클릭하시면 시연 영상이 재생됩니다.
 [![오늘의 여행 시연 영상](http://img.youtube.com/vi/4V7YUEMqrfs/maxresdefault.jpg)](https://youtu.be/4V7YUEMqrfs)
 <br><br>
   
