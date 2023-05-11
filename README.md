@@ -5,8 +5,9 @@
 <br>
   
 👇 아래 이미지를 클릭하시면 시연 영상이 재생됩니다.
-[![오늘의 여행 시연 영상](http://img.youtube.com/vi/4V7YUEMqrfs/maxresdefault.jpg)](https://youtu.be/4V7YUEMqrfs)
-<br><br>
+<br>
+
+[![오늘의 여행 시연 영상](https://github.com/iTryp-web/Todays_trip/assets/115203308/0e3506ba-6593-4327-a9aa-2118433869e0)](https://youtu.be/4V7YUEMqrfs)
   
 ---
 
@@ -75,3 +76,7 @@
 ## 5. PPT 자료
 [오늘의여행 PPT 바로가기](https://docs.google.com/presentation/d/1Jr31nfo0cyYfKz87MM9ac3bdo5RzztPuyaF9gxz3R2U/edit?usp=sharing "오늘의여행 PPT 바로가기")
 <br><br><br>
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=Waving&color=4996F3&height=200&section=footer&text=👋Goodbye!&fontSize=50" />
+</div>
