@@ -1,6 +1,6 @@
 <div align="center">
-<br>
-  
+<img src="https://capsule-render.vercel.app/api?type=Waving&color=4996F3&height=200&section=header&text=TODAY'S%20TRIP!&fontSize=50" />
+
 ### ✈ 오늘의 여행 Today's trip ✈
 <br>
   
@@ -27,9 +27,9 @@
 <br><br><br>
 
 ## 2. 멤버 구성
-- [김도희](https://github.com/dodoringring "dodoringring GitHub") : 마켓(메인, 상세보기, 리뷰 수정·삭제·좋아요, 문의 작성·삭제, 상품 등록-firebase 실시간 데이터베이스)
+- [김도희](https://github.com/dodoringring "dodoringring GitHub") : 마켓(메인, 상세보기) /  리뷰 수정·삭제·좋아요 / 문의 작성·삭제 / 상품 등록(firebase 실시간 데이터베이스)
 
-- [목정윤](https://github.com/jungyunmok "jungyunmok GitHub") : 커뮤니티(메인, 상세보기, 글·댓글 작성·수정·삭제, 신고-회원·글·댓글, 좋아요-글·댓글) / 마이페이지(작성글 목록, 주문 목록, 리뷰 작성) / 관리자 페이지(마켓, 주문, 문의, 신고, 차단, 탈퇴) / 메인페이지
+- [목정윤](https://github.com/jungyunmok "jungyunmok GitHub") : 커뮤니티(메인, 상세보기) / 글, 댓글 작성·수정·삭제 / 신고(회원·글·댓글) / 좋아요(글·댓글) / 마이페이지(작성글 목록, 주문 목록, 리뷰 작성) / 관리자 페이지(마켓, 주문, 문의, 신고, 차단, 탈퇴) / 메인페이지
 
 - [박상준](https://github.com/cvrts "cvrts GitHub") : 고객센터(자주 묻는 질문, 1:1 문의) / 마이페이지(메인)
 
