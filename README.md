@@ -7,7 +7,7 @@
 👇 아래 이미지를 클릭하시면 시연 영상이 재생됩니다.
 <br>
 
-[![오늘의 여행 시연 영상](https://github.com/iTryp-web/Todays_trip/assets/115203308/0e3506ba-6593-4327-a9aa-2118433869e0)](https://youtu.be/4V7YUEMqrfs)
+[![오늘의 여행 시연 영상](http://img.youtube.com/vi/4V7YUEMqrfs/maxresdefault.jpg)](https://youtu.be/4V7YUEMqrfs)
   
 ---
 
