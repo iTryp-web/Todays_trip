@@ -31,7 +31,7 @@
 
 - [목정윤](https://github.com/jungyunmok "jungyunmok GitHub") : 커뮤니티(메인, 상세보기) / 글, 댓글 작성·수정·삭제 / 신고(회원·글·댓글) / 좋아요(글·댓글) / 마이페이지(작성글 목록, 주문 목록, 리뷰 작성) / 관리자 페이지(마켓, 주문, 문의, 신고, 차단, 탈퇴) / 메인페이지
 
-- [박상준](https://github.com/cvrts "cvrts GitHub") : 고객센터(자주 묻는 질문, 1:1 문의) / 마이페이지(메인)
+- [박상준](https://github.com/cvrts "cvrts GitHub") : 고객센터(자주 묻는 질문, 1:1 문의 작성-일반·비밀·탈퇴) / 마이페이지(메인)
 
 - [이은재](https://github.com/77EJ77 "77EJ77 GitHub") : 장바구니(쿠키) / 주문 / 결제(아임포트 API) / 핸드폰 인증(NCP SENS API) / 고객센터(챗봇-react simple chatbot)
 
@@ -47,7 +47,9 @@
 
 - 비밀번호 찾기(Spring Security)
 
-- 핸드폰 인증(NCP SENS API), 이메일 인증(Spring Boot Starter Mail)
+- 이메일 인증(Spring Boot Starter Mail)
+
+- 핸드폰 인증(NCP SENS API)
 
 - 마이페이지(메인, 회원 정보 수정, 작성글 목록, 주문 목록, 리뷰 작성)
 
@@ -61,7 +63,7 @@
 
 - 커뮤니티(메인, 상세보기, 글·댓글 작성·수정·삭제, 신고-회원·글·댓글, 좋아요-글·댓글)
 
-- 고객센터(자주 묻는 질문, 1:1문의, 챗봇-react simple chatbot)
+- 고객센터(자주 묻는 질문, 1:1문의 작성-일반·비밀·탈퇴, 챗봇-react simple chatbot)
 
 - 관리자 페이지(마켓, 주문, 문의, 신고, 차단, 탈퇴)
 <br><br><br>
