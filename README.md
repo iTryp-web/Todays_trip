@@ -2,7 +2,7 @@
   
 ### ✈ 오늘의 여행 Todays_trip ✈
 <br><br>
-<img width=90% src="https://github.com/iTryp-web/Todays_trip/assets/115203308/dac3e56c-cc44-44d8-8407-3051e418ef30.png">
+[![오늘의 여행 시연 영상](http://img.youtube.com/vi/4V7YUEMqrfs/maxresdefault.jpg)](https://youtu.be/4V7YUEMqrfs)
 <br><br>
   
 ---
